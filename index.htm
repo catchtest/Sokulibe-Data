@@ -1475,6 +1475,7 @@
     <script>
         "use strict"
         var db;
+		var localized = {};
         var jobs = ['', '輕', '賊', '重', '狂', '槍', '盾', '弓', '獵', '法', '補'];
         var element = ['無', '火', '水', '地', '光', '暗'];
         var rarity = ['', '☆', '☆☆', '☆☆☆', '☆☆☆☆'];
@@ -1503,7 +1504,11 @@
             $.getJSON('sokulibe_data.json', function(data) {
                 db = data;
             });
-
+			
+            $.getJSON('localize.zh-TW.json', function(data) {
+                localized = data;
+            });
+			
             $("a[href='#unit']").one("click", initUnit);
             $("a[href='#accessory']").one("click", initAccessory);
             $("a[href='#weapon']").one("click", initWeapon);
@@ -2040,7 +2045,6 @@
             var html = '';
             for (var index = 0, len = itemList.length; index < len; index++) {
                 var data = itemList[index];
-                console.log(data);
                 var weaponMainSkill = db.weapon_mainskillbase[data.main_weapon_skill_id];
                 var weaponSubSkill = db.weapon_subskill[data.sub_weapon_skill_id];
 
@@ -3381,7 +3385,6 @@
 
         function renderTable(id, html) {
             var $table = $("#" + id);
-            console.log($table);
             $table.children("tbody").html(html)
             $table.DataTable(dataTableOption);
             $table.wrap("<div class='table-responsive'></div>"); // 增加響應div
@@ -3400,24 +3403,6 @@
                     args[number] :
                     match;
             });
-        };
-
-        var localized = {
-            "2分以内にクリア": "2分鐘內過關",
-            "3分以内にクリア": "3分鐘內過關",
-            "4分以内にクリア": "4分鐘內過關",
-            "一人も戦闘不能にさせずにクリア": "不死一人通關",
-            "奥義でボスにトドメをさした": "奧義結尾",
-            "コンティニューをせずにクリア": "沒有接關",
-            "フェンサーを使用してクリア": "操作輕戰士",
-            "ランサーを使用してクエストをクリア": "操作槍兵",
-            "ローグを使用してクエストをクリア": "操作盜賊",
-            "コンボ数が200HITを超えた": "連擊數200以上",
-            "コンボ数が150HITを超えた": "連擊數150以上",
-            "コンボ数が120HITを超えた": "連擊數120以上",
-            "コンボ数が100HITを超えた": "連擊數100以上",
-            "コンボ数が70HITを超えた": "連擊數70以上",
-            "コンボ数が50HITを超えた": "連擊數50以上",
         };
 
         String.prototype.i18n = function() {
