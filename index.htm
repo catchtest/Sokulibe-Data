@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>蒼空解放資料查詢</title>
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    --><link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css">
+    -->
+    <link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="sokulibe_data.css">
 </head>
@@ -570,10 +571,10 @@
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane" id="unitStoryTab">
-								<div class="jumbotron">
-								  <h3>警告！裡面有劇情透露，可能會減低您觀看原作的興致</h3>
-								  <p><a class="btn btn-warning btn-sm" href="#" role="button" onclick="showStory(this);">還是想看</a></p>
-								</div>
+                                <div class="jumbotron">
+                                    <h3>警告！裡面有劇情透露，可能會減低您觀看原作的興致</h3>
+                                    <p><a class="btn btn-warning btn-sm" href="#" role="button" onclick="showStory(this);">還是想看</a></p>
+                                </div>
                                 <pre id="storyBlock"></pre>
                             </div>
                         </div>
@@ -1269,14 +1270,14 @@
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation"><a href="#unitListTab" aria-controls="unitListTab" role="tab" data-toggle="tab">角色</a></li>
                     <li role="presentation"><a href="#accessoryListTab" aria-controls="accessoryListTab" role="tab" data-toggle="tab">裝備</a></li>
-					<li role="presentation"><a href="#weaponListTab" aria-controls="weaponListTab" role="tab" data-toggle="tab">武器</a></li>
+                    <li role="presentation"><a href="#weaponListTab" aria-controls="weaponListTab" role="tab" data-toggle="tab">武器</a></li>
                     <li role="presentation"><a href="#achievement" aria-controls="achievement" role="tab" data-toggle="tab">任務</a></li>
                     <li role="presentation"><a href="#icons" aria-controls="icons" role="tab" data-toggle="tab">徽章</a></li>
                     <li role="presentation"><a href="#items" aria-controls="items" role="tab" data-toggle="tab">道具</a></li>
                     <li role="presentation"><a href="#rune" aria-controls="rune" role="tab" data-toggle="tab">素材</a></li>
                     <li role="presentation"><a href="#expTab" aria-controls="expTab" role="tab" data-toggle="tab">經驗</a></li>
                     <li role="presentation"><a href="#tearsTab" aria-controls="tearsTab" role="tab" data-toggle="tab">交換所</a></li>
-					<li role="presentation"><a href="#abilityListTab" aria-controls="abilityListTab" role="tab" data-toggle="tab">被動</a></li>
+                    <li role="presentation"><a href="#abilityListTab" aria-controls="abilityListTab" role="tab" data-toggle="tab">被動</a></li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -1318,20 +1319,20 @@
                             </tbody>
                         </table>
                     </div>
-					<div role="tabpanel" class="tab-pane" id="weaponListTab">
+                    <div role="tabpanel" class="tab-pane" id="weaponListTab">
                         <table class="table table-bordered table-striped table-hover" id="weaponListTable">
                             <thead>
                                 <tr>
                                     <th>名稱</th>
-									<th>稀有度</th>
-									<th>職業</th>
-									<th>最大HP</th>
-									<th>最大攻擊</th>
-									<th>最大速度</th>
-									<th>主技能<br />傷害倍率</th>
-									<th>主技能<br />破盾倍率</th>
-									<th>副技能<br />效果</th>
-									<th>副技能<br />覺醒滿效果</th>
+                                    <th>稀有度</th>
+                                    <th>職業</th>
+                                    <th>最大HP</th>
+                                    <th>最大攻擊</th>
+                                    <th>最大速度</th>
+                                    <th>主技能<br />傷害倍率</th>
+                                    <th>主技能<br />破盾倍率</th>
+                                    <th>副技能<br />效果</th>
+                                    <th>副技能<br />覺醒滿效果</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1449,7 +1450,7 @@
                             </tbody>
                         </table>
                     </div>
-					<div role="tabpanel" class="tab-pane" id="abilityListTab">
+                    <div role="tabpanel" class="tab-pane" id="abilityListTab">
                         <table class="table table-bordered table-striped table-hover" id="abilityTable">
                             <thead>
                                 <tr>
@@ -1461,7 +1462,7 @@
                             <tbody>
                             </tbody>
                         </table>
-					</div>
+                    </div>
                 </div>
 
             </div>
@@ -1473,7 +1474,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script>
         "use strict"
-		var db;
+        var db;
         var jobs = ['', '輕', '賊', '重', '狂', '槍', '盾', '弓', '獵', '法', '補'];
         var element = ['無', '火', '水', '地', '光', '暗'];
         var rarity = ['', '☆', '☆☆', '☆☆☆', '☆☆☆☆'];
@@ -1499,10 +1500,10 @@
         };
 
         (function($) {
-			$.getJSON('sokulibe_data.json', function(data) {
-				db = data;
-			});
-		
+            $.getJSON('sokulibe_data.json', function(data) {
+                db = data;
+            });
+
             $("a[href='#unit']").one("click", initUnit);
             $("a[href='#accessory']").one("click", initAccessory);
             $("a[href='#weapon']").one("click", initWeapon);
@@ -1515,14 +1516,14 @@
             $("a[href='#tearsTab']").one("click", initTears);
             $("a[href='#unitListTab']").one("click", initUnitList);
             $("a[href='#accessoryListTab']").one("click", initAccessoryList);
-			$("a[href='#weaponListTab']").one("click", initWeaponList);
-			$("a[href='#abilityListTab']").one("click", initAbilityList);
+            $("a[href='#weaponListTab']").one("click", initWeaponList);
+            $("a[href='#abilityListTab']").one("click", initAbilityList);
 
-			$("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
-				$(this).closest("table").find(".active").removeClass("active");
-				$(this).closest("tr").addClass("active");
-			});
-			
+            $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
+                $(this).closest("table").find(".active").removeClass("active");
+                $(this).closest("tr").addClass("active");
+            });
+
             // 鍵盤事件
             $('.list-group').keydown(function(e) {
                 var $items = $(this).find(".list-group-item");
@@ -1648,7 +1649,7 @@
             for (var id in db.weapon) {
                 var data = db.weapon[id];
 
-				if (skipDirty && isFakeWeapon(data)) continue;
+                if (skipDirty && isFakeWeapon(data)) continue;
 
                 var name = data.name;
                 var job = weapon_jobs[data.job];
@@ -2017,9 +2018,9 @@
             }
             renderTable("accessoryListTable", html);
         }
-		
-		// 初始化武器一覽
-		function initWeaponList() {
+
+        // 初始化武器一覽
+        function initWeaponList() {
             var itemList = [];
             for (var id in db.weapon) {
                 var data = db.weapon[id];
@@ -2036,67 +2037,67 @@
                 if (b.rarity < a.rarity) return -1;
                 return 0;
             });
-           var html = '';
-           for (var index = 0, len = itemList.length; index < len; index++) {
+            var html = '';
+            for (var index = 0, len = itemList.length; index < len; index++) {
                 var data = itemList[index];
-				console.log(data);
-				var weaponMainSkill = db.weapon_mainskillbase[data.main_weapon_skill_id];
-				var weaponSubSkill = db.weapon_subskill[data.sub_weapon_skill_id];
-				
+                console.log(data);
+                var weaponMainSkill = db.weapon_mainskillbase[data.main_weapon_skill_id];
+                var weaponSubSkill = db.weapon_subskill[data.sub_weapon_skill_id];
+
                 var list = [
                     data.name,
-					accessory_rarity[data.rarity],
-					weapon_jobs[data.job],
-					calculateWeaponHP(data.id, 10, 4),
-					calculateWeaponAtk(data.id, 10, 4),
-					calculateWeaponAgi(data.id, 10, 4),
-					weaponMainSkill.dmg,
-					weaponMainSkill.break_,
-					weaponSubSkill[1].comment.pre(),
-					weaponSubSkill[5].comment.pre()
+                    accessory_rarity[data.rarity],
+                    weapon_jobs[data.job],
+                    calculateWeaponHP(data.id, 10, 4),
+                    calculateWeaponAtk(data.id, 10, 4),
+                    calculateWeaponAgi(data.id, 10, 4),
+                    weaponMainSkill.dmg,
+                    weaponMainSkill.break_,
+                    weaponSubSkill[1].comment.pre(),
+                    weaponSubSkill[5].comment.pre()
                 ];
 
                 html += tableRow(list);
             }
             renderTable("weaponListTable", html);
-		}
-		
-		// 初始化特性一覽
-		function initAbilityList() {
-			var unitAbility = {};
-		
-			for (var id in db.unit) {
-				var data = db.unit[id];
-				
-				if (skipDirty && isFakeUnit(data)) continue;
-				
-				for (var i = 1; i <= 4; i++) {
-					var typeId = data['ability0' + i];
-					if (typeId == 0) continue;
-					
-					var obj = unitAbility[typeId];
-					if (obj == null) {
-						unitAbility[typeId] = [];
-						obj = unitAbility[typeId];
-					}
-					obj.push(anchor(getUnitName(data), "showUnit(" + id + ")"));
-				}
-			}
+        }
+
+        // 初始化特性一覽
+        function initAbilityList() {
+            var unitAbility = {};
+
+            for (var id in db.unit) {
+                var data = db.unit[id];
+
+                if (skipDirty && isFakeUnit(data)) continue;
+
+                for (var i = 1; i <= 4; i++) {
+                    var typeId = data['ability0' + i];
+                    if (typeId == 0) continue;
+
+                    var obj = unitAbility[typeId];
+                    if (obj == null) {
+                        unitAbility[typeId] = [];
+                        obj = unitAbility[typeId];
+                    }
+                    obj.push(anchor(getUnitName(data), "showUnit(" + id + ")"));
+                }
+            }
 
             var ability = [];
-			var html = '';
+            var html = '';
             for (var id in db.ability) {
                 var data = db.ability[id];
-				var unitText = unitAbility[id] != null ? unitAbility[id].join('<br />') : '';
+                var unitText = unitAbility[id] != null ? unitAbility[id].join('<br />') : '';
                 var list = [
                     data.name.replaceAll('\n', ''),
-					data.comment.pre(),
-					unitText,
+                    data.comment.pre(),
+                    unitText,
                 ];
-				
-				html += tableRow(list);
+
+                html += tableRow(list);
             }
-			renderTable("abilityTable", html);
+            renderTable("abilityTable", html);
         }
 
         // 判斷是否為尚未完成的裝備
@@ -2104,15 +2105,15 @@
             var first = db.accessory_upgrade[id]["1"];
             return first == null || first.flavor == null || first.flavor.length <= 4;
         }
-		
-		// 判斷是否為未完成的武器
-		function isFakeWeapon(data) {
-			// 隱藏不能裝備的武器
+
+        // 判斷是否為未完成的武器
+        function isFakeWeapon(data) {
+            // 隱藏不能裝備的武器
             if (data.job == -1) return true;
             // 隱藏未設定的武器
             if (data.hp == 1 && data.atk == 1 && data.agi == 1) return true;
-		    return false;
-		}
+            return false;
+        }
 
         function getAccessoryName(id) {
             var first = db.accessory_upgrade[id]["1"];
@@ -2263,7 +2264,7 @@
             // 技能能力列表
             var $skillBase = $("#skillBase > tbody");
             $skillBase.find("td").remove();
-			$skillBase.children(".active").removeClass("active");
+            $skillBase.children(".active").removeClass("active");
 
             for (var i = 0; i <= 6; i++) {
                 if (command == null || command[i] == null) continue;
@@ -2488,7 +2489,7 @@
             var footer = '';
             if (sum_hit > 0) { // 有攻擊才計算總合
                 var footerList = [
-					String.Format("{0} Hits", sum_hit),
+                    String.Format("{0} Hits", sum_hit),
                     '',
                     sum_dmg,
                     '',
@@ -3380,16 +3381,16 @@
 
         function renderTable(id, html) {
             var $table = $("#" + id);
-			console.log($table);
+            console.log($table);
             $table.children("tbody").html(html)
             $table.DataTable(dataTableOption);
             $table.wrap("<div class='table-responsive'></div>"); // 增加響應div
         }
 
         function showStory(sender) {
-			$(sender).closest("div").hide();
-			$("#storyBlock").show();
-		}
+            $(sender).closest("div").hide();
+            $("#storyBlock").show();
+        }
 
         // 擴充方法
         String.Format = function(format) {
@@ -3446,6 +3447,14 @@
     </script>
     <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
-</body>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
+	  ga('create', 'UA-87472496-1', 'auto');
+	  ga('send', 'pageview');
+	</script>
+</body>
 </html>
