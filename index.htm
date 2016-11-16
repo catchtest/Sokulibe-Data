@@ -14,7 +14,7 @@
 
 <body>
     <div class="container-fluid">
-        <h3 style='font-weight: bold;'>蒼空解放資料查詢 <small>解包: 灰灰　製作: 蕭雲　更新日期: 2016/11/15　資料日期: 2016/11/8</small></h3>
+        <h3 style='font-weight: bold;'>蒼空解放資料查詢 <small>解包: 灰灰　製作: 蕭雲　更新日期: 2016/11/16　資料日期: 2016/11/8</small></h3>
 
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation"><a href="#unit" aria-controls="unit" role="tab" data-toggle="tab">角色</a></li>
@@ -229,7 +229,7 @@
                                                 <th>光耐性</th>
                                                 <td class="light_resist"></td>
                                                 <th>火傷耐性</th>
-                                                <td class="freeze_resist"></td>
+                                                <td class="burn_resist"></td>
                                             </tr>
                                             <tr>
                                                 <th></th>
@@ -237,7 +237,7 @@
                                                 <th>暗耐性</th>
                                                 <td class="dark_resist"></td>
                                                 <th>浮遊耐性</th>
-                                                <td class="freeze_resist"></td>
+                                                <td class="feather_resist"></td>
                                             </tr>
                                             <tr>
                                                 <th></th>
@@ -982,7 +982,7 @@
                                             <div class="col-md-9">
                                                 <ul class="nav nav-tabs" role="tablist">
                                                     <li role="presentation" class="active"><a href="#monsterPowerTab" aria-controls="monsterPowerTab" role="tab" data-toggle="tab">基本</a></li>
-                                                    <li role="presentation"><a href="#monsterResistTab" aria-controls="monsterResistTab" role="tab" data-toggle="tab">抗性</a></li>
+                                                    <!--<li role="presentation"><a href="#monsterResistTab" aria-controls="monsterResistTab" role="tab" data-toggle="tab">抗性</a></li>-->
                                                     <li role="presentation"><a href="#monsterSkillTab" aria-controls="monsterSkillTab" role="tab" data-toggle="tab">技能</a></li>
                                                 </ul>
 
@@ -1518,6 +1518,11 @@
 			$("a[href='#weaponListTab']").one("click", initWeaponList);
 			$("a[href='#abilityListTab']").one("click", initAbilityList);
 
+			$("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
+				$(this).closest("table").find(".active").removeClass("active");
+				$(this).closest("tr").addClass("active");
+			});
+			
             // 鍵盤事件
             $('.list-group').keydown(function(e) {
                 var $items = $(this).find(".list-group-item");
@@ -2258,6 +2263,7 @@
             // 技能能力列表
             var $skillBase = $("#skillBase > tbody");
             $skillBase.find("td").remove();
+			$skillBase.children(".active").removeClass("active");
 
             for (var i = 0; i <= 6; i++) {
                 if (command == null || command[i] == null) continue;
