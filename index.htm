@@ -1,0 +1,3445 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蒼空解放資料查詢</title>
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    --><link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="sokulibe_data.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <h3 style='font-weight: bold;'>蒼空解放資料查詢 <small>解包: 灰灰　製作: 蕭雲　更新日期: 2016/11/15　資料日期: 2016/11/8</small></h3>
+
+        <ul class="nav nav-pills" role="tablist">
+            <li role="presentation"><a href="#unit" aria-controls="unit" role="tab" data-toggle="tab">角色</a></li>
+            <li role="presentation"><a href="#accessory" aria-controls="ring" role="tab" data-toggle="tab">裝備</a></li>
+            <li role="presentation"><a href="#weapon" aria-controls="weapon" role="tab" data-toggle="tab">武器</a></li>
+            <li role="presentation"><a href="#event" aria-controls="event" role="tab" data-toggle="tab">關卡</a></li>
+            <li role="presentation"><a href="#overviewTab" aria-controls="overviewTab" role="tab" data-toggle="tab">一覽</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane" id="unit">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#unitR4" aria-controls="unitR4" role="tab" data-toggle="tab">4星</a></li>
+                            <li role="presentation"><a href="#unitR3" aria-controls="unitR3" role="tab" data-toggle="tab">3星</a></li>
+                            <li role="presentation"><a href="#unitR2" aria-controls="unitR2" role="tab" data-toggle="tab">2星</a></li>
+                            <li role="presentation"><a href="#unitR1" aria-controls="unitR1" role="tab" data-toggle="tab">1星</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="unitR4">
+                                <div class="list-group"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="unitR3">
+                                <div class="list-group"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="unitR2">
+                                <div class="list-group"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="unitR1">
+                                <div class="list-group"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <h3 class="name"></h3>
+
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#unitBaseTab" aria-controls="unitBaseTab" role="tab" data-toggle="tab">角色</a></li>
+                            <li role="presentation"><a href="#unitPowerTab" aria-controls="unitPowerTab" role="tab" data-toggle="tab">能力</a></li>
+                            <li role="presentation"><a href="#unitResistTab" aria-controls="unitResistTab" role="tab" data-toggle="tab">抗性</a></li>
+                            <li role="presentation"><a href="#unitSkillTab" aria-controls="unitSkillTab" role="tab" data-toggle="tab">技能</a></li>
+                            <li role="presentation"><a href="#unitCommentTab" aria-controls="unitCommentTab" role="tab" data-toggle="tab">對話</a></li>
+                            <li role="presentation"><a href="#unitStoryTab" aria-controls="unitStoryTab" role="tab" data-toggle="tab">故事</a></li>
+                        </ul>
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="unitBaseTab">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th class="width100">CV</th>
+                                                <td id="cv"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>對應角色</th>
+                                                <td id="partner"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>性別</th>
+                                                <td id="gender"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>體型</th>
+                                                <td id="unitSize"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>使用減益</th>
+                                                <td id="use_debuff"></td>
+                                            </tr>
+                                            <tr>
+                                                <th rowspan="4">被動</th>
+                                                <td id="ability01"></td>
+                                            </tr>
+                                            <tr>
+                                                <td id="ability02"></td>
+                                            </tr>
+                                            <tr>
+                                                <td id="ability03"></td>
+                                            </tr>
+                                            <tr>
+                                                <td id="ability04"></td>
+                                            </tr>
+                                            <tr>
+                                                <th rowspan="3">特性</th>
+                                                <td id="characteristic1"></td>
+                                            </tr>
+                                            <tr>
+                                                <td id="characteristic2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td id="characteristic3"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="unitPowerTab">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="width100"></th>
+                                                <th class="width100">基礎</th>
+                                                <th class="width100">升級</th>
+                                                <th class="width100">最大 <span id="max_level"></span></th>
+                                                <th>等級<select id="unitLevelSelect"></select></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>HP</th>
+                                                <td id="hp"></td>
+                                                <td id="hp_grow"></td>
+                                                <td id="hp_max"></td>
+                                                <td>
+                                                    <div class="progress">
+                                                        <div id="hp_rate" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar">
+                                                            <span class="sr-only"></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>攻擊</th>
+                                                <td id="atk"></td>
+                                                <td id="atk_grow"></td>
+                                                <td id="atk_max"></td>
+                                                <td>
+                                                    <div class="progress">
+                                                        <div id="atk_rate" class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar">
+                                                            <span class="sr-only"></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>速度</th>
+                                                <td id="agi"></td>
+                                                <td id="agi_grow">0</td>
+                                                <td id="agi_max"></td>
+                                                <td>
+                                                    <div class="progress">
+                                                        <div id="agi_rate" class="progress-bar progress-bar-info progress-bar-striped" role="progressbar">
+                                                            <span class="sr-only"></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>擊倒抵抗</th>
+                                                <td id="knock"></td>
+                                                <td id="knock_grow"></td>
+                                                <td id="knock_max"></td>
+                                                <td>
+                                                    <div class="progress">
+                                                        <div id="knock_rate" class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar">
+                                                            <span class="sr-only"></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="unitResistTab">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-fixed-width" id="unitResist">
+                                        <thead>
+                                            <tr>
+                                                <th>物理</th>
+                                                <th></th>
+                                                <th>屬性</th>
+                                                <th></th>
+                                                <th>狀態</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>斬耐性</th>
+                                                <td class="slash_resist"></td>
+                                                <th>火耐性</th>
+                                                <td class="fire_resist"></td>
+                                                <th>毒耐性</th>
+                                                <td class="poison_resist"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>碎耐性</th>
+                                                <td class="smash_resist"></td>
+                                                <th>水耐性</th>
+                                                <td class="water_resist"></td>
+                                                <th>麻痺耐性</th>
+                                                <td class="paralysis_resist"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>射耐性</th>
+                                                <td class="shot_resist"></td>
+                                                <th>地耐性</th>
+                                                <td class="earth_resist"></td>
+                                                <th>冰結耐性</th>
+                                                <td class="freeze_resist"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>魔耐性</th>
+                                                <td class="sorcery_resist"></td>
+                                                <th>光耐性</th>
+                                                <td class="light_resist"></td>
+                                                <th>火傷耐性</th>
+                                                <td class="freeze_resist"></td>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <td></td>
+                                                <th>暗耐性</th>
+                                                <td class="dark_resist"></td>
+                                                <th>浮遊耐性</th>
+                                                <td class="freeze_resist"></td>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <td></td>
+                                                <th></th>
+                                                <td></td>
+                                                <th>詛咒耐性</th>
+                                                <td class="curse_resist"></td>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <td></td>
+                                                <th></th>
+                                                <td></td>
+                                                <th>沉默耐性</th>
+                                                <td class="silence_resist"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="unitSkillTab">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active"><a href="#skillBaseTab" aria-controls="skillBaseTab" role="tab" data-toggle="tab">基本</a></li>
+                                    <li role="presentation"><a href="#skillDescTab" aria-controls="skillDescTab" role="tab" data-toggle="tab">描述</a></li>
+                                    <li role="presentation"><a href="#skillRuneTab" aria-controls="skillRuneTab" role="tab" data-toggle="tab">素材</a></li>
+                                    <li role="presentation"><a href="#skillUpgradeTab" aria-controls="skillUpgradeTab" role="tab" data-toggle="tab">強化效果</a></li>
+
+                                </ul>
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="skillBaseTab">
+                                        <div class="table-responsive">
+                                            <table id="skillBase" class="table table-bordered table-fixed-width" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th class="expand-th">名稱</th>
+                                                        <th class="expand-th">內部名稱</th>
+                                                        <th>類型</th>
+                                                        <th>傷害倍率</th>
+                                                        <th>冷卻時間</th>
+                                                        <th>破盾倍率</th>
+                                                        <th>仇恨倍率</th>
+                                                        <th>詠唱<br />蓄力時間</th>
+                                                        <th>距離</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>N0</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>N1</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>N2</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S0</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S1</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S2</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S3</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>奧義</th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <table id="skillAtk" class="table table-bordered table-sm-width">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>攻擊特性</th>
+                                                        <th>傷害</th>
+                                                        <th>解除異常</th>
+                                                        <th class="expand-th">得到狀態</th>
+                                                        <th class="expand-th">攻擊狀態</th>
+                                                        <th>攻擊類型</th>
+                                                        <th>屬性</th>
+                                                        <th>重力值</th>
+                                                        <th>仇恨值</th>
+                                                        <th>破盾值</th>
+                                                        <th>特殊效果</th>
+                                                        <th>擊倒值</th>
+                                                        <th>擊退值</th>
+                                                        <th class="expand-th">蓄力效果</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                                <tfoot>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="skillDescTab">
+                                        <div class="table-responsive">
+                                            <table id="skillDesc" class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="width100"></th>
+                                                        <th>一般</th>
+                                                        <th>星級</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>N0</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>N1</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>N2</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S0</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S1</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S2</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S3</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>奧義</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="skillRuneTab">
+                                        <div class="table-responsive">
+                                            <table id="skillRune" class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="width100"></th>
+                                                        <th>Lv2</th>
+                                                        <th>Lv3</th>
+                                                        <th>Lv4</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>N0</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>N1</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>N2</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S0</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S1</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S2</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S3</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="skillUpgradeTab">
+                                        <div class="table-responsive">
+                                            <table id="skillUpgrade" class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="width100"></th>
+                                                        <th>Lv2</th>
+                                                        <th>Lv3</th>
+                                                        <th>Lv4</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>N0</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>N1</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>N2</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S0</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S1</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S2</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S3</th>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="unitCommentTab">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th class="width200">遊戲開啟後初次對話 (早上)</th>
+                                                <td id="comment1"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>遊戲開啟後初次對話 (下午)</th>
+                                                <td id="comment2"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>遊戲開啟後初次對話 (晚上)</th>
+                                                <td id="comment3"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>遊戲開啟後初次對話 (深夜)</th>
+                                                <td id="comment4"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>點擊對話1</th>
+                                                <td id="comment5"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>點擊對話2</th>
+                                                <td id="comment6"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>點擊對話3</th>
+                                                <td id="comment7"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>RAID出現前1小時</th>
+                                                <td id="comment8"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>RAID出現</th>
+                                                <td id="comment9"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>初次獲得</th>
+                                                <td id="comment10"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>再次獲得</th>
+                                                <td id="comment11"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="unitStoryTab">
+								<div class="jumbotron">
+								  <h3>警告！裡面有劇情透露，可能會減低您觀看原作的興致</h3>
+								  <p><a class="btn btn-warning btn-sm" href="#" role="button" onclick="showStory(this);">還是想看</a></p>
+								</div>
+                                <pre id="storyBlock"></pre>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div role="tabpanel" class="tab-pane" id="accessory">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#ringSR" aria-controls="ringSR" role="tab" data-toggle="tab">戒指(SR)</a></li>
+                            <li role="presentation"><a href="#ringR" aria-controls="ringR" role="tab" data-toggle="tab">戒指(N,R,HR)</a></li>
+                            <li role="presentation"><a href="#talisman" aria-controls="talisman" role="tab" data-toggle="tab">護符</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="ringSR">
+                                <div class="list-group"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="ringR">
+                                <div class="list-group"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="talisman">
+                                <div class="list-group"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <h3 class="name"></h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th rowspan="4" class="width100">效果</th>
+                                        <td id="magic1"></td>
+                                    </tr>
+                                    <tr>
+                                        <td id="magic2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td id="magic3"></td>
+                                    </tr>
+                                    <tr>
+                                        <td id="magic4"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="width100"></th>
+                                        <th>說明</th>
+                                        <th class="width200">強化素材</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>未強化</th>
+                                        <td id="rank1"></td>
+                                        <td id="rune1"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>強化1</th>
+                                        <td id="rank2"></td>
+                                        <td id="rune2"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>強化2</th>
+                                        <td id="rank3"></td>
+                                        <td id="rune3"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>強化3</th>
+                                        <td id="rank4"></td>
+                                        <td id="rune4"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>強化4</th>
+                                        <td id="rank5"></td>
+                                        <td id="rune5"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="weapon">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#weaponSR" aria-controls="weaponSR" role="tab" data-toggle="tab">SR</a></li>
+                            <li role="presentation"><a href="#weaponHR" aria-controls="weaponHR" role="tab" data-toggle="tab">HR</a></li>
+                            <li role="presentation"><a href="#weaponR" aria-controls="weaponR" role="tab" data-toggle="tab">R</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="weaponSR">
+                                <div class="list-group"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="weaponHR">
+                                <div class="list-group"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="weaponR">
+                                <div class="list-group"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9">
+                        <h3 class="name"></h3>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="width100"></th>
+                                        <th class="width100">基礎</th>
+                                        <th class="width100">升級</th>
+                                        <th class="width100">覺醒</th>
+                                        <th class="width100">最大</th>
+                                        <th>等級<select id="weaponLevelSelect"></select> 覺醒<select id="weaponAwakeningSelect"></select></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>HP</th>
+                                        <td id="weaponHP"></td>
+                                        <td id="weaponHP_grow"></td>
+                                        <td id="weaponHP_awakening" class="pct"></td>
+                                        <td id="weaponMaxHP"></td>
+                                        <td>
+                                            <div class="progress">
+                                                <div id="weaponHP_rate" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar">
+                                                    <span class="sr-only"></span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>攻擊</th>
+                                        <td id="weaponATK"></td>
+                                        <td id="weaponATK_grow"></td>
+                                        <td id="weaponATK_awakening" class="pct"></td>
+                                        <td id="weaponMaxATK"></td>
+                                        <td>
+                                            <div class="progress">
+                                                <div id="weaponATK_rate" class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar">
+                                                    <span class="sr-only"></span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>速度</th>
+                                        <td id="weaponAGI"></td>
+                                        <td id="weaponAGI_grow"></td>
+                                        <td id="weaponAGI_awakening" class="pct"></td>
+                                        <td id="weaponMaxAGI"></td>
+                                        <td>
+                                            <div class="progress">
+                                                <div id="weaponAGI_rate" class="progress-bar progress-bar-info progress-bar-striped" role="progressbar">
+                                                    <span class="sr-only"></span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th class="width100">主技能</th>
+                                                <td id="weaponMainSkill"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>類型</th>
+                                                <td id="weaponMainSkillType"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>可用次數</th>
+                                                <td id="weaponMainSkillCount"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>傷害倍率</th>
+                                                <td id="weaponMainSkill_dmg"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>冷卻時間</th>
+                                                <td id="weaponMainSkill_cd"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>破盾倍率</th>
+                                                <td id="weaponMainSkill_break_"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>仇恨倍率</th>
+                                                <td id="weaponMainSkill_hate"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>詠唱時間</th>
+                                                <td id="weaponMainSkill_casttime"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>距離</th>
+                                                <td id="weaponMainSkill_range"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th class="width100">副技能</th>
+                                                <td id="weaponSubSkill1"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>覺醒1</th>
+                                                <td id="weaponSubSkill2"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>覺醒2</th>
+                                                <td id="weaponSubSkill3"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>覺醒3</th>
+                                                <td id="weaponSubSkill4"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>覺醒4</th>
+                                                <td id="weaponSubSkill5"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="weaponSkillAtk" class="table table-bordered table-sm-width">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>攻擊特性</th>
+                                        <th>傷害</th>
+                                        <th>解除異常</th>
+                                        <th class="expand-th">得到狀態</th>
+                                        <th class="expand-th">攻擊狀態</th>
+                                        <th>攻擊類型</th>
+                                        <th>屬性</th>
+                                        <th>重力值</th>
+                                        <th>仇恨值</th>
+                                        <th>破盾值</th>
+                                        <th>特殊效果</th>
+                                        <th>擊倒值</th>
+                                        <th>擊退值</th>
+                                        <th class="expand-th">蓄力效果</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="event">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#eventTab" aria-controls="eventTab" role="tab" data-toggle="tab">活動</a></li>
+                            <li role="presentation"><a href="#multiTab" aria-controls="multiTab" role="tab" data-toggle="tab">共鬥</a></li>
+                            <li role="presentation"><a href="#zoneTab" aria-controls="zoneTab" role="tab" data-toggle="tab">主線</a></li>
+                            <li role="presentation"><a href="#battleStepTab" aria-controls="battleStepTab" role="tab" data-toggle="tab">支路</a></li>
+                            <li role="presentation"><a href="#expZoneTab" aria-controls="expZoneTab" role="tab" data-toggle="tab">經驗</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="eventTab">
+                                <div class="list-group"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="multiTab">
+                                <div class="list-group"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="zoneTab">
+                                <div class="list-group"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="battleStepTab">
+                                <div class="list-group"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="expZoneTab">
+                                <div class="list-group"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-9">
+                        <h3 class="name"></h3>
+
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist" id="questTab">
+                            <li role="presentation" class="active"><a href="#quest" aria-controls="quest" role="tab" data-toggle="tab">關卡</a></li>
+                            <li role="presentation"><a href="#mission" aria-controls="mission" role="tab" data-toggle="tab">任務</a></li>
+                            <li role="presentation"><a href="#exchange" aria-controls="exchange" role="tab" data-toggle="tab">交換所</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="quest">
+                                <div class="list-group" id="questList"></div>
+
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active"><a href="#questData" aria-controls="questData" role="tab" data-toggle="tab">資料</a></li>
+                                    <li role="presentation"><a href="#monsterData" aria-controls="monsterData" role="tab" data-toggle="tab">怪物</a></li>
+                                    <li role="presentation"><a href="#waveData" aria-controls="waveData" role="tab" data-toggle="tab">分布</a></li>
+                                    <li role="presentation"><a href="#dropData" aria-controls="dropData" role="tab" data-toggle="tab">掉落率</a></li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="questData">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <th rowspan="3">任務</th>
+                                                        <td id="mission1"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="mission2"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="mission3"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>三冠獎勵</th>
+                                                        <td id="mission_bonus"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th rowspan="2">BOSS</th>
+                                                        <td id="boss1_name"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="boss2_name"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th class="width100">經驗</th>
+                                                        <td id="exp"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>經驗水晶</th>
+                                                        <td id="crystal"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>MR經驗</th>
+                                                        <td id="multi_exp"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>初次通關</th>
+                                                        <td id="first_clear_bonus"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>職業經驗</th>
+                                                        <td id="job_exp"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>接關</th>
+                                                        <td id="continue_limit"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>MR限制</th>
+                                                        <td id="required_lv"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>推薦等級</th>
+                                                        <td id="Recom_lv"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>RAID點數</th>
+                                                        <td id="raid_point"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>地點</th>
+                                                        <td id="bg_location"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="monsterData">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="list-group" id="monsterList"></div>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <ul class="nav nav-tabs" role="tablist">
+                                                    <li role="presentation" class="active"><a href="#monsterPowerTab" aria-controls="monsterPowerTab" role="tab" data-toggle="tab">基本</a></li>
+                                                    <li role="presentation"><a href="#monsterResistTab" aria-controls="monsterResistTab" role="tab" data-toggle="tab">抗性</a></li>
+                                                    <li role="presentation"><a href="#monsterSkillTab" aria-controls="monsterSkillTab" role="tab" data-toggle="tab">技能</a></li>
+                                                </ul>
+
+                                                <div class="tab-content">
+                                                    <div role="tabpanel" class="tab-pane active" id="monsterPowerTab">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th class="width100">名稱</th>
+                                                                        <td class="name"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>基礎HP</th>
+                                                                        <td class="hp"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>基礎攻擊</th>
+                                                                        <td class="atk"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>盾值</th>
+                                                                        <td class="break"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>重力值</th>
+                                                                        <td class="gravity"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>質量</th>
+                                                                        <td class="mass"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>浮空</th>
+                                                                        <td class="floating"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>壁特性</th>
+                                                                        <td class="through"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>狂暴</th>
+                                                                        <td class="rage"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>攻擊屬性</th>
+                                                                        <td class="use_element"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>攻擊狀態</th>
+                                                                        <td class="use_debuff"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>弱點屬性</th>
+                                                                        <td class="weak_element"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>弱點狀態</th>
+                                                                        <td class="weak_debuff"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>種族</th>
+                                                                        <td class="monster_category"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>體型</th>
+                                                                        <td class="monster_size"></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane" id="monsterResistTab">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered table-fixed-width">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>物理</th>
+                                                                        <th></th>
+                                                                        <th>屬性</th>
+                                                                        <th></th>
+                                                                        <th>狀態</th>
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th>斬耐性</th>
+                                                                        <td class="slash_resist"></td>
+                                                                        <th>火耐性</th>
+                                                                        <td class="fire_resist"></td>
+                                                                        <th>毒耐性</th>
+                                                                        <td class="poison_resist"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>碎耐性</th>
+                                                                        <td class="smash_resist"></td>
+                                                                        <th>水耐性</th>
+                                                                        <td class="water_resist"></td>
+                                                                        <th>麻痺耐性</th>
+                                                                        <td class="paralysis_resist"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>射耐性</th>
+                                                                        <td class="shot_resist"></td>
+                                                                        <th>地耐性</th>
+                                                                        <td class="earth_resist"></td>
+                                                                        <th>腐蝕耐性</th>
+                                                                        <td class="rust_resist"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>魔耐性</th>
+                                                                        <td class="sorcery_resist"></td>
+                                                                        <th>光耐性</th>
+                                                                        <td class="light_resist"></td>
+                                                                        <th></th>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th></th>
+                                                                        <td></td>
+                                                                        <th>暗耐性</th>
+                                                                        <td class="dark_resist"></td>
+                                                                        <th></th>
+                                                                        <td></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div role="tabpanel" class="tab-pane" id="monsterSkillTab">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered" id="monsterSkill">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>技能名稱</th>
+                                                                        <th>傷害倍率</th>
+                                                                        <th>冷卻時間</th>
+                                                                        <th>距離</th>
+                                                                        <th>特殊效果</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="table-responsive">
+                                                            <table id="monsterSkillAtk" class="table table-bordered table-sm-width">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>#</th>
+                                                                        <th>攻擊特性</th>
+                                                                        <th>傷害</th>
+                                                                        <th>解除異常</th>
+                                                                        <th class="expand-th">得到狀態</th>
+                                                                        <th class="expand-th">攻擊狀態</th>
+                                                                        <th>攻擊類型</th>
+                                                                        <th>屬性</th>
+                                                                        <th>重力值</th>
+                                                                        <th>仇恨值</th>
+                                                                        <th>破盾值</th>
+                                                                        <th>特殊效果</th>
+                                                                        <th>擊倒值</th>
+                                                                        <th>擊退值</th>
+                                                                        <th class="expand-th">蓄力效果</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                </tbody>
+                                                                <tfoot>
+                                                                </tfoot>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="waveData">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="width100">波數</th>
+                                                        <th>分布</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="dropData">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered table-fixed-width">
+                                                <thead>
+                                                    <tr>
+                                                        <th>種類</th>
+                                                        <th>掉落率</th>
+                                                        <th>木箱機率</th>
+                                                        <th>鐵箱機率</th>
+                                                        <th>金箱機率</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>不接關</th>
+                                                        <td class="empty-td"></td>
+                                                        <td id="nocon_clear_rate1" class="pct"></td>
+                                                        <td id="nocon_clear_rate2" class="pct"></td>
+                                                        <td id="nocon_clear_rate3" class="pct"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>快速通關</th>
+                                                        <td class="empty-td"></td>
+                                                        <td id="speed_clear_rate1" class="pct"></td>
+                                                        <td id="speed_clear_rate2" class="pct"></td>
+                                                        <td id="speed_clear_rate3" class="pct"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>BOSS</th>
+                                                        <td id="boss_drop_rate" class="pct"></td>
+                                                        <td id="boss_drop1" class="pct"></td>
+                                                        <td id="boss_drop2" class="pct"></td>
+                                                        <td id="boss_drop3" class="pct"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>小王</th>
+                                                        <td id="mid_drop_rate" class="pct"></td>
+                                                        <td id="mid_drop1" class="pct"></td>
+                                                        <td id="mid_drop2" class="pct"></td>
+                                                        <td class="empty-td" id="mid_drop3" class="pct"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>雜魚</th>
+                                                        <td id="zako_drop_rate" class="pct"></td>
+                                                        <td id="zako_drop1" class="pct"></td>
+                                                        <td id="zako_drop2" class="pct"></td>
+                                                        <td class="empty-td" id="zako_drop3" class="pct"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="mission">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="missionTable">
+                                        <thead>
+                                            <tr>
+                                                <th>標題</th>
+                                                <th>條件</th>
+                                                <th>獎勵</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="exchange">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="exchangeTable">
+                                        <thead>
+                                            <tr>
+                                                <th>獎勵</th>
+                                                <th>點數</th>
+                                                <th>交換上限</th>
+                                                <th>總點數</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="overviewTab">
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation"><a href="#unitListTab" aria-controls="unitListTab" role="tab" data-toggle="tab">角色</a></li>
+                    <li role="presentation"><a href="#accessoryListTab" aria-controls="accessoryListTab" role="tab" data-toggle="tab">裝備</a></li>
+					<li role="presentation"><a href="#weaponListTab" aria-controls="weaponListTab" role="tab" data-toggle="tab">武器</a></li>
+                    <li role="presentation"><a href="#achievement" aria-controls="achievement" role="tab" data-toggle="tab">任務</a></li>
+                    <li role="presentation"><a href="#icons" aria-controls="icons" role="tab" data-toggle="tab">徽章</a></li>
+                    <li role="presentation"><a href="#items" aria-controls="items" role="tab" data-toggle="tab">道具</a></li>
+                    <li role="presentation"><a href="#rune" aria-controls="rune" role="tab" data-toggle="tab">素材</a></li>
+                    <li role="presentation"><a href="#expTab" aria-controls="expTab" role="tab" data-toggle="tab">經驗</a></li>
+                    <li role="presentation"><a href="#tearsTab" aria-controls="tearsTab" role="tab" data-toggle="tab">交換所</a></li>
+					<li role="presentation"><a href="#abilityListTab" aria-controls="abilityListTab" role="tab" data-toggle="tab">被動</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane" id="unitListTab">
+                        <table class="table table-bordered table-striped table-hover" id="unitListTable">
+                            <thead>
+                                <tr>
+                                    <th>名字</th>
+                                    <th>對應角色</th>
+                                    <th>CV</th>
+                                    <th>星數</th>
+                                    <th>屬性</th>
+                                    <th>職業</th>
+                                    <th>最大HP</th>
+                                    <th>最大攻擊</th>
+                                    <th>最大速度</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="accessoryListTab">
+                        <table class="table table-bordered table-striped table-hover" id="accessoryListTable">
+                            <thead>
+                                <tr>
+                                    <th>類型</th>
+                                    <th>名稱</th>
+                                    <th>稀有度</th>
+                                    <th>職業</th>
+                                    <th>強化1</th>
+                                    <th>強化2</th>
+                                    <th>強化3</th>
+                                    <th>強化4</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+					<div role="tabpanel" class="tab-pane" id="weaponListTab">
+                        <table class="table table-bordered table-striped table-hover" id="weaponListTable">
+                            <thead>
+                                <tr>
+                                    <th>名稱</th>
+									<th>稀有度</th>
+									<th>職業</th>
+									<th>最大HP</th>
+									<th>最大攻擊</th>
+									<th>最大速度</th>
+									<th>主技能<br />傷害倍率</th>
+									<th>主技能<br />破盾倍率</th>
+									<th>副技能<br />效果</th>
+									<th>副技能<br />覺醒滿效果</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="achievement">
+                        <table class="table table-bordered table-striped table-hover" id="achievementTable">
+                            <thead>
+                                <tr>
+                                    <th>標題</th>
+                                    <th>條件</th>
+                                    <th>獎勵</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="icons">
+                        <table class="table table-bordered table-striped table-hover" id="iconsTable">
+                            <thead>
+                                <tr>
+                                    <th>名稱</th>
+                                    <th>說明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="items">
+                        <table class="table table-bordered table-striped table-hover" id="itemsTable">
+                            <thead>
+                                <tr>
+                                    <th>名稱</th>
+                                    <th>說明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="rune">
+                        <table class="table table-bordered table-striped table-hover" id="runeTable">
+                            <thead>
+                                <tr>
+                                    <th>名稱</th>
+                                    <th>說明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="expTab">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="table-responsive table-scroll">
+                                    <table class="table table-bordered table-striped table-hover" id="mrExpTable">
+                                        <thead>
+                                            <tr>
+                                                <th>MR等級</th>
+                                                <th>升級經驗</th>
+                                                <th>累積經驗</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="table-responsive table-scroll">
+                                    <table class="table table-bordered table-striped table-hover" id="unitExpTable">
+                                        <thead>
+                                            <tr>
+                                                <th>角色等級</th>
+                                                <th>升級經驗</th>
+                                                <th>累積經驗</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="table-responsive table-scroll">
+                                    <table class="table table-bordered table-striped table-hover" id="jobExpTable">
+                                        <thead>
+                                            <tr>
+                                                <th>職業等級</th>
+                                                <th>升級經驗</th>
+                                                <th>累積經驗</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="tearsTab">
+                        <table class="table table-bordered table-striped table-hover" id="tearsTable">
+                            <thead>
+                                <tr>
+                                    <th>名稱</th>
+                                    <th>眼淚</th>
+                                    <th>交換上限</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+					<div role="tabpanel" class="tab-pane" id="abilityListTab">
+                        <table class="table table-bordered table-striped table-hover" id="abilityTable">
+                            <thead>
+                                <tr>
+                                    <th>名稱</th>
+                                    <th>效果</th>
+                                    <th>持有者</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+					</div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
+        "use strict"
+		var db;
+        var jobs = ['', '輕', '賊', '重', '狂', '槍', '盾', '弓', '獵', '法', '補'];
+        var element = ['無', '火', '水', '地', '光', '暗'];
+        var rarity = ['', '☆', '☆☆', '☆☆☆', '☆☆☆☆'];
+        var max_level = [1, 60, 100, 160, 200];
+        var debuff = ['無', '毒', '麻痺', '冰結', '火傷', '浮遊', '詛咒', '沉默', '', '', '', '腐蝕'];
+        var ougi_target = ['敵方', '我方', '敵方 + 我方'];
+        var accessory_rarity = ['', 'N', 'R', 'HR', 'SR', 'SSR'];
+        var weapon_jobs = ['全', '輕賊', '輕', '賊', '重狂', '狂', '重', '盾槍', '槍', '盾', '弓獵', '弓', '獵', '補法', '法', '補'];
+        var skill_type = ['', '攻擊', '輔助', '回復'];
+        var hit_type = ['斬', '碎', '射', '魔'];
+        var skipDirty = true;
+        var dataTableOption = {
+            "autoWidth": false,
+            "order": [],
+            "paging": false,
+            "info": false,
+            "language": {
+                "search": "",
+                "searchPlaceholder": "快速搜尋",
+                "zeroRecords": "找不到符合的資料",
+                "emptyTable": "無資料",
+            }
+        };
+
+        (function($) {
+			$.getJSON('sokulibe_data.json', function(data) {
+				db = data;
+			});
+		
+            $("a[href='#unit']").one("click", initUnit);
+            $("a[href='#accessory']").one("click", initAccessory);
+            $("a[href='#weapon']").one("click", initWeapon);
+            $("a[href='#event']").one("click", initEvent);
+            $("a[href='#achievement']").one("click", initAchievement);
+            $("a[href='#icons']").one("click", initIcons);
+            $("a[href='#items']").one("click", initItems);
+            $("a[href='#rune']").one("click", initRune);
+            $("a[href='#expTab']").one("click", initExp);
+            $("a[href='#tearsTab']").one("click", initTears);
+            $("a[href='#unitListTab']").one("click", initUnitList);
+            $("a[href='#accessoryListTab']").one("click", initAccessoryList);
+			$("a[href='#weaponListTab']").one("click", initWeaponList);
+			$("a[href='#abilityListTab']").one("click", initAbilityList);
+
+            // 鍵盤事件
+            $('.list-group').keydown(function(e) {
+                var $items = $(this).find(".list-group-item");
+                var $select = $items.filter(".active");
+                if (!$select.length) return;
+                switch (e.which) {
+                    case 37: // left
+                    case 38: // up
+                        e.preventDefault();
+                        $select.prev().click().focus();
+                        break;
+                    case 39: // right
+                    case 40: // down
+                        e.preventDefault();
+                        $select.next().click().focus();
+                        break;
+                    case 36: // home
+                        e.preventDefault();
+                        $items.first().click().focus();
+                        break;
+                    case 35: // end
+                        e.preventDefault();
+                        $items.last().click().focus();
+                        break;
+                    case 33: // pageup
+                        e.preventDefault();
+                        $select.prevAll("*:lt(27)").last().click().focus();
+                        break;
+                    case 34: // pagedown
+                        e.preventDefault();
+                        $select.nextAll("*:lt(27)").last().click().focus();
+                        break;
+                }
+            });
+
+            $('.nav li').keydown(function(e) {
+                switch (e.which) {
+                    case 37: // left
+                        e.preventDefault();
+                        $(this).prev().children('a').click().focus();
+                        break;
+                    case 39: // right
+                        e.preventDefault();
+                        $(this).next().children('a').click().focus();
+                        break;
+                }
+            });
+        }(jQuery));
+
+        // 初始化角色列表
+        function initUnit() {
+            var htmls = [null, '', '', '', ''];
+            for (var id in db.unit) {
+                var data = db.unit[id];
+
+                if (skipDirty && isFakeUnit(data)) continue;
+
+                var name = getUnitName(data);
+                var job = getUnitJob(data);
+                var cssClass = data.cv == '不明' ? 'not-yet' : '';
+                var itemHtml = listItemHtml(id, name, job, "loadUnitData(" + id + ");", cssClass);
+                htmls[data.rarity] += itemHtml;
+            }
+            for (var i = 1; i <= 4; i++) {
+                $("#unitR" + i + " .list-group").html(htmls[i]);
+            }
+
+            var $levelSelect = $("#unitLevelSelect");
+            var html = '';
+            for (var i = 1; i <= 200; i++) {
+                html = "<option>" + i + "</option>" + html;
+            }
+            $levelSelect.html(html).val(200).change(function() {
+                var id = current_unit;
+                var level = this.value;
+                var value;
+                value = calculateUnitHP(id, level);
+                $("#hp_rate").width(Math.min(value * 100 / 15000, 100) + '%').html(value);
+
+                value = calculateUnitAtk(id, level);
+                $("#atk_rate").width(Math.min(value * 100 / 10000, 100) + '%').html(value);
+
+                value = db.unit[id].agi;
+                $("#agi_rate").width(Math.min(value * 100 / 1000, 100) + '%').html(value);
+
+                value = calculateUnitKnockBack(id, level);
+                $("#knock_rate").width(Math.min(value * 100 / 15000, 100) + '%').html(value);
+            });
+        }
+
+        // 初始化裝備列表
+        function initAccessory() {
+            var htmls = ['', '', ''];
+
+            for (var id in db.accessory) {
+                // 隱藏未設定好的裝備
+                if (skipDirty && isFakeAccessory(id)) continue;
+
+                var data = db.accessory[id];
+
+                var name = getAccessoryName(id);
+                var job = weapon_jobs[data.job] + ' <div class="rarity">' + accessory_rarity[data.rarity] + '</div>';
+                var itemHtml = listItemHtml(id, name, job, "loadAccessoryData(" + id + ");");
+
+                if (data.category == 1) { // 戒指
+                    if (data.rarity >= 4) {
+                        htmls[0] += itemHtml;
+                    } else {
+                        htmls[1] += itemHtml;
+                    }
+                } else if (data.category == 2) { // 護符
+                    htmls[2] += itemHtml;
+                }
+            }
+            $("#ringSR .list-group").html(htmls[0]);
+            $("#ringR .list-group").html(htmls[1]);
+            $("#talisman .list-group").html(htmls[2]);
+        }
+
+        // 初始化武器列表
+        function initWeapon() {
+            var htmls = ['', '', ''];
+            for (var id in db.weapon) {
+                var data = db.weapon[id];
+
+				if (skipDirty && isFakeWeapon(data)) continue;
+
+                var name = data.name;
+                var job = weapon_jobs[data.job];
+                if (job == null) job = '無';
+                var itemHtml = listItemHtml(id, name, job, "loadWeaponData(" + id + ");");
+
+                if (data.rarity == 4) {
+                    htmls[0] += itemHtml;
+                } else if (data.rarity == 3) {
+                    htmls[1] += itemHtml;
+                } else if (data.rarity == 2) {
+                    htmls[2] += itemHtml;
+                }
+            }
+            $("#weaponSR .list-group").html(htmls[0]);
+            $("#weaponHR .list-group").html(htmls[1]);
+            $("#weaponR .list-group").html(htmls[2]);
+
+            var $levelSelect = $("#weaponLevelSelect");
+            var $awakeningSelect = $("#weaponAwakeningSelect");
+            var contentHtml = ''
+            for (var i = 10; i >= 1; i--) {
+                contentHtml += "<option>" + i + "</option>";
+            }
+            $levelSelect.html(contentHtml);
+            contentHtml = ''
+            for (var i = 4; i >= 0; i--) {
+                contentHtml += "<option>" + i + "</option>";
+            }
+            $awakeningSelect.html(contentHtml);
+
+            // 計算武器能力值
+            $levelSelect.add($awakeningSelect).change(function() {
+                var id = current_weapon;
+                var level = $levelSelect.val();
+                var awaken = $awakeningSelect.val();
+                var value;
+                value = calculateWeaponHP(id, level, awaken);
+                $("#weaponHP_rate").width(value * 100 / 1000 + '%').html(value);
+
+                value = calculateWeaponAtk(id, level, awaken);
+                $("#weaponATK_rate").width(value * 100 / 4000 + '%').html(value);
+
+                value = calculateWeaponAgi(id, level, awaken);
+                $("#weaponAGI_rate").width(value * 100 / 1000 + '%').html(value);
+            });
+        }
+
+        // 初始化關卡列表
+        function initEvent() {
+            // 活動
+            var $list = $("#eventTab .list-group");
+            var html = '';
+
+            for (var id in db.event) {
+                var data = db.event[id];
+
+                var name = data.name;
+                var job = '';
+                var itemHtml = listItemHtml(id, name, job, "loadEventData(" + id + ");");
+
+                // 越後面的關卡排越前
+                html = itemHtml + html;
+            }
+            $list.html(html);
+
+            // 共鬥
+            $list = $("#multiTab .list-group");
+            html = '';
+
+            for (var mrcate in db.multi_quest) {
+                for (var id in db.multi_quest[mrcate]) {
+                    var data = db.multi_quest[mrcate][id];
+
+                    var name = 'MR' + data.required_lv + '&nbsp;&nbsp;' + data.name;
+                    var job = String.Format("體力 {0}", data.stamina);
+                    var itemHtml = listItemHtml(id, name, job, "loadMultiData(" + id + ", " + mrcate + ");");
+
+                    // 越後面的關卡排越前
+                    html = itemHtml + html;
+                }
+            }
+            $list.html(html);
+
+            // 主線
+            $list = $("#zoneTab .list-group");
+            html = '';
+            for (var chapter in db.zone) {
+                for (var id in db.zone[chapter]) {
+                    // 不知道為什麼第二章的內容跟第一章完全一樣，可能是copy，先隱藏
+                    if (chapter == 2) continue;
+
+                    var data = db.zone[chapter][id];
+
+                    var name = getStoryName(id);
+                    var job = String.Format("體力 {0}", data.stamina);
+                    var itemHtml = listItemHtml(id, name, job, "loadZoneData(" + id + ", " + chapter + ");");
+
+                    html += itemHtml;
+                }
+            }
+            $list.html(html);
+
+            // 支路
+            $list = $("#battleStepTab .list-group");
+            html = '';
+
+            for (var chapter in db.battle_step_difficulty) {
+                for (var id in db.battle_step_difficulty[chapter]) {
+                    var data = db.battle_step_difficulty[chapter][id];
+
+                    var name = data.name;
+                    var job = String.Format("體力 {0}", data.stamina);
+                    var itemHtml = listItemHtml(id, name, job, "loadBattleStepData(" + id + ", " + chapter + ");");
+
+                    html += itemHtml;
+                }
+            }
+            $list.html(html);
+
+            // 單人經驗關
+            $list = $("#expZoneTab .list-group");
+            html = '';
+
+            for (var id in db.experience_zone) {
+                var data = db.experience_zone[id];
+
+                var name = data.name;
+                var job = String.Format("體力 {0}", data.stamina);
+                var itemHtml = listItemHtml(id, name, job, "loadExpZoneData(" + id + ");");
+
+                html += itemHtml;
+            }
+            $list.html(html);
+        }
+
+        var storyNames;
+
+        function getStoryName(id) {
+            if (storyNames == null) {
+                // 修改原始資料結構變成單一物件，比較好處理
+                storyNames = {};
+                for (var story_id in db.quest) {
+                    for (var quest_id in db.quest[story_id]) {
+                        storyNames[quest_id] = db.quest[story_id][quest_id].name;
+                    }
+                }
+            }
+            return storyNames[id];
+        }
+
+        // 初始化成就列表
+        function initAchievement() {
+            var html = '';
+            for (var id in db.mission) {
+                var data = db.mission[id];
+
+                var title = data.title;
+                var comment = data.comment;
+                var asset = getAsset(data.asset_type, data.asset_id, data.asset_value);
+
+                html += tableRow([title, comment, asset]);
+            }
+            renderTable("achievementTable", html);
+        }
+
+        // 初始化徽章列表
+        function initIcons() {
+            var html = '';
+            for (var id in db.icons) {
+                var data = db.icons[id];
+
+                var name = data.name;
+                var comment = data.comment;
+
+                html += tableRow([name, comment]);
+            }
+            renderTable("iconsTable", html);
+        }
+
+        // 初始化道具列表
+        function initItems() {
+            var html = '';
+            for (var id in db.items) {
+                var data = db.items[id];
+
+                var name = data.name;
+                var comment = data.comment.replaceAll('\n', '');
+
+                html += tableRow([name, comment]);
+            }
+            renderTable("itemsTable", html);
+        }
+
+        // 初始化素材列表
+        function initRune() {
+            var html = '';
+            for (var id in db.rune) {
+                var data = db.rune[id];
+
+                var name = data.name;
+                var comment = data.tips.replaceAll('\n', '');
+
+                html += tableRow([name, comment]);
+            }
+            renderTable("runeTable", html);
+        }
+
+        // 初始化經驗列表
+        function initExp() {
+            $("#mrExpTable > tbody").html(createExpTable(db.multi_rank, "point"));
+            $("#unitExpTable > tbody").html(createExpTable(db.unit_exp, "exp"));
+            $("#jobExpTable > tbody").html(createExpTable(db.job_lv, "exp"));
+        }
+
+        function createExpTable(data, attrName) {
+            var html = '';
+            var accumulate = 0;
+            for (var level in data) {
+                var value = data[level][attrName];
+                accumulate += value;
+
+                html += tableRow([level, value, accumulate]);
+            }
+            return html;
+        }
+
+        function listItemHtml(id, name, sub, onclick, cssClass) {
+            if (cssClass == null) cssClass = '';
+            return String.Format('<a href="#" data-id="{0}" onclick="{3}" class="list-group-item clearfix {4}">{1}<span class="pull-right">{2}</span></a>',
+                id, name, sub, onclick, cssClass);
+        }
+
+        function getAccessoryUpgrade(id) {
+            var list = [];
+            var data = db.accessory_upgrade[id];
+            var first = data["1"];
+            if (first != null) {
+                for (var n in data) {
+                    list.push(data[n]);
+                }
+            }
+            return list;
+        }
+
+        // 初始化妖精之淚交換所
+        function initTears() {
+            var html = '';
+            for (var id in db.tears_exchange) {
+                var data = db.tears_exchange[id];
+
+                var items = [];
+                // 原始結構購買的物品可以多種，所以另外處理
+                for (var i = 1; i <= 5; i++) {
+                    var prefix = "item" + i + "_";
+                    var type = data[prefix + "type"];
+                    if (type == 0) continue;
+                    items.push(getAsset(type, data[prefix + "id"], data[prefix + "value"]));
+                }
+
+                var name = items.join('<br />');
+                var tears = data.price;
+                var limit = parseInt(data.purchase_limit);
+
+                html += tableRow([name, tears, limit]);
+            }
+            renderTable("tearsTable", html);
+        }
+
+        // 初始化角色一覽
+        function initUnitList() {
+            var units = [];
+            for (var id in db.unit) {
+                var data = db.unit[id];
+
+                if (skipDirty && isFakeUnit(data)) continue;
+                units.push(data);
+            }
+
+            // 以星數排序
+            units = units.sort(function(a, b) {
+                return b.rarity - a.rarity;
+            });
+
+            var html = '';
+            for (var i = 0, len = units.length; i < len; i++) {
+                var data = units[i];
+                var maxLevel = max_level[data.rarity];
+                var partner = '無';
+                if (data.partner_id > 0) {
+                    var partnerData = db.unit[data.partner_id];
+                    partner = String.Format("<a href='#' onclick='showUnit({0});'>{1}</a>",
+                        partnerData.id,
+                        getUnitName(partnerData));
+                }
+
+                var list = [
+                    anchor(getUnitName(data), "showUnit(" + data.id + ")"),
+                    partner,
+                    data.cv,
+                    data.rarity,
+                    elementHtml(data.use_element),
+                    jobs[data.job_id],
+                    calculateUnitHP(data.id, maxLevel),
+                    calculateUnitAtk(data.id, maxLevel),
+                    data.agi,
+                ];
+                html += tableRow(list);
+            }
+            renderTable("unitListTable", html);
+        }
+
+        function isFakeUnit(data) {
+            // 排除無法取得的一星無屬性角色
+            if (data.rarity == 1 && data.use_element == 0) return true;
+            // 排除未設定的角色
+            if (data.name == "未定☆☆☆☆") return true;
+            return false;
+        }
+
+        // 初始化裝備一覽
+        function initAccessoryList() {
+            var accessory = [];
+            for (var id in db.accessory) {
+                var data = db.accessory[id];
+
+                if (skipDirty && isFakeAccessory(id)) continue;
+                accessory.push(data);
+            }
+
+            // 以裝備種類、稀有度排序
+            accessory = accessory.sort(function(a, b) {
+                if (b.category > a.category) return -1;
+                if (b.category < a.category) return 1;
+                if (b.rarity > a.rarity) return 1;
+                if (b.rarity < a.rarity) return -1;
+                return 0;
+            });
+
+            var category = [null, '戒指', '護符'];
+            var html = '';
+            for (var index = 0, len = accessory.length; index < len; index++) {
+                var data = accessory[index];
+                var data_upgrade = getAccessoryUpgrade(data.id);
+
+                var name = getAccessoryName(data.id) + '<br />' + getAccessoryLastName(data.id);
+                var list = [
+                    category[data.category],
+                    name,
+                    accessory_rarity[data.rarity],
+                    weapon_jobs[data.job],
+                ];
+
+                for (var i = 1; i <= 4; i++) {
+                    var magicID = data["magic" + i];
+                    var content = '';
+                    if (magicID > 0) {
+                        content = db.enchant_master[magicID].enchant_comment.replaceAll('\n', '<br />');
+                        list.push(content);
+                    } else {
+                        list.push('');
+                    }
+                }
+
+                html += tableRow(list);
+            }
+            renderTable("accessoryListTable", html);
+        }
+		
+		// 初始化武器一覽
+		function initWeaponList() {
+            var itemList = [];
+            for (var id in db.weapon) {
+                var data = db.weapon[id];
+
+                if (skipDirty && isFakeWeapon(data)) continue;
+                itemList.push(data);
+            }
+
+            // 以裝備職業、稀有度排序
+            itemList = itemList.sort(function(a, b) {
+                if (b.job > a.job) return -1;
+                if (b.job < a.job) return 1;
+                if (b.rarity > a.rarity) return 1;
+                if (b.rarity < a.rarity) return -1;
+                return 0;
+            });
+           var html = '';
+           for (var index = 0, len = itemList.length; index < len; index++) {
+                var data = itemList[index];
+				console.log(data);
+				var weaponMainSkill = db.weapon_mainskillbase[data.main_weapon_skill_id];
+				var weaponSubSkill = db.weapon_subskill[data.sub_weapon_skill_id];
+				
+                var list = [
+                    data.name,
+					accessory_rarity[data.rarity],
+					weapon_jobs[data.job],
+					calculateWeaponHP(data.id, 10, 4),
+					calculateWeaponAtk(data.id, 10, 4),
+					calculateWeaponAgi(data.id, 10, 4),
+					weaponMainSkill.dmg,
+					weaponMainSkill.break_,
+					weaponSubSkill[1].comment.pre(),
+					weaponSubSkill[5].comment.pre()
+                ];
+
+                html += tableRow(list);
+            }
+            renderTable("weaponListTable", html);
+		}
+		
+		// 初始化特性一覽
+		function initAbilityList() {
+			var unitAbility = {};
+		
+			for (var id in db.unit) {
+				var data = db.unit[id];
+				
+				if (skipDirty && isFakeUnit(data)) continue;
+				
+				for (var i = 1; i <= 4; i++) {
+					var typeId = data['ability0' + i];
+					if (typeId == 0) continue;
+					
+					var obj = unitAbility[typeId];
+					if (obj == null) {
+						unitAbility[typeId] = [];
+						obj = unitAbility[typeId];
+					}
+					obj.push(anchor(getUnitName(data), "showUnit(" + id + ")"));
+				}
+			}
+
+            var ability = [];
+			var html = '';
+            for (var id in db.ability) {
+                var data = db.ability[id];
+				var unitText = unitAbility[id] != null ? unitAbility[id].join('<br />') : '';
+                var list = [
+                    data.name.replaceAll('\n', ''),
+					data.comment.pre(),
+					unitText,
+                ];
+				
+				html += tableRow(list);
+            }
+			renderTable("abilityTable", html);
+        }
+
+        // 判斷是否為尚未完成的裝備
+        function isFakeAccessory(id) {
+            var first = db.accessory_upgrade[id]["1"];
+            return first == null || first.flavor == null || first.flavor.length <= 4;
+        }
+		
+		// 判斷是否為未完成的武器
+		function isFakeWeapon(data) {
+			// 隱藏不能裝備的武器
+            if (data.job == -1) return true;
+            // 隱藏未設定的武器
+            if (data.hp == 1 && data.atk == 1 && data.agi == 1) return true;
+		    return false;
+		}
+
+        function getAccessoryName(id) {
+            var first = db.accessory_upgrade[id]["1"];
+            if (first != null) {
+                return first.name;
+            }
+            return null;
+        }
+
+        function getAccessoryLastName(id) {
+            var item = db.accessory_upgrade[id];
+            var keys = Object.keys(item);
+            var last = db.accessory_upgrade[id][keys[keys.length - 1]];
+            if (last != null) {
+                return last.name;
+            }
+            return null;
+        }
+
+        function getUnitName(data) {
+            return data.nickname + data.name;
+        }
+
+        function getUnitJob(data) {
+            var elementText = data.use_element == 0 ? '　' : element[data.use_element];
+            return rarity[data.rarity] + ' ' + elementText + jobs[data.job_id];
+        }
+
+        function getUnitJobComment(data) {
+            return String.Format("<span class='comment'>（{0}）</span>", getUnitJob(data))
+        }
+
+        function getSkill(id, star) {
+            for (var prop in db.skill) {
+                if (db.skill[prop].base_id == id) {
+                    if (!star) return db.skill[prop]; // 一般技能
+                    else return db.skill[parseInt(prop) + 1]; // 星級技能
+                }
+            }
+            return null;
+        }
+
+        function getSkillDesc(data) {
+            return data.name + '<br />' + data.skill_tips.pre();
+        }
+
+        function getOugiDesc(data) {
+            return data.name + '<br />' + data.ougi_tips.pre();
+        }
+
+        function loadDataEvent(id) {
+            var $list = $(".list-group:visible");
+            $list.parents(".row").find(".col-sm-9").show();
+            setActive($list, id);
+        }
+
+        function setActive($list, id) {
+            $list.children(".active").removeClass("active");
+            $list.children("[data-id=" + id + "]").addClass("active");
+        }
+
+        function setTitle(main, sub) {
+            $("h3.name:visible").html(String.Format("{0} <small>{1}</small>", main, sub));
+        }
+
+        function showUnit(id) {
+            $("a[href='#unit']").click();
+            var item = $("#unit").find("[data-id='" + id + "']");
+            var list_id = item.parents(".tab-pane").first().attr("id");
+            $("a[href='#" + list_id + "']").click();
+            item.click().focus();
+        }
+
+        // 讀取角色資料
+        function loadUnitData(id) {
+            loadDataEvent(id);
+            current_unit = id;
+
+            // 讀取故事
+            $("#storyBlock").html(db.unit_story[id].story);
+
+            var data = db.unit[id];
+            setTitle(getUnitName(data), getUnitJob(data));
+            $("#cv").html(data.cv);
+            var partnerData = db.unit[data.partner_id];
+            if (partnerData != null) {
+                $("#partner").html(String.Format("<a href='#' onclick='showUnit({0});'>{1}</a>{2}",
+                    partnerData.id,
+                    getUnitName(partnerData),
+                    getUnitJobComment(partnerData)));
+            } else {
+                $("#partner").html('無');
+            }
+
+            $("#gender").html(data.gender == 1 ? '男' :
+                data.gender == 2 ? '女' : '未設定');
+            var sizeDesc = data.size == 1 ? "正常" :
+                data.size > 1 ? "高大" :
+                data.size >= 0.9 ? "稍矮" : "年幼";
+            $("#unitSize").html(String.Format("{0} （{1}）", data.size, sizeDesc));
+            $("#use_debuff").html(displayDebuff(data.use_debuff));
+
+            var maxLevel = max_level[data.rarity];
+            $("#max_level").html(String.Format("(Lv{0})", maxLevel));
+
+            $("#hp").html(data.hp);
+            $("#hp_grow").html(data.hp_grow);
+            $("#hp_max").html(calculateUnitHP(id, maxLevel));
+
+            $("#atk").html(data.atk);
+            $("#atk_grow").html(data.atk_grow);
+            $("#atk_max").html(calculateUnitAtk(id, maxLevel));
+
+            $("#agi").html(data.agi);
+            $("#agi_max").html(data.agi);
+
+            $("#knock").html(data.knock_back_regist);
+            $("#knock_grow").html(data.knock_back_grow);
+            $("#knock_max").html(calculateUnitKnockBack(id, maxLevel));
+
+            $("#unitLevelSelect").change();
+
+            for (var i = 1; i <= 4; i++) {
+                var abilityHtml = '&nbsp;';
+                var abilityID = data["ability0" + i];
+                if (abilityID != 0) {
+                    var abilityData = db.ability[abilityID];
+                    abilityHtml = abilityData.name.replaceAll('\n', '') + '<br />' + abilityData.comment.pre();
+                }
+                $("#ability0" + i).html(abilityHtml);
+            }
+
+            for (var i = 1; i <= 3; i++) {
+                var content = data["Characteristic" + i];
+                if (!content.length) content = '&nbsp;';
+                $("#characteristic" + i).html(content);
+            }
+
+            for (var i = 1; i <= 11; i++) {
+                $("#comment" + i).html(db.unit_comment[id]["comment" + i].pre());
+            }
+
+            // 技能說明列表
+            var command = db.unit_command[id];
+            var $skillDesc = $("#skillDesc > tbody");
+            $skillDesc.find("td").empty();
+
+            // 技能能力列表
+            var $skillBase = $("#skillBase > tbody");
+            $skillBase.find("td").remove();
+
+            for (var i = 0; i <= 6; i++) {
+                if (command == null || command[i] == null) continue;
+
+                var skill_base_id = command[i].skill_id;
+                var skillData = getSkill(skill_base_id, false);
+                $skillDesc.children("tr").eq(i).children("td").eq(0).html(getSkillDesc(skillData));
+                $skillBase.children("tr").eq(i).append(getSkillTd(skill_base_id));
+
+                skillData = getSkill(skill_base_id, true);
+                $skillDesc.children("tr").eq(i).children("td").eq(1).html(getSkillDesc(skillData));
+            }
+
+            // 每次切換時清除項目
+            $("#skillAtk").hide();
+
+            // 奧義
+            var ougiData = db.ougi[data.ougi_id];
+            $skillDesc.children("tr").eq(7).children("td").eq(0).html(getOugiDesc(ougiData));
+            $skillBase.children("tr").eq(7).append(getOugiTd(data.ougi_id));
+
+            // 技能強化素材
+            var $skillRune = $("#skillRune > tbody");
+            var $skillUpgrade = $("#skillUpgrade > tbody");
+            for (var i = 0; i <= 7; i++) {
+                if (command == null || command[i] == null) {
+                    continue;
+                }
+                var skill_id = command[i].skill_id;
+
+                for (var rankID in db.skill_upgrade[skill_id]) {
+                    if (rankID == 1) continue; // 原始狀態不用升級跟提升能力
+
+                    // 素材需求
+                    var rank = parseInt(rankID);
+                    var data_upgrade = db.skill_upgrade[skill_id][rankID];
+                    var html = getUpgradeRune(data_upgrade);
+                    $skillRune.children("tr").eq(i).children("td").eq(rank - 2).html(html);
+
+                    // 強化效果
+                    html = getUpgradeType(data_upgrade);
+                    $skillUpgrade.children("tr").eq(i).children("td").eq(rank - 2).html(html);
+                }
+            }
+
+            // 抗性
+            var data_resist = db.unit_resist[id];
+            var $resistTable = $("#unitResist");
+            for (var prop in data_resist) {
+                if (prop == 'id') continue; // 跳過這個屬性
+                var value = data_resist[prop];
+                if (value > 0) {
+                    value = '<span class="strong">' + value + '</span>';
+                } else if (value < 0) {
+                    value = '<span class="weak">' + value + '</span>';
+                }
+                $resistTable.find("." + prop).html(value);
+            }
+        }
+
+        // 產生技能資料
+        function getSkillTd(base_id) {
+            var data = db.skill_base[base_id];
+            var skill_data = getSkill(base_id, false);
+            var skill_star_data = getSkill(base_id, true);
+            var name = anchor(skill_data.name, "loadSkillAtk(" + skill_data.id + ")") + "<br />" +
+                anchor(skill_star_data.name, "loadSkillAtk(" + skill_star_data.id + ")")
+            var list = [name,
+                data.name,
+                skill_type[data.skill_type],
+                data.dmg,
+                data.cd,
+                data.break_,
+                data.hate,
+                data.casttime,
+                data.min_range + '-' + data.max_range
+            ];
+            return '<td>' + list.join('</td><td>') + '</td>';
+        }
+
+        // 產生奧義資料
+        function getOugiTd(id) {
+            var data = db.ougi[id];
+            var name = anchor(data.name, "loadOugiAtk(" + id + ")");
+            var target = String.Format("（目標：{0}）", ougi_target[data.target]);
+            var list = [name, target, '', data.dmg, data.cd, data.break_, '', '', ''];
+            return '<td>' + list.join('</td><td>') + '</td>';
+        }
+
+        function loadSkillAtk(id) {
+            var $table = $("#skillAtk");
+            var data = db.skill_atk[id];
+            commonLoadAtk($table, data);
+        }
+
+        function loadOugiAtk(id) {
+            var $table = $("#skillAtk");
+            var data = db.ougi_atk[id];
+            commonLoadAtk($table, data);
+        }
+
+        function loadMonsterSkillAtk(id) {
+            var $table = $("#monsterSkillAtk");
+            var data = db.monster_skill_atk[id];
+            commonLoadAtk($table, data);
+        }
+
+        function commonLoadAtk($table, data) {
+            var obj = getSkillAtkTd(data);
+            $table.children("tbody").html(obj.body);
+            $table.children("tfoot").html(obj.foot);
+            $table.show();
+        }
+
+        function getSkillAtkTd(data) {
+            var html = '';
+            var sum_hit = 0;
+            var sum_dmg = 0;
+            var sum_gravity = 0;
+            var sum_hate = 0;
+            var sum_break = 0;
+            var sum_knockback = 0;
+            var sum_huge_knockback = 0;
+            var sum_atk_type = '';
+            var sum_element = '';
+            var sum_effects = [];
+
+            for (var id in data) {
+                var hit = data[id];
+                var effects = [];
+                if (hit.air > 0) effects.push("擊飛");
+                if (hit.down_atk > 0) effects.push("挖地");
+                if (hit.g_bound > 0) effects.push("扣殺");
+                if (hit.kirimomi > 0) effects.push("kirimomi");
+                if (hit.daisharin > 0) effects.push("大車輪");
+                if (hit.haritsuke > 0) effects.push("定身");
+                if (hit.huge_knockback > 0) effects.push("擊退");
+
+                var atkType = hit_type[hit.atk_type];
+                var elementType = elementHtml(hit.element);
+
+                var hitType = hit.hit_type;
+                if (hitType == null) { // 奧義的情形
+                    hitType = skill_type[hit.skill_type + 1];
+                } else {
+                    hitType = hit.hit_type == 0 ? '攻擊' :
+                        hit.hit_type == 1 ? '回復' : hit.hit_type;
+                }
+
+                if (hitType == '攻擊' || hitType == 3) {
+                    // 似乎是遊戲為了修正問題作的假frame，所以直接跳過
+                    if (hit.dmg == 0) continue;
+
+                    sum_dmg += hit.dmg;
+                    sum_hit++;
+                    sum_gravity += hit.gravity;
+                    sum_hate += hit.hate;
+                    sum_break += hit.break_;
+                    sum_knockback += hit.knockback;
+                    sum_huge_knockback += hit.huge_knockback;
+                    if (!sum_atk_type.length) {
+                        sum_atk_type = atkType;
+                    }
+                    if (!sum_element.length) {
+                        sum_element = elementType;
+                    }
+                    effects.forEach(function(text) {
+                        if (sum_effects.indexOf(text) < 0) {
+                            sum_effects.push(text);
+                        }
+                    });
+                }
+
+                var hold_effect = [];
+                for (var i = 1; i <= 3; i++) {
+                    var type = hit['hold_type' + i];
+                    if (type == null || type == 0) {
+                        continue;
+                    }
+                    var value = hit['hold_value' + i];
+                    var text = '';
+                    switch (type) {
+                        case 1:
+                            text = atkUp("傷害", value);
+                            break;
+                        case 8:
+                            text = atkUp("破盾值", value);
+                            break;
+                        case 16:
+                            text = "大車輪";
+                            break;
+                        default:
+                            text = String.Format("type:{0} value:{1}", type, value);
+                            break;
+                    }
+                    hold_effect.push(text);
+                }
+
+                var list = [hit.hit_num,
+                    hitType,
+                    hit.dmg,
+                    hit.recovery_debuff_id == 0 ? '' : debuffHtml(hit.recovery_debuff_id),
+                    displaySkillBuff(hit.buff, hit.buff_value, hit.buff_time),
+                    displaySkillDebuff(hit.debuff, hit.debuff_value, hit.debuff_time),
+                    atkType,
+                    elementType,
+                    hit.gravity,
+                    hit.hate,
+                    hit.break_,
+                    effects.join('<br />'),
+                    hit.knockback,
+                    hit.huge_knockback,
+                    hold_effect.join('<br />'),
+                ];
+                html += tableRow(list);
+            }
+            // 都是空的會讓樣式錯誤，給一個空的tr
+            if (!html.length) {
+                html = '<tr></tr>';
+            }
+
+            var footer = '';
+            if (sum_hit > 0) { // 有攻擊才計算總合
+                var footerList = [
+					String.Format("{0} Hits", sum_hit),
+                    '',
+                    sum_dmg,
+                    '',
+                    '',
+                    '',
+                    sum_atk_type,
+                    sum_element,
+                    sum_gravity,
+                    sum_hate,
+                    sum_break,
+                    sum_effects.join('<br />'),
+                    isNaN(sum_knockback) ? '' : sum_knockback,
+                    isNaN(sum_huge_knockback) ? '' : sum_huge_knockback,
+                    '',
+                ];
+                footer = tableRow(footerList);
+            }
+
+            return {
+                body: html,
+                foot: footer
+            };
+        }
+
+        function displaySkillBuff(buff, value, time) {
+            var text;
+            switch (buff) {
+                case 0:
+                    return '';
+                case 1:
+                    text = atkUp("速度", value);
+                    break;
+                case 2:
+                    text = String.Format("冷卻時間 - {0}%", 100 - value);
+                    break;
+                case 3:
+                    text = "無敵";
+                    break;
+                case 4:
+                    text = atkUp("火屬性攻擊", value);
+                    break;
+                case 5:
+                    text = atkUp("水屬性攻擊", value);
+                    break;
+                case 6:
+                    text = atkUp("地屬性攻擊", value);
+                    break;
+                case 7:
+                    text = atkUp("光屬性攻擊", value);
+                    break;
+                case 8:
+                    text = atkUp("暗屬性攻擊", value);
+                    break;
+                case 9:
+                    text = defUp("火屬性耐性", value);
+                    break;
+                case 10:
+                    text = defUp("水屬性耐性", value);
+                    break;
+                case 11:
+                    text = defUp("地屬性耐性", value);
+                    break;
+                case 12:
+                    text = defUp("光屬性耐性", value);
+                    break;
+                case 13:
+                    text = defUp("暗屬性耐性", value);
+                    break;
+                case 14:
+                    text = "毒武器化 + " + value;
+                    break;
+                case 15:
+                    text = "麻痺武器化 + " + value;
+                    break;
+                case 16:
+                    text = "腐蝕武器化 + " + value;
+                    break;
+                case 17:
+                    text = defUp("緩慢回復", value);
+                    break;
+                case 20:
+                    text = "擊倒無效";
+                    break;
+                case 23:
+                    text = "毒無效";
+                    break;
+                case 24:
+                    text = "麻痺無效";
+                    break;
+                case 25:
+                    text = "冰結無效";
+                    break;
+                case 26:
+                    text = "火傷無效";
+                    break;
+                case 27:
+                    text = "浮遊無效";
+                    break;
+                case 28:
+                    text = "詛咒無效";
+                    break;
+                case 29:
+                    text = "沉默無效";
+                    break;
+                case 30:
+                    text = atkUp("攻擊", value);
+                    break;
+                case 31:
+                    text = String.Format("受到傷害 - {1}%", text, 100 - value);
+                    break;
+                default:
+                    return String.Format("{0} {1} {2}", buff, value, time);
+            }
+            return text + timeFormat(time);
+        }
+
+        function atkUp(text, value) {
+            return String.Format("{0} + {1}%", text, value - 100);
+        }
+
+        function defUp(text, value) {
+            return String.Format("{0} + {1}%", text, value);
+        }
+
+        function timeFormat(time) {
+            return String.Format('<div class="duration">持續時間：{0}</div>', time);
+        }
+
+        function displaySkillDebuff(debuff, value, time) {
+            if (debuff == 0) return '';
+            return debuffHtml(debuff, 0) + ' ' + value; // 時間因為沒技能用到就不顯示了
+        }
+
+        // 讀取裝備資料
+        function loadAccessoryData(id) {
+            loadDataEvent(id);
+
+            $(".table:visible tbody td").empty();
+
+            var data = db.accessory[id];
+            var data_upgrade = getAccessoryUpgrade(id);
+
+            for (var i = 1; i <= 4; i++) {
+                var magicID = data["magic" + i];
+                var content = '&nbsp;';
+                if (magicID > 0) {
+                    content = db.enchant_master[magicID].enchant_comment.replaceAll('\n', '<br />');
+                }
+                $("#magic" + i).html(content);
+            }
+
+            for (var i = 0, len = data_upgrade.length; i < len; i++) {
+                var u = data_upgrade[i];
+                var rank = u.rank;
+                $("#rank" + rank).html(u.name + u.flavor.pre());
+
+                if (i == 0) {
+                    setTitle(u.name, accessory_rarity[data.rarity]);
+                } else {
+                    $("#rune" + rank).html(getUpgradeRune(u));
+                }
+            }
+        }
+
+        // 取得裝備或技能的強化素材清單
+        function getUpgradeRune(data) {
+            var list = [];
+            for (var j = 1; j <= 3; j++) {
+                var runeID = data["upgrade_rune" + j];
+                if (runeID == 0) continue;
+
+                var name = db.rune[runeID].name;
+                var count = data["upgrade_rune_value" + j];
+                var text = String.Format("{0}{1}", name, count.display());
+                list.push(text);
+            }
+            return list.join("<br />");
+        }
+
+        // 取得技能強化效果
+        function getUpgradeType(data) {
+            var list = [];
+            for (var j = 1; j <= 3; j++) {
+                var type = data["upgrade_type" + j];
+                if (type == 0) continue;
+                var value = data["upgrade_value" + j];
+
+                var text = '';
+                switch (type) {
+                    case 1:
+                        text = effectIncrease("傷害", value);
+                        break;
+                    case 2:
+                        text = effectDecrease("技能冷卻時間", value);
+                        break;
+                    case 3:
+                        text = effectIncrease("強化效果持續時間", value);
+                        break;
+                    case 4:
+                        text = effectIncrease("強化效果增加量", value);
+                        break;
+                    case 5:
+                        text = effectIncrease("狀態異常積蓄量", value);
+                        break;
+                    case 6:
+                        text = effectDecrease("技能命中時，敵方重力", value);
+                        break;
+                    case 7:
+                        text = effectIncrease("破盾值", value);
+                        break;
+                    case 8:
+                        text = effectIncrease("技能命中時，浮空值", value);
+                        break;
+                    case 9:
+                        text = effectIncrease("敵人攻擊時推力", value);
+                        break;
+                    case 10:
+                        text = effectDecrease("詠唱時間", value);
+                        break;
+                    case 11:
+                        text = effectDecrease("蓄力時間", value);
+                        break;
+                    case 12:
+                        text = effectIncrease("敵人仇恨值", value);
+                        break;
+                    default:
+                        text = String.Format("type: {0} value: {1}", type, value);
+                        break;
+                }
+                if (!!text) {
+                    list.push(text);
+                }
+            }
+            if (list.length) {
+                return list.join("<br />");
+            }
+        }
+
+        function effectIncrease(text, value) {
+            return String.Format("{0} + {1}%", text, value - 100);
+        }
+
+        function effectDecrease(text, value) {
+            return String.Format("{0} - {1}%", text, 100 - value);
+        }
+
+        // 讀取武器資料
+        function loadWeaponData(id) {
+            loadDataEvent(id);
+            current_weapon = id;
+
+            var data = db.weapon[id];
+            setTitle(data.name, accessory_rarity[data.rarity]);
+
+            var attr = ['HP', 'ATK', 'AGI'];
+
+            attr.forEach(function(e) {
+                var e1 = e.toLowerCase();
+
+                var base = data[e1];
+                var grow = data[e1 + "_grow"];
+                var awakening = data[e1 + "_awakening_rate"];
+                $("#weapon" + e).html(base);
+                $("#weapon" + e + "_grow").html(grow);
+                $("#weapon" + e + "_awakening").html(awakening);
+                var maxValue = calculateWeaponProperty(base, grow, awakening, 10, 4);
+                $("#weaponMax" + e).html(maxValue);
+            });
+            $("#weaponLevelSelect").change();
+
+            // 武器主技能
+            var weaponMainSkill = db.weapon_mainskillbase[data.main_weapon_skill_id];
+            if (data.main_weapon_skill_id != 0) {
+                $("#weaponMainSkill").html(
+                    weaponMainSkill.name + '<br />' +
+                    db.weapon_mainskill_upgrade[data.main_weapon_skill_id]["1"].skill_tips.pre());
+            } else {
+                $("#weaponMainSkill").html('無');
+            }
+            attr = ['dmg', 'cd', 'break_', 'hate', 'casttime'];
+            attr.forEach(function(name) {
+                $("#weaponMainSkill_" + name).html(weaponMainSkill[name]);
+            });
+            $("#weaponMainSkill_range").html(weaponMainSkill.min_range + '-' + weaponMainSkill.max_range);
+            $("#weaponMainSkillType").html(skill_type[weaponMainSkill.skill_type]);
+            $("#weaponMainSkillCount").html(data.normal_mws_value + "（最大：" + data.awakening_mws_value + "）");
+
+            // 武器副技能
+            var data_sub = db.weapon_subskill[data.sub_weapon_skill_id];
+            for (var i in data_sub) {
+                $("#weaponSubSkill" + i).html(data_sub[i].name + '<br />' + data_sub[i].comment.pre());
+            }
+
+            commonLoadAtk($("#weaponSkillAtk"), db.weapon_mainskill_atk[data.main_weapon_skill_id]);
+        }
+
+        // 讀取活動資料
+        function loadEventData(id) {
+            loadDataEvent(id);
+
+            var data = db.event[id];
+            var data_quest = db.event_multi_quest[id];
+            setTitle(data.name, '');
+
+            var $list = $("#questList");
+            var html = '';
+
+            for (var questID in data_quest) {
+                var quest = data_quest[questID];
+                var sub = String.Format('WAVE {0}&nbsp;&nbsp;體力 {1}', Object.keys(db.event_quest_wave[questID]).length, quest.stamina);
+                var itemHtml = listItemHtml(quest.id, quest.name, sub, "loadQuestData(" + id + ", " + quest.id + ");");
+                html = itemHtml + html; // 難度越高排越上面
+            }
+            $list.html(html);
+
+            var item = $list.find(".list-group-item").first();
+            if (item.length) {
+                item.click();
+            } else {
+                // 清空原有資料
+                $(".table:visible").find("tbody td").empty();
+            }
+
+        }
+
+        // 讀取共鬥資料
+        function loadMultiData(id, mrcate) {
+            loadDataEvent(id);
+
+            var baseData = db.multi_quest[mrcate][id];
+            var missionData = db.multi_quest_mission[id];
+            var dropData = db.multi_quest_drop[id];
+            var waveData = db.multi_quest_wave[id];
+
+            loadCommonQuestData(baseData, missionData, dropData, waveData);
+
+            setTitle(String.Format("MR{0} {1}", baseData.required_lv, baseData.name), '');
+            $("#Recom_lv, #first_clear_bonus, #continue_limit, #required_lv").closest("tr").show();
+            $("#raid_point").closest("tr").hide();
+            $("#questTab").hide().find("a:first").tab('show');
+            $("#questList").hide();
+        }
+
+        // 讀取主線資料
+        function loadZoneData(id, chapter) {
+            loadDataEvent(id);
+
+            var baseData = db.zone[chapter][id];
+            var missionData = db.zone_mission[id];
+            var dropData = db.zone_drop[id];
+            var waveData = db.zone_wave[id];
+
+            loadCommonQuestData(baseData, missionData, dropData, waveData);
+
+            setTitle(getStoryName(id), '');
+            singleQuestField();
+        }
+
+        // 讀取支路資料
+        function loadBattleStepData(id, chapter) {
+            loadDataEvent(id);
+
+            var baseData = db.battle_step_difficulty[chapter][id];
+            var missionData = null;
+            var dropData = db.battle_step_drop[id];
+            var waveData = db.battle_step_wave[id];
+
+            loadCommonQuestData(baseData, missionData, dropData, waveData);
+
+            setTitle(baseData.name, '');
+            singleQuestField();
+        }
+
+        // 讀取單人經驗關資料
+        function loadExpZoneData(id) {
+            loadDataEvent(id);
+
+            var baseData = db.experience_zone[id];
+            var missionData = db.experience_zone_mission[id];
+            var dropData = db.experience_zone_drop[id];
+            var waveData = db.experience_zone_wave[id];
+
+            loadCommonQuestData(baseData, missionData, dropData, waveData);
+
+            setTitle(baseData.name, '');
+            singleQuestField();
+        }
+
+        function singleQuestField() {
+            $("#Recom_lv").closest("tr").show();
+            $("#raid_point, #first_clear_bonus, #multi_exp, #continue_limit, #required_lv").closest("tr").hide();
+            $("#questTab").hide().find("a:first").tab('show');
+            $("#questList").hide();
+        }
+
+        var current_unit;
+        var current_quest;
+        var current_weapon;
+
+        // 讀取活動某關卡資料
+        function loadQuestData(eventID, questID) {
+            setActive($("#questList"), questID);
+
+            var baseData = db.event_multi_quest[eventID][questID];
+            var missionData = db.event_quest_mission[questID];
+            var dropData = db.event_quest_drop[eventID][questID];
+            var waveData = db.event_quest_wave[questID];
+
+            loadCommonQuestData(baseData, missionData, dropData, waveData);
+
+            // 任務
+            var $missionTable = $("#missionTable > tbody");
+            var html = '';
+
+            for (var missionID in db.event_mission) {
+                var data_mission = db.event_mission[missionID];
+
+                if (data_mission.event_id != eventID) continue;
+
+                var title = data_mission.title;
+                var comment = data_mission.comment;
+                var asset = getAsset(data_mission.asset_type, data_mission.asset_id, data_mission.asset_value);
+
+                html += tableRow([title, comment, asset]);
+            }
+            $missionTable.html(html);
+
+            // 交換所
+            var $exchangeTable = $("#exchangeTable > tbody");
+            html = '';
+            var raid_id = db.event[eventID].raid_id;
+
+            var data_points = raid_id > 0 ? db.raid_event_point[raid_id] : db.event_point[eventID];
+            if (data_points != null) {
+                for (var pid in data_points) {
+                    var data_point = data_points[pid];
+
+                    var asset = getAsset(data_point.item_type, data_point.item_id, data_point.item_value);
+                    var exchange_limit = raid_id > 0 ? 1 : data_point.exchange_limit
+                    html += tableRow([asset, data_point.points, exchange_limit, data_point.points * exchange_limit]);
+                }
+            }
+
+            $exchangeTable.html(html);
+
+            $("#Recom_lv, #first_clear_bonus, #multi_exp").closest("tr").hide();
+            $("#raid_point, #continue_limit, #required_lv").closest("tr").show();
+            $("#questTab").show();
+            $("#questList").show();
+        }
+
+        // 共通關卡資料讀取
+        function loadCommonQuestData(baseData, missionData, dropData, waveData) {
+            current_quest = baseData;
+
+            // 基本資料
+            var attrs = ['exp', 'crystal', 'multi_exp', 'job_exp', 'required_lv', 'raid_point', 'Recom_lv', 'first_clear_bonus'];
+
+            attrs.forEach(function(name) {
+                $("#" + name).html(baseData[name]);
+            });
+
+            $("#continue_limit").html((baseData["continue_limit"] == -1).display());
+            $("#bg_location").html(db.bg_location[baseData.bg_id].name);
+            $("#boss1_name").html(getMonsterName(baseData.boss01_id));
+            $("#boss2_name").html(getMonsterName(baseData.boss02_id));
+
+            // 三冠條件
+            if (missionData != null) {
+                var i = 1;
+                for (var missionID in missionData) {
+                    $("#mission" + i).html(missionData[missionID].summery.i18n());
+                    i++;
+                }
+                // 三冠獎勵
+                $("#mission_bonus").html(getAsset(baseData.mission_bonus_type, baseData.mission_bonus_id, baseData.mission_bonus_value));
+            }
+            $("#mission1, #mission2, #mission3, #mission_bonus").closest("tr").toggle(missionData != null);
+
+            // 初始化怪物列表
+            $monsterList = $("#monsterList");
+            $monsterList.empty();
+
+            insertMonsterList(baseData, "boss0", 2);
+            insertMonsterList(baseData, "mid0", 4);
+            insertMonsterList(baseData, "zako0", 5);
+
+            $monsterList.find(".list-group-item").first().click();
+
+            // 掉落率
+            for (var prop in dropData) {
+                if (prop == 'id' || prop == 'event_id') continue;
+                if ($("#" + prop).length == 0) continue;
+
+                var value = dropData[prop];
+
+                if (prop.indexOf('_id') > 0) {
+                    if (value == 0) {
+                        value = '無';
+                    } else {
+                        value = '看不懂';
+                        //var itemType = dropData[prop.replace('_id', '_type')];
+                        //value = getAsset(itemType, value, 1);
+                    }
+                } else if (prop.indexOf('_bonus') > 0) {
+                    if (value == 0) {
+                        value = '無';
+                    } else {
+                        value = '看不懂';
+                        //var itemType = dropData[prop.replace('_bonus', '_type')];
+                        //value = getAsset(itemType, value, 1);
+                    }
+                }
+                $("#" + prop).html(value);
+            }
+
+            ratioModify(["nocon_clear_rate1", "nocon_clear_rate2", "nocon_clear_rate3"]);
+            ratioModify(["speed_clear_rate1", "speed_clear_rate2", "speed_clear_rate3"]);
+            ratioModify(["boss_drop1", "boss_drop2", "boss_drop3"]);
+            ratioModify(["mid_drop1", "mid_drop2"]);
+            ratioModify(["zako_drop1", "zako_drop2"]);
+
+            // 分布資訊
+            var $waveTable = $("#waveData table > tbody");
+            var html = ''
+
+            var wave_count = 0;
+            for (var wave in waveData) {
+                var this_wave = waveData[wave];
+                for (var i = 1; i <= 10; i++) {
+                    var value = this_wave["zako" + i];
+                    if (value == 0) continue;
+                    var monster_id = baseData["zako0" + value + "_id"];
+
+                    var name = getMonsterLink(monster_id, 2);
+                    html += tableRow([wave, name]);
+                }
+                for (var i = 1; i <= 3; i++) {
+                    var value = this_wave["midboss" + i];
+                    if (value == 0) continue;
+                    var monster_id = baseData["mid0" + value + "_id"];
+
+                    var name = getMonsterLink(monster_id, 1);
+                    html += tableRow([wave, name]);
+                }
+                for (var i = 1; i <= 2; i++) {
+                    var value = this_wave["boss" + i];
+                    if (value == 0) continue;
+                    var monster_id = baseData["boss0" + value + "_id"];
+
+                    var name = getMonsterLink(monster_id, 0);
+                    html += tableRow([wave, name]);
+                }
+                wave_count++;
+            }
+            $waveTable.html(html);
+
+            // 合併前方的波數
+            for (var i = 1; i <= wave_count; i++) {
+                var waveTd = $waveTable.find("tr > td").filter(function() {
+                    return $(this).text() == i;
+                });
+
+                for (var j in waveTd) {
+                    if (j == 0) {
+                        waveTd.eq(j).attr("rowspan", waveTd.length);
+                    } else {
+                        waveTd.eq(j).remove();
+                    }
+                }
+            }
+        }
+
+        function getMonsterLink(monster_id, prefix) {
+            return String.Format("{1}<a href='#' onclick='goMonsterList({0})'>{2}</a>", monster_id, getMonsterPrefix(prefix), getMonsterName(monster_id));
+        }
+
+        function goMonsterList(id) {
+            var item = $("#monsterList [data-id=" + id + "]");
+            if (item.length) {
+                item.click();
+                $("a[href='#monsterData']").click(); // 跳到該分頁
+            }
+        }
+
+        // 將原有數值轉換成百分比的形式
+        function ratioModify(array) {
+            var sum = 0;
+            array.forEach(function(id) {
+                var value = $("#" + id).text();
+                sum += parseInt(value);
+            });
+            var ratio = 100 / sum;
+            if (ratio != 1) {
+                array.forEach(function(id) {
+                    var value = $("#" + id).text();
+                    $("#" + id).html(parseFloat((value * ratio).toFixed(1)));
+                });
+            }
+        }
+
+        var $monsterList;
+
+        function insertMonsterList(data, prefix, max) {
+            var html = ''
+            for (var i = 1; i <= max; i++) {
+                var prop = prefix + i + '_id';
+                var monster_id = data[prop];
+                if (monster_id == 0) continue;
+
+                var name = getMonsterName(monster_id);
+                // 增加前方標記
+                var monType = prop.indexOf("boss") == 0 ? 0 :
+                    prop.indexOf("mid") == 0 ? 1 :
+                    2;
+                name = getMonsterPrefix(monType) + name;
+
+                var onclick = String.Format("loadMonsterData({0}, '{1}');", monster_id, prop);
+                html += listItemHtml(monster_id, name, '', onclick);
+            }
+            $monsterList.append(html);
+        }
+
+        function getMonsterName(id) {
+            if (id == 0) return '&nbsp;';
+            return db.monster_base[db.monster[id].base_id].name;
+        }
+
+        function getMonsterPrefix(type) {
+            var array = ["m-boss", "m-mid", "m-zako"];
+            return '<span class="' + array[type] + '"></span>';
+        }
+
+        // 讀取怪物列表
+        function loadMonsterData(id, type) {
+            setActive($monsterList, id);
+
+            var data_monster = db.monster[id];
+            var data_monsterbase = db.monster_base[data_monster.base_id];
+            var data_aibase = db.monster_ai_base[data_monster.monster_ai_id];
+
+            // 由關卡定義的HP/ATK/BREAK取代原始定義
+            if (type.indexOf("boss") >= 0) {
+                setMonValue("hp", current_quest.boss_hp);
+                setMonValue("atk", current_quest.boss_atk);
+                setMonValue("break", current_quest.boss_break);
+            } else if (type.indexOf("mid") >= 0) {
+                setMonValue("hp", current_quest.mid_hp);
+                setMonValue("atk", current_quest.mid_atk);
+                setMonValue("break", current_quest.mid_break);
+            } else if (type.indexOf("zako") >= 0) {
+                setMonValue("hp", current_quest.zako_hp);
+                setMonValue("atk", current_quest.zako_atk);
+                setMonValue("break", 0);
+            }
+
+            // 基本資料
+            setMonValue("name", data_monsterbase.name);
+            setMonValue("gravity", data_monster.gravity);
+            setMonValue("mass", data_monster.mass);
+            setMonValue("floating", (data_monster.floating == 1).display());
+            setMonValue("through", (data_monster.through == 0).display());
+            setMonValue("use_element", displayElement(data_monster.use_element1, data_monster.use_element2));
+            setMonValue("use_debuff", displayDebuff(data_monster.use_debuff1, data_monster.use_debuff2));
+            setMonValue("weak_element", displayElement(data_monster.weak_element1, data_monster.weak_element2));
+            setMonValue("weak_debuff", displayDebuff(data_monster.weak_debuff1, data_monster.weak_debuff2));
+            setMonValue("monster_category", db.monster_category[data_monsterbase.category].name);
+            setMonValue("monster_size", data_monsterbase.size);
+
+            if (data_aibase.dying_rage_value > 0) {
+                setMonValue("rage", String.Format("HP≦{0}%（持續時間 {1}）", data_aibase.dying_rage_value, data_aibase.dying_rage_time));
+            } else {
+                setMonValue("rage", "無");
+            }
+
+            // 抗性
+            var data_resist = db.monster_resist[data_monster.base_id];
+            for (var prop in data_resist) {
+                if (prop == 'id' || prop == 'break_flag') continue; // 跳過這兩個屬性
+                var value = data_resist[prop];
+                if (value > 0) {
+                    value = '<span class="strong">' + value + '</span>';
+                } else if (value < 0) {
+                    value = '<span class="weak">' + value + '</span>';
+                }
+                setMonValue(prop, value);
+            }
+
+            // 使用技能
+            var html = ''
+            for (var command_id in db.monster_command[id]) {
+                var command = db.monster_command[id][command_id];
+                var skill = db.monster_skill[command.skill_id];
+
+                var special = [];
+                if (skill.summon01_id > 0) {
+                    special.push('召喚怪物');
+                }
+                if (command.rage_flag > 0) {
+                    special.push('狂暴');
+                }
+                var list = [
+                    anchor(skill.name, "loadMonsterSkillAtk(" + skill.id + ")"),
+                    skill.dmg,
+                    skill.cd,
+                    skill.min_range + '-' + skill.max_range,
+                    special.join('<br />')
+                ]
+                html += tableRow(list);
+            }
+            $("#monsterSkill > tbody").html(html);
+
+            // 清除前次資料
+            $("#monsterSkillAtk").hide();
+        }
+
+        function setMonValue(className, content) {
+            $("#monsterData ." + className).html(content);
+        }
+
+        function displayElement(value1, value2) {
+            var value = elementHtml(value1);
+            if (value2 > 0) {
+                value += elementHtml(value2);
+            }
+            return value;
+        }
+
+        function elementHtml(value) {
+            if (value == 0) return element[value];
+            return String.Format("<kbd class='elem-{1}'>{0}</kbd>", element[value], value);
+        }
+
+        function displayDebuff(value1, value2) {
+            if (value1 == 0) return '無';
+            var value = debuffHtml(value1);
+            if (value2 > 0) {
+                value += debuffHtml(value2);
+            }
+            return value;
+        }
+
+        function debuffHtml(value) {
+            return String.Format("<kbd class='debuff-{1}'>{0}</kbd>", debuff[value], value);
+        }
+
+        // 回傳獎勵名稱
+        function getAsset(type, id, value) {
+            var name = '';
+            switch (type) {
+                case 1:
+                    if (id == 1) name = '鑽石'
+                    break;
+                case 2: // 道具
+                    name = db.items[id] != null ? db.items[id].name : '';
+
+                    // 不知為何有些道具沒有寫在裡面，只好自己定義
+                    switch (id) {
+                        case 22:
+                            name = 'HR確定 武器ガチャチケット';
+                            break;
+                        case 23:
+                            name = 'HR以上確定 武器ガチャチケット';
+                            break;
+                        case 24:
+                            name = 'SR確定 武器ガチャチケット';
+                            break;
+                        case 27:
+                            name = '武器ガチャチケット';
+                            break;
+                    }
+                    break;
+                case 3: // 材料
+                    name = '<span class="type-rune"></span>' + db.rune[id].name;
+                    break;
+                case 4: // 裝備
+                    name = '<span class="type-accessory"></span>' + getAssessoryNameByUpgradeID(id);
+                    break;
+                case 5:
+                    name = '經驗水晶';
+                    break;
+                case 6:
+                    if (id == 1) name = '妖精之淚'
+                    break;
+                case 7: // 角色
+                    name = '<span class="type-unit"></span>' + anchor(db.unit[id].name, "showUnit(" + id + ")") + getUnitJobComment(db.unit[id]);
+                    break;
+                case 10: // 徽章
+                    name = '<span class="type-icons"></span>' + db.icons[id].name;
+                    break;
+                case 12: // 武器
+                    name = '<span class="type-weapon"></span>' + db.weapon[id].name;
+                    break;
+            }
+            if (!name) {
+                return "type:" + type + " id:" + id + " value:" + value;
+            } else {
+                return name + value.display();
+            }
+        }
+
+        var assessoryNames;
+
+        function getAssessoryNameByUpgradeID(id) {
+            if (assessoryNames == null) {
+                // 修改原始資料結構變成單一物件，比較好處理
+                assessoryNames = {};
+                for (var a in db.accessory_upgrade) {
+                    for (var b in db.accessory_upgrade[a]) {
+                        var item = db.accessory_upgrade[a][b];
+                        assessoryNames[item.id] = item.name;
+                    }
+                }
+            }
+            return assessoryNames[id];
+        }
+
+        // 計算武器能力值
+        function calculateWeaponHP(id, level, awaken) {
+            var data = db.weapon[id];
+            return calculateWeaponProperty(data.hp, data.hp_grow, data.hp_awakening_rate, level, awaken);
+        }
+
+        function calculateWeaponAtk(id, level, awaken) {
+            var data = db.weapon[id];
+            return calculateWeaponProperty(data.atk, data.atk_grow, data.atk_awakening_rate, level, awaken);
+        }
+
+        function calculateWeaponAgi(id, level, awaken) {
+            var data = db.weapon[id];
+            return calculateWeaponProperty(data.agi, data.agi_grow, data.agi_awakening_rate, level, awaken);
+        }
+
+        function calculateWeaponProperty(base, grow, awakening_rate, level, awaken) {
+            var value = base + grow * (level - 1);
+            while (awaken > 0) {
+                value = Math.ceil(value * awakening_rate / 100);
+                awaken--;
+            }
+            return value;
+        }
+
+        // 計算角色能力值
+        function calculateUnitHP(id, level) {
+            var data = db.unit[id];
+            return calculateUnitProperty(data.hp, data.hp_grow, level);
+        }
+
+        function calculateUnitAtk(id, level) {
+            var data = db.unit[id];
+            return calculateUnitProperty(data.atk, data.atk_grow, level);
+        }
+
+        function calculateUnitKnockBack(id, level) {
+            var data = db.unit[id];
+            return calculateUnitProperty(data.knock_back_regist, data.knock_back_grow, level);
+        }
+
+        function calculateUnitProperty(base, grow, level) {
+            var value = base;
+            for (var i = 1; i < level; i++) {
+                var growValue;
+                if (i < 30) {
+                    growValue = Math.floor(grow * 1);
+                } else if (i < 50) {
+                    growValue = Math.floor(grow * 1.02);
+                } else if (i < 80) {
+                    growValue = Math.floor(grow * 1.04);
+                } else if (i < 100) {
+                    growValue = Math.floor(grow * 1.06);
+                } else if (i < 150) {
+                    growValue = Math.floor(grow * 1.08);
+                } else {
+                    growValue = Math.floor(grow * 1.1);
+                }
+                value += growValue;
+            }
+            return value;
+        }
+
+        function tableRow(array) {
+            if (array.length == 0) return '';
+            return '<tr><td>' + array.join('</td><td>') + '</td></tr>'
+        }
+
+        function anchor(text, onclick) {
+            return String.Format('<a href="#" onclick="{1}">{0}</a>', text, onclick);
+        }
+
+        function renderTable(id, html) {
+            var $table = $("#" + id);
+			console.log($table);
+            $table.children("tbody").html(html)
+            $table.DataTable(dataTableOption);
+            $table.wrap("<div class='table-responsive'></div>"); // 增加響應div
+        }
+
+        function showStory(sender) {
+			$(sender).closest("div").hide();
+			$("#storyBlock").show();
+		}
+
+        // 擴充方法
+        String.Format = function(format) {
+            var args = Array.prototype.slice.call(arguments, 1);
+            return format.replace(/{(\d+)}/g, function(match, number) {
+                return typeof args[number] != 'undefined' ?
+                    args[number] :
+                    match;
+            });
+        };
+
+        var localized = {
+            "2分以内にクリア": "2分鐘內過關",
+            "3分以内にクリア": "3分鐘內過關",
+            "4分以内にクリア": "4分鐘內過關",
+            "一人も戦闘不能にさせずにクリア": "不死一人通關",
+            "奥義でボスにトドメをさした": "奧義結尾",
+            "コンティニューをせずにクリア": "沒有接關",
+            "フェンサーを使用してクリア": "操作輕戰士",
+            "ランサーを使用してクエストをクリア": "操作槍兵",
+            "ローグを使用してクエストをクリア": "操作盜賊",
+            "コンボ数が200HITを超えた": "連擊數200以上",
+            "コンボ数が150HITを超えた": "連擊數150以上",
+            "コンボ数が120HITを超えた": "連擊數120以上",
+            "コンボ数が100HITを超えた": "連擊數100以上",
+            "コンボ数が70HITを超えた": "連擊數70以上",
+            "コンボ数が50HITを超えた": "連擊數50以上",
+        };
+
+        String.prototype.i18n = function() {
+            return localized[this] || this;
+        }
+
+        String.prototype.pre = function() {
+            return '<pre class="comment">' + this + '</pre>';
+        }
+
+        String.prototype.replaceAll = function(target, replacement) {
+            return this.split(target).join(replacement);
+        };
+
+        Number.prototype.display = function() {
+            return (this.valueOf() > 1 ? ' x' + this.valueOf() : '');
+        };
+
+        Boolean.prototype.display = function() {
+            return this.valueOf() ? 'O' : 'X'
+        }
+
+        window.onerror = function(errorMsg, url, lineNumber, column, errorObj) {
+            alert('Error: ' + errorMsg + '\nScript: ' + url + '\nLine: ' + lineNumber +
+                '\nColumn: ' + column + '\nStackTrace: ' + errorObj);
+        }
+    </script>
+    <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+</body>
+
+</html>

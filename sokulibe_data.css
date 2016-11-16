@@ -1,0 +1,376 @@
+body {
+	font-size: 13px;
+}
+
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+	text-shadow: 0 -1px 0 #286090;
+	background-image: -webkit-linear-gradient(top,#337ab7 0,#2b669a 100%);
+	background-image: -o-linear-gradient(top,#337ab7 0,#2b669a 100%);
+	background-image: -webkit-gradient(linear,left top,left bottom,from(#337ab7),to(#2b669a));
+	background-image: linear-gradient(to bottom,#337ab7 0,#2b669a 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff337ab7', endColorstr='#ff2b669a', GradientType=0);
+	background-repeat: repeat-x;
+	border-color: #2b669a;
+}
+
+.list-group-item {
+	padding: 5px 10px;
+}
+
+.btn {
+	font-size: inherit;
+}
+
+.nav-pills > li.active > a, .nav-pills > li.active > a:focus, .nav-pills > li.active > a:hover {
+	-webkit-box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.1) inset;
+	-moz-box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.1) inset;
+	box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.1) inset;
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#207ce5+0,499bea+100 */
+	background: rgb(32,124,229); /* Old browsers */
+	background: -moz-linear-gradient(top, rgba(32,124,229,1) 0%, rgba(73,155,234,1) 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top, rgba(32,124,229,1) 0%,rgba(73,155,234,1) 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom, rgba(32,124,229,1) 0%,rgba(73,155,234,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#207ce5', endColorstr='#499bea',GradientType=0 ); /* IE6-9 */
+}
+
+#storyBlock {
+	white-space: pre-wrap;
+	/* Since CSS 2.1 */
+	white-space: -moz-pre-wrap;
+	/* Mozilla, since 1999 */
+	white-space: -pre-wrap;
+	/* Opera 4-6 */
+	white-space: -o-pre-wrap;
+	/* Opera 7 */
+	word-wrap: break-word;
+	/* Internet Explorer 5.5+ */
+	margin-bottom: 10px;
+	color: inherit;
+	display: none;
+}
+
+.jumbotron {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	display: inline-block;
+}
+
+pre {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	background: none;
+}
+
+.comment {
+	color: #8E8E8E;
+}
+
+.tab-pane {
+	padding-top: 10px;
+}
+
+.list-group {
+	max-height: 800px;
+	overflow-y: auto;
+}
+
+@media screen and (max-width: 750px) {
+	.list-group {
+		max-height: 400px;
+	}
+}
+
+#questList {
+	height: 120px;	
+}
+
+#dropData table > tbody > tr > th {
+	font-weight: normal;	
+}
+
+#waveData table a {
+	color: inherit;	
+}
+
+#expTab table {
+	margin-bottom: 0;	
+}
+
+.row .col-sm-9 {
+	display: none;
+}
+
+.progress {
+	margin-bottom: 0;
+	width: 100%;
+	min-width: 200px;
+}
+
+.rarity {
+	width: 20px;
+	display: inline-block;
+	text-align: right;
+}
+
+.name {
+	margin-top: 0;
+}
+
+.width100 {
+	width: 100px;
+}
+
+.width150 {
+	width: 150px;
+}
+
+.width200 {
+	width: 200px;
+}
+
+.type-rune::after {
+	content: '[材料]';
+	color: #ff3333;
+	margin-right: 5px;
+}
+
+.type-accessory::after {
+	content: '[裝備]';
+	color: #2196f3;
+	margin-right: 5px;
+}
+
+.type-weapon::after {
+	content: '[武器]';
+	color: #ff8c1a;
+	margin-right: 5px;
+}
+
+.type-unit::after {
+	content: '[角色]';
+	color: #00b33c;
+	margin-right: 5px;
+}
+
+.type-icons::after {
+	content: '[徽章]';
+	color: #cc33ff;
+	margin-right: 5px;
+}
+
+.m-boss::after {
+	content: '[BOSS]';
+	color: #ff3333;
+	margin-right: 5px;
+}
+
+.m-mid::after {
+	content: '[小王]';
+	color: darkorange;
+	margin-right: 5px;
+}
+
+.m-zako::after {
+	content: '[雜魚]';
+	color: gray;
+	margin-right: 5px;
+}
+
+.active > .m-boss::after,
+.active > .m-mid::after,
+.active > .m-zako::after {
+	color: white;
+}
+
+.pct::after {
+	content: '%';
+}
+
+.strong {
+	color: #2196f3;
+}
+
+.weak {
+	color: #ff3333;
+}
+
+a.list-group-item.not-yet {
+	color: lightgray;
+}
+
+.empty-td {
+	/*background-color: #ddd;*/
+}
+
+th > select {
+	font-weight: normal;
+}
+
+kbd + kbd {
+	margin-left: 5px;	
+}
+
+.elem-0 {
+	background-color: rgb(128, 128, 128);
+}
+
+.elem-1, .debuff-4 {
+	background-color: rgb(194, 68, 68);
+}
+
+.elem-2, .debuff-3 {
+	background-color: rgb(27, 130, 176);
+}
+
+.elem-3, .debuff-5 {
+	background-color: rgb(79, 174, 90);
+}
+
+.elem-4, .debuff-2 {
+	background-color: rgb(144, 144, 67);
+}
+
+.elem-5, .debuff-1 {
+	background-color: rgb(140, 57, 143);
+}
+
+.debuff-11 {
+	background-color: rgb(38, 104, 134);
+}
+
+.table-scroll {
+	max-height: 800px;
+	overflow-y: auto;
+}
+
+.table-fixed-width {
+	width: inherit;
+}
+
+.table-fixed-width > thead > tr > th:not(.expand-th) {
+	width: 100px;
+}
+
+.table-sm-width > thead > tr > th:not(.expand-th) {
+	width: 75px;
+}
+
+.nav-tabs > li > a,
+.nav-tabs > li > a:focus {
+  margin-right: 0;
+  background-color: transparent;
+  border: none;
+  color: #666666;
+  -webkit-box-shadow: inset 0 -1px 0 #dddddd;
+  box-shadow: inset 0 -1px 0 #dddddd;
+  -webkit-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  transition: all 0.2s;
+}
+.nav-tabs > li > a:hover,
+.nav-tabs > li > a:focus:hover {
+  background-color: transparent;
+  -webkit-box-shadow: inset 0 -2px 0 #2196f3;
+  box-shadow: inset 0 -2px 0 #2196f3;
+  color: #2196f3;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus {
+  border: none;
+  -webkit-box-shadow: inset 0 -2px 0 #2196f3;
+  box-shadow: inset 0 -2px 0 #2196f3;
+  color: #2196f3;
+}
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus:hover {
+  border: none;
+  color: #2196f3;
+}
+.nav-tabs > li.disabled > a {
+  -webkit-box-shadow: inset 0 -1px 0 #dddddd;
+  box-shadow: inset 0 -1px 0 #dddddd;
+}
+.nav-tabs.nav-justified > li > a,
+.nav-tabs.nav-justified > li > a:hover,
+.nav-tabs.nav-justified > li > a:focus,
+.nav-tabs.nav-justified > .active > a,
+.nav-tabs.nav-justified > .active > a:hover,
+.nav-tabs.nav-justified > .active > a:focus {
+  border: none;
+}
+.nav-tabs .dropdown-menu {
+  margin-top: 0;
+}
+
+.nav > li > a {
+	padding: 5px 10px;
+}
+
+.skill-info > td {
+	padding: 0 !important;
+}
+
+.skill-info > td > .table {
+	margin-bottom: 0;
+}
+
+.skill-info-table > tbody > tr > th {
+	text-align: right;
+}
+
+.wood-box {
+	color: rgb(181, 101, 41);
+}
+
+.iron-box {
+	color: rgb(62, 136, 180);
+}
+
+.gold-box {
+	color: rgb(141, 146, 43);
+}
+
+.duration {
+	color: rgb(62, 136, 180);
+}
+
+.table tfoot > tr > td {
+	border-top-width: 2px;	
+}
+
+.dataTables_filter input {
+	font-size: inherit;
+}
+
+table.table-bordered.dataTable th, table.table-bordered.dataTable td {
+	white-space: nowrap;	
+}
+
+.dataTables_filter > label {
+	position: relative;
+}
+
+.dataTables_filter > label::before {
+	display: block;
+	width: 14px;
+	height: 14px;
+	content: "\e003";
+	font-family: 'Glyphicons Halflings';
+	background-position: -48px 0;
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	opacity: .5;
+	z-index: 1;
+}
+
+.dataTables_filter > label > input {
+	padding-left: 22px;
+	border-width: 0 0 1px 0;
+	border-radius: 0;
+	box-shadow: none !important;
+	background-color: inherit;
+	color: inherit;
+	border-bottom-color: inherit;
+}
