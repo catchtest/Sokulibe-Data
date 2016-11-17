@@ -2632,7 +2632,7 @@
                 var magicID = data["magic" + i];
                 var content = '&nbsp;';
                 if (magicID > 0) {
-                    content = db.enchant_master[magicID].enchant_comment.replaceAll('\n', '<br />');
+                    content = db.enchant_master[magicID].enchant_comment.i18n().replaceAll('\n', '<br />');
                 }
                 $("#magic" + i).html(content);
             }
@@ -3396,7 +3396,15 @@
 			for (var pattern in patterns) {
 				var re = new RegExp('^' + pattern + '$');
 				if (this.match(re)) {
-					return this.replace(re, patterns[pattern]);
+					value = this.replace(re, patterns[pattern]);
+					
+					// 修改特殊style
+					var reStyle = new RegExp('附加(\\S+)的BUFF');
+					if (value.match(reStyle)) {
+						value = value.replace(reStyle, '附加<span class="buff-name">$1</span>的BUFF');
+					}
+					
+					return value;
 				}
 			}
 		

@@ -334,6 +334,11 @@ kbd + kbd {
 	color: rgb(62, 136, 180);
 }
 
+.buff-name {
+	/*margin: 0 5px;*/
+	color: rgb(62, 136, 180);
+}
+
 .table tfoot > tr > td {
 	border-top-width: 2px;	
 }
