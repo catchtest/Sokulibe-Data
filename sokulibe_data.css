@@ -2,7 +2,7 @@ body {
 	font-size: 13px;
 }
 
-.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover {
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover, .table tr.active td, .table tr.active th {
 	text-shadow: 0 -1px 0 #286090;
 	background-image: -webkit-linear-gradient(top,#337ab7 0,#2b669a 100%);
 	background-image: -o-linear-gradient(top,#337ab7 0,#2b669a 100%);
@@ -10,7 +10,6 @@ body {
 	background-image: linear-gradient(to bottom,#337ab7 0,#2b669a 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff337ab7', endColorstr='#ff2b669a', GradientType=0);
 	background-repeat: repeat-x;
-	border-color: #2b669a;
 }
 
 .list-group-item {
