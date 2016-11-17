@@ -195,7 +195,7 @@ pre {
 }
 
 a.list-group-item.not-yet {
-	color: lightgray;
+	color: gray;
 }
 
 .empty-td {
@@ -377,4 +377,9 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 	background-color: inherit;
 	color: inherit;
 	border-bottom-color: inherit;
+}
+
+a > i {
+	vertical-align: middle;
+	padding-left: 3px;
 }

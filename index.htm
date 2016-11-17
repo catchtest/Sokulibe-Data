@@ -1508,7 +1508,7 @@
             $.getJSON('localize.zh-TW.json', function(data) {
                 localized = data;
             });
-			
+
             $("a[href='#unit']").one("click", initUnit);
             $("a[href='#accessory']").one("click", initAccessory);
             $("a[href='#weapon']").one("click", initWeapon);
@@ -1876,18 +1876,6 @@
                 id, name, sub, onclick, cssClass);
         }
 
-        function getAccessoryUpgrade(id) {
-            var list = [];
-            var data = db.accessory_upgrade[id];
-            var first = data["1"];
-            if (first != null) {
-                for (var n in data) {
-                    list.push(data[n]);
-                }
-            }
-            return list;
-        }
-
         // 初始化妖精之淚交換所
         function initTears() {
             var html = '';
@@ -1987,9 +1975,14 @@
             var html = '';
             for (var index = 0, len = itemList.length; index < len; index++) {
                 var data = itemList[index];
-                var data_upgrade = getAccessoryUpgrade(data.id);
 
-                var name = getAccessoryName(data.id) + '<br />' + getAccessoryLastName(data.id);
+                var name = getAccessoryFirstName(data.id);
+                if (name == null) {
+                    // 沒有滿前的名字，只顯示滿後的
+                    name = getAccessoryLastName(data.id)
+                } else {
+                    name += '<br />' + getAccessoryLastName(data.id);
+                }
                 var list = [
                     category[data.category],
                     name,
@@ -2003,7 +1996,7 @@
                     if (magicID > 0) {
                         content = db.enchant_master[magicID].enchant_comment.i18n().replaceAll('\n', '<br />');
                     }
-					list.push(content);
+                    list.push(content);
                 }
 
                 html += tableRow(list);
@@ -2094,7 +2087,10 @@
 
         // 判斷是否為尚未完成的裝備
         function isFakeAccessory(id) {
-            var first = db.accessory_upgrade[id]["1"];
+            var item = db.accessory_upgrade[id];
+            var keys = Object.keys(item);
+            // 因為出現了直接強化完成的武器，所以不能只判斷編號為1的了
+            var first = db.accessory_upgrade[id][keys[0]];
             return first == null || first.flavor == null || first.flavor.length <= 4;
         }
 
@@ -2108,13 +2104,17 @@
         }
 
         function getAccessoryName(id) {
+            return getAccessoryFirstName(id) || getAccessoryLastName(id);
+        }
+
+        function getAccessoryFirstName(id) {
             var first = db.accessory_upgrade[id]["1"];
             if (first != null) {
                 return first.name;
             }
             return null;
         }
-
+		
         function getAccessoryLastName(id) {
             var item = db.accessory_upgrade[id];
             var keys = Object.keys(item);
@@ -2281,6 +2281,9 @@
             var ougiData = db.ougi[data.ougi_id];
             $skillDesc.children("tr").eq(7).children("td").eq(0).html(getOugiDesc(ougiData));
             $skillBase.children("tr").eq(7).append(getOugiTd(data.ougi_id));
+
+            // 增加連結圖示，避免有人看不出有連結
+            $skillBase.find("a").append("<i class='glyphicon glyphicon-link'></i>");
 
             // 技能強化素材
             var $skillRune = $("#skillRune > tbody");
@@ -2626,8 +2629,8 @@
             $(".table:visible tbody td").empty();
 
             var data = db.accessory[id];
-            var data_upgrade = getAccessoryUpgrade(id);
 
+            // 效果
             for (var i = 1; i <= 4; i++) {
                 var magicID = data["magic" + i];
                 var content = '&nbsp;';
@@ -2637,16 +2640,13 @@
                 $("#magic" + i).html(content);
             }
 
-            for (var i = 0, len = data_upgrade.length; i < len; i++) {
-                var u = data_upgrade[i];
-                var rank = u.rank;
-                $("#rank" + rank).html(u.name + u.flavor.pre());
+            // 說明跟強化素材
+            setTitle(getAccessoryName(id), accessory_rarity[data.rarity]);
 
-                if (i == 0) {
-                    setTitle(u.name, accessory_rarity[data.rarity]);
-                } else {
-                    $("#rune" + rank).html(getUpgradeRune(u));
-                }
+            for (var rank in db.accessory_upgrade[id]) {
+                var u = db.accessory_upgrade[id][rank];
+                $("#rank" + rank).html(u.name + u.flavor.pre());
+                $("#rune" + rank).html(getUpgradeRune(u));
             }
         }
 
@@ -3196,7 +3196,7 @@
                 ]
                 html += tableRow(list);
             }
-            $("#monsterSkill > tbody").html(html);
+            $("#monsterSkill > tbody").html(html).find("a").append("<i class='glyphicon glyphicon-link'></i>");;
 
             // 清除前次資料
             $("#monsterSkillAtk").hide();
@@ -3387,27 +3387,27 @@
         };
 
         String.prototype.i18n = function() {
-			// 直接搜尋key
-			var value = localized[this];
-			if (value != null) return value;
-			
-			// 如果找不到key，找regex的內容
-			var patterns = localized.regex;
-			for (var pattern in patterns) {
-				var re = new RegExp('^' + pattern + '$');
-				if (this.match(re)) {
-					value = this.replace(re, patterns[pattern]);
-					
-					// 修改特殊style
-					var reStyle = new RegExp('附加(\\S+)的BUFF');
-					if (value.match(reStyle)) {
-						value = value.replace(reStyle, '附加<span class="buff-name">$1</span>的BUFF');
-					}
-					
-					return value;
-				}
-			}
-		
+            // 直接搜尋key
+            var value = localized[this];
+            if (value != null) return value;
+
+            // 如果找不到key，找regex的內容
+            var patterns = localized.regex;
+            for (var pattern in patterns) {
+                var re = new RegExp('^' + pattern + '$');
+                if (this.match(re)) {
+                    value = this.replace(re, patterns[pattern]);
+
+                    // 修改特殊style
+                    var reStyle = new RegExp('附加(\\S+)的BUFF');
+                    if (value.match(reStyle)) {
+                        value = value.replace(reStyle, '附加<span class="buff-name">$1</span>的BUFF');
+                    }
+
+                    return value;
+                }
+            }
+
             return this;
         }
 
