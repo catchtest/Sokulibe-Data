@@ -1508,7 +1508,7 @@
             $.getJSON('localize.zh-TW.json', function(data) {
                 localized = data;
             });
-
+			
             $("a[href='#unit']").one("click", initUnit);
             $("a[href='#accessory']").one("click", initAccessory);
             $("a[href='#weapon']").one("click", initWeapon);
@@ -1914,22 +1914,22 @@
 
         // 初始化角色一覽
         function initUnitList() {
-            var units = [];
+            var itemList = [];
             for (var id in db.unit) {
                 var data = db.unit[id];
 
                 if (skipDirty && isFakeUnit(data)) continue;
-                units.push(data);
+                itemList.push(data);
             }
 
             // 以星數排序
-            units = units.sort(function(a, b) {
+            itemList = itemList.sort(function(a, b) {
                 return b.rarity - a.rarity;
             });
 
             var html = '';
-            for (var i = 0, len = units.length; i < len; i++) {
-                var data = units[i];
+            for (var i = 0, len = itemList.length; i < len; i++) {
+                var data = itemList[i];
                 var maxLevel = max_level[data.rarity];
                 var unitPower = calculateUnit(data.id, maxLevel);
                 var partner = '無';
@@ -1966,16 +1966,16 @@
 
         // 初始化裝備一覽
         function initAccessoryList() {
-            var accessory = [];
+            var itemList = [];
             for (var id in db.accessory) {
                 var data = db.accessory[id];
 
                 if (skipDirty && isFakeAccessory(id)) continue;
-                accessory.push(data);
+                itemList.push(data);
             }
 
             // 以裝備種類、稀有度排序
-            accessory = accessory.sort(function(a, b) {
+            itemList = itemList.sort(function(a, b) {
                 if (b.category > a.category) return -1;
                 if (b.category < a.category) return 1;
                 if (b.rarity > a.rarity) return 1;
@@ -1985,8 +1985,8 @@
 
             var category = [null, '戒指', '護符'];
             var html = '';
-            for (var index = 0, len = accessory.length; index < len; index++) {
-                var data = accessory[index];
+            for (var index = 0, len = itemList.length; index < len; index++) {
+                var data = itemList[index];
                 var data_upgrade = getAccessoryUpgrade(data.id);
 
                 var name = getAccessoryName(data.id) + '<br />' + getAccessoryLastName(data.id);
@@ -2001,11 +2001,9 @@
                     var magicID = data["magic" + i];
                     var content = '';
                     if (magicID > 0) {
-                        content = db.enchant_master[magicID].enchant_comment.replaceAll('\n', '<br />');
-                        list.push(content);
-                    } else {
-                        list.push('');
+                        content = db.enchant_master[magicID].enchant_comment.i18n().replaceAll('\n', '<br />');
                     }
+					list.push(content);
                 }
 
                 html += tableRow(list);
@@ -3389,7 +3387,20 @@
         };
 
         String.prototype.i18n = function() {
-            return localized[this] || this;
+			// 直接搜尋key
+			var value = localized[this];
+			if (value != null) return value;
+			
+			// 如果找不到key，找regex的內容
+			var patterns = localized.regex;
+			for (var pattern in patterns) {
+				var re = new RegExp('^' + pattern + '$');
+				if (this.match(re)) {
+					return this.replace(re, patterns[pattern]);
+				}
+			}
+		
+            return this;
         }
 
         String.prototype.pre = function() {
