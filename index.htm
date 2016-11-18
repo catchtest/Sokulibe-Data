@@ -16,7 +16,7 @@
 
 <body>
     <div class="container-fluid">
-        <h3 style='font-weight: bold;'>蒼空解放資料查詢 <small>解包: 灰灰　製作: 蕭雲　更新日期: 2016/11/17　資料日期: 2016/11/17</small></h3>
+        <h3 style='font-weight: bold;'>蒼空解放資料查詢 <small>解包: <a href="https://github.com/greydust/Sokulibe-Decoder">灰灰</a>　製作: <a href="https://github.com/catchtest/Sokulibe-Data">蕭雲</a>　更新日期: 2016/11/17　資料日期: 2016/11/17</small></h3>
 
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation"><a href="#unit" aria-controls="unit" role="tab" data-toggle="tab">角色</a></li>
@@ -1274,7 +1274,7 @@
                     <li role="presentation"><a href="#weaponListTab" aria-controls="weaponListTab" role="tab" data-toggle="tab">武器</a></li>
                     <li role="presentation"><a href="#achievement" aria-controls="achievement" role="tab" data-toggle="tab">任務</a></li>
                     <li role="presentation"><a href="#icons" aria-controls="icons" role="tab" data-toggle="tab">徽章</a></li>
-                    <li role="presentation"><a href="#items" aria-controls="items" role="tab" data-toggle="tab">道具</a></li>
+                    <!--<li role="presentation"><a href="#items" aria-controls="items" role="tab" data-toggle="tab">道具</a></li>-->
                     <li role="presentation"><a href="#rune" aria-controls="rune" role="tab" data-toggle="tab">素材</a></li>
                     <li role="presentation"><a href="#expTab" aria-controls="expTab" role="tab" data-toggle="tab">經驗</a></li>
                     <li role="presentation"><a href="#tearsTab" aria-controls="tearsTab" role="tab" data-toggle="tab">交換所</a></li>
@@ -1481,7 +1481,7 @@
         var max_level = [1, 60, 100, 160, 200];
         var debuff = ['無', '毒', '麻痺', '冰結', '火傷', '浮遊', '詛咒', '沉默', '', '', '', '腐蝕'];
         var ougi_target = ['敵方', '我方', '敵方 + 我方'];
-        var accessory_rarity = ['', 'N', 'R', 'HR', 'SR', 'SSR'];
+        var rarity_type = ['', 'N', 'R', 'HR', 'SR', 'SSR'];
         var weapon_jobs = ['全', '輕賊', '輕', '賊', '重狂', '狂', '重', '盾槍', '槍', '盾', '弓獵', '弓', '獵', '補法', '法', '補'];
         var skill_type = ['', '攻擊', '輔助', '回復'];
         var hit_type = ['斬', '碎', '射', '魔'];
@@ -1623,7 +1623,7 @@
                 var data = db.accessory[id];
 
                 var name = getAccessoryName(id);
-                var job = weapon_jobs[data.job] + ' <div class="rarity">' + accessory_rarity[data.rarity] + '</div>';
+                var job = weapon_jobs[data.job] + ' <div class="rarity">' + rarity_type[data.rarity] + '</div>';
                 var itemHtml = listItemHtml(id, name, job, "loadAccessoryData(" + id + ");");
 
                 if (data.category == 1) { // 戒指
@@ -1986,7 +1986,7 @@
                 var list = [
                     category[data.category],
                     name,
-                    accessory_rarity[data.rarity],
+                    rarity_type[data.rarity],
                     weapon_jobs[data.job],
                 ];
 
@@ -2025,21 +2025,21 @@
             var html = '';
             for (var index = 0, len = itemList.length; index < len; index++) {
                 var data = itemList[index];
-                var weaponMainSkill = db.weapon_mainskillbase[data.main_weapon_skill_id];
-                var weaponSubSkill = db.weapon_subskill[data.sub_weapon_skill_id];
+                var weaponMainSkill = db.weapon_mainskillbase[data.main_weapon_skill_id] || {};
+                var weaponSubSkill = db.weapon_subskill[data.sub_weapon_skill_id] || {};
                 var weaponPower = calculateWeapon(data.id, 10, 4);
 
                 var list = [
                     data.name,
-                    accessory_rarity[data.rarity],
+                    rarity_type[data.rarity],
                     weapon_jobs[data.job],
                     weaponPower.hp,
                     weaponPower.atk,
                     weaponPower.agi,
                     weaponMainSkill.dmg,
                     weaponMainSkill.break_,
-                    weaponSubSkill[1].comment.pre(),
-                    weaponSubSkill[5].comment.pre()
+                    weaponSubSkill[1] == null ? '' : weaponSubSkill[1].comment.pre(),
+                    weaponSubSkill[5] == null ? '' : weaponSubSkill[5].comment.pre()
                 ];
 
                 html += tableRow(list);
@@ -2114,7 +2114,7 @@
             }
             return null;
         }
-		
+
         function getAccessoryLastName(id) {
             var item = db.accessory_upgrade[id];
             var keys = Object.keys(item);
@@ -2641,7 +2641,7 @@
             }
 
             // 說明跟強化素材
-            setTitle(getAccessoryName(id), accessory_rarity[data.rarity]);
+            setTitle(getAccessoryName(id), rarity_type[data.rarity]);
 
             for (var rank in db.accessory_upgrade[id]) {
                 var u = db.accessory_upgrade[id][rank];
@@ -2738,7 +2738,7 @@
             current_weapon = id;
 
             var data = db.weapon[id];
-            setTitle(data.name, accessory_rarity[data.rarity]);
+            setTitle(data.name, rarity_type[data.rarity]);
 
             var attr = ['HP', 'ATK', 'AGI'];
 
@@ -2757,29 +2757,37 @@
             $("#weaponLevelSelect").change();
 
             // 武器主技能
-            var weaponMainSkill = db.weapon_mainskillbase[data.main_weapon_skill_id];
             if (data.main_weapon_skill_id != 0) {
+				var weaponMainSkill = db.weapon_mainskillbase[data.main_weapon_skill_id];
                 $("#weaponMainSkill").html(
                     weaponMainSkill.name + '<br />' +
                     db.weapon_mainskill_upgrade[data.main_weapon_skill_id]["1"].skill_tips.pre());
+
+                attr = ['dmg', 'cd', 'break_', 'hate', 'casttime'];
+                attr.forEach(function(name) {
+                    $("#weaponMainSkill_" + name).html(weaponMainSkill[name]);
+                });
+                $("#weaponMainSkill_range").html(weaponMainSkill.min_range + '-' + weaponMainSkill.max_range);
+                $("#weaponMainSkillType").html(skill_type[weaponMainSkill.skill_type]);
+                $("#weaponMainSkillCount").html(data.normal_mws_value + "（最大：" + data.awakening_mws_value + "）");
+				
+				commonLoadAtk($("#weaponSkillAtk"), db.weapon_mainskill_atk[data.main_weapon_skill_id]);
+				
             } else {
+                $("[id^=weaponMainSkill]").empty();
                 $("#weaponMainSkill").html('無');
+				$("#weaponSkillAtk").hide();
             }
-            attr = ['dmg', 'cd', 'break_', 'hate', 'casttime'];
-            attr.forEach(function(name) {
-                $("#weaponMainSkill_" + name).html(weaponMainSkill[name]);
-            });
-            $("#weaponMainSkill_range").html(weaponMainSkill.min_range + '-' + weaponMainSkill.max_range);
-            $("#weaponMainSkillType").html(skill_type[weaponMainSkill.skill_type]);
-            $("#weaponMainSkillCount").html(data.normal_mws_value + "（最大：" + data.awakening_mws_value + "）");
 
             // 武器副技能
-            var data_sub = db.weapon_subskill[data.sub_weapon_skill_id];
-            for (var i in data_sub) {
-                $("#weaponSubSkill" + i).html(data_sub[i].name + '<br />' + data_sub[i].comment.pre());
+            if (data.sub_weapon_skill_id != 0) {
+                var data_sub = db.weapon_subskill[data.sub_weapon_skill_id];
+                for (var i in data_sub) {
+                    $("#weaponSubSkill" + i).html(data_sub[i].name + '<br />' + data_sub[i].comment.pre());
+                }
+            } else {
+                $("[id^=weaponSubSkill]").empty();
             }
-
-            commonLoadAtk($("#weaponSkillAtk"), db.weapon_mainskill_atk[data.main_weapon_skill_id]);
         }
 
         // 讀取活動資料
