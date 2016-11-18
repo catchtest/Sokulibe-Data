@@ -16,7 +16,7 @@
 
 <body>
     <div class="container-fluid">
-        <h3 style='font-weight: bold;'>蒼空解放資料查詢 <small>解包: <a href="https://github.com/greydust/Sokulibe-Decoder">灰灰</a>　製作: <a href="https://github.com/catchtest/Sokulibe-Data">蕭雲</a>　更新日期: 2016/11/17　資料日期: 2016/11/17</small></h3>
+        <h3 style='font-weight: bold;'>蒼空解放資料查詢 <small>解包: <a href="https://github.com/greydust/Sokulibe-Decoder">灰灰</a>　製作: <a href="https://github.com/catchtest/Sokulibe-Data">蕭雲</a>　更新日期: 2016/11/18　資料日期: 2016/11/17</small></h3>
 
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation"><a href="#unit" aria-controls="unit" role="tab" data-toggle="tab">角色</a></li>
@@ -676,6 +676,7 @@
                             <li role="presentation" class="active"><a href="#weaponSR" aria-controls="weaponSR" role="tab" data-toggle="tab">SR</a></li>
                             <li role="presentation"><a href="#weaponHR" aria-controls="weaponHR" role="tab" data-toggle="tab">HR</a></li>
                             <li role="presentation"><a href="#weaponR" aria-controls="weaponR" role="tab" data-toggle="tab">R</a></li>
+							<li role="presentation"><a href="#weaponOther" aria-controls="weaponOther" role="tab" data-toggle="tab">其他</a></li>
                         </ul>
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="weaponSR">
@@ -685,6 +686,9 @@
                                 <div class="list-group"></div>
                             </div>
                             <div role="tabpanel" class="tab-pane" id="weaponR">
+                                <div class="list-group"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="weaponOther">
                                 <div class="list-group"></div>
                             </div>
                         </div>
@@ -1643,15 +1647,20 @@
 
         // 初始化武器列表
         function initWeapon() {
-            var htmls = ['', '', ''];
+            var htmls = ['', '', '', ''];
             for (var id in db.weapon) {
                 var data = db.weapon[id];
 
                 if (skipDirty && isFakeWeapon(data)) continue;
 
                 var name = data.name;
+				// 不能裝備的武器
+				if (data.job == -1) {
+					var itemHtml = listItemHtml(id, name, rarity_type[data.rarity], '');
+					htmls[3] += itemHtml;
+					continue;
+				}
                 var job = weapon_jobs[data.job];
-                if (job == null) job = '無';
                 var itemHtml = listItemHtml(id, name, job, "loadWeaponData(" + id + ");");
 
                 if (data.rarity == 4) {
@@ -1665,6 +1674,7 @@
             $("#weaponSR > .list-group").html(htmls[0]);
             $("#weaponHR > .list-group").html(htmls[1]);
             $("#weaponR > .list-group").html(htmls[2]);
+			$("#weaponOther > .list-group").html(htmls[3]);
 
             var $levelSelect = $("#weaponLevelSelect");
             var $awakeningSelect = $("#weaponAwakeningSelect");
@@ -2011,6 +2021,7 @@
                 var data = db.weapon[id];
 
                 if (skipDirty && isFakeWeapon(data)) continue;
+				if (data.job == -1) continue;   // 不顯示武煉石等無法裝備的武器
                 itemList.push(data);
             }
 
@@ -2097,7 +2108,7 @@
         // 判斷是否為未完成的武器
         function isFakeWeapon(data) {
             // 隱藏不能裝備的武器
-            if (data.job == -1) return true;
+            //if (data.job == -1) return true;
             // 隱藏未設定的武器
             if (data.hp == 1 && data.atk == 1 && data.agi == 1) return true;
             return false;
