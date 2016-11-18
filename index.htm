@@ -662,6 +662,11 @@
                                         <td id="rank5"></td>
                                         <td id="rune5"></td>
                                     </tr>
+                                    <tr>
+                                        <th>素材總合</th>
+                                        <td></td>
+                                        <td id="runeTotal"></td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -2654,11 +2659,18 @@
             // 說明跟強化素材
             setTitle(getAccessoryName(id), rarity_type[data.rarity]);
 
+			upgradeTotalRunes = {};
             for (var rank in db.accessory_upgrade[id]) {
                 var u = db.accessory_upgrade[id][rank];
                 $("#rank" + rank).html(u.name + u.flavor.pre());
                 $("#rune" + rank).html(getUpgradeRune(u));
             }
+			
+			var runeList = [];
+			for (var id in upgradeTotalRunes) {
+				runeList.push(db.rune[id].name + upgradeTotalRunes[id].display());
+			}
+			$("#runeTotal").html(runeList.join('<br />'));
         }
 
         // 取得裝備或技能的強化素材清單
@@ -2672,9 +2684,19 @@
                 var count = data["upgrade_rune_value" + j];
                 var text = String.Format("{0}{1}", name, count.display());
                 list.push(text);
+				
+				var prevCount = upgradeTotalRunes[runeID];
+				if (prevCount != null) {
+					upgradeTotalRunes[runeID] = prevCount + count;
+				} else {
+					upgradeTotalRunes[runeID] = count;
+				}
             }
             return list.join("<br />");
         }
+		
+		// 強化素材加總
+		var upgradeTotalRunes = {};
 
         // 取得技能強化效果
         function getUpgradeType(data) {
