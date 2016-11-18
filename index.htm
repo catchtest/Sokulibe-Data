@@ -1597,7 +1597,11 @@
 
                 var name = getUnitName(data);
                 var job = getUnitJob(data);
-                var cssClass = data.cv == '不明' ? 'not-yet' : '';
+				// 判斷是否是尚未做好的角色，是的話修改文字變淡
+                var cssClass = '';
+				if (data.cv == '不明' || db.unit_command[id] == null || db.unit_comment[id].comment1 == 'ゲーム起動後初回遷移時　朝') {
+					cssClass = 'not-yet';
+				}
                 var itemHtml = listItemHtml(id, name, job, "loadUnitData(" + id + ");", cssClass);
                 htmls[data.rarity] += itemHtml;
             }
@@ -2406,6 +2410,7 @@
             var sum_atk_type = '';
             var sum_element = '';
             var sum_effects = [];
+			var sum_debuff = {};
 
             for (var id in data) {
                 var hit = data[id];
@@ -2413,7 +2418,7 @@
                 if (hit.air > 0) effects.push("擊飛");
                 if (hit.down_atk > 0) effects.push("挖地");
                 if (hit.g_bound > 0) effects.push("扣殺");
-                if (hit.kirimomi > 0) effects.push("kirimomi");
+                if (hit.kirimomi > 0) effects.push("kirimomi");   // 大車輪的另一個讀法，幾乎沒技能用他，感覺像是廢棄欄位
                 if (hit.daisharin > 0) effects.push("大車輪");
                 if (hit.haritsuke > 0) effects.push("定身");
                 if (hit.huge_knockback > 0) effects.push("擊退");
@@ -2477,6 +2482,12 @@
                     }
                     hold_effect.push(text);
                 }
+				// 計算debuff總和，雖然一招大概只有一種負面狀態
+				// 但為了擴充方便還是設計成允許多種負面狀態
+				if (hit.debuff > 0) {
+					var prevValue = sum_debuff[hit.debuff] || 0;
+					sum_debuff[hit.debuff] = prevValue + hit.debuff_value;
+				}
 
                 var list = [hit.hit_num,
                     hitType,
@@ -2503,13 +2514,19 @@
 
             var footer = '';
             if (sum_hit > 0) { // 有攻擊才計算總合
+				var debuffHtml = '';
+				for (var debuff_id in sum_debuff) {
+					if (debuffHtml.length) debuffHtml += '<br />';
+					debuffHtml += displaySkillDebuff(debuff_id, sum_debuff[debuff_id], 0);
+				}
+			
                 var footerList = [
                     String.Format("{0} Hits", sum_hit),
                     '',
                     sum_dmg,
                     '',
                     '',
-                    '',
+                    debuffHtml,
                     sum_atk_type,
                     sum_element,
                     sum_gravity,
