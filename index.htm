@@ -409,6 +409,7 @@
                                                         <th>Lv2</th>
                                                         <th>Lv3</th>
                                                         <th>Lv4</th>
+														<th>素材總和</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -417,44 +418,60 @@
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
+														<td></td>
                                                     </tr>
                                                     <tr>
                                                         <th>N1</th>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
+														<td></td>
                                                     </tr>
                                                     <tr>
                                                         <th>N2</th>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
+														<td></td>
                                                     </tr>
                                                     <tr>
                                                         <th>S0</th>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
+														<td></td>
                                                     </tr>
                                                     <tr>
                                                         <th>S1</th>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
+														<td></td>
                                                     </tr>
                                                     <tr>
                                                         <th>S2</th>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
+														<td></td>
                                                     </tr>
                                                     <tr>
                                                         <th>S3</th>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
+														<td></td>
                                                     </tr>
                                                 </tbody>
+												<tfoot>
+                                                    <tr>
+                                                        <td>總和</td>
+                                                        <td></td>
+                                                        <td></td>
+														<td></td>
+                                                        <td id="skillTotalRune"></td>
+                                                    </tr>
+												</tfoot>
                                             </table>
                                         </div>
                                     </div>
@@ -663,7 +680,7 @@
                                         <td id="rune5"></td>
                                     </tr>
                                     <tr>
-                                        <th>素材總合</th>
+                                        <th>素材總和</th>
                                         <td></td>
                                         <td id="runeTotal"></td>
                                     </tr>
@@ -1950,7 +1967,7 @@
                 var list = [
                     anchor(getUnitName(data), "showUnit(" + data.id + ")"),
                     partner,
-                    data.cv,
+                    anchor(data.cv, "quickSearch('" + data.cv + "')"),
                     data.rarity,
                     elementHtml(data.use_element),
                     jobs[data.job_id],
@@ -1962,6 +1979,14 @@
             }
             renderTable("unitListTable", html);
         }
+		
+		function quickSearch(text) {
+			var $input = $(".dataTables_filter:visible input");
+			if ($input.val() == text) {
+				text = '';
+			}
+			$input.val(text).keyup();
+		}
 
         function isFakeUnit(data) {
             // 排除無法取得的一星無屬性角色
@@ -2268,6 +2293,7 @@
                 $("#characteristic" + i).html(content);
             }
 
+			// 對話
             for (var i = 1; i <= 11; i++) {
                 $("#comment" + i).html(db.unit_comment[id]["comment" + i].pre());
             }
@@ -2308,11 +2334,15 @@
             // 技能強化素材
             var $skillRune = $("#skillRune > tbody");
             var $skillUpgrade = $("#skillUpgrade > tbody");
+			var skillTotalRune = {};
+			
+			$skillRune.find("td").empty();
             for (var i = 0; i <= 7; i++) {
                 if (command == null || command[i] == null) {
                     continue;
                 }
                 var skill_id = command[i].skill_id;
+				upgradeTotalRunes = {};
 
                 for (var rankID in db.skill_upgrade[skill_id]) {
                     if (rankID == 1) continue; // 原始狀態不用升級跟提升能力
@@ -2327,7 +2357,15 @@
                     html = getUpgradeType(data_upgrade);
                     $skillUpgrade.children("tr").eq(i).children("td").eq(rank - 2).html(html);
                 }
+				// 素材總和
+				$skillRune.children("tr").eq(i).children("td").eq(3).html(displayTotalRune(upgradeTotalRunes));
+				
+				for (var rune_id in upgradeTotalRunes) {
+					var prevCount = skillTotalRune[rune_id] || 0;
+					skillTotalRune[rune_id] = prevCount + upgradeTotalRunes[rune_id];
+				}
             }
+			$("#skillTotalRune").html(displayTotalRune(skillTotalRune));
 
             // 抗性
             var data_resist = db.unit_resist[id];
@@ -2682,34 +2720,31 @@
                 $("#rank" + rank).html(u.name + u.flavor.pre());
                 $("#rune" + rank).html(getUpgradeRune(u));
             }
-			
-			var runeList = [];
-			for (var id in upgradeTotalRunes) {
-				runeList.push(db.rune[id].name + upgradeTotalRunes[id].display());
-			}
-			$("#runeTotal").html(runeList.join('<br />'));
+			$("#runeTotal").html(displayTotalRune(upgradeTotalRunes));
         }
+		
+		function displayTotalRune(obj) {
+			var runeList = [];
+			for (var id in obj) {
+				runeList.push(db.rune[id].name + obj[id].display());
+			}
+			return runeList.join('<br />');
+		}
 
         // 取得裝備或技能的強化素材清單
         function getUpgradeRune(data) {
-            var list = [];
+            var runes = {};
             for (var j = 1; j <= 3; j++) {
                 var runeID = data["upgrade_rune" + j];
                 if (runeID == 0) continue;
 
-                var name = db.rune[runeID].name;
                 var count = data["upgrade_rune_value" + j];
-                var text = String.Format("{0}{1}", name, count.display());
-                list.push(text);
+				runes[runeID] = count;
 				
-				var prevCount = upgradeTotalRunes[runeID];
-				if (prevCount != null) {
-					upgradeTotalRunes[runeID] = prevCount + count;
-				} else {
-					upgradeTotalRunes[runeID] = count;
-				}
+				var prevCount = upgradeTotalRunes[runeID] || 0;
+				upgradeTotalRunes[runeID] = prevCount + count;
             }
-            return list.join("<br />");
+            return displayTotalRune(runes);
         }
 		
 		// 強化素材加總
