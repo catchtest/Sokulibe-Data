@@ -2552,10 +2552,10 @@
 
             var footer = '';
             if (sum_hit > 0) { // 有攻擊才計算總合
-				var debuffHtml = '';
+				var html_debuff = '';
 				for (var debuff_id in sum_debuff) {
-					if (debuffHtml.length) debuffHtml += '<br />';
-					debuffHtml += displaySkillDebuff(debuff_id, sum_debuff[debuff_id], 0);
+					if (html_debuff.length) html_debuff += '<br />';
+					html_debuff += displaySkillDebuff(debuff_id, sum_debuff[debuff_id], 0);
 				}
 			
                 var footerList = [
@@ -2564,7 +2564,7 @@
                     sum_dmg,
                     '',
                     '',
-                    debuffHtml,
+                    html_debuff,
                     sum_atk_type,
                     sum_element,
                     sum_gravity,
@@ -2690,7 +2690,7 @@
 
         function displaySkillDebuff(debuff, value, time) {
             if (debuff == 0) return '';
-            return debuffHtml(debuff, 0) + ' ' + value; // 時間因為沒技能用到就不顯示了
+            return debuffHtml(debuff) + ' ' + value; // 時間因為沒技能用到就不顯示了
         }
 
         // 讀取裝備資料
