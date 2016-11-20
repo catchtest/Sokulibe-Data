@@ -6,11 +6,11 @@ var element = ['無', '火', '水', '地', '光', '暗'];
 var rarity = ['', '☆', '☆☆', '☆☆☆', '☆☆☆☆'];
 var max_level = [1, 60, 100, 160, 200];
 var debuff = ['無', '毒', '麻痺', '冰結', '火傷', '浮遊', '詛咒', '沉默', '', '', '', '腐蝕'];
-var ougi_target = ['敵方', '我方', '敵方 + 我方'];
 var rarity_type = ['', 'N', 'R', 'HR', 'SR', 'SSR'];
 var weapon_jobs = ['全', '輕賊', '輕', '賊', '重狂', '狂', '重', '盾槍', '槍', '盾', '弓獵', '弓', '獵', '補法', '法', '補'];
 var skill_type = ['', '攻擊', '輔助', '回復'];
 var hit_type = ['斬', '碎', '射', '魔'];
+var weakness_type = ['', '是', '是（隱藏）'];
 var skipDirty = true;
 var dataTableOption = {
     "autoWidth": false,
@@ -116,7 +116,7 @@ function initUnit() {
         var job = getUnitJob(data);
         // 判斷是否是尚未做好的角色，是的話修改文字變淡
         var cssClass = '';
-        if (data.cv == '不明' || db.unit_command[id] == null || db.unit_comment[id].comment1 == 'ゲーム起動後初回遷移時　朝') {
+        if (data.cv == '不明' || db.unit_comment[id].comment1 == 'ゲーム起動後初回遷移時　朝') {
             cssClass = 'not-yet';
         }
         var itemHtml = listItemHtml(id, name, job, "loadUnitData(" + id + ");", cssClass);
@@ -234,6 +234,9 @@ function initEvent() {
     var html = '';
 
     for (var id in db.event) {
+		// 底下沒有任何一關，不要顯示
+		if (!(id in db.event_multi_quest)) continue;
+		
         var data = db.event[id];
 
         var name = data.name;
@@ -493,6 +496,8 @@ function isFakeUnit(data) {
     if (data.rarity == 1 && data.use_element == 0) return true;
     // 排除未設定的角色
     if (data.name == "未定☆☆☆☆") return true;
+	// 排除沒有技能資料的角色
+	if (db.unit_command[data.id] == null) return true;
     return false;
 }
 
@@ -906,8 +911,8 @@ function getSkillTd(base_id) {
 function getOugiTd(id) {
     var data = db.ougi[id];
     var name = anchor(data.name, "loadOugiAtk(" + id + ")");
-    var target = String.Format("（目標：{0}）", ougi_target[data.target]);
-    var list = [name, target, '', data.dmg, data.cd, data.break_, '', '', ''];
+    var target = ['攻擊', '回復', '回復<br />攻擊'][data.target];
+    var list = [name, '---', target, data.dmg, data.cd, data.break_, '---', '---', '---'];
     return '<td>' + list.join('</td><td>') + '</td>';
 }
 
@@ -927,6 +932,9 @@ function loadMonsterSkillAtk(id) {
     var $table = $("#monsterSkillAtk");
     var data = db.monster_skill_atk[id];
     commonLoadAtk($table, data);
+	$table.find("tbody > tr, tfoot > tr").each(function(){
+		$(this).children("td").last().hide();
+	});
 }
 
 function commonLoadAtk($table, data) {
@@ -1041,6 +1049,7 @@ function getSkillAtkTd(data) {
             effects.join('<br />'),
             hit.knockback,
             hit.huge_knockback,
+			hit.power_x + ', ' + hit.power_y,
             hold_effect.join('<br />'),
         ];
         html += tableRow(list);
@@ -1073,6 +1082,7 @@ function getSkillAtkTd(data) {
             sum_effects.join('<br />'),
             isNaN(sum_knockback) ? '' : sum_knockback,
             isNaN(sum_huge_knockback) ? '' : sum_huge_knockback,
+			'',
             '',
         ];
         footer = tableRow(footerList);
@@ -1743,6 +1753,7 @@ function loadMonsterData(id, type) {
 
     // 基本資料
     setMonValue("name", data_monsterbase.name);
+	setMonValue("barrier", data_monster.barrier);
     setMonValue("gravity", data_monster.gravity);
     setMonValue("mass", data_monster.mass);
     setMonValue("floating", (data_monster.floating == 1).display());
@@ -1797,6 +1808,22 @@ function loadMonsterData(id, type) {
     }
     $("#monsterSkill > tbody").html(html).find("a").append("<i class='glyphicon glyphicon-link'></i>");;
 
+	// 部位
+	html = '';
+    for (var part_id in db.monster_parts[data_monster.base_id]) {
+		var part = db.monster_parts[data_monster.base_id][part_id];
+		var list = [part.parts_id, 
+					part.hitpoint,
+					weakness_type[part.weakness],
+					part.damage,
+					part.break_];
+		
+        html += tableRow(list);
+    }
+	
+	$("#monsterPartsTable > tbody").html(html);
+	
+	
     // 清除前次資料
     $("#monsterSkillAtk").hide();
 }

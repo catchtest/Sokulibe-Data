@@ -16,7 +16,7 @@
 
 <body>
     <div class="container-fluid">
-        <h3 style='font-weight: bold;'>蒼空解放資料查詢 <small>解包: <a href="https://github.com/greydust/Sokulibe-Decoder">灰灰</a>　製作: <a href="https://github.com/catchtest/Sokulibe-Data">蕭雲</a>　更新日期: 2016/11/18　資料日期: 2016/11/17</small></h3>
+        <h3 style='font-weight: bold;'>蒼空解放資料查詢 <small>解包: <a href="https://github.com/greydust/Sokulibe-Decoder">灰灰</a>　製作: <a href="https://github.com/catchtest/Sokulibe-Data">蕭雲</a>　更新日期: 2016/11/20　資料日期: 2016/11/17</small></h3>
 
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation"><a href="#unit" aria-controls="unit" role="tab" data-toggle="tab">角色</a></li>
@@ -334,6 +334,7 @@
                                                         <th>特殊效果</th>
                                                         <th>擊倒值</th>
                                                         <th>擊退值</th>
+														<th>座標</th>
                                                         <th class="expand-th">蓄力效果</th>
                                                     </tr>
                                                 </thead>
@@ -679,12 +680,14 @@
                                         <td id="rank5"></td>
                                         <td id="rune5"></td>
                                     </tr>
+                                </tbody>
+								<tfoot>
                                     <tr>
-                                        <th>素材總和</th>
+                                        <td>素材總和</td>
                                         <td></td>
                                         <td id="runeTotal"></td>
                                     </tr>
-                                </tbody>
+								</tfoot>
                             </table>
                         </div>
                     </div>
@@ -873,6 +876,7 @@
                                         <th>特殊效果</th>
                                         <th>擊倒值</th>
                                         <th>擊退值</th>
+										<th>座標</th>
                                         <th class="expand-th">蓄力效果</th>
                                     </tr>
                                 </thead>
@@ -1015,6 +1019,7 @@
                                                 <ul class="nav nav-tabs" role="tablist">
                                                     <li role="presentation" class="active"><a href="#monsterPowerTab" aria-controls="monsterPowerTab" role="tab" data-toggle="tab">基本</a></li>
                                                     <!--<li role="presentation"><a href="#monsterResistTab" aria-controls="monsterResistTab" role="tab" data-toggle="tab">抗性</a></li>-->
+													<li role="presentation"><a href="#monsterPartsTab" aria-controls="monsterPartsTab" role="tab" data-toggle="tab">部位</a></li>
                                                     <li role="presentation"><a href="#monsterSkillTab" aria-controls="monsterSkillTab" role="tab" data-toggle="tab">技能</a></li>
                                                 </ul>
 
@@ -1038,6 +1043,10 @@
                                                                     <tr>
                                                                         <th>盾值</th>
                                                                         <td class="break"></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>未破盾傷害</th>
+                                                                        <td class="barrier pct"></td>
                                                                     </tr>
                                                                     <tr>
                                                                         <th>重力值</th>
@@ -1145,7 +1154,22 @@
                                                             </table>
                                                         </div>
                                                     </div>
-                                                    <div role="tabpanel" class="tab-pane" id="monsterSkillTab">
+                                                    <div role="tabpanel" class="tab-pane active" id="monsterPartsTab">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-bordered table-fixed-width" id="monsterPartsTable">
+																<thead>
+																	<th>#</th>
+																	<th>hitpoint</th>
+																	<th>弱點</th>
+																	<th>傷害倍率</th>
+																	<th>破盾倍率</th>
+																</thead>
+                                                                <tbody>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+													<div role="tabpanel" class="tab-pane" id="monsterSkillTab">
                                                         <div class="table-responsive">
                                                             <table class="table table-bordered" id="monsterSkill">
                                                                 <thead>
@@ -1179,7 +1203,7 @@
                                                                         <th>特殊效果</th>
                                                                         <th>擊倒值</th>
                                                                         <th>擊退值</th>
-                                                                        <th class="expand-th">蓄力效果</th>
+																		<th>座標</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
