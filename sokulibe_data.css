@@ -96,6 +96,10 @@ pre {
 	margin-bottom: 0;	
 }
 
+#weaponOther a.list-group-item {
+	cursor: inherit;   /* 無法點選 */	
+}
+
 .row .col-sm-9 {
 	display: none;
 }
