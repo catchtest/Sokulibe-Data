@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>蒼空解放資料查詢</title>
     <script>
-		// 從網址取得參數
+        // 從網址取得參數
         function getParameterByName(name, url) {
             if (!url) {
                 url = window.location.href;
@@ -21,10 +21,10 @@
             return decodeURIComponent(results[2].replace(/\+/g, " "));
         }
         if (getParameterByName("theme") == 1) {
-			// 白色背景
+            // 白色背景
             document.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">');
         } else {
-			// 深色背景
+            // 深色背景
             document.write('<link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css">');
         }
     </script>
@@ -1030,211 +1030,206 @@
                                         </div>
                                     </div>
                                     <div role="tabpanel" class="tab-pane" id="monsterData">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="list-group" id="monsterList"></div>
-                                            </div>
-                                            <div class="col-md-9">
-                                                <ul class="nav nav-tabs" role="tablist">
-                                                    <li role="presentation" class="active"><a href="#monsterPowerTab" aria-controls="monsterPowerTab" role="tab" data-toggle="tab">基本</a></li>
-                                                    <!--<li role="presentation"><a href="#monsterResistTab" aria-controls="monsterResistTab" role="tab" data-toggle="tab">抗性</a></li>-->
-                                                    <li role="presentation"><a href="#monsterPartsTab" aria-controls="monsterPartsTab" role="tab" data-toggle="tab">部位</a></li>
-                                                    <li role="presentation"><a href="#monsterSkillTab" aria-controls="monsterSkillTab" role="tab" data-toggle="tab">技能</a></li>
-                                                </ul>
+                                        <div class="list-group" id="monsterList" style="height: 60px;"></div>
+                                        <ul class="nav nav-tabs" role="tablist">
+                                            <li role="presentation" class="active"><a href="#monsterPowerTab" aria-controls="monsterPowerTab" role="tab" data-toggle="tab">基本</a></li>
+                                            <!--<li role="presentation"><a href="#monsterResistTab" aria-controls="monsterResistTab" role="tab" data-toggle="tab">抗性</a></li>-->
+                                            <li role="presentation"><a href="#monsterPartsTab" aria-controls="monsterPartsTab" role="tab" data-toggle="tab">部位</a></li>
+                                            <li role="presentation"><a href="#monsterSkillTab" aria-controls="monsterSkillTab" role="tab" data-toggle="tab">技能</a></li>
+                                        </ul>
 
-                                                <div class="tab-content">
-                                                    <div role="tabpanel" class="tab-pane active" id="monsterPowerTab">
-                                                        <div class="table-responsive">
-                                                            <table class="table table-bordered">
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <th class="width100">名稱</th>
-                                                                        <td class="name"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>基礎HP</th>
-                                                                        <td class="hp"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>基礎攻擊</th>
-                                                                        <td class="atk"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>盾值</th>
-                                                                        <td class="break"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>未破盾傷害</th>
-                                                                        <td class="barrier pct"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>重力值</th>
-                                                                        <td class="gravity"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>質量</th>
-                                                                        <td class="mass"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>浮空</th>
-                                                                        <td class="floating"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>壁特性</th>
-                                                                        <td class="through"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>狂暴</th>
-                                                                        <td class="rage"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>攻擊屬性</th>
-                                                                        <td class="use_element"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>攻擊狀態</th>
-                                                                        <td class="use_debuff"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>弱點屬性</th>
-                                                                        <td class="weak_element"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>弱點狀態</th>
-                                                                        <td class="weak_debuff"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>種族</th>
-                                                                        <td class="monster_category"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>體型</th>
-                                                                        <td class="monster_size"></td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div role="tabpanel" class="tab-pane" id="monsterResistTab">
-                                                        <div class="table-responsive">
-                                                            <table class="table table-bordered table-fixed-width">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>物理</th>
-                                                                        <th></th>
-                                                                        <th>屬性</th>
-                                                                        <th></th>
-                                                                        <th>狀態</th>
-                                                                        <th></th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                    <tr>
-                                                                        <th>斬耐性</th>
-                                                                        <td class="slash_resist"></td>
-                                                                        <th>火耐性</th>
-                                                                        <td class="fire_resist"></td>
-                                                                        <th>毒耐性</th>
-                                                                        <td class="poison_resist"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>碎耐性</th>
-                                                                        <td class="smash_resist"></td>
-                                                                        <th>水耐性</th>
-                                                                        <td class="water_resist"></td>
-                                                                        <th>麻痺耐性</th>
-                                                                        <td class="paralysis_resist"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>射耐性</th>
-                                                                        <td class="shot_resist"></td>
-                                                                        <th>地耐性</th>
-                                                                        <td class="earth_resist"></td>
-                                                                        <th>腐蝕耐性</th>
-                                                                        <td class="rust_resist"></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th>魔耐性</th>
-                                                                        <td class="sorcery_resist"></td>
-                                                                        <th>光耐性</th>
-                                                                        <td class="light_resist"></td>
-                                                                        <th></th>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                    <tr>
-                                                                        <th></th>
-                                                                        <td></td>
-                                                                        <th>暗耐性</th>
-                                                                        <td class="dark_resist"></td>
-                                                                        <th></th>
-                                                                        <td></td>
-                                                                    </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div role="tabpanel" class="tab-pane active" id="monsterPartsTab">
-                                                        <div class="table-responsive">
-                                                            <table class="table table-bordered table-fixed-width" id="monsterPartsTable">
-                                                                <thead>
-                                                                    <th>#</th>
-                                                                    <th>hitpoint</th>
-                                                                    <th>弱點</th>
-                                                                    <th>傷害倍率</th>
-                                                                    <th>破盾倍率</th>
-                                                                </thead>
-                                                                <tbody>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div role="tabpanel" class="tab-pane" id="monsterSkillTab">
-                                                        <div class="table-responsive">
-                                                            <table class="table table-bordered" id="monsterSkill">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>技能名稱</th>
-                                                                        <th>傷害倍率</th>
-                                                                        <th>冷卻時間</th>
-                                                                        <th>距離</th>
-                                                                        <th>特殊效果</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                        <div class="table-responsive">
-                                                            <table id="monsterSkillAtk" class="table table-bordered table-sm-width">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th>#</th>
-                                                                        <th>攻擊特性</th>
-                                                                        <th>傷害</th>
-                                                                        <th>解除異常</th>
-                                                                        <th class="expand-th">得到狀態</th>
-                                                                        <th class="expand-th">攻擊狀態</th>
-                                                                        <th>攻擊類型</th>
-                                                                        <th>屬性</th>
-                                                                        <th>重力值</th>
-                                                                        <th>仇恨值</th>
-                                                                        <th>破盾值</th>
-                                                                        <th>特殊效果</th>
-                                                                        <th>擊倒值</th>
-                                                                        <th>擊退值</th>
-                                                                        <th>座標</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                </tbody>
-                                                                <tfoot>
-                                                                </tfoot>
-                                                            </table>
-                                                        </div>
-                                                    </div>
+                                        <div class="tab-content">
+                                            <div role="tabpanel" class="tab-pane active" id="monsterPowerTab">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <th class="width100">名稱</th>
+                                                                <td class="name"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>基礎HP</th>
+                                                                <td class="hp"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>基礎攻擊</th>
+                                                                <td class="atk"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>盾值</th>
+                                                                <td class="break"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>未破盾傷害</th>
+                                                                <td class="barrier pct"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>重力值</th>
+                                                                <td class="gravity"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>質量</th>
+                                                                <td class="mass"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>浮空</th>
+                                                                <td class="floating"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>壁特性</th>
+                                                                <td class="through"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>狂暴</th>
+                                                                <td class="rage"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>攻擊屬性</th>
+                                                                <td class="use_element"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>攻擊狀態</th>
+                                                                <td class="use_debuff"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>弱點屬性</th>
+                                                                <td class="weak_element"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>弱點狀態</th>
+                                                                <td class="weak_debuff"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>種族</th>
+                                                                <td class="monster_category"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>體型</th>
+                                                                <td class="monster_size"></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="monsterResistTab">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-fixed-width">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>物理</th>
+                                                                <th></th>
+                                                                <th>屬性</th>
+                                                                <th></th>
+                                                                <th>狀態</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <th>斬耐性</th>
+                                                                <td class="slash_resist"></td>
+                                                                <th>火耐性</th>
+                                                                <td class="fire_resist"></td>
+                                                                <th>毒耐性</th>
+                                                                <td class="poison_resist"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>碎耐性</th>
+                                                                <td class="smash_resist"></td>
+                                                                <th>水耐性</th>
+                                                                <td class="water_resist"></td>
+                                                                <th>麻痺耐性</th>
+                                                                <td class="paralysis_resist"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>射耐性</th>
+                                                                <td class="shot_resist"></td>
+                                                                <th>地耐性</th>
+                                                                <td class="earth_resist"></td>
+                                                                <th>腐蝕耐性</th>
+                                                                <td class="rust_resist"></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>魔耐性</th>
+                                                                <td class="sorcery_resist"></td>
+                                                                <th>光耐性</th>
+                                                                <td class="light_resist"></td>
+                                                                <th></th>
+                                                                <td></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th></th>
+                                                                <td></td>
+                                                                <th>暗耐性</th>
+                                                                <td class="dark_resist"></td>
+                                                                <th></th>
+                                                                <td></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="monsterPartsTab">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered table-fixed-width" id="monsterPartsTable">
+                                                        <thead>
+                                                            <th>#</th>
+                                                            <th>hitpoint</th>
+                                                            <th>弱點</th>
+                                                            <th>傷害倍率</th>
+                                                            <th>破盾倍率</th>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div role="tabpanel" class="tab-pane" id="monsterSkillTab">
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered" id="monsterSkill">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>技能名稱</th>
+                                                                <th>傷害倍率</th>
+                                                                <th>冷卻時間</th>
+                                                                <th>距離</th>
+                                                                <th>特殊效果</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table id="monsterSkillAtk" class="table table-bordered table-sm-width">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>攻擊特性</th>
+                                                                <th>傷害</th>
+                                                                <th>解除異常</th>
+                                                                <th class="expand-th">得到狀態</th>
+                                                                <th class="expand-th">攻擊狀態</th>
+                                                                <th>攻擊類型</th>
+                                                                <th>屬性</th>
+                                                                <th>重力值</th>
+                                                                <th>仇恨值</th>
+                                                                <th>破盾值</th>
+                                                                <th>特殊效果</th>
+                                                                <th>擊倒值</th>
+                                                                <th>擊退值</th>
+                                                                <th>座標</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                        <tfoot>
+                                                        </tfoot>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                     <div role="tabpanel" class="tab-pane" id="waveData">
                                         <div class="table-responsive">
@@ -1369,6 +1364,7 @@
                     <li role="presentation"><a href="#tearsTab" aria-controls="tearsTab" role="tab" data-toggle="tab">交換所</a></li>
                     <li role="presentation"><a href="#abilityListTab" aria-controls="abilityListTab" role="tab" data-toggle="tab">被動</a></li>
                     <li role="presentation"><a href="#limitbreakTab" aria-controls="limitbreakTab" role="tab" data-toggle="tab">突破</a></li>
+                    <!--<li role="presentation"><a href="#monsterListTab" aria-controls="monsterListTab" role="tab" data-toggle="tab">怪物</a></li>-->
                 </ul>
 
                 <!-- Tab panes -->
@@ -1622,7 +1618,18 @@
                             </div>
                         </div>
                     </div>
-                </div>
+					<div role="tabpanel" class="tab-pane" id="monsterListTab">
+                        <table class="table table-bordered table-striped table-hover" id="monsterListTable">
+                            <thead>
+                                <tr>
+                                    <th>名字</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+					</div>
+				</div>
             </div>
         </div>
     </div>

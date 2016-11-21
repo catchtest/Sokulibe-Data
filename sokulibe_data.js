@@ -1,22 +1,7 @@
 ﻿"use strict"
 var db;
 var localized = {};
-var jobs = ['', '輕', '賊', '重', '狂', '槍', '盾', '弓', '獵', '法', '補'];
-var element = ['無', '火', '水', '地', '光', '暗'];
-var rarity = ['', '☆', '☆☆', '☆☆☆', '☆☆☆☆'];
-var max_level = [1, 60, 100, 160, 200];
-var debuff = ['無', '毒', '麻痺', '冰結', '火傷', '浮遊', '詛咒', '沉默', '', '', '', '腐蝕'];
-var rarity_type = ['', 'N', 'R', 'HR', 'SR', 'SSR'];
-var weapon_jobs = ['全', '輕賊', '輕', '賊', '重狂', '狂', '重', '盾槍', '槍', '盾', '弓獵', '弓', '獵', '補法', '法', '補'];
-var skill_type = ['', '攻擊', '輔助', '回復'];
-var hit_type = ['斬', '碎', '射', '魔'];
-var weakness_type = ['', '是', '是（隱藏）'];
-var limitbreak_data = {
-	"1": [1, 2, 3, 4, 5, 6],
-	"2": [2, 2, 2, 3, 4, 5, 6, 7, 7, 8],
-	"3": [5, 6, 7, 8, 9, 10, 11, 11, 12, 12, 14, 14, 15, 15, 17, 17],
-	"4": [11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 17, 17, 18, 18, 20, 23, 27, 30, 45, 55]
-}
+var enums;
 var skipDirty = true;
 var dataTableOption = {
     "autoWidth": false,
@@ -35,7 +20,7 @@ var dataTableOption = {
 	// 讀取Json
 	var loadCount = 0;
 	var loadSuccess = function() {
-		if (++loadCount >= 2) {
+		if (++loadCount >= 3) {
 			$(".loader").hide();
 		}
 	};
@@ -47,6 +32,11 @@ var dataTableOption = {
 
     $.getJSON('localize.zh-TW.json', function(data) {
         localized = data;
+		loadSuccess();
+    });
+	
+    $.getJSON('enums.zh-TW.json', function(data) {
+        enums = data;
 		loadSuccess();
     });
 
@@ -170,7 +160,7 @@ function initAccessory() {
         var data = db.accessory[id];
 
         var name = getAccessoryName(id);
-        var job = weapon_jobs[data.job] + ' <div class="rarity">' + rarity_type[data.rarity] + '</div>';
+        var job = enums.weapon_job[data.job] + ' <div class="rarity">' + enums.rarity[data.rarity] + '</div>';
         var itemHtml = listItemHtml(id, name, job, "loadAccessoryData(" + id + ");");
 
         if (data.category == 1) { // 戒指
@@ -199,11 +189,11 @@ function initWeapon() {
         var name = data.name;
         // 不能裝備的武器
         if (data.job == -1) {
-            var itemHtml = listItemHtml(id, name, rarity_type[data.rarity], '');
+            var itemHtml = listItemHtml(id, name, enums.rarity[data.rarity], '');
             htmls[3] += itemHtml;
             continue;
         }
-        var job = weapon_jobs[data.job];
+        var job = enums.weapon_job[data.job];
         var itemHtml = listItemHtml(id, name, job, "loadWeaponData(" + id + ");");
 
         if (data.rarity == 4) {
@@ -474,7 +464,7 @@ function initUnitList() {
     var html = '';
     for (var i = 0, len = itemList.length; i < len; i++) {
         var data = itemList[i];
-        var maxLevel = max_level[data.rarity];
+        var maxLevel = enums.max_level[data.rarity];
         var unitPower = calculateUnit(data.id, maxLevel);
         var partner = '無';
         if (data.partner_id > 0) {
@@ -490,7 +480,7 @@ function initUnitList() {
             anchor(data.cv, "quickSearch('" + data.cv + "')"),
             data.rarity,
             elementHtml(data.use_element),
-            jobs[data.job_id],
+            enums.job[data.job_id],
             unitPower.hp,
             unitPower.atk,
             unitPower.agi,
@@ -552,8 +542,8 @@ function initAccessoryList() {
         var list = [
             category[data.category],
             name,
-            rarity_type[data.rarity],
-            weapon_jobs[data.job],
+            enums.rarity[data.rarity],
+            enums.weapon_job[data.job],
         ];
 
         for (var i = 1; i <= 4; i++) {
@@ -598,8 +588,8 @@ function initWeaponList() {
 
         var list = [
             data.name,
-            rarity_type[data.rarity],
-            weapon_jobs[data.job],
+            enums.rarity[data.rarity],
+            enums.weapon_job[data.job],
             weaponPower.hp,
             weaponPower.atk,
             weaponPower.agi,
@@ -655,8 +645,8 @@ function initAbilityList() {
 function initLimitbreak() {
 	for (var r = 1; r <= 4; r++) {
 		// 因為倒算關係，先計算總和
-		var data = limitbreak_data[r];
-		var startLevel = max_level[r] / 2;
+		var data = enums.limitbreak[r];
+		var startLevel = enums.max_level[r] / 2;
 		var sum = 0;
 		data.forEach(function (val) {
 			sum += val;
@@ -729,8 +719,8 @@ function getUnitName(data) {
 }
 
 function getUnitJob(data) {
-    var elementText = data.use_element == 0 ? '　' : element[data.use_element];
-    return rarity[data.rarity] + ' ' + elementText + jobs[data.job_id];
+    var elementText = data.use_element == 0 ? '　' : enums.element[data.use_element];
+    return enums.unit_rarity[data.rarity] + ' ' + elementText + enums.job[data.job_id];
 }
 
 function getUnitJobComment(data) {
@@ -809,7 +799,7 @@ function loadUnitData(id) {
     $("#unitSize").html(String.Format("{0} （{1}）", data.size, sizeDesc));
     $("#use_debuff").html(displayDebuff(data.use_debuff));
 
-    var maxLevel = max_level[data.rarity];
+    var maxLevel = enums.max_level[data.rarity];
     var unitPower = calculateUnit(data.id, maxLevel);
 
     $("#max_level").html(String.Format("(Lv{0})", maxLevel));
@@ -945,7 +935,7 @@ function getSkillTd(base_id) {
         anchor(skill_star_data.name, "loadSkillAtk(" + skill_star_data.id + ")")
     var list = [name,
         data.name,
-        skill_type[data.skill_type],
+        enums.skill_type[data.skill_type],
         data.dmg,
         data.cd,
         data.break_,
@@ -1018,12 +1008,12 @@ function getSkillAtkTd(data) {
         if (hit.haritsuke > 0) effects.push("定身");
         if (hit.huge_knockback > 0) effects.push("擊退");
 
-        var atkType = hit_type[hit.atk_type];
+        var atkType = enums.atk_type[hit.atk_type];
         var elementType = elementHtml(hit.element);
 
         var hitType = hit.hit_type;
         if (hitType == null) { // 奧義的情形
-            hitType = skill_type[hit.skill_type + 1];
+            hitType = enums.skill_type[hit.skill_type + 1];
         } else {
             hitType = hit.hit_type == 0 ? '攻擊' :
                 hit.hit_type == 1 ? '回復' : hit.hit_type;
@@ -1271,7 +1261,7 @@ function loadAccessoryData(id) {
     }
 
     // 說明跟強化素材
-    setTitle(getAccessoryName(id), rarity_type[data.rarity]);
+    setTitle(getAccessoryName(id), enums.rarity[data.rarity]);
 
     upgradeTotalRunes = {};
     for (var rank in db.accessory_upgrade[id]) {
@@ -1382,7 +1372,7 @@ function loadWeaponData(id) {
     current_weapon = id;
 
     var data = db.weapon[id];
-    setTitle(data.name, rarity_type[data.rarity]);
+    setTitle(data.name, enums.rarity[data.rarity]);
 
     ['HP', 'ATK', 'AGI'].forEach(function(e) {
         var e1 = e.toLowerCase();
@@ -1409,7 +1399,7 @@ function loadWeaponData(id) {
             $("#weaponMainSkill_" + name).html(weaponMainSkill[name]);
         });
         $("#weaponMainSkill_range").html(weaponMainSkill.min_range + '-' + weaponMainSkill.max_range);
-        $("#weaponMainSkillType").html(skill_type[weaponMainSkill.skill_type]);
+        $("#weaponMainSkillType").html(enums.skill_type[weaponMainSkill.skill_type]);
         $("#weaponMainSkillCount").html(data.normal_mws_value + "（最大：" + data.awakening_mws_value + "）");
 		
 		// 計算武器技威力帳面數值
@@ -1623,16 +1613,6 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
     }
     $("#mission1, #mission2, #mission3, #mission_bonus").closest("tr").toggle(missionData != null);
 
-    // 初始化怪物列表
-    $monsterList = $("#monsterList");
-    $monsterList.empty();
-
-    insertMonsterList(baseData, "boss0", 2);
-    insertMonsterList(baseData, "mid0", 4);
-    insertMonsterList(baseData, "zako0", 5);
-
-    $monsterList.find(".list-group-item").first().click();
-
     // 掉落率
     for (var prop in dropData) {
         if (prop == 'id' || prop == 'event_id') continue;
@@ -1668,7 +1648,8 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
 
     // 分布資訊
     var $waveTable = $("#waveData table > tbody");
-    var html = ''
+    var html = '';
+	var monsterExist = [[], [], []];
 
     var wave_count = 0;
     for (var wave in waveData) {
@@ -1677,6 +1658,7 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
             var value = this_wave["zako" + i];
             if (value == 0) continue;
             var monster_id = baseData["zako0" + value + "_id"];
+			monsterExist[2].add(monster_id);
 
             var name = getMonsterLink(monster_id, 2);
             html += tableRow([wave, name]);
@@ -1685,6 +1667,7 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
             var value = this_wave["midboss" + i];
             if (value == 0) continue;
             var monster_id = baseData["mid0" + value + "_id"];
+			monsterExist[1].add(monster_id);
 
             var name = getMonsterLink(monster_id, 1);
             html += tableRow([wave, name]);
@@ -1693,6 +1676,7 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
             var value = this_wave["boss" + i];
             if (value == 0) continue;
             var monster_id = baseData["boss0" + value + "_id"];
+			monsterExist[0].add(monster_id);
 
             var name = getMonsterLink(monster_id, 0);
             html += tableRow([wave, name]);
@@ -1701,6 +1685,21 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
     }
     $waveTable.html(html);
 
+    // 初始化該關卡怪物列表
+	// 怪物資料改從波數資料而來，因為有些關卡有設定小王實際沒出現
+	// 此處列出的怪物不重複顯示
+    $monsterList = $("#monsterList");
+	html = '';
+	for (var m_type = 0; m_type < monsterExist.length; m_type++) {
+		for (var j = 0; j < monsterExist[m_type].length; j++) {
+			var monster_id = monsterExist[m_type][j];
+			var monster_name = getMonsterPrefix(m_type) + getMonsterName(monster_id);
+			var onclick = String.Format("loadMonsterData({0}, {1});", monster_id, m_type);
+			html += listItemHtml(monster_id, monster_name, '', onclick);
+		}
+	}
+	$monsterList.html(html).find(".list-group-item").first().click();
+	
     // 合併前方的波數
     for (var i = 1; i <= wave_count; i++) {
         var waveTd = $waveTable.find("tr > td").filter(function() {
@@ -1761,26 +1760,6 @@ function ratioModify(array, progress) {
 
 var $monsterList;
 
-function insertMonsterList(data, prefix, max) {
-    var html = ''
-    for (var i = 1; i <= max; i++) {
-        var prop = prefix + i + '_id';
-        var monster_id = data[prop];
-        if (monster_id == 0) continue;
-
-        var name = getMonsterName(monster_id);
-        // 增加前方標記
-        var monType = prop.indexOf("boss") == 0 ? 0 :
-            prop.indexOf("mid") == 0 ? 1 :
-            2;
-        name = getMonsterPrefix(monType) + name;
-
-        var onclick = String.Format("loadMonsterData({0}, '{1}');", monster_id, prop);
-        html += listItemHtml(monster_id, name, '', onclick);
-    }
-    $monsterList.append(html);
-}
-
 function getMonsterName(id) {
     if (id == 0) return '&nbsp;';
     return db.monster_base[db.monster[id].base_id].name;
@@ -1792,7 +1771,7 @@ function getMonsterPrefix(type) {
 }
 
 // 讀取怪物列表
-function loadMonsterData(id, type) {
+function loadMonsterData(id, m_type) {
     setActive($monsterList, id);
 
     var data_monster = db.monster[id];
@@ -1800,15 +1779,15 @@ function loadMonsterData(id, type) {
     var data_aibase = db.monster_ai_base[data_monster.monster_ai_id];
 
     // 由關卡定義的HP/ATK/BREAK取代原始定義
-    if (type.indexOf("boss") >= 0) {
+    if (m_type == 0) {
         setMonValue("hp", current_quest.boss_hp);
         setMonValue("atk", current_quest.boss_atk);
         setMonValue("break", current_quest.boss_break);
-    } else if (type.indexOf("mid") >= 0) {
+    } else if (m_type == 1) {
         setMonValue("hp", current_quest.mid_hp);
         setMonValue("atk", current_quest.mid_atk);
         setMonValue("break", current_quest.mid_break);
-    } else if (type.indexOf("zako") >= 0) {
+    } else if (m_type == 2) {
         setMonValue("hp", current_quest.zako_hp);
         setMonValue("atk", current_quest.zako_atk);
         setMonValue("break", 0);
@@ -1877,7 +1856,7 @@ function loadMonsterData(id, type) {
 		var part = db.monster_parts[data_monster.base_id][part_id];
 		var list = [part.parts_id, 
 					part.hitpoint,
-					weakness_type[part.weakness],
+					enums.weakness[part.weakness],
 					part.damage,
 					part.break_];
 		
@@ -1904,8 +1883,8 @@ function displayElement(value1, value2) {
 }
 
 function elementHtml(value) {
-    if (value == 0) return element[value];
-    return String.Format("<kbd class='elem-{1}'>{0}</kbd>", element[value], value);
+    if (value == 0) return enums.element[value];
+    return String.Format("<kbd class='elem-{1}'>{0}</kbd>", enums.element[value], value);
 }
 
 function displayDebuff(value1, value2) {
@@ -1918,7 +1897,7 @@ function displayDebuff(value1, value2) {
 }
 
 function debuffHtml(value) {
-    return String.Format("<kbd class='debuff-{1}'>{0}</kbd>", debuff[value], value);
+    return String.Format("<kbd class='debuff-{1}'>{0}</kbd>", enums.debuff[value], value);
 }
 
 // 回傳獎勵名稱
@@ -2114,6 +2093,10 @@ Number.prototype.display = function() {
 
 Boolean.prototype.display = function() {
     return this.valueOf() ? 'O' : 'X'
+}
+
+Array.prototype.add = function(value) {
+	if (this.indexOf(value) < 0) this.push(value);
 }
 
 jQuery.fn.extend({
