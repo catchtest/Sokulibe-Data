@@ -470,6 +470,15 @@ function initUnitList() {
                 partnerData.id,
                 getUnitName(partnerData));
         }
+		var resist = db.unit_resist[data.id];
+		var resistHtml = '';
+		if (resist.poison_resist > 0) resistHtml += debuffHtml(1);
+		if (resist.paralysis_resist > 0) resistHtml += debuffHtml(2);
+		if (resist.freeze_resist > 0) resistHtml += debuffHtml(3);
+		if (resist.burn_resist > 0) resistHtml += debuffHtml(4);
+		if (resist.feather_resist > 0) resistHtml += debuffHtml(5);
+		if (resist.curse_resist > 0) resistHtml += debuffHtml(6);
+		if (resist.silence_resist > 0) resistHtml += debuffHtml(7);
 
         var list = [
             anchor(getUnitName(data), "showUnit(" + data.id + ")"),
@@ -481,6 +490,7 @@ function initUnitList() {
             unitPower.hp,
             unitPower.atk,
             unitPower.agi,
+			resistHtml
         ];
         html += tableRow(list);
     }
