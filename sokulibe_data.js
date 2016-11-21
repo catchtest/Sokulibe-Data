@@ -11,6 +11,12 @@ var weapon_jobs = ['全', '輕賊', '輕', '賊', '重狂', '狂', '重', '盾�
 var skill_type = ['', '攻擊', '輔助', '回復'];
 var hit_type = ['斬', '碎', '射', '魔'];
 var weakness_type = ['', '是', '是（隱藏）'];
+var limitbreak_data = {
+	"1": [1, 2, 3, 4, 5, 6],
+	"2": [2, 2, 2, 3, 4, 5, 6, 7, 7, 8],
+	"3": [5, 6, 7, 8, 9, 10, 11, 11, 12, 12, 14, 14, 15, 15, 17, 17],
+	"4": [11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 17, 17, 18, 18, 20, 23, 27, 30, 45, 55]
+}
 var skipDirty = true;
 var dataTableOption = {
     "autoWidth": false,
@@ -26,15 +32,25 @@ var dataTableOption = {
 };
 
 (function($) {
+	// 讀取Json
+	var loadCount = 0;
+	var loadSuccess = function() {
+		if (++loadCount >= 2) {
+			$(".loader").hide();
+		}
+	};
+	
     $.getJSON('sokulibe_data.json', function(data) {
         db = data;
-        $(".loader").hide();
+        loadSuccess();
     });
 
     $.getJSON('localize.zh-TW.json', function(data) {
         localized = data;
+		loadSuccess();
     });
 
+	// 綁定initial事件
     $("a[href='#unit']").one("click", initUnit);
     $("a[href='#accessory']").one("click", initAccessory);
     $("a[href='#weapon']").one("click", initWeapon);
@@ -49,6 +65,7 @@ var dataTableOption = {
     $("a[href='#accessoryListTab']").one("click", initAccessoryList);
     $("a[href='#weaponListTab']").one("click", initWeaponList);
     $("a[href='#abilityListTab']").one("click", initAbilityList);
+	$("a[href='#limitbreakTab']").one("click", initLimitbreak);
 
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
@@ -633,6 +650,38 @@ function initAbilityList() {
         html += tableRow(list);
     }
     renderTable("abilityTable", html);
+}
+
+function initLimitbreak() {
+	for (var r = 1; r <= 4; r++) {
+		// 因為倒算關係，先計算總和
+		var data = limitbreak_data[r];
+		var startLevel = max_level[r] / 2;
+		var sum = 0;
+		data.forEach(function (val) {
+			sum += val;
+		});
+		
+		var html = '';
+		var tears = 0;
+		
+		html += tableRow([startLevel, '---', tears, sum]);
+		
+		data.forEach(function (val, index) {
+			tears += val;
+			sum -= val;
+			html += tableRow([startLevel + (index + 1) * 5, val, tears, sum]);
+		});
+		
+		/*for (var id in data) {
+			var current_tear = data[id].tears;
+			tears += current_tear;
+			sum -= current_tear;
+			html += tableRow([startLevel + id * 5, data[id].tears, tears, sum]);
+		}*/
+		
+		$("#limitbreakR" + r + "Table > tbody").html(html);
+	}
 }
 
 // 判斷是否為尚未完成的裝備
@@ -1611,11 +1660,11 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
         $("#" + prop).html(value);
     }
 
-    ratioModify(["nocon_clear_rate1", "nocon_clear_rate2", "nocon_clear_rate3"]);
-    ratioModify(["speed_clear_rate1", "speed_clear_rate2", "speed_clear_rate3"]);
-    ratioModify(["boss_drop1", "boss_drop2", "boss_drop3"]);
-    ratioModify(["mid_drop1", "mid_drop2"]);
-    ratioModify(["zako_drop1", "zako_drop2"]);
+    ratioModify(["nocon_clear_rate1", "nocon_clear_rate2", "nocon_clear_rate3"], "nocon_clear_progress");
+    ratioModify(["speed_clear_rate1", "speed_clear_rate2", "speed_clear_rate3"], "speed_clear_progress");
+    ratioModify(["boss_drop1", "boss_drop2", "boss_drop3"], "boss_drop_progress");
+    ratioModify(["mid_drop1", "mid_drop2"], "mid_drop_progress");
+    ratioModify(["zako_drop1", "zako_drop2"], "zako_drop_progress");
 
     // 分布資訊
     var $waveTable = $("#waveData table > tbody");
@@ -1681,19 +1730,33 @@ function goMonsterList(id) {
 }
 
 // 將原有數值轉換成百分比的形式
-function ratioModify(array) {
+// 後面加上百分比條
+function ratioModify(array, progress) {
     var sum = 0;
     array.forEach(function(id) {
         var value = $("#" + id).text();
         sum += parseInt(value);
     });
+	var $progress = $("#" + progress);
+	var html = '';
+	
     var ratio = 100 / sum;
-    if (ratio != 1) {
-        array.forEach(function(id) {
+	var pass = ratio === 1;   // 原始總和即為100%就不用再修改文字
+	
+        array.forEach(function(id, index) {
             var value = $("#" + id).text();
-            $("#" + id).html(parseFloat((value * ratio).toFixed(1)));
+			var pct = parseFloat((value * ratio).toFixed(1));
+			if (!pass) {
+				$("#" + id).html(pct);
+			}
+			
+			var className = ["progress-bar-wood", "progress-bar-info", "progress-bar-warning"][index];
+			html += $("<div></div>", {
+				'class': "progress-bar progress-bar-striped " + className,
+				style: "width: " + pct + "%"
+			})[0].outerHTML;
         });
-    }
+		$progress.html(html);
 }
 
 var $monsterList;
@@ -1987,7 +2050,7 @@ function tableRow(array) {
 }
 
 function anchor(text, onclick) {
-    return String.Format('<a href="#" onclick="{1}">{0}</a>', text, onclick);
+    return String.Format('<a href="#" onclick="{1}; return false;">{0}</a>', text, onclick);
 }
 
 function renderTable(id, html) {

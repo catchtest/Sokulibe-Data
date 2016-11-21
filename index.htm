@@ -4,11 +4,30 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>蒼空解放資料查詢</title>
-    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    -->
-    <link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css">
+    <script>
+		// 從網址取得參數
+        function getParameterByName(name, url) {
+            if (!url) {
+                url = window.location.href;
+            }
+            name = name.replace(/[\[\]]/g, "\\$&");
+            var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, " "));
+        }
+        if (getParameterByName("theme") == 1) {
+			// 白色背景
+            document.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">');
+        } else {
+			// 深色背景
+            document.write('<link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css">');
+        }
+    </script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
     <link rel="stylesheet" href="loader-default.css">
     <link rel="stylesheet" href="sokulibe_data.css">
@@ -16,7 +35,7 @@
 
 <body>
     <div class="container-fluid">
-        <h3 style='font-weight: bold;'>蒼空解放資料查詢 <small>解包: <a href="https://github.com/greydust/Sokulibe-Decoder">灰灰</a>　製作: <a href="https://github.com/catchtest/Sokulibe-Data">蕭雲</a>　更新日期: 2016/11/20　資料日期: 2016/11/17</small></h3>
+        <h3 style='font-weight: bold;'>蒼空解放資料查詢 <small>解包: <a href="https://github.com/greydust/Sokulibe-Decoder">灰灰</a>　製作: <a href="https://github.com/catchtest/Sokulibe-Data">蕭雲</a>　更新日期: 2016/11/21　資料日期: 2016/11/17</small></h3>
 
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation"><a href="#unit" aria-controls="unit" role="tab" data-toggle="tab">角色</a></li>
@@ -334,7 +353,7 @@
                                                         <th>特殊效果</th>
                                                         <th>擊倒值</th>
                                                         <th>擊退值</th>
-														<th>座標</th>
+                                                        <th>座標</th>
                                                         <th class="expand-th">蓄力效果</th>
                                                     </tr>
                                                 </thead>
@@ -410,7 +429,7 @@
                                                         <th>Lv2</th>
                                                         <th>Lv3</th>
                                                         <th>Lv4</th>
-														<th>素材總和</th>
+                                                        <th>素材總和</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -419,60 +438,60 @@
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-														<td></td>
+                                                        <td></td>
                                                     </tr>
                                                     <tr>
                                                         <th>N1</th>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-														<td></td>
+                                                        <td></td>
                                                     </tr>
                                                     <tr>
                                                         <th>N2</th>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-														<td></td>
+                                                        <td></td>
                                                     </tr>
                                                     <tr>
                                                         <th>S0</th>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-														<td></td>
+                                                        <td></td>
                                                     </tr>
                                                     <tr>
                                                         <th>S1</th>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-														<td></td>
+                                                        <td></td>
                                                     </tr>
                                                     <tr>
                                                         <th>S2</th>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-														<td></td>
+                                                        <td></td>
                                                     </tr>
                                                     <tr>
                                                         <th>S3</th>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-														<td></td>
+                                                        <td></td>
                                                     </tr>
                                                 </tbody>
-												<tfoot>
+                                                <tfoot>
                                                     <tr>
                                                         <td>總和</td>
                                                         <td></td>
                                                         <td></td>
-														<td></td>
+                                                        <td></td>
                                                         <td id="skillTotalRune"></td>
                                                     </tr>
-												</tfoot>
+                                                </tfoot>
                                             </table>
                                         </div>
                                     </div>
@@ -681,13 +700,13 @@
                                         <td id="rune5"></td>
                                     </tr>
                                 </tbody>
-								<tfoot>
+                                <tfoot>
                                     <tr>
                                         <td>素材總和</td>
                                         <td></td>
                                         <td id="runeTotal"></td>
                                     </tr>
-								</tfoot>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -701,7 +720,7 @@
                             <li role="presentation" class="active"><a href="#weaponSR" aria-controls="weaponSR" role="tab" data-toggle="tab">SR</a></li>
                             <li role="presentation"><a href="#weaponHR" aria-controls="weaponHR" role="tab" data-toggle="tab">HR</a></li>
                             <li role="presentation"><a href="#weaponR" aria-controls="weaponR" role="tab" data-toggle="tab">R</a></li>
-							<li role="presentation"><a href="#weaponOther" aria-controls="weaponOther" role="tab" data-toggle="tab">其他</a></li>
+                            <li role="presentation"><a href="#weaponOther" aria-controls="weaponOther" role="tab" data-toggle="tab">其他</a></li>
                         </ul>
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="weaponSR">
@@ -876,7 +895,7 @@
                                         <th>特殊效果</th>
                                         <th>擊倒值</th>
                                         <th>擊退值</th>
-										<th>座標</th>
+                                        <th>座標</th>
                                         <th class="expand-th">蓄力效果</th>
                                     </tr>
                                 </thead>
@@ -1019,7 +1038,7 @@
                                                 <ul class="nav nav-tabs" role="tablist">
                                                     <li role="presentation" class="active"><a href="#monsterPowerTab" aria-controls="monsterPowerTab" role="tab" data-toggle="tab">基本</a></li>
                                                     <!--<li role="presentation"><a href="#monsterResistTab" aria-controls="monsterResistTab" role="tab" data-toggle="tab">抗性</a></li>-->
-													<li role="presentation"><a href="#monsterPartsTab" aria-controls="monsterPartsTab" role="tab" data-toggle="tab">部位</a></li>
+                                                    <li role="presentation"><a href="#monsterPartsTab" aria-controls="monsterPartsTab" role="tab" data-toggle="tab">部位</a></li>
                                                     <li role="presentation"><a href="#monsterSkillTab" aria-controls="monsterSkillTab" role="tab" data-toggle="tab">技能</a></li>
                                                 </ul>
 
@@ -1157,19 +1176,19 @@
                                                     <div role="tabpanel" class="tab-pane active" id="monsterPartsTab">
                                                         <div class="table-responsive">
                                                             <table class="table table-bordered table-fixed-width" id="monsterPartsTable">
-																<thead>
-																	<th>#</th>
-																	<th>hitpoint</th>
-																	<th>弱點</th>
-																	<th>傷害倍率</th>
-																	<th>破盾倍率</th>
-																</thead>
+                                                                <thead>
+                                                                    <th>#</th>
+                                                                    <th>hitpoint</th>
+                                                                    <th>弱點</th>
+                                                                    <th>傷害倍率</th>
+                                                                    <th>破盾倍率</th>
+                                                                </thead>
                                                                 <tbody>
                                                                 </tbody>
                                                             </table>
                                                         </div>
                                                     </div>
-													<div role="tabpanel" class="tab-pane" id="monsterSkillTab">
+                                                    <div role="tabpanel" class="tab-pane" id="monsterSkillTab">
                                                         <div class="table-responsive">
                                                             <table class="table table-bordered" id="monsterSkill">
                                                                 <thead>
@@ -1203,7 +1222,7 @@
                                                                         <th>特殊效果</th>
                                                                         <th>擊倒值</th>
                                                                         <th>擊退值</th>
-																		<th>座標</th>
+                                                                        <th>座標</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -1233,14 +1252,15 @@
                                     </div>
                                     <div role="tabpanel" class="tab-pane" id="dropData">
                                         <div class="table-responsive">
-                                            <table class="table table-bordered table-fixed-width">
+                                            <table class="table table-bordered">
                                                 <thead>
                                                     <tr>
-                                                        <th>種類</th>
-                                                        <th>掉落率</th>
-                                                        <th>木箱機率</th>
-                                                        <th>鐵箱機率</th>
-                                                        <th>金箱機率</th>
+                                                        <th class="width100">種類</th>
+                                                        <th class="width100">掉落率</th>
+                                                        <th class="width100">木箱機率</th>
+                                                        <th class="width100">鐵箱機率</th>
+                                                        <th class="width100">金箱機率</th>
+                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -1250,6 +1270,9 @@
                                                         <td id="nocon_clear_rate1" class="pct"></td>
                                                         <td id="nocon_clear_rate2" class="pct"></td>
                                                         <td id="nocon_clear_rate3" class="pct"></td>
+                                                        <td>
+                                                            <div class="progress" id="nocon_clear_progress"></div>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <th>快速通關</th>
@@ -1257,6 +1280,9 @@
                                                         <td id="speed_clear_rate1" class="pct"></td>
                                                         <td id="speed_clear_rate2" class="pct"></td>
                                                         <td id="speed_clear_rate3" class="pct"></td>
+                                                        <td>
+                                                            <div class="progress" id="speed_clear_progress"></div>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <th>BOSS</th>
@@ -1264,6 +1290,9 @@
                                                         <td id="boss_drop1" class="pct"></td>
                                                         <td id="boss_drop2" class="pct"></td>
                                                         <td id="boss_drop3" class="pct"></td>
+                                                        <td>
+                                                            <div class="progress" id="boss_drop_progress"></div>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <th>小王</th>
@@ -1271,6 +1300,9 @@
                                                         <td id="mid_drop1" class="pct"></td>
                                                         <td id="mid_drop2" class="pct"></td>
                                                         <td class="empty-td" id="mid_drop3" class="pct"></td>
+                                                        <td>
+                                                            <div class="progress" id="mid_drop_progress"></div>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <th>雜魚</th>
@@ -1278,6 +1310,9 @@
                                                         <td id="zako_drop1" class="pct"></td>
                                                         <td id="zako_drop2" class="pct"></td>
                                                         <td class="empty-td" id="zako_drop3" class="pct"></td>
+                                                        <td>
+                                                            <div class="progress" id="zako_drop_progress"></div>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -1333,6 +1368,7 @@
                     <li role="presentation"><a href="#expTab" aria-controls="expTab" role="tab" data-toggle="tab">經驗</a></li>
                     <li role="presentation"><a href="#tearsTab" aria-controls="tearsTab" role="tab" data-toggle="tab">交換所</a></li>
                     <li role="presentation"><a href="#abilityListTab" aria-controls="abilityListTab" role="tab" data-toggle="tab">被動</a></li>
+                    <li role="presentation"><a href="#limitbreakTab" aria-controls="limitbreakTab" role="tab" data-toggle="tab">突破</a></li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -1517,6 +1553,74 @@
                             <tbody>
                             </tbody>
                         </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="limitbreakTab">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <div class="table-responsive table-scroll">
+                                    <table class="table table-bordered table-striped table-hover" id="limitbreakR1Table">
+                                        <thead>
+                                            <tr>
+                                                <th>一星等級</th>
+                                                <th>需要眼淚</th>
+                                                <th>累積眼淚</th>
+                                                <th>眼淚倒算</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="table-responsive table-scroll">
+                                    <table class="table table-bordered table-striped table-hover" id="limitbreakR2Table">
+                                        <thead>
+                                            <tr>
+                                                <th>二星等級</th>
+                                                <th>需要眼淚</th>
+                                                <th>累積眼淚</th>
+                                                <th>眼淚倒算</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="table-responsive table-scroll">
+                                    <table class="table table-bordered table-striped table-hover" id="limitbreakR3Table">
+                                        <thead>
+                                            <tr>
+                                                <th>三星等級</th>
+                                                <th>需要眼淚</th>
+                                                <th>累積眼淚</th>
+                                                <th>眼淚倒算</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="table-responsive table-scroll">
+                                    <table class="table table-bordered table-striped table-hover" id="limitbreakR4Table">
+                                        <thead>
+                                            <tr>
+                                                <th>四星等級</th>
+                                                <th>需要眼淚</th>
+                                                <th>累積眼淚</th>
+                                                <th>眼淚倒算</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -208,6 +208,9 @@ a.list-group-item.not-yet {
 
 th > select {
 	font-weight: normal;
+	background-color: transparent;
+	border: 0;
+	border-bottom: 1px solid;
 }
 
 kbd + kbd {
@@ -247,6 +250,10 @@ kbd + kbd {
 	overflow-y: auto;
 }
 
+.table-scroll > .table {
+	margin-bottom: 0;
+}
+
 .table-fixed-width {
 	width: inherit;
 }
@@ -270,6 +277,7 @@ kbd + kbd {
   -webkit-transition: all 0.2s;
   -o-transition: all 0.2s;
   transition: all 0.2s;
+  margin-top: 1px;
 }
 .nav-tabs > li > a:hover,
 .nav-tabs > li > a:focus:hover {
@@ -308,18 +316,6 @@ kbd + kbd {
 
 .nav > li > a {
 	padding: 5px 10px;
-}
-
-.skill-info > td {
-	padding: 0 !important;
-}
-
-.skill-info > td > .table {
-	margin-bottom: 0;
-}
-
-.skill-info-table > tbody > tr > th {
-	text-align: right;
 }
 
 .wood-box {
@@ -386,4 +382,8 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 a > i {
 	vertical-align: middle;
 	padding-left: 3px;
+}
+
+.progress-bar-wood {
+	background-color: rgb(174, 105, 55);
 }
