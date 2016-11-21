@@ -56,6 +56,7 @@ var dataTableOption = {
     $("a[href='#weaponListTab']").one("click", initWeaponList);
     $("a[href='#abilityListTab']").one("click", initAbilityList);
 	$("a[href='#limitbreakTab']").one("click", initLimitbreak);
+	$("a[href='#monsterListTab']").one("click", initMonsterList);
 
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
@@ -117,16 +118,12 @@ function initUnit() {
     for (var id in db.unit) {
         var data = db.unit[id];
 
-        if (skipDirty && isFakeUnit(data)) continue;
+        if (skipDirty && isDirtyUnit(data)) continue;
 
         var name = getUnitName(data);
         var job = getUnitJob(data);
-        // 判斷是否是尚未做好的角色，是的話修改文字變淡
-        var cssClass = '';
-        if (data.cv == '不明' || db.unit_comment[id].comment1 == 'ゲーム起動後初回遷移時　朝') {
-            cssClass = 'not-yet';
-        }
-        var itemHtml = listItemHtml(id, name, job, "loadUnitData(" + id + ");", cssClass);
+
+        var itemHtml = listItemHtml(id, name, job, "loadUnitData(" + id + ");", '');
         htmls[data.rarity] += itemHtml;
     }
     for (var i = 1; i <= 4; i++) {
@@ -155,7 +152,7 @@ function initAccessory() {
 
     for (var id in db.accessory) {
         // 隱藏未設定好的裝備
-        if (skipDirty && isFakeAccessory(id)) continue;
+        if (skipDirty && isDirtyAccessory(id)) continue;
 
         var data = db.accessory[id];
 
@@ -184,7 +181,7 @@ function initWeapon() {
     for (var id in db.weapon) {
         var data = db.weapon[id];
 
-        if (skipDirty && isFakeWeapon(data)) continue;
+        if (skipDirty && isDirtyWeapon(data)) continue;
 
         var name = data.name;
         // 不能裝備的武器
@@ -452,7 +449,7 @@ function initUnitList() {
     for (var id in db.unit) {
         var data = db.unit[id];
 
-        if (skipDirty && isFakeUnit(data)) continue;
+        if (skipDirty && isDirtyUnit(data)) continue;
         itemList.push(data);
     }
 
@@ -498,23 +495,13 @@ function quickSearch(text) {
     $input.val(text).keyup();
 }
 
-function isFakeUnit(data) {
-    // 排除無法取得的一星無屬性角色
-    if (data.rarity == 1 && data.use_element == 0) return true;
-    // 排除未設定的角色
-    if (data.name == "未定☆☆☆☆") return true;
-	// 排除沒有技能資料的角色
-	if (db.unit_command[data.id] == null) return true;
-    return false;
-}
-
 // 初始化裝備一覽
 function initAccessoryList() {
     var itemList = [];
     for (var id in db.accessory) {
         var data = db.accessory[id];
 
-        if (skipDirty && isFakeAccessory(id)) continue;
+        if (skipDirty && isDirtyAccessory(id)) continue;
         itemList.push(data);
     }
 
@@ -566,7 +553,7 @@ function initWeaponList() {
     for (var id in db.weapon) {
         var data = db.weapon[id];
 
-        if (skipDirty && isFakeWeapon(data)) continue;
+        if (skipDirty && isDirtyWeapon(data)) continue;
         if (data.job == -1) continue; // 不顯示武煉石等無法裝備的武器
         itemList.push(data);
     }
@@ -611,7 +598,7 @@ function initAbilityList() {
     for (var id in db.unit) {
         var data = db.unit[id];
 
-        if (skipDirty && isFakeUnit(data)) continue;
+        if (skipDirty && isDirtyUnit(data)) continue;
 
         for (var i = 1; i <= 4; i++) {
             var typeId = data['ability0' + i];
@@ -642,6 +629,7 @@ function initAbilityList() {
     renderTable("abilityTable", html);
 }
 
+// 初始化突破一覽
 function initLimitbreak() {
 	for (var r = 1; r <= 4; r++) {
 		// 因為倒算關係，先計算總和
@@ -663,19 +651,25 @@ function initLimitbreak() {
 			html += tableRow([startLevel + (index + 1) * 5, val, tears, sum]);
 		});
 		
-		/*for (var id in data) {
-			var current_tear = data[id].tears;
-			tears += current_tear;
-			sum -= current_tear;
-			html += tableRow([startLevel + id * 5, data[id].tears, tears, sum]);
-		}*/
-		
 		$("#limitbreakR" + r + "Table > tbody").html(html);
 	}
 }
 
+// 初始化怪物一覽
+function initMonsterList() {
+	var html = '';
+    for (var id in db.monster) {
+        var data = db.monster[id];
+		var base = db.monster_base[data.base_id];
+		
+		var list = [base.name, data.hp, data.atk, data.agi];
+		html += tableRow(list);
+    }
+	$("#monsterListTable > tbody").html(html);
+}
+
 // 判斷是否為尚未完成的裝備
-function isFakeAccessory(id) {
+function isDirtyAccessory(id) {
     var item = db.accessory_upgrade[id];
     var keys = Object.keys(item);
     // 因為出現了直接強化完成的武器，所以不能只判斷編號為1的了
@@ -683,10 +677,19 @@ function isFakeAccessory(id) {
     return first == null || first.flavor == null || first.flavor.length <= 4;
 }
 
+// 判斷是否為未完成的角色
+function isDirtyUnit(data) {
+    // 排除無法取得的一星無屬性角色
+    if (data.rarity == 1 && data.use_element == 0) return true;
+	// 排除沒有技能資料的角色
+	if (db.unit_command[data.id] == null) return true;
+	// 排除未設定對話的角色
+	if (db.unit_comment[data.id].comment1 == 'ゲーム起動後初回遷移時　朝') return true;
+    return false;
+}
+
 // 判斷是否為未完成的武器
-function isFakeWeapon(data) {
-    // 隱藏不能裝備的武器
-    //if (data.job == -1) return true;
+function isDirtyWeapon(data) {
     // 隱藏未設定的武器
     if (data.hp == 1 && data.atk == 1 && data.agi == 1) return true;
     return false;
@@ -1774,38 +1777,41 @@ function getMonsterPrefix(type) {
 function loadMonsterData(id, m_type) {
     setActive($monsterList, id);
 
-    var data_monster = db.monster[id];
-    var data_monsterbase = db.monster_base[data_monster.base_id];
-    var data_aibase = db.monster_ai_base[data_monster.monster_ai_id];
+    var data = db.monster[id];
+    var base = db.monster_base[data.base_id];
+    var data_aibase = db.monster_ai_base[data.monster_ai_id];
 
-    // 由關卡定義的HP/ATK/BREAK取代原始定義
+    // 由關卡定義的HP/ATK/BREAK計算真實血量
+	// monster本身定義的是百分比，幾乎都是hp:10000 atk:100
+	// 當參戰人數增加，HP會乘上特定比例作為最終血量
     if (m_type == 0) {
-        setMonValue("hp", current_quest.boss_hp);
-        setMonValue("atk", current_quest.boss_atk);
+        setMonValue("hp", current_quest.boss_hp * (data.hp / 100));
+        setMonValue("atk", current_quest.boss_atk * (data.atk / 100));
         setMonValue("break", current_quest.boss_break);
     } else if (m_type == 1) {
-        setMonValue("hp", current_quest.mid_hp);
-        setMonValue("atk", current_quest.mid_atk);
+        setMonValue("hp", current_quest.mid_hp * (data.hp / 100));
+        setMonValue("atk", current_quest.mid_atk * (data.atk / 100));
         setMonValue("break", current_quest.mid_break);
     } else if (m_type == 2) {
-        setMonValue("hp", current_quest.zako_hp);
-        setMonValue("atk", current_quest.zako_atk);
+        setMonValue("hp", current_quest.zako_hp * (data.hp / 100));
+        setMonValue("atk", current_quest.zako_atk * (data.atk / 100));
         setMonValue("break", 0);
     }
 
     // 基本資料
-    setMonValue("name", data_monsterbase.name);
-	setMonValue("barrier", data_monster.barrier);
-    setMonValue("gravity", data_monster.gravity);
-    setMonValue("mass", data_monster.mass);
-    setMonValue("floating", (data_monster.floating == 1).display());
-    setMonValue("through", (data_monster.through == 0).display());
-    setMonValue("use_element", displayElement(data_monster.use_element1, data_monster.use_element2));
-    setMonValue("use_debuff", displayDebuff(data_monster.use_debuff1, data_monster.use_debuff2));
-    setMonValue("weak_element", displayElement(data_monster.weak_element1, data_monster.weak_element2));
-    setMonValue("weak_debuff", displayDebuff(data_monster.weak_debuff1, data_monster.weak_debuff2));
-    setMonValue("monster_category", db.monster_category[data_monsterbase.category].name);
-    setMonValue("monster_size", data_monsterbase.size);
+    setMonValue("name", base.name);
+	setMonValue("agi", data.agi);
+	setMonValue("barrier", data.barrier);
+    setMonValue("gravity", data.gravity);
+    setMonValue("mass", data.mass);
+    setMonValue("floating", (data.floating == 1).display());
+    setMonValue("through", (data.through == 0).display());
+    setMonValue("use_element", displayElement(data.use_element1, data.use_element2));
+    setMonValue("use_debuff", displayDebuff(data.use_debuff1, data.use_debuff2));
+    setMonValue("weak_element", displayElement(data.weak_element1, data.weak_element2));
+    setMonValue("weak_debuff", displayDebuff(data.weak_debuff1, data.weak_debuff2));
+    setMonValue("monster_category", db.monster_category[base.category].name);
+    setMonValue("monster_size", base.size);
 
     if (data_aibase.dying_rage_value > 0) {
         setMonValue("rage", String.Format("HP≦{0}%（持續時間 {1}）", data_aibase.dying_rage_value, data_aibase.dying_rage_time));
@@ -1814,7 +1820,7 @@ function loadMonsterData(id, m_type) {
     }
 
     // 抗性
-    var data_resist = db.monster_resist[data_monster.base_id];
+    var data_resist = db.monster_resist[data.base_id];
     for (var prop in data_resist) {
         if (prop == 'id' || prop == 'break_flag') continue; // 跳過這兩個屬性
         var value = data_resist[prop];
@@ -1852,8 +1858,8 @@ function loadMonsterData(id, m_type) {
 
 	// 部位
 	html = '';
-    for (var part_id in db.monster_parts[data_monster.base_id]) {
-		var part = db.monster_parts[data_monster.base_id][part_id];
+    for (var part_id in db.monster_parts[data.base_id]) {
+		var part = db.monster_parts[data.base_id][part_id];
 		var list = [part.parts_id, 
 					part.hitpoint,
 					enums.weakness[part.weakness],
