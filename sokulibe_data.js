@@ -1808,16 +1808,20 @@ function loadMonsterData(id, m_type) {
     // 由關卡定義的HP/ATK/BREAK計算真實血量
     // monster本身定義的是百分比，幾乎都是hp:10000 atk:100
     // 當參戰人數增加，HP會乘上特定比例作為最終血量
+	var hp;
     if (m_type == 0) {
-        setMonValue("hp", current_quest.boss_hp * (data.hp / 100));
+		hp = current_quest.boss_hp * (data.hp / 100);
+        setMonValue("hp", hp);
         setMonValue("atk", current_quest.boss_atk * (data.atk / 100));
         setMonValue("break", current_quest.boss_break);
     } else if (m_type == 1) {
-        setMonValue("hp", current_quest.mid_hp * (data.hp / 100));
+		hp = current_quest.mid_hp * (data.hp / 100);
+        setMonValue("hp", hp);
         setMonValue("atk", current_quest.mid_atk * (data.atk / 100));
         setMonValue("break", current_quest.mid_break);
     } else if (m_type == 2) {
-        setMonValue("hp", current_quest.zako_hp * (data.hp / 100));
+		hp = current_quest.zako_hp * (data.hp / 100);
+        setMonValue("hp", hp);
         setMonValue("atk", current_quest.zako_atk * (data.atk / 100));
         setMonValue("break", 0);
     }
@@ -1830,6 +1834,7 @@ function loadMonsterData(id, m_type) {
     setMonValue("mass", data.mass);
     setMonValue("floating", (data.floating == 1).display());
     setMonValue("through", (data.through == 0).display());
+	setMonValue("poison", String.Format("{0} ({1}%)", (hp * (data.poison / 10000)).toFixed(0), data.poison / 100));
     setMonValue("use_element", displayElement(data.use_element1, data.use_element2));
     setMonValue("use_debuff", displayDebuff(data.use_debuff1, data.use_debuff2));
     setMonValue("weak_element", displayElement(data.weak_element1, data.weak_element2));
