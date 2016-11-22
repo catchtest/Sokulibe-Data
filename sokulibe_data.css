@@ -387,3 +387,7 @@ a > i {
 .progress-bar-wood {
 	background-color: rgb(174, 105, 55);
 }
+
+.alert {
+	padding: 5px 10px;
+}

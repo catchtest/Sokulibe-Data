@@ -879,6 +879,7 @@ function loadUnitData(id) {
 
     // 每次切換時清除項目
     $("#skillAtk").hide();
+	$("#skillAtkExt").hide();
 
     // 奧義
     var ougiData = db.ougi[data.ougi_id];
@@ -971,7 +972,16 @@ function getOugiTd(id) {
 function loadSkillAtk(id) {
     var $table = $("#skillAtk");
     var data = db.skill_atk[id];
-    commonLoadAtk($table, data);
+	var ext;
+	
+	if (id in enums.skill_ext_mapping) {
+		ext = enums.skill_ext[enums.skill_ext_mapping[id]];
+		$("#skillAtkExt").html(ext.comment).show();
+	} else {
+		$("#skillAtkExt").hide();
+	}
+	
+    commonLoadAtk($table, data, ext);
 }
 
 function loadOugiAtk(id) {
@@ -989,14 +999,14 @@ function loadMonsterSkillAtk(id) {
 	});
 }
 
-function commonLoadAtk($table, data) {
-    var obj = getSkillAtkTd(data);
+function commonLoadAtk($table, data, ext) {
+    var obj = getSkillAtkTd(data, ext);
     $table.children("tbody").html(obj.body);
     $table.children("tfoot").html(obj.foot);
     $table.show();
 }
 
-function getSkillAtkTd(data) {
+function getSkillAtkTd(data, ext) {
     var html = '';
     var sum_hit = 0;
     var sum_dmg = 0;
@@ -1119,18 +1129,19 @@ function getSkillAtkTd(data) {
             html_debuff += displaySkillDebuff(debuff_id, sum_debuff[debuff_id], 0);
         }
 
+		var multiple = (ext != null && ext.type === 1) ? ext.value : 1;
         var footerList = [
-            String.Format("{0} Hits", sum_hit),
+            String.Format("{0} Hits", sum_hit * multiple),
             '',
-            sum_dmg,
+            sum_dmg * multiple,
             '',
             '',
             html_debuff,
             sum_atk_type,
             sum_element,
-            sum_gravity,
-            sum_hate,
-            sum_break,
+            sum_gravity * multiple,
+            sum_hate * multiple,
+            sum_break * multiple,
             sum_effects.join('<br />'),
             isNaN(sum_knockback) ? '' : sum_knockback,
             isNaN(sum_huge_knockback) ? '' : sum_huge_knockback,
