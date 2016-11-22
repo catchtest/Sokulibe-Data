@@ -255,7 +255,7 @@ kbd + kbd {
 }
 
 .table-fixed-width {
-	width: inherit;
+	width: auto;
 }
 
 .table-fixed-width > thead > tr > th:not(.expand-th) {

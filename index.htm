@@ -35,13 +35,14 @@
 
 <body>
     <div class="container-fluid">
-        <h3 style='font-weight: bold;'>蒼空解放資料查詢 <small>解包: <a href="https://github.com/greydust/Sokulibe-Decoder">灰灰</a>　製作: <a href="https://github.com/catchtest/Sokulibe-Data">蕭雲</a>　更新日期: 2016/11/21　資料日期: 2016/11/17</small></h3>
+        <h3 style='font-weight: bold;'>蒼空解放資料查詢 <small>解包: <a href="https://github.com/greydust/Sokulibe-Decoder">灰灰</a>　製作: <a href="https://github.com/catchtest/Sokulibe-Data">蕭雲</a>　更新日期: 2016/11/22　資料日期: 2016/11/17</small></h3>
 
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation"><a href="#unit" aria-controls="unit" role="tab" data-toggle="tab">角色</a></li>
             <li role="presentation"><a href="#accessory" aria-controls="ring" role="tab" data-toggle="tab">裝備</a></li>
             <li role="presentation"><a href="#weapon" aria-controls="weapon" role="tab" data-toggle="tab">武器</a></li>
             <li role="presentation"><a href="#event" aria-controls="event" role="tab" data-toggle="tab">關卡</a></li>
+            <li role="presentation"><a href="#craftBoardTab" aria-controls="craftBoardTab" role="tab" data-toggle="tab">星盤</a></li>
             <li role="presentation"><a href="#overviewTab" aria-controls="overviewTab" role="tab" data-toggle="tab">一覽</a></li>
         </ul>
 
@@ -363,8 +364,8 @@
                                                 </tfoot>
                                             </table>
                                         </div>
-										
-										<div class="alert alert-danger" style="display: none;" role="alert" id="skillAtkExt"></div>
+
+                                        <div class="alert alert-danger" style="display: none;" role="alert" id="skillAtkExt"></div>
 
                                     </div>
                                     <div role="tabpanel" class="tab-pane" id="skillDescTab">
@@ -1370,7 +1371,6 @@
                     <li role="presentation"><a href="#tearsTab" aria-controls="tearsTab" role="tab" data-toggle="tab">交換所</a></li>
                     <li role="presentation"><a href="#abilityListTab" aria-controls="abilityListTab" role="tab" data-toggle="tab">被動</a></li>
                     <li role="presentation"><a href="#limitbreakTab" aria-controls="limitbreakTab" role="tab" data-toggle="tab">突破</a></li>
-                    <!--<li role="presentation"><a href="#monsterListTab" aria-controls="monsterListTab" role="tab" data-toggle="tab">怪物</a></li>-->
                 </ul>
 
                 <!-- Tab panes -->
@@ -1388,7 +1388,7 @@
                                     <th>最大HP</th>
                                     <th>最大攻擊</th>
                                     <th>最大速度</th>
-									<th>異常耐性</th>
+                                    <th>異常耐性</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -1625,21 +1625,50 @@
                             </div>
                         </div>
                     </div>
-					<div role="tabpanel" class="tab-pane" id="monsterListTab">
-                        <table class="table table-bordered table-striped table-hover" id="monsterListTable">
-                            <thead>
-                                <tr>
-                                    <th>名字</th>
-									<th>體力</th>
-									<th>攻擊</th>
-									<th>速度</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-					</div>
-				</div>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="craftBoardTab">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="list-group" id="craftBoardList"></div>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover" id="craftBoardTable">
+                                        <thead>
+                                            <tr>
+                                                <th class="width100">職業</th>
+                                                <th>加成總和</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="table-responsive table-scroll">
+                                    <table class="table table-bordered table-striped table-hover" id="craftBoardDetailTable">
+                                        <thead>
+                                            <tr>
+                                                <th>職業</th>
+                                                <th>加成項目</th>
+                                                <th>數值</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
