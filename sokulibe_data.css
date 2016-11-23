@@ -392,3 +392,13 @@ a > i {
 .alert {
 	padding: 5px 10px;
 }
+
+.well-legend {
+	margin-bottom: 15px;
+    background: -webkit-linear-gradient(left, rgba(0,0,0,0.15), rgba(0,0,0,0)); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, rgba(0,0,0,0.15), rgba(0,0,0,0)); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, rgba(0,0,0,0.15), rgba(0,0,0,0)); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, rgba(0,0,0,0.15), rgba(0,0,0,0)); /* Standard syntax (must be last) */
+	border: 0;
+	padding: 5px;
+}

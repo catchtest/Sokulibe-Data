@@ -110,6 +110,10 @@ var dataTableOption = {
                 break;
         }
     });
+	
+	if (getParameterByName("dirty") == 1) {
+		skipDirty = false;
+	}
 }(jQuery));
 
 // 初始化角色列表
@@ -1096,8 +1100,14 @@ function getSkillAtkTd(data, ext) {
             var prevValue = sum_debuff[hit.debuff] || 0;
             sum_debuff[hit.debuff] = prevValue + hit.debuff_value;
         }
+		var ani_xy = hit.power_x + ', ' + hit.power_y;
+		if (hit.centerflag === 1) {
+			ani_xy += '<br />(中心)';
+		}
+		var hit_num = ext != null && ext.type === 2 ? 1 : hit.hit_num;
 
-        var list = [hit.hit_num,
+        var list = [
+			hit_num,
             hitType,
             hit.dmg,
             hit.recovery_debuff_id == 0 ? '' : debuffHtml(hit.recovery_debuff_id),
@@ -1111,7 +1121,7 @@ function getSkillAtkTd(data, ext) {
             effects.join('<br />'),
             hit.knockback,
             hit.huge_knockback,
-            hit.power_x + ', ' + hit.power_y,
+            ani_xy,
             hold_effect.join('<br />'),
         ];
         html += tableRow(list);
@@ -1129,19 +1139,45 @@ function getSkillAtkTd(data, ext) {
             html_debuff += displaySkillDebuff(debuff_id, sum_debuff[debuff_id], 0);
         }
 
-        var multiple = (ext != null && ext.type === 1) ? ext.value : 1;
+        
+		
+		if (ext != null) {
+			if (ext.type === 1) {   // 多段攻擊
+				var multiple = ext.value;
+				
+				sum_hit * multiple;
+				sum_dmg *= multiple;
+				sum_gravity *= multiple;
+				sum_hate *= multiple;
+				sum_break *= multiple;
+				
+			} else if (ext.type === 2) {   // 貓弓S3例外處理
+				// 找出第一個值跟最後一個值顯示
+				var atk_id_array = Object.keys(data);
+				var firstHit = data[atk_id_array[0]];
+				var lastHit = data[atk_id_array[atk_id_array.length - 1]];
+				
+				sum_hit = 1;
+				sum_dmg = firstHit.dmg + '-' + lastHit.dmg;
+				sum_gravity = firstHit.gravity + '-' + lastHit.gravity;
+				sum_hate = firstHit.hate + '-' + lastHit.hate;
+				sum_break = firstHit.break_ + '-' + lastHit.break_;
+				sum_knockback = firstHit.knockback;
+			}
+		}
+		
         var footerList = [
-            String.Format("{0} Hits", sum_hit * multiple),
+            String.Format("{0} Hits", sum_hit),
             '',
-            sum_dmg * multiple,
+            sum_dmg,
             '',
             '',
             html_debuff,
             sum_atk_type,
             sum_element,
-            sum_gravity * multiple,
-            sum_hate * multiple,
-            sum_break * multiple,
+            sum_gravity,
+            sum_hate,
+            sum_break,
             sum_effects.join('<br />'),
             isNaN(sum_knockback) ? '' : sum_knockback,
             isNaN(sum_huge_knockback) ? '' : sum_huge_knockback,
