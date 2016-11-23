@@ -673,6 +673,7 @@ function initCraftBoard() {
         var itemHtml = listItemHtml(id, data.name, '', "loadCraftBoardData(" + id + ");", '');
         html += itemHtml;
     }
+	html += listItemHtml(0, '總和', '', "loadCraftBoardData(" + 0 + ");", '');
     $("#craftBoardList").html(html);
 }
 
@@ -1832,6 +1833,7 @@ function loadMonsterData(id, m_type) {
     setMonValue("barrier", data.barrier);
     setMonValue("gravity", data.gravity);
     setMonValue("mass", data.mass);
+	setMonValue("hk_resist", (100 - data.hk_resist) + '%');
     setMonValue("floating", (data.floating == 1).display());
     setMonValue("through", (data.through == 0).display());
 	setMonValue("poison", String.Format("{0} ({1}%)", (hp * (data.poison / 10000)).toFixed(0), data.poison / 100));
@@ -1911,7 +1913,6 @@ function loadCraftBoardData(id) {
     loadDataEvent(id);
 
     var html = '';
-    var data = db.gift[id];
     var summary = [
         [0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0],
@@ -1920,50 +1921,60 @@ function loadCraftBoardData(id) {
         [0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0]
     ];
+	var id_list = id === 0 ? Object.keys(db.gift) : [id];
     var sumJP = 0;
 
-    for (var c_id in data) {
-        var dataItem = data[c_id];
-        if (dataItem.unlock_jp == 0) continue; // 起始點
+	id_list.forEach(function(b_id) {
+		for (var c_id in db.gift[b_id]) {
+			var dataItem = db.gift[b_id][c_id];
+			if (dataItem.unlock_jp == 0) continue; // 起始點
 
-        // 全職業
-        if (dataItem.type1 === 6) {
-            for (var j = 1; j < summary.length; j++) {
-                summary[j][dataItem.type2 - 1] += dataItem.value;
-            }
+			// 全職業
+			if (dataItem.type1 === 6) {
+				for (var j = 1; j < summary.length; j++) {
+					summary[j][dataItem.type2 - 1] += dataItem.value;
+				}
 
-        } else {
-            summary[dataItem.type1][dataItem.type2 - 1] += dataItem.value;
-        }
-        sumJP += dataItem.unlock_jp;
+			} else {
+				summary[dataItem.type1][dataItem.type2 - 1] += dataItem.value;
+			}
+			sumJP += dataItem.unlock_jp;
 
-        var job = enums.craft_job[dataItem.type1];
-        var type = enums.craft_type[dataItem.type2];
-        var value = dataItem.type2 === 1 ? '+' + dataItem.value :
-            dataItem.type2 === 6 ? '-' + dataItem.value + '%' :
-            '+' + dataItem.value + '%';
-
-        //var sign = (dataItem.type2 === 6) ? '-' : '+';
-        //var text = String.Format('{0}{2}{1}%', type, dataItem.value, sign);
-
-        html += tableRow([job, type, value]);
-    }
+			var job_text = enums.craft_job[dataItem.type1];
+			var type_text = enums.craft_type[dataItem.type2];
+			var value = displayBoardValue(dataItem.type2 - 1, dataItem.value);			
+			html += tableRow([job_text, type_text, value]);
+		}
+	});
 
     var htmlSummary = '';
-    for (var job = 0; job < summary.length; job++) {
+    for (var job = 1; job < summary.length; job++) {
         var content = [];
-        for (var type = 0; type < summary[job].length; type++) {
+		content.push(enums.craft_job[job]);
+        for (var type = 1; type < summary[job].length; type++) {
             var value = summary[job][type];
-            if (value === 0) continue;
-            content.push(enums.craft_type[type + 1] + (type === 0 ? ' + ' + value : type === 6 ? ' - ' + value + '%' : ' + ' + value + '%'));
+            if (value === 0) {
+				content.push('');
+			} else {
+				content.push(displayBoardValue(type, value));
+			}
         }
 
-        htmlSummary += tableRow([enums.craft_job[job], content.join('<br />')]);
+        htmlSummary += tableRow(content);
     }
-    htmlSummary += tableRow(['JP需求', sumJP]);
+	var htmlCommon = '';
+	htmlCommon += tableRow(['體力', '+' + summary[0][0]]);
+    htmlCommon += tableRow(['JP合計', sumJP]);
 
+	$("#craftBoardCommonTable > tbody").html(htmlCommon);
     $("#craftBoardTable > tbody").html(htmlSummary);
     $("#craftBoardDetailTable > tbody").html(html);
+}
+
+function displayBoardValue(type, value) {
+	return type === 0 ? '+' + value 
+	     : type === 5 ? '-' + value + '%' 
+		 : '+' + value + '%';
 }
 
 function setMonValue(className, content) {

@@ -1094,6 +1094,10 @@
                                                                 <th>毒每秒扣HP</th>
                                                                 <td class="poison"></td>
                                                             </tr>
+															<tr>
+                                                                <th>擊退耐性</th>
+                                                                <td class="hk_resist"></td>
+                                                            </tr>
                                                             <tr>
                                                                 <th>攻擊屬性</th>
                                                                 <td class="use_element"></td>
@@ -1638,13 +1642,24 @@
                     </div>
                     <div class="col-sm-9">
                         <div class="row">
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover" id="craftBoardCommonTable">
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+							
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped table-hover" id="craftBoardTable">
                                         <thead>
                                             <tr>
-                                                <th class="width100">職業</th>
-                                                <th>加成總和</th>
+                                                <th>職業</th>
+                                                <th>HP</th>
+												<th>攻擊</th>
+												<th>速度</th>
+												<th>破盾</th>
+												<th>冷卻</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -1652,7 +1667,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <div class="table-responsive table-scroll">
                                     <table class="table table-bordered table-striped table-hover" id="craftBoardDetailTable">
                                         <thead>
