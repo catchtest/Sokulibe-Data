@@ -1870,12 +1870,43 @@ function loadMonsterData(id, m_type) {
         var skill = db.monster_skill[command.skill_id];
 
         var special = [];
-        if (skill.summon01_id > 0) {
-            special.push('召喚怪物');
-        }
+		for (var i = 1; i <= 4; i++) {
+			var summon_id = skill['summon0' + i + '_id'];
+			if (summon_id === 0) continue;
+			var summon_value = skill['summon0' + i + '_value'];
+			
+			var summon_mon_id;
+			if (summon_id <= 5) {
+				summon_mon_id = current_quest['zako0' + summon_id + '_id'];
+			} else if (summon_id <= 9) {
+				summon_mon_id = current_quest['mid0' + (summon_id - 5) + '_id'];
+			} else {
+				summon_mon_id = current_quest['boss0' + (summon_id - 9) + '_id'];
+			}
+			
+			special.push('召喚怪物 ' + getMonsterName(summon_mon_id) + summon_value.display());
+		}
         if (command.rage_flag > 0) {
-            special.push('狂暴');
+			if (command.rage_flag === 2) {
+				special.push('被打100下後使用');
+			} else {
+				special.push('rage_flag: ' + command.rage_flag);
+			}
         }
+        if (command.hprate_flag > 0) {
+            special.push('hprate_flag: ' + command.hprate_flag);
+        }
+		if (skill.break_parts > 0) {
+			special.push('部位' + skill.break_parts + ' 破壞時');
+			
+			if (skill.change_skillid > 0) {
+				special.push('此技能變更為 <span class="monster-skill-name">' + db.monster_skill[skill.change_skillid].name + '</span>');
+			}
+			if (skill.change_damage > 0) {
+				special.push('傷害減少' + (100 - skill.change_damage) + '%');
+			}
+		}
+		
         var list = [
             anchor(skill.name, "loadMonsterSkillAtk(" + skill.id + ")"),
             skill.dmg,

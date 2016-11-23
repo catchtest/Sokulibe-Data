@@ -334,7 +334,8 @@ kbd + kbd {
 	color: rgb(62, 136, 180);
 }
 
-.buff-name {
+.buff-name,
+.monster-skill-name {
 	/*margin: 0 5px;*/
 	color: rgb(62, 136, 180);
 }
