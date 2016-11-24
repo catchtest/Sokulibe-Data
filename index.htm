@@ -35,7 +35,7 @@
 
 <body>
     <div class="container-fluid">
-        <h3 style='font-weight: bold;'>蒼空解放資料查詢 <small>解包: <a href="https://github.com/greydust/Sokulibe-Decoder">灰灰</a>　製作: <a href="https://github.com/catchtest/Sokulibe-Data">蕭雲</a>　更新日期: 2016/11/23　資料日期: 2016/11/17</small></h3>
+        <h3 style='font-weight: bold;'>蒼空解放資料查詢</h3>
 
         <ul class="nav nav-pills" role="tablist">
             <li role="presentation" class="active"><a href="#homepage" aria-controls="homepage" role="tab" data-toggle="tab">首頁</a></li>
@@ -52,19 +52,28 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="well" style="box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset;">
-                            <div class="well-legend">歷史更新</div>
-                            <ul class="dl-horizontal" style="">
+                            <div class="well-legend">更新紀錄</div>
+                            <ul>
                                 <li>2016/11/23<br />星盤增加總和<br />怪物技能描述更新</li>
                             </ul>
 							
-							<br />
+                            <div class="well-legend">製作</div>
+                            <ul>
+                                <li>解包：<a href="https://github.com/greydust/Sokulibe-Decoder">灰灰</a></li>
+								<li>製作：<a href="https://github.com/catchtest/Sokulibe-Data">蕭雲</a></li>
+								<li>資料日期：2016/11/17</li>
+                            </ul>
+							
                             <div class="well-legend">小提示</div>
                             <ul>
 								<li>在列表可按 <kbd>↑</kbd><kbd>↓</kbd><kbd>PgUp</kbd><kbd>PgDn</kbd> 直接切換項目</li>
+								<li>在Tab可按 <kbd>←</kbd><kbd>→</kbd> 直接切換項目</li>
+								<li>本網頁使用響應式設計，使用手機也可觀看</li>
 							</ul>
-							<br />
-							<a href="index.htm?theme=1" class="btn btn-default btn-sm">白色背景</a>
-							<a href="index.htm?dirty=1" class="btn btn-default btn-sm">顯示隱藏資料</a>
+							<hr />
+							<a href="index.htm?theme=0" class="btn btn-default btn-sm" id="theme0" style="display: none;">深色背景</a>
+							<a href="index.htm?theme=1" class="btn btn-default btn-sm" id="theme1" style="display: none;">白色背景</a>
+							<button id="showDirty" class="btn btn-default btn-sm">顯示內部資料</a>
                         </div>
                     </div>
                 </div>

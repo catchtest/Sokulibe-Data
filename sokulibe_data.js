@@ -111,8 +111,18 @@ var dataTableOption = {
         }
     });
 	
-	if (getParameterByName("dirty") == 1) {
-		skipDirty = false;
+	$("#showDirty").click(function() {
+		if (confirm("未完成/無法取得的角色、裝備、武器會顯示，確定嗎？\n（進入頁面前必須先點擊此按鈕才會顯示）")) {
+			skipDirty = false;
+			$(this).hide();
+		}
+	});
+	
+	var theme = getParameterByName("theme");
+	if (theme == 1) {
+		$("#theme0").show();
+	} else {
+		$("#theme1").show();
 	}
 }(jQuery));
 

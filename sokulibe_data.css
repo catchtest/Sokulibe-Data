@@ -402,3 +402,7 @@ a > i {
 	border: 0;
 	padding: 5px;
 }
+
+.well ul > li {
+	margin-bottom: 5px;
+}
