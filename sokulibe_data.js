@@ -606,8 +606,8 @@ function initWeaponList() {
             weaponPower.agi,
             weaponMainSkill.dmg,
             weaponMainSkill.break_,
-            weaponSubSkill[1] == null ? '' : weaponSubSkill[1].comment.pre(),
-            weaponSubSkill[5] == null ? '' : weaponSubSkill[5].comment.pre()
+            weaponSubSkill[1] == null ? '' : weaponSubSkill[1].comment.i18n().pre(),
+            weaponSubSkill[5] == null ? '' : weaponSubSkill[5].comment.i18n().pre()
         ];
 
         html += tableRow(list);
@@ -1262,6 +1262,12 @@ function displaySkillBuff(buff, value, time) {
         case 20:
             text = "擊倒無效";
             break;
+		case 21:
+			text = "護盾";
+			break;
+		case 22:
+			text = "嘲諷";
+			break;
         case 23:
             text = "毒無效";
             break;
@@ -1289,7 +1295,23 @@ function displaySkillBuff(buff, value, time) {
         case 31:
             text = String.Format("受到傷害 - {1}%", text, 100 - value);
             break;
-        default:
+		case 32:
+            text = atkUp("破盾值", value);
+            break;
+		case 33:
+            text = "根性";
+            break;
+		case 34:
+            text = "技能無冷卻";
+            break;
+		case 35:
+            text = "技能無詠唱";
+            break;
+		case 37:
+            text = "狂戰";
+            break;
+		case 36:   // モーションが早くなる強化効果を付与
+		default:
             return String.Format("{0} {1} {2}", buff, value, time);
     }
     return text + timeFormat(time);
@@ -1493,7 +1515,7 @@ function loadWeaponData(id) {
     if (data.sub_weapon_skill_id != 0) {
         var data_sub = db.weapon_subskill[data.sub_weapon_skill_id];
         for (var i in data_sub) {
-            $("#weaponSubSkill" + i).html(data_sub[i].name + '<br />' + data_sub[i].comment.pre());
+            $("#weaponSubSkill" + i).html(data_sub[i].name + '<br />' + data_sub[i].comment.i18n().pre());
         }
     } else {
         $("[id^=weaponSubSkill]").empty();
@@ -2254,6 +2276,7 @@ String.prototype.i18n = function() {
             var reStyle = new RegExp('附加(\\S+)的BUFF');
             if (value.match(reStyle)) {
                 value = value.replace(reStyle, '附加<span class="buff-name">$1</span>的BUFF');
+				value = value.replace(reStyle, '附加<span class="buff-name">$1</span>的BUFF');
             }
 
             return value;
@@ -2264,6 +2287,7 @@ String.prototype.i18n = function() {
 }
 
 String.prototype.pre = function() {
+	//return this.replaceAll('\n', '\\n');
     return '<pre class="comment">' + this + '</pre>';
 }
 

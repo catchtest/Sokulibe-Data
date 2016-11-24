@@ -59,6 +59,7 @@ pre {
 	padding: 0;
 	margin: 0;
 	background: none;
+	font-family: inherit;
 }
 
 .comment {
@@ -405,4 +406,9 @@ a > i {
 
 .well ul > li {
 	margin-bottom: 5px;
+}
+
+.table > tbody > tr.active > *,
+.table > tbody > tr.active a {
+	color: white;
 }
