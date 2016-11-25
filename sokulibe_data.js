@@ -3,6 +3,7 @@ var db;
 var localized = {};
 var enums;
 var skipDirty = true;
+var disableTranslate = false;
 var dataTableOption = {
     "autoWidth": false,
     "order": [],
@@ -17,6 +18,17 @@ var dataTableOption = {
 };
 
 (function($) {
+	// 顯示讀取資料錯誤訊息
+	$.ajaxSetup({
+	    "error": function(jqXHR, textStatus, errorThrown) {
+	        if (jqXHR.status == 404) {
+	            alert("File not found.");
+	        } else {
+	            alert("Error: " + textStatus + ": " + errorThrown);
+	        }
+	    }
+	});
+	
     // 讀取Json
     var loadCount = 0;
     var loadSuccess = function() {
@@ -118,12 +130,16 @@ var dataTableOption = {
 		}
 	});
 	
-	var theme = getParameterByName("theme");
-	if (theme == 1) {
-		$("#theme0").show();
-	} else {
-		$("#theme1").show();
-	}
+	$("#disableTranslate").click(function() {
+		if (confirm("裝備、武器效果將以原文顯示，確定嗎？\n（進入頁面前必須先點擊此按鈕才會生效）")) {
+			disableTranslate = true;
+			$(this).hide();
+		}
+	});
+	
+	$("#theme").val(theme).change(function() {
+		location.href = 'index.htm?theme=' + $(this).val();
+	});
 }(jQuery));
 
 // 初始化角色列表
@@ -2261,6 +2277,8 @@ String.Format = function(format) {
 };
 
 String.prototype.i18n = function() {
+	if (disableTranslate) return this;
+	
     // 直接搜尋key
     var value = localized[this];
     if (value != null) return value;
@@ -2275,6 +2293,7 @@ String.prototype.i18n = function() {
             // 修改特殊style
             var reStyle = new RegExp('附加(\\S+)的BUFF');
             if (value.match(reStyle)) {
+				// 因為一句可能有兩次，replaceAll寫法不能用，所以直接修改兩次
                 value = value.replace(reStyle, '附加<span class="buff-name">$1</span>的BUFF');
 				value = value.replace(reStyle, '附加<span class="buff-name">$1</span>的BUFF');
             }

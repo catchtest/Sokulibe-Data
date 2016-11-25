@@ -60,6 +60,7 @@ pre {
 	margin: 0;
 	background: none;
 	font-family: inherit;
+	font-size: inherit;
 }
 
 .comment {
@@ -207,7 +208,7 @@ a.list-group-item.not-yet {
 	/*background-color: #ddd;*/
 }
 
-th > select {
+th > select, .simple-input {
 	font-weight: normal;
 	background-color: transparent;
 	border: 0;

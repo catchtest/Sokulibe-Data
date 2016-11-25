@@ -20,12 +20,12 @@
             if (!results[2]) return '';
             return decodeURIComponent(results[2].replace(/\+/g, " "));
         }
-        if (getParameterByName("theme") == 1) {
-            // 白色背景
+		
+		var theme = getParameterByName("theme") || 'Slate';
+        if (theme === 'Default') {
             document.write('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">');
         } else {
-            // 深色背景
-            document.write('<link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css">');
+            document.write('<link rel="stylesheet" href="https://bootswatch.com/' + theme.toLowerCase() + '/bootstrap.min.css">');
         }
     </script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
@@ -54,6 +54,7 @@
                         <div class="well" style="box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset;">
                             <div class="well-legend">更新紀錄</div>
                             <ul>
+								<li>2016/11/25<br />增加樣式選擇，顯示原文功能</li>
 								<li>2016/11/24<br />翻譯武器副技能效果</li>
                                 <li>2016/11/23<br />星盤增加總和<br />怪物技能描述更新</li>
                             </ul>
@@ -72,9 +73,27 @@
 								<li>本網頁使用響應式設計，使用手機也可觀看</li>
 							</ul>
 							<hr />
-							<a href="index.htm?theme=0" class="btn btn-default btn-sm" id="theme0" style="display: none;">深色背景</a>
-							<a href="index.htm?theme=1" class="btn btn-default btn-sm" id="theme1" style="display: none;">白色背景</a>
-							<button id="showDirty" class="btn btn-default btn-sm">顯示內部資料</a>
+							<select id="theme" class="simple-input">
+								<option>Default</option>
+								<option>Cerulean</option>
+								<option>Cosmo</option>
+								<option>Cyborg</option>
+								<option>Darkly</option>
+								<option>Flatly</option>
+								<option>Journal</option>
+								<option>Lumen</option>
+								<option>Paper</option>
+								<option>Readable</option>
+								<option>Sandstone</option>
+								<option>Simplex</option>
+								<option>Slate</option>
+								<option>Spacelab</option>
+								<option>Superhero</option>
+								<option>United</option>
+								<option>Yeti</option>
+							</select>
+							<button id="showDirty" class="btn btn-default btn-xs">顯示內部資料</button>
+							<button id="disableTranslate" class="btn btn-default btn-xs">顯示原文</button>
                         </div>
                     </div>
                 </div>
