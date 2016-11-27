@@ -69,7 +69,8 @@ var dataTableOption = {
     $("a[href='#abilityListTab']").one("click", initAbilityList);
     $("a[href='#limitbreakTab']").one("click", initLimitbreak);
     $("a[href='#craftBoardTab']").one("click", initCraftBoard);
-
+	$("a[href='#tearsComputeTab']").one("click", initTearsCompute);
+	
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
         $(this).closest("tr").addClass("active");
@@ -475,19 +476,8 @@ function initTears() {
 
 // 初始化角色一覽
 function initUnitList() {
-    var itemList = [];
-    for (var id in db.unit) {
-        var data = db.unit[id];
-
-        if (skipDirty && isDirtyUnit(data)) continue;
-        itemList.push(data);
-    }
-
-    // 以星數排序
-    itemList = itemList.sort(function(a, b) {
-        return b.rarity - a.rarity;
-    });
-
+    var itemList = getUnitSortList();
+	
     var html = '';
     for (var i = 0, len = itemList.length; i < len; i++) {
         var data = itemList[i];
@@ -500,6 +490,7 @@ function initUnitList() {
                 partnerData.id,
                 getUnitName(partnerData));
         }
+		// 顯示抵抗異常狀態
         var resist = db.unit_resist[data.id];
         var resistHtml = '';
         if (resist.poison_resist > 0) resistHtml += debuffHtml(1);
@@ -525,6 +516,22 @@ function initUnitList() {
         html += tableRow(list);
     }
     renderTable("unitListTable", html);
+}
+
+function getUnitSortList() {
+	var itemList = [];
+    for (var id in db.unit) {
+        var data = db.unit[id];
+
+        if (skipDirty && isDirtyUnit(data)) continue;
+        itemList.push(data);
+    }
+
+    // 以星數排序
+    itemList = itemList.sort(function(a, b) {
+        return b.rarity - a.rarity;
+    });
+	return itemList;
 }
 
 function quickSearch(text) {
@@ -707,6 +714,190 @@ function initCraftBoard() {
     $("#craftBoardList").html(html);
 }
 
+// 初始化眼淚計算
+function initTearsCompute() {
+	var itemList = getUnitSortList();
+	var html = '';
+	
+    for (var i = 0, len = itemList.length; i < len; i++) {
+        var data = itemList[i];
+
+		var selectorHtml = $("#setR" + data.rarity + "LvTmpl").html();
+		
+        var list = [
+            anchor(getUnitName(data), "showUnit(" + data.id + ")"),
+            data.rarity,
+            elementHtml(data.use_element),
+            enums.job[data.job_id],
+			selectorHtml,
+			'<input type="text" data-id="' + data.id + '" name="unitTear" class="readonly" readonly />'
+        ];
+		
+		html += tableRow(list);
+	}
+	
+	var $table = $("#tearsComputeTable");
+	$table.on("change", "[name='unitLv']", function() {
+		var rarity = $(this).data("rarity");
+		var value = $(this).val();
+		var $total = $(this).closest("tr").find("[name=unitTear]");
+		$total.val(computeUseTears(value, rarity));
+		updateResultText();
+	});
+	
+	$table.children("tbody").html(html);
+}
+
+function setLv(sender) {
+	var $sender = $(sender);
+	var $input = $sender.closest('td').find('[name=unitLv]');
+	var value = parseInt($sender.text());
+	$input.val(value).change();
+}
+
+function addLv(sender) {
+	var $sender = $(sender);
+	var $input = $sender.closest('td').find('[name=unitLv]');
+	var value = $sender.text();
+	value = parseInt(value.replace('+', ''));
+	value = parseInt($input.val()) + value;
+	if (value > parseInt($input.attr('max'))) value = parseInt($input.attr('max'));
+	if (value < parseInt($input.attr('min'))) value = parseInt($input.attr('min'));
+	$input.val(value).change();
+}
+
+function computeUseTears(lv, rarity) {
+	if (lv == null) return 0;
+	
+	var max_lv = enums.max_level[rarity];
+	var base_lv = max_lv / 2;
+	
+	var use_tears = 0;
+	for (var i = 0; i < enums.limitbreak[rarity].length; i++) {
+		if (lv <= base_lv) break;
+		base_lv += 5;
+		use_tears += enums.limitbreak[rarity][i];		
+	}
+	return use_tears;
+}
+
+function saveToLocal() {
+	if (typeof(Storage) == "undefined") {
+		alert('您的瀏覽器不支援本地儲存');
+		return;
+	}
+	
+	var json = saveCommon();
+	localStorage.setItem("useTears", json);
+	alert('儲存成功');
+}
+
+function saveToText() {
+	var json = saveCommon;
+	
+	hideResultInput();
+	$("#saveToText").show().children("textarea").val(json);
+}
+
+function saveCommon() {
+	var saveData = {};
+	$("#tearsComputeTable > tbody > tr").each(function(){
+		var $lv = $(this).find("[name=unitLv]");
+		if (!$lv.val()) return;
+		
+		var $tear = $(this).find("[name=unitTear]");
+		var id = $tear.data("id");
+		saveData[id] = { 
+			lv: parseInt($lv.val()),
+			tear: parseInt($tear.val()) 
+		};
+	});
+	return JSON.stringify(saveData);
+}
+
+function loadFromLocal() {
+	if (typeof(Storage) == "undefined") {
+		alert('您的瀏覽器不支援本地儲存');
+		return;
+	}
+	
+	var json = localStorage.getItem("useTears"); 
+	if (json == null) {
+		alert('沒有儲存的資料');
+		return;
+	}
+	loadCommon(json);
+}
+
+function loadFromText() {
+	hideResultInput();
+	$("#loadFromText").show();
+}
+
+function loadFromTextButton() {
+	var json = $("#loadFromText").children("textarea").val();
+	if (!json) {
+		alert('沒有輸入文字');
+		return;
+	}
+	loadCommon(json);
+}
+
+function loadCommon(json) {
+	var saveData = JSON.parse(json);
+	
+	$("#tearsComputeTable > tbody > tr").each(function(){
+		var $lv = $(this).find("[name=unitLv]");
+		var $tear = $(this).find("[name=unitTear]");
+		var id = $tear.data("id");
+		
+		var data = saveData[id];
+		if (data != null) {
+			$lv.val(data.lv);
+			$tear.val(data.tear);
+			
+		} else {
+			$lv.val('');
+			$tear.val('');
+		}
+	});
+	updateResultText();
+}
+
+function updateResultText() {
+	var tears = 0;
+	$("#tearsComputeTable").find("[name=unitTear]").each(function(){
+		tears += parseInt($(this).val()) || 0;		
+	});
+	$("#tearsValue").html(tears);
+	
+	var units = 0;
+	var unitsFree = 0;
+	var unitsLv200 = 0;
+	$("#tearsComputeTable").find("[name=unitLv]").each(function(){
+		var $this = $(this);
+		var lv = $this.val();
+		if ($this.data("rarity") == 4 && !!lv) {
+			if (lv == 200) {
+				unitsLv200++;
+			}
+			var id = parseInt($this.closest("tr").find("[name=unitTear]").data("id"));
+			if (enums.free_unit.indexOf(id) >= 0) {
+				unitsFree++;
+			} else {
+				units++;
+			}
+		}
+	});
+	$("#unitCount").html(units);
+	$("#unitFreeCount").html(unitsFree);
+	$("#unitLv200Count").html(unitsLv200);
+}
+
+function hideResultInput() {
+	$("#saveToText").hide();
+	$("#loadFromText").hide();	
+}
 
 // 判斷是否為尚未完成的裝備
 function isDirtyAccessory(id) {

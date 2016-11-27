@@ -122,6 +122,10 @@ pre {
 	margin-top: 0;
 }
 
+.width50 {
+	width: 50px;
+}
+
 .width100 {
 	width: 100px;
 }
@@ -208,11 +212,17 @@ a.list-group-item.not-yet {
 	/*background-color: #ddd;*/
 }
 
-th > select, .simple-input {
+select, input[type=text] {
 	font-weight: normal;
 	background-color: transparent;
 	border: 0;
+	color: inherit;
 	border-bottom: 1px solid;
+}
+
+input.readonly {
+	border: 0;
+	width: 50px;
 }
 
 kbd + kbd {
@@ -254,6 +264,10 @@ kbd + kbd {
 
 .table-scroll > .table {
 	margin-bottom: 0;
+}
+
+.table > tbody > tr > td {
+	vertical-align: middle;	
 }
 
 .table-fixed-width {
@@ -412,4 +426,25 @@ a > i {
 .table > tbody > tr.active > *,
 .table > tbody > tr.active a {
 	color: white;
+}
+
+.btn-lv {
+	visibility: hidden;
+}
+
+.btn-lv > .btn {
+	min-width: 35px;
+}
+
+.result-text {
+	display: inline;	
+}
+
+.result-text span {
+	margin: 0 3px;
+	color: rgb(27, 130, 176);
+}
+
+#tearsComputeTable tr:hover .btn-lv {
+	visibility: visible;	
 }
