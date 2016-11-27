@@ -892,6 +892,7 @@ function updateResultText() {
 	$("#unitCount").html(units);
 	$("#unitFreeCount").html(unitsFree);
 	$("#unitLv200Count").html(unitsLv200);
+	hideResultInput();
 }
 
 function hideResultInput() {
