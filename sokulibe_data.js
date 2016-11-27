@@ -862,6 +862,7 @@ function loadCommon(json) {
 		}
 	});
 	updateResultText();
+	alert('讀取成功');
 }
 
 function updateResultText() {
@@ -892,6 +893,12 @@ function updateResultText() {
 	$("#unitCount").html(units);
 	$("#unitFreeCount").html(unitsFree);
 	$("#unitLv200Count").html(unitsLv200);
+	hideResultInput();
+}
+
+function clearAllTears() {
+	$("#tearsComputeTable").find("[name=unitLv], [name=unitTear]").val('');
+	updateResultText();
 	hideResultInput();
 }
 
