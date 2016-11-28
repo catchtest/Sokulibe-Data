@@ -18,17 +18,17 @@ var dataTableOption = {
 };
 
 (function($) {
-	// 顯示讀取資料錯誤訊息
-	$.ajaxSetup({
-	    "error": function(jqXHR, textStatus, errorThrown) {
-	        if (jqXHR.status == 404) {
-	            alert("File not found.");
-	        } else {
-	            alert("Error: " + textStatus + ": " + errorThrown);
-	        }
-	    }
-	});
-	
+    // 顯示讀取資料錯誤訊息
+    $.ajaxSetup({
+        "error": function(jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status == 404) {
+                alert("File not found.");
+            } else {
+                alert("Error: " + textStatus + ": " + errorThrown);
+            }
+        }
+    });
+
     // 讀取Json
     var loadCount = 0;
     var loadSuccess = function() {
@@ -69,8 +69,8 @@ var dataTableOption = {
     $("a[href='#abilityListTab']").one("click", initAbilityList);
     $("a[href='#limitbreakTab']").one("click", initLimitbreak);
     $("a[href='#craftBoardTab']").one("click", initCraftBoard);
-	$("a[href='#tearsComputeTab']").one("click", initTearsCompute);
-	
+    $("a[href='#tearsComputeTab']").one("click", initTearsCompute);
+
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
         $(this).closest("tr").addClass("active");
@@ -123,24 +123,24 @@ var dataTableOption = {
                 break;
         }
     });
-	
-	$("#showDirty").click(function() {
-		if (confirm("未完成/無法取得的角色、裝備、武器會顯示，確定嗎？\n（進入頁面前必須先點擊此按鈕才會顯示）")) {
-			skipDirty = false;
-			$(this).hide();
-		}
-	});
-	
-	$("#disableTranslate").click(function() {
-		if (confirm("裝備、武器效果將以原文顯示，確定嗎？\n（進入頁面前必須先點擊此按鈕才會生效）")) {
-			disableTranslate = true;
-			$(this).hide();
-		}
-	});
-	
-	$("#theme").val(theme).change(function() {
-		location.href = 'index.htm?theme=' + $(this).val();
-	});
+
+    $("#showDirty").click(function() {
+        if (confirm("未完成/無法取得的角色、裝備、武器會顯示，確定嗎？\n（進入頁面前必須先點擊此按鈕才會顯示）")) {
+            skipDirty = false;
+            $(this).hide();
+        }
+    });
+
+    $("#disableTranslate").click(function() {
+        if (confirm("裝備、武器效果將以原文顯示，確定嗎？\n（進入頁面前必須先點擊此按鈕才會生效）")) {
+            disableTranslate = true;
+            $(this).hide();
+        }
+    });
+
+    $("#theme").val(theme).change(function() {
+        location.href = 'index.htm?theme=' + $(this).val();
+    });
 }(jQuery));
 
 // 初始化角色列表
@@ -477,7 +477,7 @@ function initTears() {
 // 初始化角色一覽
 function initUnitList() {
     var itemList = getUnitSortList();
-	
+
     var html = '';
     for (var i = 0, len = itemList.length; i < len; i++) {
         var data = itemList[i];
@@ -490,7 +490,7 @@ function initUnitList() {
                 partnerData.id,
                 getUnitName(partnerData));
         }
-		// 顯示抵抗異常狀態
+        // 顯示抵抗異常狀態
         var resist = db.unit_resist[data.id];
         var resistHtml = '';
         if (resist.poison_resist > 0) resistHtml += debuffHtml(1);
@@ -519,7 +519,7 @@ function initUnitList() {
 }
 
 function getUnitSortList() {
-	var itemList = [];
+    var itemList = [];
     for (var id in db.unit) {
         var data = db.unit[id];
 
@@ -531,7 +531,7 @@ function getUnitSortList() {
     itemList = itemList.sort(function(a, b) {
         return b.rarity - a.rarity;
     });
-	return itemList;
+    return itemList;
 }
 
 function quickSearch(text) {
@@ -710,216 +710,216 @@ function initCraftBoard() {
         var itemHtml = listItemHtml(id, data.name, '', "loadCraftBoardData(" + id + ");", '');
         html += itemHtml;
     }
-	// 自動產生星盤總和的項目
-	var keys = Object.keys(db.craft_board);
-	for (var i = 2; i <= keys.length; i++) {
-		html += listItemHtml(-i, '星盤1~' + i + ' 總和', '', "loadCraftBoardData(-" + i + ");", '');
-	}
+    // 自動產生星盤總和的項目
+    var keys = Object.keys(db.craft_board);
+    for (var i = 1; i <= keys.length; i++) {
+        html += listItemHtml(-i, '星盤1~' + i + ' 總和', '', "loadCraftBoardData(-" + i + ");", '');
+    }
     $("#craftBoardList").html(html);
 }
 
 // 初始化眼淚計算
 function initTearsCompute() {
-	var itemList = getUnitSortList();
-	var html = '';
-	var commonLvTmpl = $("#setCommonLvTmpl").html();
-	
+    var itemList = getUnitSortList();
+    var html = '';
+    var commonLvTmpl = $("#setCommonLvTmpl").html();
+
     for (var i = 0, len = itemList.length; i < len; i++) {
         var data = itemList[i];
 
-		var selectorHtml = String.Format('<input type="number" min="1" max="{0}" data-rarity="{1}" data-id="{2}" name="unitLv" class="width50" />', 
-								enums.max_level[data.rarity], data.rarity, data.id)
-						   + commonLvTmpl
-						   + $("#setR" + data.rarity + "LvTmpl").html();
-		
+        var selectorHtml = String.Format('<input type="number" min="1" max="{0}" data-rarity="{1}" data-id="{2}" name="unitLv" class="width50" />',
+                enums.max_level[data.rarity], data.rarity, data.id) +
+            commonLvTmpl +
+            $("#setR" + data.rarity + "LvTmpl").html();
+
         var list = [
             anchor(getUnitName(data), "showUnit(" + data.id + ")"),
             data.rarity,
             elementHtml(data.use_element),
             enums.job[data.job_id],
-			selectorHtml,
-			String.Format('<input type="text" data-id="{0}" data-rarity="{1}" name="unitTear" class="readonly" readonly />', data.id, data.rarity)
+            selectorHtml,
+            String.Format('<input type="text" data-id="{0}" data-rarity="{1}" name="unitTear" class="readonly" readonly />', data.id, data.rarity)
         ];
-		
-		html += tableRow(list);
-	}
-	
-	var $table = $("#tearsComputeTable");
-	$table.on("change", "[name='unitLv']", function() {
-		var rarity = $(this).data("rarity");
-		var value = $(this).val();
-		var $total = $(this).closest("tr").find("[name=unitTear]");
-		$total.val(computeUseTears(value, rarity));
-		updateResultText();
-	});
-	
-	$table.children("tbody").html(html);
+
+        html += tableRow(list);
+    }
+
+    var $table = $("#tearsComputeTable");
+    $table.on("change", "[name='unitLv']", function() {
+        var rarity = $(this).data("rarity");
+        var value = $(this).val();
+        var $total = $(this).closest("tr").find("[name=unitTear]");
+        $total.val(computeUseTears(value, rarity));
+        updateResultText();
+    });
+
+    $table.children("tbody").html(html);
 }
 
 function setLv(sender) {
-	var $sender = $(sender);
-	var $input = $sender.closest('td').find('[name=unitLv]');
-	var value = parseInt($sender.text());
-	$input.val(value).change();
+    var $sender = $(sender);
+    var $input = $sender.closest('td').find('[name=unitLv]');
+    var value = parseInt($sender.text());
+    $input.val(value).change();
 }
 
 function addLv(sender) {
-	var $sender = $(sender);
-	var $input = $sender.closest('td').find('[name=unitLv]');
-	var value = $sender.text();
-	value = parseInt(value.replace('+', ''));
-	value = parseInt($input.val()) + value;
-	if (value > parseInt($input.attr('max'))) value = parseInt($input.attr('max'));
-	if (value < parseInt($input.attr('min'))) value = parseInt($input.attr('min'));
-	$input.val(value).change();
+    var $sender = $(sender);
+    var $input = $sender.closest('td').find('[name=unitLv]');
+    var value = $sender.text();
+    value = parseInt(value.replace('+', ''));
+    value = parseInt($input.val()) + value;
+    if (value > parseInt($input.attr('max'))) value = parseInt($input.attr('max'));
+    if (value < parseInt($input.attr('min'))) value = parseInt($input.attr('min'));
+    $input.val(value).change();
 }
 
 function computeUseTears(lv, rarity) {
-	if (lv == null) return 0;
-	
-	var max_lv = enums.max_level[rarity];
-	var base_lv = max_lv / 2;
-	
-	var use_tears = 0;
-	for (var i = 0; i < enums.limitbreak[rarity].length; i++) {
-		if (lv <= base_lv) break;
-		base_lv += 5;
-		use_tears += enums.limitbreak[rarity][i];		
-	}
-	return use_tears;
+    if (lv == null) return 0;
+
+    var max_lv = enums.max_level[rarity];
+    var base_lv = max_lv / 2;
+
+    var use_tears = 0;
+    for (var i = 0; i < enums.limitbreak[rarity].length; i++) {
+        if (lv <= base_lv) break;
+        base_lv += 5;
+        use_tears += enums.limitbreak[rarity][i];
+    }
+    return use_tears;
 }
 
 function saveToLocal() {
-	if (typeof(Storage) == "undefined") {
-		alert('您的瀏覽器不支援本地儲存');
-		return;
-	}
-	
-	var json = saveCommon();
-	localStorage.setItem("useTears", json);
-	alert('儲存成功');
+    if (typeof(Storage) == "undefined") {
+        alert('您的瀏覽器不支援本地儲存');
+        return;
+    }
+
+    var json = saveCommon();
+    localStorage.setItem("useTears", json);
+    alert('儲存成功');
 }
 
 function saveToText() {
-	var json = saveCommon;
-	
-	hideResultInput();
-	$("#saveToText").show().children("textarea").val(json);
+    var json = saveCommon;
+
+    hideResultInput();
+    $("#saveToText").show().children("textarea").val(json);
 }
 
 function saveCommon() {
-	var saveData = {};
-	$("#tearsComputeTable > tbody > tr").each(function(){
-		var $lv = $(this).find("[name=unitLv]");
-		if (!$lv.val()) return;
-		
-		var $tear = $(this).find("[name=unitTear]");
-		var id = $tear.data("id");
-		saveData[id] = { 
-			lv: parseInt($lv.val()),
-			tear: parseInt($tear.val()) 
-		};
-	});
-	return JSON.stringify(saveData);
+    var saveData = {};
+    $("#tearsComputeTable > tbody > tr").each(function() {
+        var $lv = $(this).find("[name=unitLv]");
+        if (!$lv.val()) return;
+
+        var $tear = $(this).find("[name=unitTear]");
+        var id = $tear.data("id");
+        saveData[id] = {
+            lv: parseInt($lv.val()),
+            tear: parseInt($tear.val())
+        };
+    });
+    return JSON.stringify(saveData);
 }
 
 function loadFromLocal() {
-	if (typeof(Storage) == "undefined") {
-		alert('您的瀏覽器不支援本地儲存');
-		return;
-	}
-	
-	var json = localStorage.getItem("useTears"); 
-	if (json == null) {
-		alert('沒有儲存的資料');
-		return;
-	}
-	loadCommon(json);
+    if (typeof(Storage) == "undefined") {
+        alert('您的瀏覽器不支援本地儲存');
+        return;
+    }
+
+    var json = localStorage.getItem("useTears");
+    if (json == null) {
+        alert('沒有儲存的資料');
+        return;
+    }
+    loadCommon(json);
 }
 
 function loadFromText() {
-	hideResultInput();
-	$("#loadFromText").show();
+    hideResultInput();
+    $("#loadFromText").show();
 }
 
 function loadFromTextButton() {
-	var json = $("#loadFromText").children("textarea").val();
-	if (!json) {
-		alert('沒有輸入文字');
-		return;
-	}
-	loadCommon(json);
+    var json = $("#loadFromText").children("textarea").val();
+    if (!json) {
+        alert('沒有輸入文字');
+        return;
+    }
+    loadCommon(json);
 }
 
 function loadCommon(json) {
-	var saveData = JSON.parse(json);
-	
-	$("#tearsComputeTable > tbody > tr").each(function(){
-		var $lv = $(this).find("[name=unitLv]");
-		var $tear = $(this).find("[name=unitTear]");
-		var id = $tear.data("id");
-		
-		var data = saveData[id];
-		if (data != null) {
-			$lv.val(data.lv);
-			$tear.val(data.tear);
-			
-		} else {
-			$lv.val('');
-			$tear.val('');
-		}
-	});
-	updateResultText();
-	alert('讀取成功');
+    var saveData = JSON.parse(json);
+
+    $("#tearsComputeTable > tbody > tr").each(function() {
+        var $lv = $(this).find("[name=unitLv]");
+        var $tear = $(this).find("[name=unitTear]");
+        var id = $tear.data("id");
+
+        var data = saveData[id];
+        if (data != null) {
+            $lv.val(data.lv);
+            $tear.val(data.tear);
+
+        } else {
+            $lv.val('');
+            $tear.val('');
+        }
+    });
+    updateResultText();
+    alert('讀取成功');
 }
 
 function updateResultText() {
-	var tears = 0;
-	var tearsFor4 = 0
-	$("#tearsComputeTable").find("[name=unitTear]").each(function(){
-		var $this = $(this);
-		var value = parseInt($this.val()) || 0;
-		tears += value;
-		if ($this.data("rarity") == 4) {
-			tearsFor4 += value;
-		}
-	});
-	$("#tearsValue").html(tears);
-	$("#tearsFor4Value").html(tearsFor4);
-	
-	var units = 0;
-	var unitsFree = 0;
-	var unitsLv200 = 0;
-	$("#tearsComputeTable").find("[name=unitLv]").each(function(){
-		var $this = $(this);
-		var lv = $this.val();
-		if ($this.data("rarity") == 4 && !!lv) {
-			if (lv == 200) {
-				unitsLv200++;
-			}
-			var id = parseInt($this.data("id"));
-			if (enums.free_unit.indexOf(id) >= 0) {
-				unitsFree++;
-			} else {
-				units++;
-			}
-		}
-	});
-	$("#unitCount").html(units);
-	$("#unitFreeCount").html(unitsFree);
-	$("#unitLv200Count").html(unitsLv200);
-	hideResultInput();
+    var tears = 0;
+    var tearsFor4 = 0
+    $("#tearsComputeTable").find("[name=unitTear]").each(function() {
+        var $this = $(this);
+        var value = parseInt($this.val()) || 0;
+        tears += value;
+        if ($this.data("rarity") == 4) {
+            tearsFor4 += value;
+        }
+    });
+    $("#tearsValue").html(tears);
+    $("#tearsFor4Value").html(tearsFor4);
+
+    var units = 0;
+    var unitsFree = 0;
+    var unitsLv200 = 0;
+    $("#tearsComputeTable").find("[name=unitLv]").each(function() {
+        var $this = $(this);
+        var lv = $this.val();
+        if ($this.data("rarity") == 4 && !!lv) {
+            if (lv == 200) {
+                unitsLv200++;
+            }
+            var id = parseInt($this.data("id"));
+            if (enums.free_unit.indexOf(id) >= 0) {
+                unitsFree++;
+            } else {
+                units++;
+            }
+        }
+    });
+    $("#unitCount").html(units);
+    $("#unitFreeCount").html(unitsFree);
+    $("#unitLv200Count").html(unitsLv200);
+    hideResultInput();
 }
 
 function clearAllTears() {
-	$("#tearsComputeTable").find("[name=unitLv], [name=unitTear]").val('');
-	updateResultText();
-	hideResultInput();
+    $("#tearsComputeTable").find("[name=unitLv], [name=unitTear]").val('');
+    updateResultText();
+    hideResultInput();
 }
 
 function hideResultInput() {
-	$("#saveToText").hide();
-	$("#loadFromText").hide();	
+    $("#saveToText").hide();
+    $("#loadFromText").hide();
 }
 
 // 判斷是否為尚未完成的裝備
@@ -1251,24 +1251,24 @@ function commonLoadAtk($table, data, ext) {
 }
 
 function getSkillAtkTd(data, ext) {
-	var item = getSkillAtkItemList(data, ext);
-	var bodyHtml = '';
-	var footHtml = '';
-	item.body.forEach(function(obj) {
-		bodyHtml += tableRow(obj);
-	});
-	// 都是空的會讓樣式錯誤，給一個空的tr
+    var item = getSkillAtkItemList(data, ext);
+    var bodyHtml = '';
+    var footHtml = '';
+    item.body.forEach(function(obj) {
+        bodyHtml += tableRow(obj);
+    });
+    // 都是空的會讓樣式錯誤，給一個空的tr
     if (!bodyHtml.length) {
         html = '<tr></tr>';
     }
-	
-	item.foot.forEach(function(obj) {
-		footHtml += tableRow(obj);
-	});
-	return {
-		body: bodyHtml,
-		foot: footHtml
-	};	
+
+    item.foot.forEach(function(obj) {
+        footHtml += tableRow(obj);
+    });
+    return {
+        body: bodyHtml,
+        foot: footHtml
+    };
 }
 
 function getSkillAtkItemList(data, ext) {
@@ -1361,14 +1361,14 @@ function getSkillAtkItemList(data, ext) {
             var prevValue = sum_debuff[hit.debuff] || 0;
             sum_debuff[hit.debuff] = prevValue + hit.debuff_value;
         }
-		var ani_xy = hit.power_x + ', ' + hit.power_y;
-		if (hit.centerflag === 1) {
-			ani_xy += '<br />(中心)';
-		}
-		var hit_num = ext != null && ext.type === 2 ? 1 : hit.hit_num;
+        var ani_xy = hit.power_x + ', ' + hit.power_y;
+        if (hit.centerflag === 1) {
+            ani_xy += '<br />(中心)';
+        }
+        var hit_num = ext != null && ext.type === 2 ? 1 : hit.hit_num;
 
         var list = [
-			hit_num,
+            hit_num,
             hitType,
             hit.dmg,
             hit.recovery_debuff_id == 0 ? '' : debuffHtml(hit.recovery_debuff_id),
@@ -1385,7 +1385,7 @@ function getSkillAtkItemList(data, ext) {
             ani_xy,
             hold_effect.join('<br />'),
         ];
-		bodyList.push(list);
+        bodyList.push(list);
     }
 
     var footList = [];
@@ -1395,32 +1395,32 @@ function getSkillAtkItemList(data, ext) {
             if (html_debuff.length) html_debuff += '<br />';
             html_debuff += displaySkillDebuff(debuff_id, sum_debuff[debuff_id], 0);
         }
-		
-		if (ext != null) {
-			if (ext.type === 1) {   // 多段攻擊
-				var multiple = ext.value;
-				
-				sum_hit * multiple;
-				sum_dmg *= multiple;
-				sum_gravity *= multiple;
-				sum_hate *= multiple;
-				sum_break *= multiple;
-				
-			} else if (ext.type === 2) {   // 貓弓S3例外處理
-				// 找出第一個值跟最後一個值顯示
-				var atk_id_array = Object.keys(data);
-				var firstHit = data[atk_id_array[0]];
-				var lastHit = data[atk_id_array[atk_id_array.length - 1]];
-				
-				sum_hit = 1;
-				sum_dmg = firstHit.dmg + '-' + lastHit.dmg;
-				sum_gravity = firstHit.gravity + '-' + lastHit.gravity;
-				sum_hate = firstHit.hate + '-' + lastHit.hate;
-				sum_break = firstHit.break_ + '-' + lastHit.break_;
-				sum_knockback = firstHit.knockback;
-			}
-		}
-		
+
+        if (ext != null) {
+            if (ext.type === 1) { // 多段攻擊
+                var multiple = ext.value;
+
+                sum_hit * multiple;
+                sum_dmg *= multiple;
+                sum_gravity *= multiple;
+                sum_hate *= multiple;
+                sum_break *= multiple;
+
+            } else if (ext.type === 2) { // 貓弓S3例外處理
+                // 找出第一個值跟最後一個值顯示
+                var atk_id_array = Object.keys(data);
+                var firstHit = data[atk_id_array[0]];
+                var lastHit = data[atk_id_array[atk_id_array.length - 1]];
+
+                sum_hit = 1;
+                sum_dmg = firstHit.dmg + '-' + lastHit.dmg;
+                sum_gravity = firstHit.gravity + '-' + lastHit.gravity;
+                sum_hate = firstHit.hate + '-' + lastHit.hate;
+                sum_break = firstHit.break_ + '-' + lastHit.break_;
+                sum_knockback = firstHit.knockback;
+            }
+        }
+
         var list = [
             String.Format("{0} Hits", sum_hit),
             '',
@@ -1439,7 +1439,7 @@ function getSkillAtkItemList(data, ext) {
             '',
             '',
         ];
-		footList.push(list);
+        footList.push(list);
     }
 
     return {
@@ -1507,12 +1507,12 @@ function displaySkillBuff(buff, value, time) {
         case 20:
             text = "擊倒無效";
             break;
-		case 21:
-			text = "護盾";
-			break;
-		case 22:
-			text = "嘲諷";
-			break;
+        case 21:
+            text = "護盾";
+            break;
+        case 22:
+            text = "嘲諷";
+            break;
         case 23:
             text = "毒無效";
             break;
@@ -1540,23 +1540,23 @@ function displaySkillBuff(buff, value, time) {
         case 31:
             text = String.Format("受到傷害 - {1}%", text, 100 - value);
             break;
-		case 32:
+        case 32:
             text = atkUp("破盾值", value);
             break;
-		case 33:
+        case 33:
             text = "根性";
             break;
-		case 34:
+        case 34:
             text = "技能無冷卻";
             break;
-		case 35:
+        case 35:
             text = "技能無詠唱";
             break;
-		case 37:
+        case 37:
             text = "狂戰";
             break;
-		case 36:   // モーションが早くなる強化効果を付与
-		default:
+        case 36: // モーションが早くなる強化効果を付与
+        default:
             return String.Format("{0} {1} {2}", buff, value, time);
     }
     return text + timeFormat(time);
@@ -1958,8 +1958,8 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
         var value = dropData[prop];
         $("#" + prop).html(value);
     }
-	console.log(dropData);
-	
+    console.log(dropData);
+
     ratioModify(["nocon_clear_rate1", "nocon_clear_rate2", "nocon_clear_rate3"], "nocon_clear_progress");
     ratioModify(["speed_clear_rate1", "speed_clear_rate2", "speed_clear_rate3"], "speed_clear_progress");
     ratioModify(["boss_drop1", "boss_drop2", "boss_drop3"], "boss_drop_progress");
@@ -2104,23 +2104,23 @@ function loadMonsterData(id, m_type) {
 
     // 由關卡定義的HP/ATK/BREAK計算真實血量
     // monster本身定義的是百分比，hp:10000 = 100倍 atk:100 = 1倍
-	var hp;
-	var atk;
+    var hp;
+    var atk;
     if (m_type == 0) {
-		hp = current_quest.boss_hp * (data.hp / 100);
-		atk = current_quest.boss_atk * (data.atk / 100);
+        hp = current_quest.boss_hp * (data.hp / 100);
+        atk = current_quest.boss_atk * (data.atk / 100);
         setMonValue("hp", hp);
         setMonValue("atk", atk);
         setMonValue("break", current_quest.boss_break);
     } else if (m_type == 1) {
-		hp = current_quest.mid_hp * (data.hp / 100);
-		atk = current_quest.mid_atk * (data.atk / 100);
+        hp = current_quest.mid_hp * (data.hp / 100);
+        atk = current_quest.mid_atk * (data.atk / 100);
         setMonValue("hp", hp);
         setMonValue("atk", atk);
         setMonValue("break", current_quest.mid_break);
     } else if (m_type == 2) {
-		hp = current_quest.zako_hp * (data.hp / 100);
-		atk = current_quest.zako_atk * (data.atk / 100);
+        hp = current_quest.zako_hp * (data.hp / 100);
+        atk = current_quest.zako_atk * (data.atk / 100);
         setMonValue("hp", hp);
         setMonValue("atk", atk);
         setMonValue("break", 0);
@@ -2132,10 +2132,10 @@ function loadMonsterData(id, m_type) {
     setMonValue("barrier", data.barrier);
     setMonValue("gravity", data.gravity);
     setMonValue("mass", data.mass);
-	setMonValue("hk_resist", (100 - data.hk_resist) + '%');
+    setMonValue("hk_resist", (100 - data.hk_resist) + '%');
     setMonValue("floating", (data.floating == 1).display());
     setMonValue("through", (data.through == 0).display());
-	setMonValue("poison", String.Format("{0} ({1}%)", (hp * (data.poison / 10000)).toFixed(0), data.poison / 100));
+    setMonValue("poison", String.Format("{0} ({1}%)", (hp * (data.poison / 10000)).toFixed(0), data.poison / 100));
     setMonValue("use_element", displayElement(data.use_element1, data.use_element2));
     setMonValue("use_debuff", displayDebuff(data.use_debuff1, data.use_debuff2));
     setMonValue("weak_element", displayElement(data.weak_element1, data.weak_element2));
@@ -2166,15 +2166,15 @@ function loadMonsterData(id, m_type) {
     var html = ''
     for (var command_id in db.monster_command[id]) {
         var command = db.monster_command[id][command_id];
-		var skill = db.monster_skill[command.skill_id];
-		var list = getMonsterSkillRow(command, skill, atk);
+        var skill = db.monster_skill[command.skill_id];
+        var list = getMonsterSkillRow(command, skill, atk);
         html += tableRow(list);
-		
-		// 有變換技能
-		if (skill.change_skillid > 0) {
-			list = getMonsterSkillRow(null, db.monster_skill[skill.change_skillid], atk);
-			html += tableRow(list);
-		}
+
+        // 有變換技能
+        if (skill.change_skillid > 0) {
+            list = getMonsterSkillRow(null, db.monster_skill[skill.change_skillid], atk);
+            html += tableRow(list);
+        }
     }
     $("#monsterSkill > tbody").html(html).find("a").append("<i class='glyphicon glyphicon-link'></i>");;
 
@@ -2200,61 +2200,61 @@ function loadMonsterData(id, m_type) {
 }
 
 function getMonsterSkillRow(command, skill, atk) {
-	var special = [];
-	for (var i = 1; i <= 4; i++) {
-		var summon_id = skill['summon0' + i + '_id'];
-		if (summon_id === 0) continue;
-		var summon_value = skill['summon0' + i + '_value'];
-		
-		var summon_mon_id;
-		if (summon_id <= 5) {
-			summon_mon_id = current_quest['zako0' + summon_id + '_id'];
-		} else if (summon_id <= 9) {
-			summon_mon_id = current_quest['mid0' + (summon_id - 5) + '_id'];
-		} else {
-			summon_mon_id = current_quest['boss0' + (summon_id - 9) + '_id'];
-		}
-		
-		special.push('召喚怪物 ' + getMonsterName(summon_mon_id) + summon_value.display());
-	}
-	if (command != null) {
-		if (command.rage_flag > 0) {
-			if (command.rage_flag === 2) {
-				special.push('被打100下後使用');
-			} else {
-				special.push('rage_flag: ' + command.rage_flag);
-			}
-		}
-		if (command.hprate_flag > 0) {
-			special.push('hprate_flag: ' + command.hprate_flag);
-		}
-	}
-	if (skill.break_parts > 0) {
-		special.push('部位' + skill.break_parts + ' 破壞時');
-		
-		if (skill.change_skillid > 0) {
-			special.push('此技能變更為 <span class="monster-skill-name">' + db.monster_skill[skill.change_skillid].name + '</span>');
-		}
-		if (skill.change_damage > 0) {
-			special.push('傷害減少' + (100 - skill.change_damage) + '%');
-		}
-	}
-	// 總傷害為怪物攻擊x每下技能傷害比例
-	// 例如怪物攻擊7000，進行倍率4.5，1hit傷害100%的攻擊，傷害就是7000*4.5=31500
-	// 傷害比例基本總和會是100，但也有少部分例外
-	// 例如Golem的跳躍+落石總傷害比例高達460，實際上中兩下基本就死了也不會全中
-	// 此外傷害值還會扣掉屬性跟狀態減免才是最終傷害
-	// 目前計算上可能會讓人誤解，所以先用原來的倍率
-	var dmg = skill.dmg;   // String.Format("{0} ({1})", (atk * skill.dmg).toFixed(0), skill.dmg);
-	
-	var list = [
-		anchor((command == null ? '└─ ' : '') + skill.name, "loadMonsterSkillAtk(" + skill.id + ")"),
-		dmg,
-		skill.cd,
-		skill.min_range + '-' + skill.max_range,
-		special.join('<br />')
-	];
-	return list;
+    var special = [];
+    for (var i = 1; i <= 4; i++) {
+        var summon_id = skill['summon0' + i + '_id'];
+        if (summon_id === 0) continue;
+        var summon_value = skill['summon0' + i + '_value'];
+
+        var summon_mon_id;
+        if (summon_id <= 5) {
+            summon_mon_id = current_quest['zako0' + summon_id + '_id'];
+        } else if (summon_id <= 9) {
+            summon_mon_id = current_quest['mid0' + (summon_id - 5) + '_id'];
+        } else {
+            summon_mon_id = current_quest['boss0' + (summon_id - 9) + '_id'];
+        }
+
+        special.push('召喚怪物 ' + getMonsterName(summon_mon_id) + summon_value.display());
+    }
+    if (command != null) {
+        if (command.rage_flag > 0) {
+            if (command.rage_flag === 2) {
+                special.push('被打100下後使用');
+            } else {
+                special.push('rage_flag: ' + command.rage_flag);
+            }
+        }
+        if (command.hprate_flag > 0) {
+            special.push('hprate_flag: ' + command.hprate_flag);
+        }
+    }
+    if (skill.break_parts > 0) {
+        special.push('部位' + skill.break_parts + ' 破壞時');
+
+        if (skill.change_skillid > 0) {
+            special.push('此技能變更為 <span class="monster-skill-name">' + db.monster_skill[skill.change_skillid].name + '</span>');
+        }
+        if (skill.change_damage > 0) {
+            special.push('傷害減少' + (100 - skill.change_damage) + '%');
+        }
+    }
+    // 總傷害為怪物攻擊x每下技能傷害比例
+    // 例如怪物攻擊7000，進行倍率4.5，1hit傷害100%的攻擊，傷害就是7000*4.5=31500
+    // 傷害比例基本總和會是100，但也有少部分例外
+    // 例如Golem的跳躍+落石總傷害比例高達460，實際上中兩下基本就死了也不會全中
+    // 此外傷害值還會扣掉屬性跟狀態減免才是最終傷害
+    // 目前計算上可能會讓人誤解，所以先用原來的倍率
+    var dmg = skill.dmg; // String.Format("{0} ({1})", (atk * skill.dmg).toFixed(0), skill.dmg);
+
+    var list = [
+        anchor((command == null ? '└─ ' : '') + skill.name, "loadMonsterSkillAtk(" + skill.id + ")"),
+        dmg,
+        skill.cd,
+        skill.min_range + '-' + skill.max_range,
+        special.join('<br />')
+    ];
+    return list;
 }
 
 // 讀取星盤資料
@@ -2270,69 +2270,76 @@ function loadCraftBoardData(id) {
         [0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0]
     ];
-	var id_list = [];
-	if (id > 0) {
-		id_list.push(id);   // 2 = [2]
-	} else {
-		// 如果是負的，代表為範圍計算
-		// 如-2 = [1, 2]  -3 = [1, 2, 3]
-		for (var i = 1; i <= -id; i++) {
-			id_list.push(i);
-		}
-	}
+    var id_list = [];
+    if (id > 0) {
+        id_list.push(id); // 2 = [2]
+    } else {
+        // 如果是負的，代表為範圍計算
+        // 如-2 = [1, 2]  -3 = [1, 2, 3]
+        for (var i = 1; i <= -id; i++) {
+            id_list.push(i);
+        }
+    }
     var sumJP = 0;
 
-	id_list.forEach(function(b_id) {
-		for (var c_id in db.gift[b_id]) {
-			var dataItem = db.gift[b_id][c_id];
-			if (dataItem.unlock_jp == 0) continue; // 起始點
+    id_list.forEach(function(b_id) {
+        for (var c_id in db.gift[b_id]) {
+            var dataItem = db.gift[b_id][c_id];
+            if (dataItem.unlock_jp == 0) continue; // 起始點
 
-			// 全職業
-			if (dataItem.type1 === 6) {
-				for (var j = 1; j < summary.length; j++) {
-					summary[j][dataItem.type2 - 1] += dataItem.value;
-				}
+            // 全職業
+            if (dataItem.type1 === 6) {
+                for (var j = 1; j < summary.length; j++) {
+                    summary[j][dataItem.type2 - 1] += dataItem.value;
+                }
 
-			} else {
-				summary[dataItem.type1][dataItem.type2 - 1] += dataItem.value;
-			}
-			sumJP += dataItem.unlock_jp;
+            } else {
+                summary[dataItem.type1][dataItem.type2 - 1] += dataItem.value;
+            }
+            sumJP += dataItem.unlock_jp;
 
-			var job_text = enums.craft_job[dataItem.type1];
-			var type_text = enums.craft_type[dataItem.type2];
-			var value = displayBoardValue(dataItem.type2 - 1, dataItem.value);			
-			html += tableRow([job_text, type_text, value]);
-		}
-	});
+            var job_text = enums.craft_job[dataItem.type1];
+            var type_text = enums.craft_type[dataItem.type2];
+            var value = displayBoardValue(dataItem.type2 - 1, dataItem.value);
+            html += tableRow([job_text, type_text, value]);
+        }
+    });
 
     var htmlSummary = '';
     for (var job = 1; job < summary.length; job++) {
         var content = [];
-		content.push(enums.craft_job[job]);
+        content.push(enums.craft_job[job]);
         for (var type = 1; type < summary[job].length; type++) {
             var value = summary[job][type];
             if (value === 0) {
-				content.push('');
-			} else {
-				content.push(displayBoardValue(type, value));
-			}
+                content.push('');
+            } else {
+                content.push(displayBoardValue(type, value));
+            }
         }
 
         htmlSummary += tableRow(content);
     }
-	var htmlCommon = '';
-	htmlCommon += tableRow(['體力', '+' + summary[0][0]]);
+    var htmlCommon = '';
+    var stamina = '';
+    if (id < 0) {
+        stamina = String.Format("30 + {0} = {1}", summary[0][0], 30 + summary[0][0]);
+        sumJP = String.Format("{0}（五職業等級總和 {1} 時點滿）", sumJP, sumJP + 4);
+    } else {
+        stamina = '+' + summary[0][0];
+    }
+    htmlCommon += tableRow(['體力', stamina]);
     htmlCommon += tableRow(['JP合計', sumJP]);
 
-	$("#craftBoardCommonTable > tbody").html(htmlCommon);
+    $("#craftBoardCommonTable > tbody").html(htmlCommon);
     $("#craftBoardTable > tbody").html(htmlSummary);
     $("#craftBoardDetailTable > tbody").html(html);
 }
 
 function displayBoardValue(type, value) {
-	return type === 0 ? '+' + value 
-	     : type === 5 ? '-' + value + '%' 
-		 : '+' + value + '%';
+    return type === 0 ? '+' + value :
+        type === 5 ? '-' + value + '%' :
+        '+' + value + '%';
 }
 
 function setMonValue(className, content) {
@@ -2520,8 +2527,8 @@ String.Format = function(format) {
 };
 
 String.prototype.i18n = function() {
-	if (disableTranslate) return this;
-	
+    if (disableTranslate) return this;
+
     // 直接搜尋key
     var value = localized[this];
     if (value != null) return value;
@@ -2536,9 +2543,9 @@ String.prototype.i18n = function() {
             // 修改特殊style
             var reStyle = new RegExp('附加(\\S+)的BUFF');
             if (value.match(reStyle)) {
-				// 因為一句可能有兩次，replaceAll寫法不能用，所以直接修改兩次
+                // 因為一句可能有兩次，replaceAll寫法不能用，所以直接修改兩次
                 value = value.replace(reStyle, '附加<span class="buff-name">$1</span>的BUFF');
-				value = value.replace(reStyle, '附加<span class="buff-name">$1</span>的BUFF');
+                value = value.replace(reStyle, '附加<span class="buff-name">$1</span>的BUFF');
             }
 
             return value;
@@ -2549,7 +2556,7 @@ String.prototype.i18n = function() {
 }
 
 String.prototype.pre = function() {
-	//return this.replaceAll('\n', '\\n');
+    //return this.replaceAll('\n', '\\n');
     return '<pre class="comment">' + this + '</pre>';
 }
 
