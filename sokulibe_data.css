@@ -196,14 +196,6 @@ pre {
 	content: '%';
 }
 
-.strong {
-	color: #2196f3;
-}
-
-.weak {
-	color: #ff3333;
-}
-
 a.list-group-item.not-yet {
 	color: gray;
 }
@@ -266,7 +258,7 @@ kbd + kbd {
 	margin-bottom: 0;
 }
 
-.table > tbody > tr > td {
+#tearsComputeTable.table > tbody > tr > td {
 	vertical-align: middle;	
 }
 
@@ -437,14 +429,17 @@ a > i {
 }
 
 .result-text {
-	display: inline;	
+	margin: 10px 0px;
 }
 
 .result-text span {
 	margin: 0 3px;
-	color: rgb(27, 130, 176);
 }
 
 #tearsComputeTable tr:hover .btn-lv {
 	visibility: visible;	
+}
+
+#tearsComputeTable input[type=number] {
+	color: initial;
 }

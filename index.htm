@@ -55,6 +55,7 @@
                         <div class="well" style="box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset;">
                             <div class="well-legend">更新紀錄</div>
                             <ul>
+								<li>2016/11/28<br />怪物技能變換內容一同顯示在列表</li>
 								<li>2016/11/27<br />增加眼淚消耗計算</li>
                                 <li>2016/11/25<br />增加樣式選擇，顯示原文功能</li>
                                 <li>2016/11/24<br />翻譯武器副技能效果</li>
@@ -1753,9 +1754,8 @@
 					<button type="button" class="btn btn-default btn-sm" onclick="clearAllTears();">重設</button>
 				</div>
 				<div class="result-text">
-					擁有4星角色<span id="unitCount">0</span>+<span id="unitFreeCount">0</span>位
-					其中200級有<span id="unitLv200Count">0</span>位
-					已消耗眼淚<span id="tearsValue">0</span>個
+					擁有4星角色<span id="unitCount" class="text-danger">0</span>+<span id="unitFreeCount" class="text-danger">0</span>位（200級有<span id="unitLv200Count" class="text-danger">0</span>位）
+					已消耗眼淚<span id="tearsValue" class="text-danger">0</span>個（花在4星<span id="tearsFor4Value" class="text-danger">0</span>個）
 				</div>
 				<div id="loadFromText" style="display: none;">
 					<textarea class="form-control"></textarea>
@@ -1790,12 +1790,14 @@
     <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 
-    <script type="text/template" id="setR4LvTmpl">
-        <input type="number" min="1" max="200" data-rarity="4" name="unitLv" class="width50" />
+    <script type="text/template" id="setCommonLvTmpl">
 		<div class="btn-group btn-lv">
             <button type="button" class="btn btn-default btn-xs" onclick="addLv(this);">-5</button>
             <button type="button" class="btn btn-default btn-xs" onclick="addLv(this);">+5</button>
 		</div>
+    </script>
+	
+    <script type="text/template" id="setR4LvTmpl">
         <div class="btn-group btn-lv">
             <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">100</button>
             <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">120</button>
@@ -1806,11 +1808,6 @@
     </script>
 	
     <script type="text/template" id="setR3LvTmpl">
-        <input type="number" min="1" max="160" data-rarity="3" name="unitLv" class="width50" />
-		<div class="btn-group btn-lv">
-            <button type="button" class="btn btn-default btn-xs" onclick="addLv(this);">-5</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="addLv(this);">+5</button>
-		</div>
         <div class="btn-group btn-lv">
             <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">80</button>
             <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">100</button>
@@ -1821,11 +1818,6 @@
     </script>
 	
     <script type="text/template" id="setR2LvTmpl">
-        <input type="number" min="1" max="100" data-rarity="2" name="unitLv" class="width50" />
-		<div class="btn-group btn-lv">
-            <button type="button" class="btn btn-default btn-xs" onclick="addLv(this);">-5</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="addLv(this);">+5</button>
-		</div>
         <div class="btn-group btn-lv">
             <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">50</button>
             <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">75</button>
@@ -1836,11 +1828,6 @@
     </script>
 	
     <script type="text/template" id="setR1LvTmpl">
-        <input type="number" min="1" max="60" data-rarity="1" name="unitLv" class="width50" />
-		<div class="btn-group btn-lv">
-            <button type="button" class="btn btn-default btn-xs" onclick="addLv(this);">-5</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="addLv(this);">+5</button>
-		</div>
         <div class="btn-group btn-lv">
             <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">30</button>
             <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">35</button>

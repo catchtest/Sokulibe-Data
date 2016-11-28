@@ -718,11 +718,15 @@ function initCraftBoard() {
 function initTearsCompute() {
 	var itemList = getUnitSortList();
 	var html = '';
+	var commonLvTmpl = $("#setCommonLvTmpl").html();
 	
     for (var i = 0, len = itemList.length; i < len; i++) {
         var data = itemList[i];
 
-		var selectorHtml = $("#setR" + data.rarity + "LvTmpl").html();
+		var selectorHtml = String.Format('<input type="number" min="1" max="{0}" data-rarity="{1}" data-id="{2}" name="unitLv" class="width50" />', 
+								enums.max_level[data.rarity], data.rarity, data.id)
+						   + commonLvTmpl
+						   + $("#setR" + data.rarity + "LvTmpl").html();
 		
         var list = [
             anchor(getUnitName(data), "showUnit(" + data.id + ")"),
@@ -730,7 +734,7 @@ function initTearsCompute() {
             elementHtml(data.use_element),
             enums.job[data.job_id],
 			selectorHtml,
-			'<input type="text" data-id="' + data.id + '" name="unitTear" class="readonly" readonly />'
+			String.Format('<input type="text" data-id="{0}" data-rarity="{1}" name="unitTear" class="readonly" readonly />', data.id, data.rarity)
         ];
 		
 		html += tableRow(list);
@@ -867,10 +871,17 @@ function loadCommon(json) {
 
 function updateResultText() {
 	var tears = 0;
+	var tearsFor4 = 0
 	$("#tearsComputeTable").find("[name=unitTear]").each(function(){
-		tears += parseInt($(this).val()) || 0;		
+		var $this = $(this);
+		var value = parseInt($this.val()) || 0;
+		tears += value;
+		if ($this.data("rarity") == 4) {
+			tearsFor4 += value;
+		}
 	});
 	$("#tearsValue").html(tears);
+	$("#tearsFor4Value").html(tearsFor4);
 	
 	var units = 0;
 	var unitsFree = 0;
@@ -882,7 +893,7 @@ function updateResultText() {
 			if (lv == 200) {
 				unitsLv200++;
 			}
-			var id = parseInt($this.closest("tr").find("[name=unitTear]").data("id"));
+			var id = parseInt($this.data("id"));
 			if (enums.free_unit.indexOf(id) >= 0) {
 				unitsFree++;
 			} else {
@@ -1161,9 +1172,9 @@ function loadUnitData(id) {
         if (prop == 'id') continue; // 跳過這個屬性
         var value = data_resist[prop];
         if (value > 0) {
-            value = '<span class="strong">' + value + '</span>';
+            value = '<span class="text-info">' + value + '</span>';
         } else if (value < 0) {
-            value = '<span class="weak">' + value + '</span>';
+            value = '<span class="text-danger">' + value + '</span>';
         }
         $resistTable.find("." + prop).html(value);
     }
@@ -1926,27 +1937,10 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
         if ($("#" + prop).length == 0) continue;
 
         var value = dropData[prop];
-
-        if (prop.indexOf('_id') > 0) {
-            if (value == 0) {
-                value = '無';
-            } else {
-                value = '看不懂';
-                //var itemType = dropData[prop.replace('_id', '_type')];
-                //value = getAsset(itemType, value, 1);
-            }
-        } else if (prop.indexOf('_bonus') > 0) {
-            if (value == 0) {
-                value = '無';
-            } else {
-                value = '看不懂';
-                //var itemType = dropData[prop.replace('_bonus', '_type')];
-                //value = getAsset(itemType, value, 1);
-            }
-        }
         $("#" + prop).html(value);
     }
-
+	console.log(dropData);
+	
     ratioModify(["nocon_clear_rate1", "nocon_clear_rate2", "nocon_clear_rate3"], "nocon_clear_progress");
     ratioModify(["speed_clear_rate1", "speed_clear_rate2", "speed_clear_rate3"], "speed_clear_progress");
     ratioModify(["boss_drop1", "boss_drop2", "boss_drop3"], "boss_drop_progress");
@@ -2139,9 +2133,9 @@ function loadMonsterData(id, m_type) {
         if (prop == 'id' || prop == 'break_flag') continue; // 跳過這兩個屬性
         var value = data_resist[prop];
         if (value > 0) {
-            value = '<span class="strong">' + value + '</span>';
+            value = '<span class="text-info">' + value + '</span>';
         } else if (value < 0) {
-            value = '<span class="weak">' + value + '</span>';
+            value = '<span class="text-danger">' + value + '</span>';
         }
         setMonValue(prop, value);
     }*/
@@ -2150,54 +2144,15 @@ function loadMonsterData(id, m_type) {
     var html = ''
     for (var command_id in db.monster_command[id]) {
         var command = db.monster_command[id][command_id];
-        var skill = db.monster_skill[command.skill_id];
-
-        var special = [];
-		for (var i = 1; i <= 4; i++) {
-			var summon_id = skill['summon0' + i + '_id'];
-			if (summon_id === 0) continue;
-			var summon_value = skill['summon0' + i + '_value'];
-			
-			var summon_mon_id;
-			if (summon_id <= 5) {
-				summon_mon_id = current_quest['zako0' + summon_id + '_id'];
-			} else if (summon_id <= 9) {
-				summon_mon_id = current_quest['mid0' + (summon_id - 5) + '_id'];
-			} else {
-				summon_mon_id = current_quest['boss0' + (summon_id - 9) + '_id'];
-			}
-			
-			special.push('召喚怪物 ' + getMonsterName(summon_mon_id) + summon_value.display());
-		}
-        if (command.rage_flag > 0) {
-			if (command.rage_flag === 2) {
-				special.push('被打100下後使用');
-			} else {
-				special.push('rage_flag: ' + command.rage_flag);
-			}
-        }
-        if (command.hprate_flag > 0) {
-            special.push('hprate_flag: ' + command.hprate_flag);
-        }
-		if (skill.break_parts > 0) {
-			special.push('部位' + skill.break_parts + ' 破壞時');
-			
-			if (skill.change_skillid > 0) {
-				special.push('此技能變更為 <span class="monster-skill-name">' + db.monster_skill[skill.change_skillid].name + '</span>');
-			}
-			if (skill.change_damage > 0) {
-				special.push('傷害減少' + (100 - skill.change_damage) + '%');
-			}
-		}
-		
-        var list = [
-            anchor(skill.name, "loadMonsterSkillAtk(" + skill.id + ")"),
-            skill.dmg,
-            skill.cd,
-            skill.min_range + '-' + skill.max_range,
-            special.join('<br />')
-        ]
+		var skill = db.monster_skill[command.skill_id];
+		var list = getMonsterSkillRow(command, skill);
         html += tableRow(list);
+		
+		// 有變換技能
+		if (skill.change_skillid > 0) {
+			list = getMonsterSkillRow(null, db.monster_skill[skill.change_skillid]);
+			html += tableRow(list);
+		}
     }
     $("#monsterSkill > tbody").html(html).find("a").append("<i class='glyphicon glyphicon-link'></i>");;
 
@@ -2220,6 +2175,57 @@ function loadMonsterData(id, m_type) {
 
     // 清除前次資料
     $("#monsterSkillAtk").hide();
+}
+
+function getMonsterSkillRow(command, skill) {
+	var special = [];
+	for (var i = 1; i <= 4; i++) {
+		var summon_id = skill['summon0' + i + '_id'];
+		if (summon_id === 0) continue;
+		var summon_value = skill['summon0' + i + '_value'];
+		
+		var summon_mon_id;
+		if (summon_id <= 5) {
+			summon_mon_id = current_quest['zako0' + summon_id + '_id'];
+		} else if (summon_id <= 9) {
+			summon_mon_id = current_quest['mid0' + (summon_id - 5) + '_id'];
+		} else {
+			summon_mon_id = current_quest['boss0' + (summon_id - 9) + '_id'];
+		}
+		
+		special.push('召喚怪物 ' + getMonsterName(summon_mon_id) + summon_value.display());
+	}
+	if (command != null) {
+		if (command.rage_flag > 0) {
+			if (command.rage_flag === 2) {
+				special.push('被打100下後使用');
+			} else {
+				special.push('rage_flag: ' + command.rage_flag);
+			}
+		}
+		if (command.hprate_flag > 0) {
+			special.push('hprate_flag: ' + command.hprate_flag);
+		}
+	}
+	if (skill.break_parts > 0) {
+		special.push('部位' + skill.break_parts + ' 破壞時');
+		
+		if (skill.change_skillid > 0) {
+			special.push('此技能變更為 <span class="monster-skill-name">' + db.monster_skill[skill.change_skillid].name + '</span>');
+		}
+		if (skill.change_damage > 0) {
+			special.push('傷害減少' + (100 - skill.change_damage) + '%');
+		}
+	}
+	
+	var list = [
+		anchor((command == null ? '└─ ' : '') + skill.name, "loadMonsterSkillAtk(" + skill.id + ")"),
+		skill.dmg,
+		skill.cd,
+		skill.min_range + '-' + skill.max_range,
+		special.join('<br />')
+	];
+	return list;
 }
 
 // 讀取星盤資料
