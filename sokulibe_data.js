@@ -710,7 +710,11 @@ function initCraftBoard() {
         var itemHtml = listItemHtml(id, data.name, '', "loadCraftBoardData(" + id + ");", '');
         html += itemHtml;
     }
-	html += listItemHtml(0, '總和', '', "loadCraftBoardData(" + 0 + ");", '');
+	// 自動產生星盤總和的項目
+	var keys = Object.keys(db.craft_board);
+	for (var i = 2; i <= keys.length; i++) {
+		html += listItemHtml(-i, '星盤1~' + i + ' 總和', '', "loadCraftBoardData(-" + i + ");", '');
+	}
     $("#craftBoardList").html(html);
 }
 
@@ -1247,7 +1251,28 @@ function commonLoadAtk($table, data, ext) {
 }
 
 function getSkillAtkTd(data, ext) {
-    var html = '';
+	var item = getSkillAtkItemList(data, ext);
+	var bodyHtml = '';
+	var footHtml = '';
+	item.body.forEach(function(obj) {
+		bodyHtml += tableRow(obj);
+	});
+	// 都是空的會讓樣式錯誤，給一個空的tr
+    if (!bodyHtml.length) {
+        html = '<tr></tr>';
+    }
+	
+	item.foot.forEach(function(obj) {
+		footHtml += tableRow(obj);
+	});
+	return {
+		body: bodyHtml,
+		foot: footHtml
+	};	
+}
+
+function getSkillAtkItemList(data, ext) {
+    var bodyList = [];
     var sum_hit = 0;
     var sum_dmg = 0;
     var sum_gravity = 0;
@@ -1360,22 +1385,16 @@ function getSkillAtkTd(data, ext) {
             ani_xy,
             hold_effect.join('<br />'),
         ];
-        html += tableRow(list);
-    }
-    // 都是空的會讓樣式錯誤，給一個空的tr
-    if (!html.length) {
-        html = '<tr></tr>';
+		bodyList.push(list);
     }
 
-    var footer = '';
+    var footList = [];
     if (sum_hit > 0) { // 有攻擊才計算總合
         var html_debuff = '';
         for (var debuff_id in sum_debuff) {
             if (html_debuff.length) html_debuff += '<br />';
             html_debuff += displaySkillDebuff(debuff_id, sum_debuff[debuff_id], 0);
         }
-
-        
 		
 		if (ext != null) {
 			if (ext.type === 1) {   // 多段攻擊
@@ -1402,7 +1421,7 @@ function getSkillAtkTd(data, ext) {
 			}
 		}
 		
-        var footerList = [
+        var list = [
             String.Format("{0} Hits", sum_hit),
             '',
             sum_dmg,
@@ -1420,12 +1439,12 @@ function getSkillAtkTd(data, ext) {
             '',
             '',
         ];
-        footer = tableRow(footerList);
+		footList.push(list);
     }
 
     return {
-        body: html,
-        foot: footer
+        body: bodyList,
+        foot: footList
     };
 }
 
@@ -2084,23 +2103,26 @@ function loadMonsterData(id, m_type) {
     var data_aibase = db.monster_ai_base[data.monster_ai_id];
 
     // 由關卡定義的HP/ATK/BREAK計算真實血量
-    // monster本身定義的是百分比，幾乎都是hp:10000 atk:100
-    // 當參戰人數增加，HP會乘上特定比例作為最終血量
+    // monster本身定義的是百分比，hp:10000 = 100倍 atk:100 = 1倍
 	var hp;
+	var atk;
     if (m_type == 0) {
 		hp = current_quest.boss_hp * (data.hp / 100);
+		atk = current_quest.boss_atk * (data.atk / 100);
         setMonValue("hp", hp);
-        setMonValue("atk", current_quest.boss_atk * (data.atk / 100));
+        setMonValue("atk", atk);
         setMonValue("break", current_quest.boss_break);
     } else if (m_type == 1) {
 		hp = current_quest.mid_hp * (data.hp / 100);
+		atk = current_quest.mid_atk * (data.atk / 100);
         setMonValue("hp", hp);
-        setMonValue("atk", current_quest.mid_atk * (data.atk / 100));
+        setMonValue("atk", atk);
         setMonValue("break", current_quest.mid_break);
     } else if (m_type == 2) {
 		hp = current_quest.zako_hp * (data.hp / 100);
+		atk = current_quest.zako_atk * (data.atk / 100);
         setMonValue("hp", hp);
-        setMonValue("atk", current_quest.zako_atk * (data.atk / 100));
+        setMonValue("atk", atk);
         setMonValue("break", 0);
     }
 
@@ -2145,12 +2167,12 @@ function loadMonsterData(id, m_type) {
     for (var command_id in db.monster_command[id]) {
         var command = db.monster_command[id][command_id];
 		var skill = db.monster_skill[command.skill_id];
-		var list = getMonsterSkillRow(command, skill);
+		var list = getMonsterSkillRow(command, skill, atk);
         html += tableRow(list);
 		
 		// 有變換技能
 		if (skill.change_skillid > 0) {
-			list = getMonsterSkillRow(null, db.monster_skill[skill.change_skillid]);
+			list = getMonsterSkillRow(null, db.monster_skill[skill.change_skillid], atk);
 			html += tableRow(list);
 		}
     }
@@ -2177,7 +2199,7 @@ function loadMonsterData(id, m_type) {
     $("#monsterSkillAtk").hide();
 }
 
-function getMonsterSkillRow(command, skill) {
+function getMonsterSkillRow(command, skill, atk) {
 	var special = [];
 	for (var i = 1; i <= 4; i++) {
 		var summon_id = skill['summon0' + i + '_id'];
@@ -2217,10 +2239,17 @@ function getMonsterSkillRow(command, skill) {
 			special.push('傷害減少' + (100 - skill.change_damage) + '%');
 		}
 	}
+	// 總傷害為怪物攻擊x每下技能傷害比例
+	// 例如怪物攻擊7000，進行倍率4.5，1hit傷害100%的攻擊，傷害就是7000*4.5=31500
+	// 傷害比例基本總和會是100，但也有少部分例外
+	// 例如Golem的跳躍+落石總傷害比例高達460，實際上中兩下基本就死了也不會全中
+	// 此外傷害值還會扣掉屬性跟狀態減免才是最終傷害
+	// 目前計算上可能會讓人誤解，所以先用原來的倍率
+	var dmg = skill.dmg;   // String.Format("{0} ({1})", (atk * skill.dmg).toFixed(0), skill.dmg);
 	
 	var list = [
 		anchor((command == null ? '└─ ' : '') + skill.name, "loadMonsterSkillAtk(" + skill.id + ")"),
-		skill.dmg,
+		dmg,
 		skill.cd,
 		skill.min_range + '-' + skill.max_range,
 		special.join('<br />')
@@ -2241,7 +2270,16 @@ function loadCraftBoardData(id) {
         [0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0]
     ];
-	var id_list = id === 0 ? Object.keys(db.gift) : [id];
+	var id_list = [];
+	if (id > 0) {
+		id_list.push(id);   // 2 = [2]
+	} else {
+		// 如果是負的，代表為範圍計算
+		// 如-2 = [1, 2]  -3 = [1, 2, 3]
+		for (var i = 1; i <= -id; i++) {
+			id_list.push(i);
+		}
+	}
     var sumJP = 0;
 
 	id_list.forEach(function(b_id) {
