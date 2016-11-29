@@ -70,6 +70,7 @@ var dataTableOption = {
     $("a[href='#limitbreakTab']").one("click", initLimitbreak);
     $("a[href='#craftBoardTab']").one("click", initCraftBoard);
     $("a[href='#tearsComputeTab']").one("click", initTearsCompute);
+	$("a[href='#loginBonusTab']").one("click", initLoginBonus);
 
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
@@ -920,6 +921,26 @@ function clearAllTears() {
 function hideResultInput() {
     $("#saveToText").hide();
     $("#loadFromText").hide();
+}
+
+function initLoginBonus() {
+	var html = '';
+	var count = 0;
+	var list = [];
+	for (var day in db.login_bonus) {
+		var data = db.login_bonus[day];
+		list.push(data.login_count);
+		list.push(getAsset(data.asset_type_id, data.asset_id, data.asset_count));
+		if (++count >= 7) {
+			html += tableRow(list);
+			count = 0;
+			list = [];
+		}
+	}
+	if (list.length) {
+		html += tableRow(list);
+	}
+	$("#loginBonusTable > tbody").html(html);
 }
 
 // 判斷是否為尚未完成的裝備
