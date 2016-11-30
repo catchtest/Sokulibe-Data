@@ -728,7 +728,7 @@ function initTearsCompute() {
     for (var i = 0, len = itemList.length; i < len; i++) {
         var data = itemList[i];
 
-        var selectorHtml = String.Format('<input type="number" min="1" max="{0}" data-rarity="{1}" data-id="{2}" name="unitLv" class="width50" />',
+        var selectorHtml = String.Format('<input type="number" min="0" max="{0}" step="5" data-rarity="{1}" data-id="{2}" name="unitLv" class="width50" />',
                 enums.max_level[data.rarity], data.rarity, data.id) +
             commonLvTmpl +
             $("#setR" + data.rarity + "LvTmpl").html();
