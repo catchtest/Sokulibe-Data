@@ -75,7 +75,23 @@ var dataTableOption = {
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
         $(this).closest("tr").addClass("active");
-    });
+    }).on("keydown", "a", function(e) {
+		var $this = $(this);
+		
+        switch (e.which) {
+            case 38: // up
+			case 40: // down
+                e.preventDefault();
+				var $anchors = $this.closest("tbody").find("a");
+				var index = $anchors.index($this);
+				
+				var value = e.which === 38 ? -1 : 1;
+				var len = $anchors.length;
+				var newIndex = (index + len + value) % len;
+				$anchors.eq(newIndex).click().focus();
+                break;
+        }
+	});
 
     // 鍵盤事件
     $('.list-group').keydown(function(e) {
@@ -1301,7 +1317,7 @@ function getSkillAtkTd(data, ext) {
     });
     // 都是空的會讓樣式錯誤，給一個空的tr
     if (!bodyHtml.length) {
-        html = '<tr></tr>';
+        bodyHtml = '<tr></tr>';
     }
 
     item.foot.forEach(function(obj) {
