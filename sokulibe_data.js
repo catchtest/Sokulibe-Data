@@ -493,14 +493,33 @@ function initUnitList() {
         }
         // 顯示抵抗異常狀態
         var resist = db.unit_resist[data.id];
+		var resistNames = ['poison', 'paralysis', 'freeze', 'burn', 'feather', 'curse', 'silence'];
         var resistHtml = '';
-        if (resist.poison_resist > 0) resistHtml += debuffHtml(1);
-        if (resist.paralysis_resist > 0) resistHtml += debuffHtml(2);
-        if (resist.freeze_resist > 0) resistHtml += debuffHtml(3);
-        if (resist.burn_resist > 0) resistHtml += debuffHtml(4);
-        if (resist.feather_resist > 0) resistHtml += debuffHtml(5);
-        if (resist.curse_resist > 0) resistHtml += debuffHtml(6);
-        if (resist.silence_resist > 0) resistHtml += debuffHtml(7);
+		resistNames.forEach(function(name, index) {
+			var value = resist[name + '_resist'];
+			if (value > 0) {
+				resistHtml += debuffHtml(index + 1, value);
+			}
+		});
+		var elemNames = ['slash', 'smash', 'shot', 'sorcery', 'fire', 'water', 'earth', 'light', 'dark'];
+		var strongHtml = '';
+		var weakHtml = '';
+		elemNames.forEach(function(name, index) {
+			var value = resist[name + '_resist'];
+			if (value > 0) {
+				if (index >= 4) {
+					strongHtml += elementHtml(index - 3, value);
+				} else {
+					strongHtml += enums.atk_type[elemNames];
+				}	
+			} else if (value < 0) {
+				if (index >= 4) {
+					weakHtml += elementHtml(index - 3, value);
+				} else {
+					weakHtml += enums.atk_type[elemNames];
+				}
+			}
+		});
 
         var list = [
             anchor(getUnitName(data), "showUnit(" + data.id + ")"),
@@ -512,6 +531,8 @@ function initUnitList() {
             unitPower.hp,
             unitPower.atk,
             unitPower.agi,
+			strongHtml,
+			weakHtml,
             resistHtml
         ];
         html += tableRow(list);
@@ -2389,8 +2410,8 @@ function displayDebuff(value1, value2) {
     return value;
 }
 
-function debuffHtml(value) {
-    return String.Format("<kbd class='debuff-{1}'>{0}</kbd>", enums.debuff[value], value);
+function debuffHtml(value, title) {
+    return String.Format("<kbd class='debuff-{1}' title='{2}'>{0}</kbd>", enums.debuff[value], value, title || '');
 }
 
 // 回傳獎勵名稱
