@@ -1361,8 +1361,11 @@ function getSkillAtkItemList(data, ext) {
         if (hitType == null) { // 奧義的情形
             hitType = enums.skill_type[hit.skill_type + 1];
         } else {
-            hitType = hit.hit_type == 0 ? '攻擊' :
-                hit.hit_type == 1 ? '回復' : hit.hit_type;
+            hitType = 
+				hit.hit_type == 0 ? '攻擊' :
+                hit.hit_type == 1 ? '回復' : 
+				hit.hit_type == 3 ? '無敵' : 
+				hit.hit_type == 5 ? '自身' : hit.hit_type;
         }
 
         if (hitType == '攻擊' || hitType == 3) {
@@ -1428,7 +1431,7 @@ function getSkillAtkItemList(data, ext) {
         var list = [
             hit_num,
             hitType,
-            hit.dmg,
+            hit.dmg > 0 ? hit.dmg : '',
             hit.recovery_debuff_id == 0 ? '' : debuffHtml(hit.recovery_debuff_id),
             displaySkillBuff(hit.buff, hit.buff_value, hit.buff_time),
             displaySkillDebuff(hit.debuff, hit.debuff_value, hit.debuff_time),
