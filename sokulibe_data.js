@@ -1290,6 +1290,7 @@ function loadOugiAtk(id) {
     var $table = $("#skillAtk");
     var data = db.ougi_atk[id];
     commonLoadAtk($table, data);
+	$("#skillAtkExt").hide();
 }
 
 function loadMonsterSkillAtk(id) {
@@ -1364,12 +1365,12 @@ function getSkillAtkItemList(data, ext) {
             hitType = 
 				hit.hit_type == 0 ? '攻擊' :
                 hit.hit_type == 1 ? '回復' : 
-				hit.hit_type == 3 ? '無敵' : 
+				hit.hit_type == 3 ? '直接攻擊' : 
 				hit.hit_type == 4 ? '全體回復' : 
 				hit.hit_type == 5 ? '自身' : hit.hit_type;
         }
 
-        if (hitType == '攻擊' || hitType == '無敵') {
+        if (hitType == '攻擊' || hitType == '直接攻擊') {
             // 似乎是遊戲為了修正問題作的假frame，所以直接跳過
             if (hit.dmg == 0) continue;
 
