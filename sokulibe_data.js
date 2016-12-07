@@ -3,6 +3,7 @@ var db;
 var localized = {};
 var enums;
 var skipDirty = true;
+var dirtyPrefix = 'x ';
 var disableTranslate = false;
 var dataTableOption = {
     "autoWidth": false,
@@ -141,11 +142,13 @@ var dataTableOption = {
         }
     });
 
-    $("#showDirty").click(function() {
-        if (confirm("未完成/無法取得的角色、裝備、武器會顯示，確定嗎？\n（進入頁面前必須先點擊此按鈕才會顯示）")) {
-            skipDirty = false;
-            $(this).hide();
-        }
+    $("#showDirty").change(function() {
+		skipDirty = !this.checked;
+		if (skipDirty) {
+			$(".dirty").addClass("hidden");			
+		} else {
+			$(".dirty").removeClass("hidden");			
+		}
     });
 
     $("#disableTranslate").click(function() {
@@ -166,12 +169,17 @@ function initUnit() {
     for (var id in db.unit) {
         var data = db.unit[id];
 
-        if (skipDirty && isDirtyUnit(data)) continue;
+		var cssClass = '';
+		var prefix = '';
+        if (isDirtyUnit(data)) {
+			cssClass = setDirtyClass();
+			prefix = dirtyPrefix;
+		}
 
-        var name = getUnitName(data);
+        var name = prefix + getUnitName(data);
         var job = getUnitJob(data);
 
-        var itemHtml = listItemHtml(id, name, job, "loadUnitData(" + id + ");", '');
+        var itemHtml = listItemHtml(id, name, job, "loadUnitData(" + id + ");", cssClass);
         htmls[data.rarity] += itemHtml;
     }
     for (var i = 1; i <= 4; i++) {
@@ -199,14 +207,18 @@ function initAccessory() {
     var htmls = ['', '', ''];
 
     for (var id in db.accessory) {
-        // 隱藏未設定好的裝備
-        if (skipDirty && isDirtyAccessory(id)) continue;
-
+		var cssClass = '';
+		var prefix = '';
+        if (isDirtyAccessory(id)) {
+			cssClass = setDirtyClass();
+			prefix = dirtyPrefix;
+		}
+		
         var data = db.accessory[id];
 
-        var name = getAccessoryName(id);
+        var name = prefix + getAccessoryName(id);
         var job = enums.weapon_job[data.job] + ' <div class="rarity">' + enums.rarity[data.rarity] + '</div>';
-        var itemHtml = listItemHtml(id, name, job, "loadAccessoryData(" + id + ");");
+        var itemHtml = listItemHtml(id, name, job, "loadAccessoryData(" + id + ");", cssClass);
 
         if (data.category == 1) { // 戒指
             if (data.rarity >= 4) {
@@ -229,17 +241,22 @@ function initWeapon() {
     for (var id in db.weapon) {
         var data = db.weapon[id];
 
-        if (skipDirty && isDirtyWeapon(data)) continue;
+		var cssClass = '';
+		var prefix = '';
+        if (isDirtyWeapon(data)) {
+			cssClass = setDirtyClass();
+			prefix = dirtyPrefix;
+		}
 
-        var name = data.name;
+        var name = prefix + data.name;
         // 不能裝備的武器
         if (data.job == -1) {
-            var itemHtml = listItemHtml(id, name, enums.rarity[data.rarity], '');
+            var itemHtml = listItemHtml(id, name, enums.rarity[data.rarity], cssClass);
             htmls[3] += itemHtml;
             continue;
         }
         var job = enums.weapon_job[data.job];
-        var itemHtml = listItemHtml(id, name, job, "loadWeaponData(" + id + ");");
+        var itemHtml = listItemHtml(id, name, job, "loadWeaponData(" + id + ");", cssClass);
 
         if (data.rarity == 4) {
             htmls[0] += itemHtml;
@@ -2577,6 +2594,14 @@ function renderTable(id, html) {
 function showStory(sender) {
     $(sender).closest("div").hide();
     $("#storyBlock").show();
+}
+
+function setDirtyClass() {
+	var cssClass = 'dirty';
+	if (skipDirty) {
+		cssClass += ' hidden';
+	}
+	return cssClass;	
 }
 
 // 擴充方法
