@@ -103,28 +103,28 @@ var dataTableOption = {
             case 37: // left
             case 38: // up
                 e.preventDefault();
-                $select.prev().click().focus();
+                $select.prevAll().not(".hidden").first().click().focus();
                 break;
             case 39: // right
             case 40: // down
                 e.preventDefault();
-                $select.next().click().focus();
+                $select.nextAll().not(".hidden").first().click().focus();
                 break;
             case 36: // home
                 e.preventDefault();
-                $items.first().click().focus();
+                $items.prevAll().not(".hidden").last().click().focus();
                 break;
             case 35: // end
                 e.preventDefault();
-                $items.last().click().focus();
+                $items.nextAll().not(".hidden").last().click().focus();
                 break;
             case 33: // pageup
                 e.preventDefault();
-                $select.prevAll("*:lt(27)").last().click().focus();
+                $select.prevAll("*:lt(27):not(.hidden)").last().click().focus();
                 break;
             case 34: // pagedown
                 e.preventDefault();
-                $select.nextAll("*:lt(27)").last().click().focus();
+                $select.nextAll("*:lt(27):not(.hidden)").last().click().focus();
                 break;
         }
     });
