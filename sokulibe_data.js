@@ -307,9 +307,16 @@ function initEvent() {
         if (!(id in db.event_multi_quest)) continue;
 
         var data = db.event[id];
+		var event_flag = [];
+		if (data.multi_flag === 1 || data.event_type === 5 || data.event_type === 9) {
+			event_flag.push("<單刷>");
+		}
+		if (data.ranking_flag === 1) {
+			event_flag.push("<排名>");
+		}
 
         var name = data.name;
-        var job = '';
+        var job = event_flag.join(' ');
         var itemHtml = listItemHtml(id, name, job, "loadEventData(" + id + ");");
 
         // 越後面的關卡排越前
@@ -1653,7 +1660,8 @@ function defUp(text, value) {
 }
 
 function timeFormat(time) {
-    return String.Format('<div class="duration">持續時間：{0}</div>', time);
+	var sec = time / 30;
+    return String.Format('<div class="duration">持續時間：{0} ({1}秒)</div>', time, sec);
 }
 
 function displaySkillDebuff(debuff, value, time) {
@@ -1962,7 +1970,7 @@ function loadQuestData(eventID, questID) {
     var waveData = db.event_quest_wave[questID];
 
     loadCommonQuestData(baseData, missionData, dropData, waveData);
-
+	
     // 任務
     var $missionTable = $("#missionTable > tbody");
     var html = '';
@@ -1981,9 +1989,9 @@ function loadQuestData(eventID, questID) {
     $missionTable.html(html);
 
     // 交換所
-    var $exchangeTable = $("#exchangeTable > tbody");
     html = '';
-    var raid_id = db.event[eventID].raid_id;
+	var eventData = db.event[eventID];
+    var raid_id = eventData.raid_id;
 	var point_summary = 0;
 	var point_last = 0;
 	var point_exchange_mode = false;
@@ -2008,7 +2016,8 @@ function loadQuestData(eventID, questID) {
         }
     }
 
-    $exchangeTable.html(html);
+    $("#exchangeTable > tbody").html(html);
+	
 	var total_point = point_exchange_mode ? point_summary : point_last;
 	var footerHtml = total_point == 0 ? '' : tableRow(['', '', '', total_point]);
 	$("#exchangeTable > tfoot").html(footerHtml);
@@ -2017,6 +2026,17 @@ function loadQuestData(eventID, questID) {
     $("#raid_point, #continue_limit, #required_lv").closest("tr").show();
     $("#questTab").show();
     $("#questList").show();
+	
+	// 特殊處理: 特殊情形下required_lv其實是Recom_lv不是MR限制
+	switch (eventData.event_type) {
+		case 5:   // 新職踏破
+		case 9:   // 試煉之塔
+			$("#Recom_lv").html($("#required_lv").html()).closest("tr").show();
+			$("#required_lv").html('').closest("tr").hide();
+			break;
+		default:
+			break;
+	}	
 }
 
 // 共通關卡資料讀取
