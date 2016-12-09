@@ -541,13 +541,13 @@ function initUnitList() {
 			var value = resist[name + '_resist'];
 			if (value > 0) {
 				if (index >= 4) {
-					strongHtml += elementHtml(index - 3, value);
+					strongHtml += elementHtml(index - 3, value) + ' ' + value;
 				} else {
 					strongHtml += enums.atk_type[elemNames];
 				}	
 			} else if (value < 0) {
 				if (index >= 4) {
-					weakHtml += elementHtml(index - 3, value);
+					weakHtml += elementHtml(index - 3, value) + ' ' + value;
 				} else {
 					weakHtml += enums.atk_type[elemNames];
 				}
@@ -1462,6 +1462,7 @@ function getSkillAtkItemList(data, ext) {
             effects.join('<br />'),
             hit.knockback,
             hit.huge_knockback,
+			hit.hitstop,
             ani_xy,
             hold_effect.join('<br />'),
         ];
@@ -1517,6 +1518,7 @@ function getSkillAtkItemList(data, ext) {
             isNaN(sum_knockback) ? '' : sum_knockback,
             isNaN(sum_huge_knockback) ? '' : sum_huge_knockback,
             '',
+			'',
             '',
         ];
         footList.push(list);
