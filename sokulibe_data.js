@@ -1984,6 +1984,9 @@ function loadQuestData(eventID, questID) {
     var $exchangeTable = $("#exchangeTable > tbody");
     html = '';
     var raid_id = db.event[eventID].raid_id;
+	var point_summary = 0;
+	var point_last = 0;
+	var point_exchange_mode = false;
 
     var data_points = raid_id > 0 ? db.raid_event_point[raid_id] : db.event_point[eventID];
     if (data_points != null) {
@@ -1992,11 +1995,23 @@ function loadQuestData(eventID, questID) {
 
             var asset = getAsset(data_point.item_type, data_point.item_id, data_point.item_value);
             var exchange_limit = raid_id > 0 ? 1 : data_point.exchange_limit
-            html += tableRow([asset, data_point.points, exchange_limit, data_point.points * exchange_limit]);
+			var data_point_sum = data_point.points * exchange_limit;
+            html += tableRow([asset, data_point.points, exchange_limit, data_point_sum]);
+			
+			// 判斷是點數交換還是到達即可領取
+			// 如果是到達即可領取那可換次數都是1
+			if (exchange_limit > 1) {
+				point_exchange_mode = true;
+			}			
+			point_last = data_point_sum;
+			point_summary += point_last;
         }
     }
 
     $exchangeTable.html(html);
+	var total_point = point_exchange_mode ? point_summary : point_last;
+	var footerHtml = total_point == 0 ? '' : tableRow(['', '', '', total_point]);
+	$("#exchangeTable > tfoot").html(footerHtml);
 
     $("#Recom_lv, #first_clear_bonus, #multi_exp").closest("tr").hide();
     $("#raid_point, #continue_limit, #required_lv").closest("tr").show();
@@ -2027,10 +2042,14 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
             $("#mission" + i).html(missionData[missionID].summery.i18n());
             i++;
         }
-        // 三冠獎勵
-        $("#mission_bonus").html(getAsset(baseData.mission_bonus_type, baseData.mission_bonus_id, baseData.mission_bonus_value));
     }
-    $("#mission1, #mission2, #mission3, #mission_bonus").closest("tr").toggle(missionData != null);
+    $("#mission1, #mission2, #mission3").closest("tr").toggle(missionData != null);
+    // 三冠獎勵
+	var missionBonusExist = baseData.mission_bonus_type != null;
+	if (missionBonusExist) {
+		$("#mission_bonus").html(getAsset(baseData.mission_bonus_type, baseData.mission_bonus_id, baseData.mission_bonus_value));
+	}
+	$("#mission_bonus").closest("tr").toggle(missionBonusExist);
 
     // 掉落率
     for (var prop in dropData) {
