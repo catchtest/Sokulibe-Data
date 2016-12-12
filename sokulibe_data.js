@@ -540,21 +540,15 @@ function initUnitList() {
         var data = itemList[i];
         var maxLevel = enums.max_level[data.rarity];
         var unitPower = calculateUnit(data.id, maxLevel);
-        var partner = '無';
-        if (data.partner_id > 0) {
-            var partnerData = db.unit[data.partner_id];
-            partner = String.Format("<a href='#' onclick='showUnit({0});'>{1}</a>",
-                partnerData.id,
-                getUnitName(partnerData));
-        }
+		
         // 顯示抵抗異常狀態
         var resist = db.unit_resist[data.id];
 		var resistNames = ['poison', 'paralysis', 'freeze', 'burn', 'feather', 'curse', 'silence'];
-        var resistHtml = '';
+        var resistItems = [];
 		resistNames.forEach(function(name, index) {
 			var value = resist[name + '_resist'];
 			if (value > 0) {
-				resistHtml += debuffHtml(index + 1, value);
+				resistItems.push(debuffHtml(index + 1, value) + ' ' + value);
 			}
 		});
 		var elemNames = ['slash', 'smash', 'shot', 'sorcery', 'fire', 'water', 'earth', 'light', 'dark'];
@@ -579,7 +573,7 @@ function initUnitList() {
 
         var list = [
             anchor(getUnitName(data), "showUnit(" + data.id + ")"),
-            partner,
+            getUnitPartner(data, false),
             anchor(data.cv, "quickSearch('" + data.cv + "')"),
             data.rarity,
             elementHtml(data.use_element),
@@ -589,7 +583,7 @@ function initUnitList() {
             unitPower.agi,
 			strongHtml,
 			weakHtml,
-            resistHtml
+            resistItems.join('<br />')
         ];
         html += tableRow(list);
     }
@@ -1123,6 +1117,21 @@ function showUnit(id) {
     item.click().focus();
 }
 
+// 取得對應角
+function getUnitPartner(data, showJob) {
+	var html = '無';
+    var partnerData = db.unit[db.unit_base[data.base_id].partner_id];
+    if (partnerData != null) {
+		html = String.Format("<a href='#' onclick='showUnit({0});'>{1}</a>",
+            partnerData.id,
+            getUnitName(partnerData));
+		if (showJob) {
+			html += getUnitJobComment(partnerData);
+		}
+    }
+	return html;
+}
+
 // 讀取角色資料
 function loadUnitData(id) {
     loadDataEvent(id);
@@ -1134,15 +1143,7 @@ function loadUnitData(id) {
     var data = db.unit[id];
     setTitle(getUnitName(data), getUnitJob(data));
     $("#cv").html(data.cv);
-    var partnerData = db.unit[data.partner_id];
-    if (partnerData != null) {
-        $("#partner").html(String.Format("<a href='#' onclick='showUnit({0});'>{1}</a>{2}",
-            partnerData.id,
-            getUnitName(partnerData),
-            getUnitJobComment(partnerData)));
-    } else {
-        $("#partner").html('無');
-    }
+	$("#partner").html(getUnitPartner(data, true));
 
     $("#gender").html(
         data.gender == 1 ? '男' :
@@ -1223,10 +1224,19 @@ function loadUnitData(id) {
     $("#skillAtk").hide();
     $("#skillAtkExt").hide();
 
+	// 陷阱
+	if (data.trap_id > 0) {
+		$skillBase.children("tr").eq(7).append(getTrapSkillTd(data.trap_id));
+		
+		$("#specialSkill").removeClass("hidden");
+	} else {
+		$("#specialSkill").addClass("hidden");
+	}
+	
     // 奧義
     var ougiData = db.ougi[data.ougi_id];
-    $skillDesc.children("tr").eq(7).children("td").eq(0).html(getOugiDesc(ougiData));
-    $skillBase.children("tr").eq(7).append(getOugiTd(data.ougi_id));
+    $skillDesc.children("tr").eq(8).children("td").eq(0).html(getOugiDesc(ougiData));
+    $skillBase.children("tr").eq(8).append(getOugiTd(data.ougi_id));
 
     // 增加連結圖示，避免有人看不出有連結
     $skillBase.find("a").append("<i class='glyphicon glyphicon-link'></i>");
@@ -1302,6 +1312,22 @@ function getSkillTd(base_id) {
     return '<td>' + list.join('</td><td>') + '</td>';
 }
 
+function getTrapSkillTd(trap_id) {
+    var data = db.trap_skill[trap_id];
+    var name = anchor(data.name, "loadTrapSkillAtk(" + data.id + ")")
+    var list = [name,
+        data.name,
+        '陷阱',
+        data.dmg,
+        data.cd,
+        data.break_,
+        '---',
+        '---',
+        data.min_range + '-' + data.max_range
+    ];
+    return '<td>' + list.join('</td><td>') + '</td>';
+}
+
 // 產生奧義資料
 function getOugiTd(id) {
     var data = db.ougi[id];
@@ -1325,6 +1351,14 @@ function loadSkillAtk(id) {
 
     commonLoadAtk($table, data, ext);
 }
+
+function loadTrapSkillAtk(id) {
+    var $table = $("#skillAtk");
+    var data = db.trap_skill_atk[id];
+    commonLoadAtk($table, data);
+	$("#skillAtkExt").hide();
+}
+
 
 function loadOugiAtk(id) {
     var $table = $("#skillAtk");
@@ -1390,7 +1424,7 @@ function getSkillAtkItemList(data, ext) {
         if (hit.air > 0) effects.push("擊飛");
         if (hit.down_atk > 0) effects.push("挖地");
         if (hit.g_bound > 0) effects.push("扣殺");
-        if (hit.kirimomi > 0) effects.push("kirimomi"); // 大車輪的另一個讀法，幾乎沒技能用他，感覺像是廢棄欄位
+        if (hit.kirimomi > 0) effects.push("大車輪２"); // 大車輪斜飛，像暗重S3最後一下
         if (hit.daisharin > 0) effects.push("大車輪");
         if (hit.haritsuke > 0) effects.push("定身");
         if (hit.huge_knockback > 0) effects.push("擊退");
