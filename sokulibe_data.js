@@ -5,7 +5,7 @@ var enums;
 var skipDirty = true;
 var dirtyPrefix = 'x ';
 var disableTranslate = false;
-var dataTableOption = {
+var defaultDataTablesOption = {
     "autoWidth": false,
     "order": [],
     "paging": false,
@@ -15,7 +15,23 @@ var dataTableOption = {
         "searchPlaceholder": "快速搜尋",
         "zeroRecords": "找不到符合的資料",
         "emptyTable": "無資料",
-    }
+    },
+};
+var dataTableTearsOption = {
+    "autoWidth": false,
+    "order": [],
+    "paging": false,
+    "info": false,
+	"searching": false,
+    "language": {
+        "search": "",
+        "searchPlaceholder": "快速搜尋",
+        "zeroRecords": "找不到符合的資料",
+        "emptyTable": "無資料",
+    },
+	"columnDefs": [
+	  { targets: 'no-sort', orderable: false }
+	]
 };
 
 (function($) {
@@ -815,7 +831,7 @@ function initTearsCompute() {
         updateResultText();
     });
 
-    $table.children("tbody").html(html);
+	renderTable("tearsComputeTable", html, dataTableTearsOption);	
 }
 
 function setLv(sender) {
@@ -2625,10 +2641,10 @@ function anchor(text, onclick) {
     return String.Format('<a href="#" onclick="{1}; return false;">{0}</a>', text, onclick);
 }
 
-function renderTable(id, html) {
+function renderTable(id, html, dataTablesOption) {
     var $table = $("#" + id);
     $table.children("tbody").html(html)
-    $table.DataTable(dataTableOption);
+    $table.DataTable(dataTablesOption || defaultDataTablesOption);
     $table.wrap("<div class='table-responsive'></div>"); // 增加響應div
 }
 
