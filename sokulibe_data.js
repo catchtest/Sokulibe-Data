@@ -1222,14 +1222,46 @@ function loadUnitData(id) {
     $("#skillAtk").hide();
     $("#skillAtkExt").hide();
 
-	// 陷阱
+	// 職業特殊技
+	var specialHtml = '';
 	if (data.trap_id > 0) {
-		$skillBase.children("tr").eq(7).append(getTrapSkillTd(data.trap_id));
-		
-		$("#specialSkill").removeClass("hidden");
+		// 陷阱
+		specialHtml = getTrapSkillTd(data.trap_id);
 	} else {
-		$("#specialSkill").addClass("hidden");
+		var specialTds;
+		switch (data.job_id) {
+			case 1:
+				// name, ---, 特殊, 傷害, CD, Break, Hate, Cast, Range
+				specialTds = ['クリティカルアッパー', '---', '攻擊', 1, 1800, 20, 10, 0, '0-200'];
+				break;
+			case 2:
+				specialTds = ['回避', '---', '特殊', 0, 600, 0, 0, 0, '---'];
+				break;
+			case 3:
+				specialTds = ['トルネード', '---', '特殊', 0, 400, 0, 0, 20, '0-10000'];
+				break;
+			case 4:
+				specialTds = ['バーサーク', '---', '特殊', 0, 3600, 0, 0, 0, '---'];
+				break;
+			case 5:
+				specialTds = ['タウント', '---', '特殊', 0, 600, 0, 700, 0, '0-500'];
+				break;
+			case 6:
+				specialTds = ['エリアシールド', '---', '特殊', 0, '動態', 0, 0, 0, '---'];
+				break;
+			case 7:
+				specialTds = ['スナイプモード', '---', '特殊', 0, 0, 0, 0, 0, '---'];
+				break;
+			case 9:
+				specialTds = ['コンセントレート', '---', '特殊', 0, 2700, 0, 0, 0, '---'];
+				break;
+			case 10:
+				specialTds = ['スポットヒール', '---', '回復', 1, 1200, 0, 0, 0, '---'];
+				break;
+		}
+		specialHtml = '<td>' + specialTds.join('</td><td>') + '</td>';
 	}
+	$skillBase.children("tr").eq(7).append(specialHtml);
 	
     // 奧義
     var ougiData = db.ougi[data.ougi_id];
@@ -1315,7 +1347,7 @@ function getTrapSkillTd(trap_id) {
     var name = anchor(data.name, "loadTrapSkillAtk(" + data.id + ")")
     var list = [name,
         data.name,
-        '陷阱',
+        '攻擊',
         data.dmg,
         data.cd,
         data.break_,
