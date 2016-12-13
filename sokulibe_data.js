@@ -17,22 +17,6 @@ var defaultDataTablesOption = {
         "emptyTable": "無資料",
     },
 };
-var dataTableTearsOption = {
-    "autoWidth": false,
-    "order": [],
-    "paging": false,
-    "info": false,
-	"searching": false,
-    "language": {
-        "search": "",
-        "searchPlaceholder": "快速搜尋",
-        "zeroRecords": "找不到符合的資料",
-        "emptyTable": "無資料",
-    },
-	"columnDefs": [
-	  { targets: 'no-sort', orderable: false }
-	]
-};
 
 (function($) {
     // 顯示讀取資料錯誤訊息
@@ -581,6 +565,7 @@ function initUnitList() {
             unitPower.hp,
             unitPower.atk,
             unitPower.agi,
+			unitPower.knockback,
 			strongHtml,
 			weakHtml,
             resistItems.join('<br />')
@@ -790,10 +775,12 @@ function initCraftBoard() {
     $("#craftBoardList").html(html);
 }
 
+var $tearsTable;
+
 // 初始化眼淚計算
 function initTearsCompute() {
     var itemList = getUnitSortList();
-    var html = '';
+    var html = '', html2 = '';
     var commonLvTmpl = $("#setCommonLvTmpl").html();
 
     for (var i = 0, len = itemList.length; i < len; i++) {
@@ -813,11 +800,15 @@ function initTearsCompute() {
             String.Format('<input type="text" data-id="{0}" data-rarity="{1}" name="unitTear" class="readonly" readonly />', data.id, data.rarity)
         ];
 
-        html += tableRow(list);
+		if (data.rarity === 4) {
+			html += tableRow(list);
+		} else {
+			html2 += tableRow(list);
+		}
     }
 
-    var $table = $("#tearsComputeTable");
-    $table.on("change", "[name='unitLv']", function() {
+	$tearsTable = $("#tearsComputeTable, #tearsComputeTable2");
+    $tearsTable.on("change", "[name='unitLv']", function() {
         var rarity = $(this).data("rarity");
         var value = $(this).val();
         var $total = $(this).closest("tr").find("[name=unitTear]");
@@ -825,7 +816,14 @@ function initTearsCompute() {
         updateResultText();
     });
 
-	renderTable("tearsComputeTable", html, dataTableTearsOption);	
+	var dtOption = $.extend({}, defaultDataTablesOption, {
+		"searching": false,
+		"columnDefs": [
+		  { targets: 'no-sort', orderable: false }
+		]
+	});
+	renderTable("tearsComputeTable", html, dtOption);
+	renderTable("tearsComputeTable2", html2, dtOption);	
 }
 
 function setLv(sender) {
@@ -881,7 +879,7 @@ function saveToText() {
 
 function saveCommon() {
     var saveData = {};
-    $("#tearsComputeTable > tbody > tr").each(function() {
+    $tearsTable.find("tbody > tr").each(function() {
         var $lv = $(this).find("[name=unitLv]");
         if (!$lv.val()) return;
 
@@ -926,7 +924,7 @@ function loadFromTextButton() {
 function loadCommon(json) {
     var saveData = JSON.parse(json);
 
-    $("#tearsComputeTable > tbody > tr").each(function() {
+    $tearsTable.find("tbody > tr").each(function() {
         var $lv = $(this).find("[name=unitLv]");
         var $tear = $(this).find("[name=unitTear]");
         var id = $tear.data("id");
@@ -948,7 +946,7 @@ function loadCommon(json) {
 function updateResultText() {
     var tears = 0;
     var tearsFor4 = 0
-    $("#tearsComputeTable").find("[name=unitTear]").each(function() {
+    $tearsTable.find("[name=unitTear]").each(function() {
         var $this = $(this);
         var value = parseInt($this.val()) || 0;
         tears += value;
@@ -962,7 +960,7 @@ function updateResultText() {
     var units = 0;
     var unitsFree = 0;
     var unitsLv200 = 0;
-    $("#tearsComputeTable").find("[name=unitLv]").each(function() {
+    $tearsTable.find("[name=unitLv]").each(function() {
         var $this = $(this);
         var lv = $this.val();
         if ($this.data("rarity") == 4 && !!lv) {
@@ -984,7 +982,7 @@ function updateResultText() {
 }
 
 function clearAllTears() {
-    $("#tearsComputeTable").find("[name=unitLv], [name=unitTear]").val('');
+    $tearsTable.find("[name=unitLv], [name=unitTear]").val('');
     updateResultText();
     hideResultInput();
 }

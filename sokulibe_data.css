@@ -422,6 +422,7 @@ a > i {
 
 .btn-lv {
 	visibility: hidden;
+	display: inline-flex;   /* 防止被斷成兩行 */
 }
 
 .btn-lv > .btn {
@@ -436,10 +437,12 @@ a > i {
 	margin: 0 3px;
 }
 
-#tearsComputeTable tr:hover .btn-lv {
+#tearsComputeTable tr:hover .btn-lv, 
+#tearsComputeTable2 tr:hover .btn-lv {
 	visibility: visible;	
 }
 
-#tearsComputeTable input[type=number] {
+#tearsComputeTable input[type=number],
+#tearsComputeTable2 input[type=number] {
 	color: initial;
 }
