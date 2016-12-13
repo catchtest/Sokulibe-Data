@@ -99,35 +99,48 @@ var defaultDataTablesOption = {
         var $items = $(this).find(".list-group-item");
         var $select = $items.filter(".active");
         if (!$select.length) return;
+		
+		var commonEvent = function($s, $t) {
+			if ($t.length) {
+				$s.removeClass("active");
+				$t.addClass("active").focus();
+			}
+		}
+		
         switch (e.which) {
             case 37: // left
             case 38: // up
                 e.preventDefault();
-                $select.prevAll().not(".hidden").first().click().focus();
+                commonEvent($select, $select.prevAll().not(".hidden").first());
                 break;
             case 39: // right
             case 40: // down
                 e.preventDefault();
-                $select.nextAll().not(".hidden").first().click().focus();
+                commonEvent($select, $select.nextAll().not(".hidden").first());
                 break;
             case 36: // home
                 e.preventDefault();
-                $items.prevAll().not(".hidden").last().click().focus();
+                commonEvent($select, $items.prevAll().not(".hidden").last());
                 break;
             case 35: // end
                 e.preventDefault();
-                $items.nextAll().not(".hidden").last().click().focus();
+                commonEvent($select, $items.nextAll().not(".hidden").last());
                 break;
             case 33: // pageup
                 e.preventDefault();
-                $select.prevAll("*:lt(27):not(.hidden)").last().click().focus();
+                commonEvent($select, $select.prevAll("*:lt(27):not(.hidden)").last());
                 break;
             case 34: // pagedown
                 e.preventDefault();
-                $select.nextAll("*:lt(27):not(.hidden)").last().click().focus();
+                commonEvent($select, $select.nextAll("*:lt(27):not(.hidden)").last());
+
                 break;
         }
-    });
+    }).keyup(function(e) {
+		if (e.which >= 33 && e.which <= 40) {
+			$(this).find(".list-group-item.active").click().focus();
+		}
+	});
 
     $('.nav li').keydown(function(e) {
         switch (e.which) {
