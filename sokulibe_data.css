@@ -138,6 +138,10 @@ pre {
 	width: 200px;
 }
 
+.width100p {
+	width: 100%;
+}
+
 .type-rune::after {
 	content: '[材料]';
 	color: #ff3333;
@@ -418,6 +422,10 @@ a > i {
 .table > tbody > tr.active > *,
 .table > tbody > tr.active a {
 	color: white;
+}
+
+.vertical-middle > tbody > tr > td {
+	vertical-align: middle;
 }
 
 .btn-lv {

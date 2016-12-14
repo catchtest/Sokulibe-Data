@@ -16,6 +16,9 @@ var defaultDataTablesOption = {
         "zeroRecords": "找不到符合的資料",
         "emptyTable": "無資料",
     },
+	"columnDefs": [
+	  { targets: 'no-sort', orderable: false }
+	]
 };
 
 (function($) {
@@ -443,12 +446,20 @@ function initIcons() {
     for (var id in db.icons) {
         var data = db.icons[id];
 
+		var img = String.Format('<img src="Icon/pe{0}_tex.png" class="width100p" />', padLeft(id, 4));
         var name = data.name;
         var comment = data.comment;
 
-        html += tableRow([name, comment]);
+        html += tableRow([img, name, comment]);
     }
     renderTable("iconsTable", html);
+}
+
+function padLeft(str,lenght){
+	if(str.length >= lenght)
+		return str;
+	else
+		return padLeft("0" +str,lenght);
 }
 
 // 初始化道具列表
@@ -830,10 +841,7 @@ function initTearsCompute() {
     });
 
 	var dtOption = $.extend({}, defaultDataTablesOption, {
-		"searching": false,
-		"columnDefs": [
-		  { targets: 'no-sort', orderable: false }
-		]
+		"searching": false
 	});
 	renderTable("tearsComputeTable", html, dtOption);
 	renderTable("tearsComputeTable2", html2, dtOption);	
