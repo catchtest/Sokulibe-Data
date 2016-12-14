@@ -482,10 +482,11 @@ function initRune() {
     for (var id in db.rune) {
         var data = db.rune[id];
 
+		var img = String.Format('<img src="Rune/ru{0}_tex.png" class="width100p" />', padLeft(id, 4));
         var name = data.name;
         var comment = data.tips.replaceAll('\n', '');
 
-        html += tableRow([name, comment]);
+        html += tableRow([img, name, comment]);
     }
     renderTable("runeTable", html);
 }
