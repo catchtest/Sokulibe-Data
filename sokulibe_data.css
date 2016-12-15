@@ -424,8 +424,12 @@ a > i {
 	color: white;
 }
 
-.vertical-middle > tbody > tr > td {
+#overviewTab .table > tbody > tr > td {
 	vertical-align: middle;
+}
+
+.table img {
+	max-width: 50px;
 }
 
 .btn-lv {

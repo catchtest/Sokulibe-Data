@@ -16,9 +16,10 @@ var defaultDataTablesOption = {
         "zeroRecords": "找不到符合的資料",
         "emptyTable": "無資料",
     },
-	"columnDefs": [
-	  { targets: 'no-sort', orderable: false }
-	]
+    "columnDefs": [{
+        targets: 'no-sort',
+        orderable: false
+    }]
 };
 
 (function($) {
@@ -74,42 +75,42 @@ var defaultDataTablesOption = {
     $("a[href='#limitbreakTab']").one("click", initLimitbreak);
     $("a[href='#craftBoardTab']").one("click", initCraftBoard);
     $("a[href='#tearsComputeTab']").one("click", initTearsCompute);
-	$("a[href='#loginBonusTab']").one("click", initLoginBonus);
+    $("a[href='#loginBonusTab']").one("click", initLoginBonus);
 
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
         $(this).closest("tr").addClass("active");
     }).on("keydown", "a", function(e) {
-		var $this = $(this);
-		
+        var $this = $(this);
+
         switch (e.which) {
             case 38: // up
-			case 40: // down
+            case 40: // down
                 e.preventDefault();
-				var $anchors = $this.closest("tbody").find("a");
-				var index = $anchors.index($this);
-				
-				var value = e.which === 38 ? -1 : 1;
-				var len = $anchors.length;
-				var newIndex = (index + len + value) % len;
-				$anchors.eq(newIndex).click().focus();
+                var $anchors = $this.closest("tbody").find("a");
+                var index = $anchors.index($this);
+
+                var value = e.which === 38 ? -1 : 1;
+                var len = $anchors.length;
+                var newIndex = (index + len + value) % len;
+                $anchors.eq(newIndex).click().focus();
                 break;
         }
-	});
+    });
 
     // 鍵盤事件
     $('.list-group').keydown(function(e) {
         var $items = $(this).find(".list-group-item");
         var $select = $items.filter(".active");
         if (!$select.length) return;
-		
-		var commonEvent = function($s, $t) {
-			if ($t.length) {
-				$s.removeClass("active");
-				$t.addClass("active").focus();
-			}
-		}
-		
+
+        var commonEvent = function($s, $t) {
+            if ($t.length) {
+                $s.removeClass("active");
+                $t.addClass("active").focus();
+            }
+        }
+
         switch (e.which) {
             case 37: // left
             case 38: // up
@@ -140,10 +141,10 @@ var defaultDataTablesOption = {
                 break;
         }
     }).keyup(function(e) {
-		if (e.which >= 33 && e.which <= 40) {
-			$(this).find(".list-group-item.active").click().focus();
-		}
-	});
+        if (e.which >= 33 && e.which <= 40) {
+            $(this).find(".list-group-item.active").click().focus();
+        }
+    });
 
     $('.nav li').keydown(function(e) {
         switch (e.which) {
@@ -159,12 +160,12 @@ var defaultDataTablesOption = {
     });
 
     $("#showDirty").change(function() {
-		skipDirty = !this.checked;
-		if (skipDirty) {
-			$(".dirty").addClass("hidden");			
-		} else {
-			$(".dirty").removeClass("hidden");			
-		}
+        skipDirty = !this.checked;
+        if (skipDirty) {
+            $(".dirty").addClass("hidden");
+        } else {
+            $(".dirty").removeClass("hidden");
+        }
     });
 
     $("#disableTranslate").click(function() {
@@ -185,12 +186,12 @@ function initUnit() {
     for (var id in db.unit) {
         var data = db.unit[id];
 
-		var cssClass = '';
-		var prefix = '';
+        var cssClass = '';
+        var prefix = '';
         if (isDirtyUnit(data)) {
-			cssClass = setDirtyClass();
-			prefix = dirtyPrefix;
-		}
+            cssClass = setDirtyClass();
+            prefix = dirtyPrefix;
+        }
 
         var name = prefix + getUnitName(data);
         var job = getUnitJob(data);
@@ -223,13 +224,13 @@ function initAccessory() {
     var htmls = ['', '', ''];
 
     for (var id in db.accessory) {
-		var cssClass = '';
-		var prefix = '';
+        var cssClass = '';
+        var prefix = '';
         if (isDirtyAccessory(id)) {
-			cssClass = setDirtyClass();
-			prefix = dirtyPrefix;
-		}
-		
+            cssClass = setDirtyClass();
+            prefix = dirtyPrefix;
+        }
+
         var data = db.accessory[id];
 
         var name = prefix + getAccessoryName(id);
@@ -257,12 +258,12 @@ function initWeapon() {
     for (var id in db.weapon) {
         var data = db.weapon[id];
 
-		var cssClass = '';
-		var prefix = '';
+        var cssClass = '';
+        var prefix = '';
         if (isDirtyWeapon(data)) {
-			cssClass = setDirtyClass();
-			prefix = dirtyPrefix;
-		}
+            cssClass = setDirtyClass();
+            prefix = dirtyPrefix;
+        }
 
         var name = prefix + data.name;
         // 不能裝備的武器
@@ -323,13 +324,13 @@ function initEvent() {
         if (!(id in db.event_multi_quest)) continue;
 
         var data = db.event[id];
-		var event_flag = [];
-		if (data.multi_flag === 1 || data.event_type === 5 || data.event_type === 9) {
-			event_flag.push("<單刷>");
-		}
-		if (data.ranking_flag === 1) {
-			event_flag.push("<排名>");
-		}
+        var event_flag = [];
+        if (data.multi_flag === 1 || data.event_type === 5 || data.event_type === 9) {
+            event_flag.push("<單刷>");
+        }
+        if (data.ranking_flag === 1) {
+            event_flag.push("<排名>");
+        }
 
         var name = data.name;
         var job = event_flag.join(' ');
@@ -446,7 +447,7 @@ function initIcons() {
     for (var id in db.icons) {
         var data = db.icons[id];
 
-		var img = String.Format('<img src="Icon/pe{0}_tex.png" class="width100p" />', padLeft(id, 4));
+        var img = imgHtml("Icon/pe{0}_tex.png", id);
         var name = data.name;
         var comment = data.comment;
 
@@ -455,11 +456,11 @@ function initIcons() {
     renderTable("iconsTable", html);
 }
 
-function padLeft(str,lenght){
-	if(str.length >= lenght)
-		return str;
-	else
-		return padLeft("0" +str,lenght);
+function padLeft(str, lenght) {
+    if (str.length >= lenght)
+        return str;
+    else
+        return padLeft("0" + str, lenght);
 }
 
 // 初始化道具列表
@@ -482,7 +483,7 @@ function initRune() {
     for (var id in db.rune) {
         var data = db.rune[id];
 
-		var img = String.Format('<img src="Rune/ru{0}_tex.png" class="width100p" />', padLeft(id, 4));
+        var img = imgHtml("Rune/ru{0}_tex.png", id);
         var name = data.name;
         var comment = data.tips.replaceAll('\n', '');
 
@@ -549,38 +550,39 @@ function initUnitList() {
         var data = itemList[i];
         var maxLevel = enums.max_level[data.rarity];
         var unitPower = calculateUnit(data.id, maxLevel);
-		
+
         // 顯示抵抗異常狀態
         var resist = db.unit_resist[data.id];
-		var resistNames = ['poison', 'paralysis', 'freeze', 'burn', 'feather', 'curse', 'silence'];
+        var resistNames = ['poison', 'paralysis', 'freeze', 'burn', 'feather', 'curse', 'silence'];
         var resistItems = [];
-		resistNames.forEach(function(name, index) {
-			var value = resist[name + '_resist'];
-			if (value > 0) {
-				resistItems.push(debuffHtml(index + 1, value) + ' ' + value);
-			}
-		});
-		var elemNames = ['slash', 'smash', 'shot', 'sorcery', 'fire', 'water', 'earth', 'light', 'dark'];
-		var strongHtml = '';
-		var weakHtml = '';
-		elemNames.forEach(function(name, index) {
-			var value = resist[name + '_resist'];
-			if (value > 0) {
-				if (index >= 4) {
-					strongHtml += elementHtml(index - 3, value) + ' ' + value;
-				} else {
-					strongHtml += enums.atk_type[elemNames];
-				}	
-			} else if (value < 0) {
-				if (index >= 4) {
-					weakHtml += elementHtml(index - 3, value) + ' ' + value;
-				} else {
-					weakHtml += enums.atk_type[elemNames];
-				}
-			}
-		});
+        resistNames.forEach(function(name, index) {
+            var value = resist[name + '_resist'];
+            if (value > 0) {
+                resistItems.push(debuffHtml(index + 1, value) + ' ' + value);
+            }
+        });
+        var elemNames = ['slash', 'smash', 'shot', 'sorcery', 'fire', 'water', 'earth', 'light', 'dark'];
+        var strongHtml = '';
+        var weakHtml = '';
+        elemNames.forEach(function(name, index) {
+            var value = resist[name + '_resist'];
+            if (value > 0) {
+                if (index >= 4) {
+                    strongHtml += elementHtml(index - 3, value) + ' ' + value;
+                } else {
+                    strongHtml += enums.atk_type[elemNames];
+                }
+            } else if (value < 0) {
+                if (index >= 4) {
+                    weakHtml += elementHtml(index - 3, value) + ' ' + value;
+                } else {
+                    weakHtml += enums.atk_type[elemNames];
+                }
+            }
+        });
 
         var list = [
+            imgHtml("Mini/un{0}_mini_tex.png", data.id),
             anchor(getUnitName(data), "showUnit(" + data.id + ")"),
             getUnitPartner(data, false),
             anchor(data.cv, "quickSearch('" + data.cv + "')"),
@@ -590,9 +592,9 @@ function initUnitList() {
             unitPower.hp,
             unitPower.atk,
             unitPower.agi,
-			unitPower.knockback,
-			strongHtml,
-			weakHtml,
+            unitPower.knockback,
+            strongHtml,
+            weakHtml,
             resistItems.join('<br />')
         ];
         html += tableRow(list);
@@ -656,6 +658,7 @@ function initAccessoryList() {
             name += '<br />' + getAccessoryLastName(data.id);
         }
         var list = [
+            imgHtml("Accessory/eq{0}_tex.png", getAccessoryFirstId(data.id)),
             category[data.category],
             name,
             enums.rarity[data.rarity],
@@ -703,6 +706,7 @@ function initWeaponList() {
         var weaponPower = calculateWeapon(data.id, 10, 4);
 
         var list = [
+            imgHtml("Weapon/wi{0}_tex.png", data.id),
             data.name,
             enums.rarity[data.rarity],
             enums.weapon_job[data.job],
@@ -805,7 +809,8 @@ var $tearsTable;
 // 初始化眼淚計算
 function initTearsCompute() {
     var itemList = getUnitSortList();
-    var html = '', html2 = '';
+    var html = '',
+        html2 = '';
     var commonLvTmpl = $("#setCommonLvTmpl").html();
 
     for (var i = 0, len = itemList.length; i < len; i++) {
@@ -825,14 +830,14 @@ function initTearsCompute() {
             String.Format('<input type="text" data-id="{0}" data-rarity="{1}" name="unitTear" class="readonly" readonly />', data.id, data.rarity)
         ];
 
-		if (data.rarity === 4) {
-			html += tableRow(list);
-		} else {
-			html2 += tableRow(list);
-		}
+        if (data.rarity === 4) {
+            html += tableRow(list);
+        } else {
+            html2 += tableRow(list);
+        }
     }
 
-	$tearsTable = $("#tearsComputeTable, #tearsComputeTable2");
+    $tearsTable = $("#tearsComputeTable, #tearsComputeTable2");
     $tearsTable.on("change", "[name='unitLv']", function() {
         var rarity = $(this).data("rarity");
         var value = $(this).val();
@@ -841,11 +846,11 @@ function initTearsCompute() {
         updateResultText();
     });
 
-	var dtOption = $.extend({}, defaultDataTablesOption, {
-		"searching": false
-	});
-	renderTable("tearsComputeTable", html, dtOption);
-	renderTable("tearsComputeTable2", html2, dtOption);	
+    var dtOption = $.extend({}, defaultDataTablesOption, {
+        "searching": false
+    });
+    renderTable("tearsComputeTable", html, dtOption);
+    renderTable("tearsComputeTable2", html2, dtOption);
 }
 
 function setLv(sender) {
@@ -1015,23 +1020,23 @@ function hideResultInput() {
 }
 
 function initLoginBonus() {
-	var html = '';
-	var count = 0;
-	var list = [];
-	for (var day in db.login_bonus) {
-		var data = db.login_bonus[day];
-		list.push(data.login_count);
-		list.push(getAsset(data.asset_type_id, data.asset_id, data.asset_count));
-		if (++count >= 7) {
-			html += tableRow(list);
-			count = 0;
-			list = [];
-		}
-	}
-	if (list.length) {
-		html += tableRow(list);
-	}
-	$("#loginBonusTable > tbody").html(html);
+    var html = '';
+    var count = 0;
+    var list = [];
+    for (var day in db.login_bonus) {
+        var data = db.login_bonus[day];
+        list.push(data.login_count);
+        list.push(getAsset(data.asset_type_id, data.asset_id, data.asset_count));
+        if (++count >= 7) {
+            html += tableRow(list);
+            count = 0;
+            list = [];
+        }
+    }
+    if (list.length) {
+        html += tableRow(list);
+    }
+    $("#loginBonusTable > tbody").html(html);
 }
 
 // 判斷是否為尚未完成的裝備
@@ -1081,6 +1086,13 @@ function getAccessoryLastName(id) {
         return last.name;
     }
     return null;
+}
+
+function getAccessoryFirstId(id) {
+    var item = db.accessory_upgrade[id];
+    var keys = Object.keys(item);
+    var first = db.accessory_upgrade[id][keys[0]];
+	return first.id;
 }
 
 function getUnitName(data) {
@@ -1139,17 +1151,17 @@ function showUnit(id) {
 
 // 取得對應角
 function getUnitPartner(data, showJob) {
-	var html = '無';
+    var html = '無';
     var partnerData = db.unit[db.unit_base[data.base_id].partner_id];
     if (partnerData != null) {
-		html = String.Format("<a href='#' onclick='showUnit({0});'>{1}</a>",
+        html = String.Format("<a href='#' onclick='showUnit({0});'>{1}</a>",
             partnerData.id,
             getUnitName(partnerData));
-		if (showJob) {
-			html += getUnitJobComment(partnerData);
-		}
+        if (showJob) {
+            html += getUnitJobComment(partnerData);
+        }
     }
-	return html;
+    return html;
 }
 
 // 讀取角色資料
@@ -1163,7 +1175,7 @@ function loadUnitData(id) {
     var data = db.unit[id];
     setTitle(getUnitName(data), getUnitJob(data));
     $("#cv").html(data.cv);
-	$("#partner").html(getUnitPartner(data, true));
+    $("#partner").html(getUnitPartner(data, true));
 
     $("#gender").html(
         data.gender == 1 ? '男' :
@@ -1244,47 +1256,47 @@ function loadUnitData(id) {
     $("#skillAtk").hide();
     $("#skillAtkExt").hide();
 
-	// 職業特殊技
-	var specialHtml = '';
-	if (data.trap_id > 0) {
-		// 陷阱
-		specialHtml = getTrapSkillTd(data.trap_id);
-	} else {
-		var specialTds;
-		switch (data.job_id) {
-			case 1:
-				// name, ---, 特殊, 傷害, CD, Break, Hate, Cast, Range
-				specialTds = ['クリティカルアッパー', '---', '攻擊', 1, 1800, 20, 10, 0, '0-200'];
-				break;
-			case 2:
-				specialTds = ['回避', '---', '特殊', 0, 600, 0, 0, 0, '---'];
-				break;
-			case 3:
-				specialTds = ['トルネード', '---', '特殊', 0, 400, 0, 0, 20, '0-10000'];
-				break;
-			case 4:
-				specialTds = ['バーサーク', '---', '特殊', 0, 3600, 0, 0, 0, '---'];
-				break;
-			case 5:
-				specialTds = ['タウント', '---', '特殊', 0, 600, 0, 700, 0, '0-500'];
-				break;
-			case 6:
-				specialTds = ['エリアシールド', '---', '特殊', 0, '動態', 0, 0, 0, '---'];
-				break;
-			case 7:
-				specialTds = ['スナイプモード', '---', '特殊', 0, 0, 0, 0, 0, '---'];
-				break;
-			case 9:
-				specialTds = ['コンセントレート', '---', '特殊', 0, 2700, 0, 0, 0, '---'];
-				break;
-			case 10:
-				specialTds = ['スポットヒール', '---', '回復', 1, 1200, 0, 0, 0, '---'];
-				break;
-		}
-		specialHtml = '<td>' + specialTds.join('</td><td>') + '</td>';
-	}
-	$skillBase.children("tr").eq(7).append(specialHtml);
-	
+    // 職業特殊技
+    var specialHtml = '';
+    if (data.trap_id > 0) {
+        // 陷阱
+        specialHtml = getTrapSkillTd(data.trap_id);
+    } else {
+        var specialTds;
+        switch (data.job_id) {
+            case 1:
+                // name, ---, 特殊, 傷害, CD, Break, Hate, Cast, Range
+                specialTds = ['クリティカルアッパー', '---', '攻擊', 1, 1800, 20, 10, 0, '0-200'];
+                break;
+            case 2:
+                specialTds = ['回避', '---', '特殊', 0, 600, 0, 0, 0, '---'];
+                break;
+            case 3:
+                specialTds = ['トルネード', '---', '特殊', 0, 400, 0, 0, 20, '0-10000'];
+                break;
+            case 4:
+                specialTds = ['バーサーク', '---', '特殊', 0, 3600, 0, 0, 0, '---'];
+                break;
+            case 5:
+                specialTds = ['タウント', '---', '特殊', 0, 600, 0, 700, 0, '0-500'];
+                break;
+            case 6:
+                specialTds = ['エリアシールド', '---', '特殊', 0, '動態', 0, 0, 0, '---'];
+                break;
+            case 7:
+                specialTds = ['スナイプモード', '---', '特殊', 0, 0, 0, 0, 0, '---'];
+                break;
+            case 9:
+                specialTds = ['コンセントレート', '---', '特殊', 0, 2700, 0, 0, 0, '---'];
+                break;
+            case 10:
+                specialTds = ['スポットヒール', '---', '回復', 1, 1200, 0, 0, 0, '---'];
+                break;
+        }
+        specialHtml = '<td>' + specialTds.join('</td><td>') + '</td>';
+    }
+    $skillBase.children("tr").eq(7).append(specialHtml);
+
     // 奧義
     var ougiData = db.ougi[data.ougi_id];
     $skillDesc.children("tr").eq(8).children("td").eq(0).html(getOugiDesc(ougiData));
@@ -1408,7 +1420,7 @@ function loadTrapSkillAtk(id) {
     var $table = $("#skillAtk");
     var data = db.trap_skill_atk[id];
     commonLoadAtk($table, data);
-	$("#skillAtkExt").hide();
+    $("#skillAtkExt").hide();
 }
 
 
@@ -1416,7 +1428,7 @@ function loadOugiAtk(id) {
     var $table = $("#skillAtk");
     var data = db.ougi_atk[id];
     commonLoadAtk($table, data);
-	$("#skillAtkExt").hide();
+    $("#skillAtkExt").hide();
 }
 
 function loadMonsterSkillAtk(id) {
@@ -1488,12 +1500,12 @@ function getSkillAtkItemList(data, ext) {
         if (hitType == null) { // 奧義的情形
             hitType = enums.skill_type[hit.skill_type + 1];
         } else {
-            hitType = 
-				hit.hit_type == 0 ? '攻擊' :
-                hit.hit_type == 1 ? '回復' : 
-				hit.hit_type == 3 ? '直接攻擊' : 
-				hit.hit_type == 4 ? '全體回復' : 
-				hit.hit_type == 5 ? '自身' : hit.hit_type;
+            hitType =
+                hit.hit_type == 0 ? '攻擊' :
+                hit.hit_type == 1 ? '回復' :
+                hit.hit_type == 3 ? '直接攻擊' :
+                hit.hit_type == 4 ? '全體回復' :
+                hit.hit_type == 5 ? '自身' : hit.hit_type;
         }
 
         if (hitType == '攻擊' || hitType == '直接攻擊') {
@@ -1571,7 +1583,7 @@ function getSkillAtkItemList(data, ext) {
             effects.join('<br />'),
             hit.knockback,
             hit.huge_knockback,
-			hit.hitstop,
+            hit.hitstop,
             ani_xy,
             hold_effect.join('<br />'),
         ];
@@ -1627,7 +1639,7 @@ function getSkillAtkItemList(data, ext) {
             isNaN(sum_knockback) ? '' : sum_knockback,
             isNaN(sum_huge_knockback) ? '' : sum_huge_knockback,
             '',
-			'',
+            '',
             '',
         ];
         footList.push(list);
@@ -1762,7 +1774,7 @@ function defUp(text, value) {
 }
 
 function timeFormat(time) {
-	var sec = time / 30;
+    var sec = time / 30;
     return String.Format('<div class="duration">持續時間：{0} ({1}秒)</div>', time, sec);
 }
 
@@ -2072,7 +2084,7 @@ function loadQuestData(eventID, questID) {
     var waveData = db.event_quest_wave[questID];
 
     loadCommonQuestData(baseData, missionData, dropData, waveData);
-	
+
     // 任務
     var $missionTable = $("#missionTable > tbody");
     var html = '';
@@ -2092,11 +2104,11 @@ function loadQuestData(eventID, questID) {
 
     // 交換所
     html = '';
-	var eventData = db.event[eventID];
+    var eventData = db.event[eventID];
     var raid_id = eventData.raid_id;
-	var point_summary = 0;
-	var point_last = 0;
-	var point_exchange_mode = false;
+    var point_summary = 0;
+    var point_last = 0;
+    var point_exchange_mode = false;
 
     var data_points = raid_id > 0 ? db.raid_event_point[raid_id] : db.event_point[eventID];
     if (data_points != null) {
@@ -2105,40 +2117,40 @@ function loadQuestData(eventID, questID) {
 
             var asset = getAsset(data_point.item_type, data_point.item_id, data_point.item_value);
             var exchange_limit = raid_id > 0 ? 1 : data_point.exchange_limit
-			var data_point_sum = data_point.points * exchange_limit;
+            var data_point_sum = data_point.points * exchange_limit;
             html += tableRow([asset, data_point.points, exchange_limit, data_point_sum]);
-			
-			// 判斷是點數交換還是到達即可領取
-			// 如果是到達即可領取那可換次數都是1
-			if (exchange_limit > 1) {
-				point_exchange_mode = true;
-			}			
-			point_last = data_point_sum;
-			point_summary += point_last;
+
+            // 判斷是點數交換還是到達即可領取
+            // 如果是到達即可領取那可換次數都是1
+            if (exchange_limit > 1) {
+                point_exchange_mode = true;
+            }
+            point_last = data_point_sum;
+            point_summary += point_last;
         }
     }
 
     $("#exchangeTable > tbody").html(html);
-	
-	var total_point = point_exchange_mode ? point_summary : point_last;
-	var footerHtml = total_point == 0 ? '' : tableRow(['', '', '', total_point]);
-	$("#exchangeTable > tfoot").html(footerHtml);
+
+    var total_point = point_exchange_mode ? point_summary : point_last;
+    var footerHtml = total_point == 0 ? '' : tableRow(['', '', '', total_point]);
+    $("#exchangeTable > tfoot").html(footerHtml);
 
     $("#Recom_lv, #first_clear_bonus, #multi_exp").closest("tr").hide();
     $("#raid_point, #continue_limit, #required_lv").closest("tr").show();
     $("#questTab").show();
     $("#questList").show();
-	
-	// 特殊處理: 特殊情形下required_lv其實是Recom_lv不是MR限制
-	switch (eventData.event_type) {
-		case 5:   // 新職踏破
-		case 9:   // 試煉之塔
-			$("#Recom_lv").html($("#required_lv").html()).closest("tr").show();
-			$("#required_lv").html('').closest("tr").hide();
-			break;
-		default:
-			break;
-	}	
+
+    // 特殊處理: 特殊情形下required_lv其實是Recom_lv不是MR限制
+    switch (eventData.event_type) {
+        case 5: // 新職踏破
+        case 9: // 試煉之塔
+            $("#Recom_lv").html($("#required_lv").html()).closest("tr").show();
+            $("#required_lv").html('').closest("tr").hide();
+            break;
+        default:
+            break;
+    }
 }
 
 // 共通關卡資料讀取
@@ -2167,11 +2179,11 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
     }
     $("#mission1, #mission2, #mission3").closest("tr").toggle(missionData != null);
     // 三冠獎勵
-	var missionBonusExist = baseData.mission_bonus_type != null;
-	if (missionBonusExist) {
-		$("#mission_bonus").html(getAsset(baseData.mission_bonus_type, baseData.mission_bonus_id, baseData.mission_bonus_value));
-	}
-	$("#mission_bonus").closest("tr").toggle(missionBonusExist);
+    var missionBonusExist = baseData.mission_bonus_type != null;
+    if (missionBonusExist) {
+        $("#mission_bonus").html(getAsset(baseData.mission_bonus_type, baseData.mission_bonus_id, baseData.mission_bonus_value));
+    }
+    $("#mission_bonus").closest("tr").toggle(missionBonusExist);
 
     // 掉落率
     for (var prop in dropData) {
@@ -2740,11 +2752,16 @@ function showStory(sender) {
 }
 
 function setDirtyClass() {
-	var cssClass = 'dirty';
-	if (skipDirty) {
-		cssClass += ' hidden';
-	}
-	return cssClass;	
+    var cssClass = 'dirty';
+    if (skipDirty) {
+        cssClass += ' hidden';
+    }
+    return cssClass;
+}
+
+function imgHtml(path, id) {
+    path = String.Format(path, padLeft(id.toString(), 4));
+    return String.Format('<img src="{0}" />', path);
 }
 
 // 擴充方法

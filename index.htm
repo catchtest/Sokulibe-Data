@@ -55,11 +55,12 @@
                         <div class="well" style="box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset;">
                             <div class="well-legend">更新紀錄</div>
                             <ul>
-								<li>2016/12/14<br />一覽增加徽章跟素材的圖片</li>
-								<li>2016/12/13<br />所有職業特殊技顯示</li>
-								<li>2016/12/12<br />遊俠特殊技內容顯示<br />官方更新配對角規則</li>
-								<li>2016/12/09<br />技能資料增加打擊停頓<br />顯示活動部分欄位，修正錯誤</li>
-								<li>2016/11/29<br />增加登入獎勵一覽</li>
+                                <li>2016/12/15<br />一覽增加角色、裝備跟武器的圖片</li>
+                                <li>2016/12/14<br />一覽增加徽章跟素材的圖片</li>
+                                <li>2016/12/13<br />所有職業特殊技顯示</li>
+                                <li>2016/12/12<br />遊俠特殊技內容顯示<br />官方更新配對角規則</li>
+                                <li>2016/12/09<br />技能資料增加打擊停頓<br />顯示活動部分欄位，修正錯誤</li>
+                                <li>2016/11/29<br />增加登入獎勵一覽</li>
                                 <li>2016/11/28<br />怪物技能變換內容一同顯示在列表<br />星盤總和追加</li>
                                 <li>2016/11/27<br />增加眼淚消耗計算</li>
                                 <li>2016/11/25<br />增加樣式選擇，顯示原文功能</li>
@@ -78,7 +79,7 @@
                             <ul>
                                 <li>在列表可按 <kbd>↑</kbd><kbd>↓</kbd><kbd>PgUp</kbd><kbd>PgDn</kbd> 直接切換項目</li>
                                 <li>在Tab可按 <kbd>←</kbd><kbd>→</kbd> 直接切換項目</li>
-								<li>在技能列表可按 <kbd>↑</kbd><kbd>↓</kbd> 直接切換項目</li>
+                                <li>在技能列表可按 <kbd>↑</kbd><kbd>↓</kbd> 直接切換項目</li>
                                 <li>本網頁使用響應式設計，使用手機也可觀看</li>
                             </ul>
                             <hr /> 樣式
@@ -101,12 +102,12 @@
 								<option>United</option>
 								<option>Yeti</option>
 							</select>
-							
-							<div class="btn-group" data-toggle="buttons">
-							  <label class="btn btn-default btn-xs">
+
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default btn-xs">
 								<input id="showDirty" type="checkbox" autocomplete="off"> 顯示內部資料
 							  </label>
-							</div>
+                            </div>
                             <button id="disableTranslate" class="btn btn-default btn-xs">顯示原文</button>
                         </div>
                     </div>
@@ -396,7 +397,7 @@
                                                     <tr>
                                                         <th>S3</th>
                                                     </tr>
-													<tr>
+                                                    <tr>
                                                         <th>特殊</th>
                                                     </tr>
                                                     <tr>
@@ -423,7 +424,7 @@
                                                         <th>特殊效果</th>
                                                         <th>擊倒值</th>
                                                         <th>擊退值</th>
-														<th>打擊停頓</th>
+                                                        <th>打擊停頓</th>
                                                         <th>動畫座標</th>
                                                         <th class="expand-th">蓄力效果</th>
                                                     </tr>
@@ -968,7 +969,7 @@
                                         <th>特殊效果</th>
                                         <th>擊倒值</th>
                                         <th>擊退值</th>
-										<th>打擊停頓</th>
+                                        <th>打擊停頓</th>
                                         <th>動畫座標</th>
                                         <th class="expand-th">蓄力效果</th>
                                     </tr>
@@ -1304,7 +1305,7 @@
                                                                 <th>特殊效果</th>
                                                                 <th>擊倒值</th>
                                                                 <th>擊退值</th>
-																<th>打擊停頓</th>
+                                                                <th>打擊停頓</th>
                                                                 <th>動畫座標</th>
                                                             </tr>
                                                         </thead>
@@ -1430,8 +1431,8 @@
                                         </thead>
                                         <tbody>
                                         </tbody>
-										<tfoot>
-										</tfoot>
+                                        <tfoot>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -1453,7 +1454,7 @@
                     <li role="presentation"><a href="#tearsTab" aria-controls="tearsTab" role="tab" data-toggle="tab">交換所</a></li>
                     <li role="presentation"><a href="#abilityListTab" aria-controls="abilityListTab" role="tab" data-toggle="tab">被動</a></li>
                     <li role="presentation"><a href="#limitbreakTab" aria-controls="limitbreakTab" role="tab" data-toggle="tab">突破</a></li>
-					<li role="presentation"><a href="#loginBonusTab" aria-controls="tearsComputeTab" role="tab" data-toggle="tab">登入獎勵</a></li>
+                    <li role="presentation"><a href="#loginBonusTab" aria-controls="tearsComputeTab" role="tab" data-toggle="tab">登入獎勵</a></li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -1462,6 +1463,7 @@
                         <table class="table table-bordered table-striped table-hover" id="unitListTable">
                             <thead>
                                 <tr>
+                                    <th class="width50 no-sort">圖示</th>
                                     <th>名字</th>
                                     <th>對應角色</th>
                                     <th>CV</th>
@@ -1471,9 +1473,9 @@
                                     <th>最大HP</th>
                                     <th>最大攻擊</th>
                                     <th>最大速度</th>
-									<th>擊倒抵抗</th>
-									<th>有利屬性</th>
-									<th>弱點屬性</th>
+                                    <th>擊倒抵抗</th>
+                                    <th>有利屬性</th>
+                                    <th>弱點屬性</th>
                                     <th>異常耐性</th>
                                 </tr>
                             </thead>
@@ -1485,6 +1487,7 @@
                         <table class="table table-bordered table-striped table-hover" id="accessoryListTable">
                             <thead>
                                 <tr>
+                                    <th class="width50 no-sort">圖示</th>
                                     <th>類型</th>
                                     <th>名稱</th>
                                     <th>稀有度</th>
@@ -1503,6 +1506,7 @@
                         <table class="table table-bordered table-striped table-hover" id="weaponListTable">
                             <thead>
                                 <tr>
+                                    <th class="width50 no-sort">圖示</th>
                                     <th>名稱</th>
                                     <th>稀有度</th>
                                     <th>職業</th>
@@ -1536,7 +1540,7 @@
                         <table class="table table-bordered table-striped table-hover vertical-middle" id="iconsTable">
                             <thead>
                                 <tr>
-									<th class="width50 no-sort">圖示</th>
+                                    <th class="width50 no-sort">圖示</th>
                                     <th>名稱</th>
                                     <th>說明</th>
                                 </tr>
@@ -1561,7 +1565,7 @@
                         <table class="table table-bordered table-striped table-hover vertical-middle" id="runeTable">
                             <thead>
                                 <tr>
-									<th class="width50 no-sort">圖示</th>
+                                    <th class="width50 no-sort">圖示</th>
                                     <th>名稱</th>
                                     <th>說明</th>
                                 </tr>
@@ -1713,32 +1717,32 @@
                             </div>
                         </div>
                     </div>
-					<div role="tabpanel" class="tab-pane" id="loginBonusTab">
-						<div class="table-responsive">
-							<table class="table table-bordered table-striped table-hover" id="loginBonusTable">
-								<thead>
-									<tr>
-										<th>天數</th>
-										<th>物品</th>
-										<th>天數</th>
-										<th>物品</th>
-										<th>天數</th>
-										<th>物品</th>
-										<th>天數</th>
-										<th>物品</th>
-										<th>天數</th>
-										<th>物品</th>
-										<th>天數</th>
-										<th>物品</th>
-										<th>天數</th>
-										<th>物品</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-						</div>
-					</div>
+                    <div role="tabpanel" class="tab-pane" id="loginBonusTab">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover" id="loginBonusTable">
+                                <thead>
+                                    <tr>
+                                        <th>天數</th>
+                                        <th>物品</th>
+                                        <th>天數</th>
+                                        <th>物品</th>
+                                        <th>天數</th>
+                                        <th>物品</th>
+                                        <th>天數</th>
+                                        <th>物品</th>
+                                        <th>天數</th>
+                                        <th>物品</th>
+                                        <th>天數</th>
+                                        <th>物品</th>
+                                        <th>天數</th>
+                                        <th>物品</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="craftBoardTab">
@@ -1801,8 +1805,8 @@
                     <button type="button" class="btn btn-default btn-sm" onclick="clearAllTears();">重設</button>
                 </div>
                 <div class="result-text">
-                    擁有4星角色<span id="unitCount" class="text-danger">0</span>+<span id="unitFreeCount" class="text-danger">0</span>位（200級有<span id="unitLv200Count" class="text-danger">0</span>位）
-					已消耗眼淚<span id="tearsValue" class="text-danger">0</span>個（花在4星<span id="tearsFor4Value" class="text-danger">0</span>個）
+                    擁有4星角色<span id="unitCount" class="text-danger">0</span>+<span id="unitFreeCount" class="text-danger">0</span>位（200級有<span id="unitLv200Count" class="text-danger">0</span>位） 已消耗眼淚
+                    <span id="tearsValue" class="text-danger">0</span>個（花在4星<span id="tearsFor4Value" class="text-danger">0</span>個）
                 </div>
                 <div id="loadFromText" style="display: none;">
                     <textarea class="form-control"></textarea>
@@ -1811,34 +1815,34 @@
                 <div id="saveToText" style="display: none;">
                     <textarea class="form-control"></textarea> 將以上文字複製並儲存到別處
                 </div>
-				<table class="table table-bordered table-striped table-hover" id="tearsComputeTable">
-					<thead>
-						<tr>
-							<th style="width: 300px;">名字</th>
-							<th>星數</th>
-							<th>屬性</th>
-							<th>職業</th>
-							<th class="no-sort">最大等級</th>
-							<th class="no-sort">花費眼淚</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
-				<table class="table table-bordered table-striped table-hover" id="tearsComputeTable2">
-					<thead>
-						<tr>
-							<th style="width: 300px;">名字</th>
-							<th>星數</th>
-							<th>屬性</th>
-							<th>職業</th>
-							<th class="no-sort">最大等級</th>
-							<th class="no-sort">花費眼淚</th>
-						</tr>
-					</thead>
-					<tbody>
-					</tbody>
-				</table>
+                <table class="table table-bordered table-striped table-hover" id="tearsComputeTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 300px;">名字</th>
+                            <th>星數</th>
+                            <th>屬性</th>
+                            <th>職業</th>
+                            <th class="no-sort">最大等級</th>
+                            <th class="no-sort">花費眼淚</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-striped table-hover" id="tearsComputeTable2">
+                    <thead>
+                        <tr>
+                            <th style="width: 300px;">名字</th>
+                            <th>星數</th>
+                            <th>屬性</th>
+                            <th>職業</th>
+                            <th class="no-sort">最大等級</th>
+                            <th class="no-sort">花費眼淚</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
