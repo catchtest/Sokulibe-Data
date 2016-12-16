@@ -1359,6 +1359,9 @@ function loadUnitData(id) {
         }
         $resistTable.find("." + prop).html(value);
     }
+	
+	// 圖片
+	$("#unitImgBlock").html(imgHtml("Mini/un{0}_mini_tex.png", data.id, true));
 }
 
 // 產生技能資料
@@ -1924,6 +1927,8 @@ function loadWeaponData(id) {
     var data = db.weapon[id];
     setTitle(data.name, enums.rarity[data.rarity]);
 
+	$("#weaponImgBlock").html(imgHtml("Weapon/wi{0}_tex.png", data.id, true));
+	
     ['HP', 'ATK', 'AGI'].forEach(function(e) {
         var e1 = e.toLowerCase();
 
@@ -2772,7 +2777,8 @@ function setDirtyClass() {
 function imgHtml(path, id, active) {
     path = String.Format(path, padLeft(id.toString(), 4));
 	if (active == true) {
-		return String.Format('<img src="{0}" onerror="brokenImage(this);" />', path);
+		var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
+		return String.Format('<img src="{0}" alt="{1}" />', path, fileId);
 	} else {
 		return String.Format('<a href="#" data-src="{0}" onclick="openImage(this); return false;">點選顯示</a>', path);
 	}
@@ -2781,15 +2787,11 @@ function imgHtml(path, id, active) {
 function openImage(sender) {
 	$(sender).closest("tbody").find("[data-src]").each(function() {
 		var $this = $(this);
-		$this.after(String.Format('<img src="{0}" onerror="brokenImage(this);" />', $this.data("src")));
+		var path = $this.data("src");
+		var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
+		$this.after(String.Format('<img src="{0}" alt="{1}" />', path, fileId));
 		$this.remove();
 	});
-}
-
-function brokenImage(sender) {
-	var $this = $(sender);
-	var filename = $this.attr("src").replace(/^.*[\\\/]/, '')
-	$this.parent("td").html(filename);
 }
 
 // 擴充方法

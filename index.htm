@@ -55,7 +55,7 @@
                         <div class="well" style="box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset;">
                             <div class="well-legend">更新紀錄</div>
                             <ul>
-								<li>2016/12/16<br />裝備顯示強化前至後的圖片<br />圖片進行壓縮不然太肥了<br />道具一覽加回</li>
+                                <li>2016/12/16<br />裝備顯示強化前至後的圖片<br />圖片進行壓縮不然太肥了<br />道具一覽加回</li>
                                 <li>2016/12/15<br />一覽增加角色、裝備跟武器的圖片</li>
                                 <li>2016/12/14<br />一覽增加徽章跟素材的圖片</li>
                                 <li>2016/12/13<br />所有職業特殊技顯示</li>
@@ -156,6 +156,7 @@
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="unitBaseTab">
+								<!--<div id="unitImgBlock"></div>-->
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
                                         <tbody>
@@ -726,73 +727,73 @@
                         </ul>
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="accessoryMagicTab">
-								<div id="accessoryImage" style="display: flex;"></div>
-								<div class="table-responsive">
-									<table class="table table-bordered">
-										<tbody>
-											<tr>
-												<th rowspan="4" class="width100">效果</th>
-												<td id="magic1"></td>
-											</tr>
-											<tr>
-												<td id="magic2"></td>
-											</tr>
-											<tr>
-												<td id="magic3"></td>
-											</tr>
-											<tr>
-												<td id="magic4"></td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
+                                <div id="accessoryImage" style="display: flex;"></div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <tbody>
+                                            <tr>
+                                                <th rowspan="4" class="width100">效果</th>
+                                                <td id="magic1"></td>
+                                            </tr>
+                                            <tr>
+                                                <td id="magic2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td id="magic3"></td>
+                                            </tr>
+                                            <tr>
+                                                <td id="magic4"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                             <div role="tabpanel" class="tab-pane" id="accessoryDescTab">
-								<div class="table-responsive">
-									<table class="table table-bordered">
-										<thead>
-											<tr>
-												<th class="width100"></th>
-												<th>說明</th>
-												<th class="width200">強化素材</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<th>未強化</th>
-												<td id="rank1"></td>
-												<td id="rune1"></td>
-											</tr>
-											<tr>
-												<th>強化1</th>
-												<td id="rank2"></td>
-												<td id="rune2"></td>
-											</tr>
-											<tr>
-												<th>強化2</th>
-												<td id="rank3"></td>
-												<td id="rune3"></td>
-											</tr>
-											<tr>
-												<th>強化3</th>
-												<td id="rank4"></td>
-												<td id="rune4"></td>
-											</tr>
-											<tr>
-												<th>強化4</th>
-												<td id="rank5"></td>
-												<td id="rune5"></td>
-											</tr>
-										</tbody>
-										<tfoot>
-											<tr>
-												<td>素材總和</td>
-												<td></td>
-												<td id="runeTotal"></td>
-											</tr>
-										</tfoot>
-									</table>
-								</div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="width100"></th>
+                                                <th>說明</th>
+                                                <th class="width200">強化素材</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>未強化</th>
+                                                <td id="rank1"></td>
+                                                <td id="rune1"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>強化1</th>
+                                                <td id="rank2"></td>
+                                                <td id="rune2"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>強化2</th>
+                                                <td id="rank3"></td>
+                                                <td id="rune3"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>強化3</th>
+                                                <td id="rank4"></td>
+                                                <td id="rune4"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>強化4</th>
+                                                <td id="rank5"></td>
+                                                <td id="rune5"></td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td>素材總和</td>
+                                                <td></td>
+                                                <td id="runeTotal"></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -826,171 +827,183 @@
                     <div class="col-sm-9">
                         <h3 class="name"></h3>
 
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th class="width100"></th>
-                                        <th class="width100">基礎</th>
-                                        <th class="width100">升級</th>
-                                        <th class="width100">覺醒</th>
-                                        <th class="width100">最大</th>
-                                        <th>等級<select id="weaponLevelSelect"></select> 覺醒<select id="weaponAwakeningSelect"></select></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th>HP</th>
-                                        <td id="weaponHP"></td>
-                                        <td id="weaponHP_grow"></td>
-                                        <td id="weaponHP_awakening" class="pct"></td>
-                                        <td id="weaponMaxHP"></td>
-                                        <td>
-                                            <div class="progress">
-                                                <div id="weaponHP_rate" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar">
-                                                    <span class="sr-only"></span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>攻擊</th>
-                                        <td id="weaponATK"></td>
-                                        <td id="weaponATK_grow"></td>
-                                        <td id="weaponATK_awakening" class="pct"></td>
-                                        <td id="weaponMaxATK"></td>
-                                        <td>
-                                            <div class="progress">
-                                                <div id="weaponATK_rate" class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar">
-                                                    <span class="sr-only"></span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>速度</th>
-                                        <td id="weaponAGI"></td>
-                                        <td id="weaponAGI_grow"></td>
-                                        <td id="weaponAGI_awakening" class="pct"></td>
-                                        <td id="weaponMaxAGI"></td>
-                                        <td>
-                                            <div class="progress">
-                                                <div id="weaponAGI_rate" class="progress-bar progress-bar-info progress-bar-striped" role="progressbar">
-                                                    <span class="sr-only"></span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#weaponPowerTab" aria-controls="weaponPowerTab" role="tab" data-toggle="tab">能力</a></li>
+                            <li role="presentation"><a href="#weaponSkillAtkTab" aria-controls="weaponSkillAtkTab" role="tab" data-toggle="tab">主動技</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="weaponPowerTab">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="width100"></th>
+                                                <th class="width100">基礎</th>
+                                                <th class="width100">升級</th>
+                                                <th class="width100">覺醒</th>
+                                                <th class="width100">最大</th>
+                                                <th>等級<select id="weaponLevelSelect"></select> 覺醒<select id="weaponAwakeningSelect"></select></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <th>HP</th>
+                                                <td id="weaponHP"></td>
+                                                <td id="weaponHP_grow"></td>
+                                                <td id="weaponHP_awakening" class="pct"></td>
+                                                <td id="weaponMaxHP"></td>
+                                                <td>
+                                                    <div class="progress">
+                                                        <div id="weaponHP_rate" class="progress-bar progress-bar-success progress-bar-striped" role="progressbar">
+                                                            <span class="sr-only"></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>攻擊</th>
+                                                <td id="weaponATK"></td>
+                                                <td id="weaponATK_grow"></td>
+                                                <td id="weaponATK_awakening" class="pct"></td>
+                                                <td id="weaponMaxATK"></td>
+                                                <td>
+                                                    <div class="progress">
+                                                        <div id="weaponATK_rate" class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar">
+                                                            <span class="sr-only"></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>速度</th>
+                                                <td id="weaponAGI"></td>
+                                                <td id="weaponAGI_grow"></td>
+                                                <td id="weaponAGI_awakening" class="pct"></td>
+                                                <td id="weaponMaxAGI"></td>
+                                                <td>
+                                                    <div class="progress">
+                                                        <div id="weaponAGI_rate" class="progress-bar progress-bar-info progress-bar-striped" role="progressbar">
+                                                            <span class="sr-only"></span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <th class="width100">主技能</th>
+                                                        <td id="weaponMainSkill"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>類型</th>
+                                                        <td id="weaponMainSkillType"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>可用次數</th>
+                                                        <td id="weaponMainSkillCount"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>傷害倍率</th>
+                                                        <td id="weaponMainSkill_dmg"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>威力</th>
+                                                        <td id="weaponMainSkillPower"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>冷卻時間</th>
+                                                        <td id="weaponMainSkill_cd"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>破盾倍率</th>
+                                                        <td id="weaponMainSkill_break_"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>仇恨倍率</th>
+                                                        <td id="weaponMainSkill_hate"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>詠唱時間</th>
+                                                        <td id="weaponMainSkill_casttime"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>距離</th>
+                                                        <td id="weaponMainSkill_range"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <th class="width100">副技能</th>
+                                                        <td id="weaponSubSkill1"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>覺醒1</th>
+                                                        <td id="weaponSubSkill2"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>覺醒2</th>
+                                                        <td id="weaponSubSkill3"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>覺醒3</th>
+                                                        <td id="weaponSubSkill4"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>覺醒4</th>
+                                                        <td id="weaponSubSkill5"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+										<div id="weaponImgBlock"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="weaponSkillAtkTab">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered">
+                                    <table id="weaponSkillAtk" class="table table-bordered table-sm-width">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>攻擊特性</th>
+                                                <th>傷害</th>
+                                                <th>解除異常</th>
+                                                <th class="expand-th">得到狀態</th>
+                                                <th class="expand-th">攻擊狀態</th>
+                                                <th>攻擊類型</th>
+                                                <th>屬性</th>
+                                                <th>重力值</th>
+                                                <th>仇恨值</th>
+                                                <th>破盾值</th>
+                                                <th>特殊效果</th>
+                                                <th>擊倒值</th>
+                                                <th>擊退值</th>
+                                                <th>打擊停頓</th>
+                                                <th>動畫座標</th>
+                                                <th class="expand-th">蓄力效果</th>
+                                            </tr>
+                                        </thead>
                                         <tbody>
-                                            <tr>
-                                                <th class="width100">主技能</th>
-                                                <td id="weaponMainSkill"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>類型</th>
-                                                <td id="weaponMainSkillType"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>可用次數</th>
-                                                <td id="weaponMainSkillCount"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>傷害倍率</th>
-                                                <td id="weaponMainSkill_dmg"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>威力</th>
-                                                <td id="weaponMainSkillPower"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>冷卻時間</th>
-                                                <td id="weaponMainSkill_cd"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>破盾倍率</th>
-                                                <td id="weaponMainSkill_break_"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>仇恨倍率</th>
-                                                <td id="weaponMainSkill_hate"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>詠唱時間</th>
-                                                <td id="weaponMainSkill_casttime"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>距離</th>
-                                                <td id="weaponMainSkill_range"></td>
-                                            </tr>
                                         </tbody>
+                                        <tfoot>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <th class="width100">副技能</th>
-                                                <td id="weaponSubSkill1"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>覺醒1</th>
-                                                <td id="weaponSubSkill2"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>覺醒2</th>
-                                                <td id="weaponSubSkill3"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>覺醒3</th>
-                                                <td id="weaponSubSkill4"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>覺醒4</th>
-                                                <td id="weaponSubSkill5"></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table id="weaponSkillAtk" class="table table-bordered table-sm-width">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>攻擊特性</th>
-                                        <th>傷害</th>
-                                        <th>解除異常</th>
-                                        <th class="expand-th">得到狀態</th>
-                                        <th class="expand-th">攻擊狀態</th>
-                                        <th>攻擊類型</th>
-                                        <th>屬性</th>
-                                        <th>重力值</th>
-                                        <th>仇恨值</th>
-                                        <th>破盾值</th>
-                                        <th>特殊效果</th>
-                                        <th>擊倒值</th>
-                                        <th>擊退值</th>
-                                        <th>打擊停頓</th>
-                                        <th>動畫座標</th>
-                                        <th class="expand-th">蓄力效果</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                                <tfoot>
-                                </tfoot>
-                            </table>
                         </div>
                     </div>
                 </div>
@@ -1565,7 +1578,7 @@
                         <table class="table table-bordered table-striped table-hover" id="itemsTable">
                             <thead>
                                 <tr>
-									<th class="width50 no-sort">圖示</th>
+                                    <th class="width50 no-sort">圖示</th>
                                     <th>名稱</th>
                                     <th>說明</th>
                                 </tr>
@@ -1573,9 +1586,9 @@
                             <tbody>
                             </tbody>
                         </table>
-						<div>
-							由於官方將Items.json這檔案改成動態讀取，因此沒有辦法取得7月以後的版本
-						</div>
+                        <p>
+                            由於官方將Items.json這檔案改成動態讀取，因此沒有辦法取得7月以後的版本
+                        </p>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="rune">
                         <table class="table table-bordered table-striped table-hover vertical-middle" id="runeTable">
