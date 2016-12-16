@@ -55,6 +55,7 @@
                         <div class="well" style="box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset;">
                             <div class="well-legend">更新紀錄</div>
                             <ul>
+								<li>2016/12/15<br />裝備顯示強化前至後的圖片</li>
                                 <li>2016/12/15<br />一覽增加角色、裝備跟武器的圖片</li>
                                 <li>2016/12/14<br />一覽增加徽章跟素材的圖片</li>
                                 <li>2016/12/13<br />所有職業特殊技顯示</li>
@@ -718,70 +719,81 @@
                     </div>
                     <div class="col-sm-9">
                         <h3 class="name"></h3>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <tbody>
-                                    <tr>
-                                        <th rowspan="4" class="width100">效果</th>
-                                        <td id="magic1"></td>
-                                    </tr>
-                                    <tr>
-                                        <td id="magic2"></td>
-                                    </tr>
-                                    <tr>
-                                        <td id="magic3"></td>
-                                    </tr>
-                                    <tr>
-                                        <td id="magic4"></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th class="width100"></th>
-                                        <th>說明</th>
-                                        <th class="width200">強化素材</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th>未強化</th>
-                                        <td id="rank1"></td>
-                                        <td id="rune1"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>強化1</th>
-                                        <td id="rank2"></td>
-                                        <td id="rune2"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>強化2</th>
-                                        <td id="rank3"></td>
-                                        <td id="rune3"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>強化3</th>
-                                        <td id="rank4"></td>
-                                        <td id="rune4"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>強化4</th>
-                                        <td id="rank5"></td>
-                                        <td id="rune5"></td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td>素材總和</td>
-                                        <td></td>
-                                        <td id="runeTotal"></td>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#accessoryMagicTab" aria-controls="accessoryMagicTab" role="tab" data-toggle="tab">效果</a></li>
+                            <li role="presentation"><a href="#accessoryDescTab" aria-controls="accessoryDescTab" role="tab" data-toggle="tab">描述</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="accessoryMagicTab">
+								<div id="accessoryImage" style="display: flex;"></div>
+								<div class="table-responsive">
+									<table class="table table-bordered">
+										<tbody>
+											<tr>
+												<th rowspan="4" class="width100">效果</th>
+												<td id="magic1"></td>
+											</tr>
+											<tr>
+												<td id="magic2"></td>
+											</tr>
+											<tr>
+												<td id="magic3"></td>
+											</tr>
+											<tr>
+												<td id="magic4"></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="accessoryDescTab">
+								<div class="table-responsive">
+									<table class="table table-bordered">
+										<thead>
+											<tr>
+												<th class="width100"></th>
+												<th>說明</th>
+												<th class="width200">強化素材</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<th>未強化</th>
+												<td id="rank1"></td>
+												<td id="rune1"></td>
+											</tr>
+											<tr>
+												<th>強化1</th>
+												<td id="rank2"></td>
+												<td id="rune2"></td>
+											</tr>
+											<tr>
+												<th>強化2</th>
+												<td id="rank3"></td>
+												<td id="rune3"></td>
+											</tr>
+											<tr>
+												<th>強化3</th>
+												<td id="rank4"></td>
+												<td id="rune4"></td>
+											</tr>
+											<tr>
+												<th>強化4</th>
+												<td id="rank5"></td>
+												<td id="rune5"></td>
+											</tr>
+										</tbody>
+										<tfoot>
+											<tr>
+												<td>素材總和</td>
+												<td></td>
+												<td id="runeTotal"></td>
+											</tr>
+										</tfoot>
+									</table>
+								</div>
+                            </div>
                         </div>
                     </div>
                 </div>

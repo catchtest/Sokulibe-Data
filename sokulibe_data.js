@@ -1805,12 +1805,16 @@ function loadAccessoryData(id) {
     setTitle(getAccessoryName(id), enums.rarity[data.rarity]);
 
     upgradeTotalRunes = {};
+	var imgList = [];
     for (var rank in db.accessory_upgrade[id]) {
         var u = db.accessory_upgrade[id][rank];
         $("#rank" + rank).html(u.name + u.flavor.pre());
         $("#rune" + rank).html(getUpgradeRune(u));
+		
+		imgList.push(imgHtml("Accessory/eq{0}_tex.png", u.id, true));
     }
     $("#runeTotal").html(displayTotalRune(upgradeTotalRunes));
+	$("#accessoryImage").html(imgList.join(''));
 }
 
 function displayTotalRune(obj) {
@@ -2759,9 +2763,27 @@ function setDirtyClass() {
     return cssClass;
 }
 
-function imgHtml(path, id) {
+function imgHtml(path, id, active) {
     path = String.Format(path, padLeft(id.toString(), 4));
-    return String.Format('<img src="{0}" />', path);
+	if (active == true) {
+		return String.Format('<img src="{0}" onerror="brokenImage(this);" />', path);
+	} else {
+		return String.Format('<a href="#" data-src="{0}" onclick="openImage(this); return false;">點選顯示</a>', path);
+	}
+}
+
+function openImage(sender) {
+	$(sender).closest("tbody").find("[data-src]").each(function() {
+		var $this = $(this);
+		$this.after(String.Format('<img src="{0}" onerror="brokenImage(this);" />', $this.data("src")));
+		$this.remove();
+	});
+}
+
+function brokenImage(sender) {
+	var $this = $(sender);
+	var filename = $this.attr("src").replace(/^.*[\\\/]/, '')
+	$this.parent("td").html(filename);
 }
 
 // 擴充方法
