@@ -469,11 +469,16 @@ function initItems() {
     for (var id in db.items) {
         var data = db.items[id];
 
+		var img = imgHtml("Item/ci{0}_tex.png", id);
         var name = data.name;
         var comment = data.comment.replaceAll('\n', '');
 
-        html += tableRow([name, comment]);
+        html += tableRow([img, name, comment]);
     }
+	for (var id = 21; id <= 27; id++) {
+		var img = imgHtml("Item/ci{0}_tex.png", id);
+		html += tableRow([img, extendItemName(id), '']);		
+	}
     renderTable("itemsTable", html);
 }
 
@@ -2619,23 +2624,11 @@ function getAsset(type, id, value) {
             if (id == 1) name = '鑽石'
             break;
         case 2: // 道具
-            name = db.items[id] != null ? db.items[id].name : '';
-
-            // 不知為何有些道具沒有寫在裡面，只好自己定義
-            switch (id) {
-                case 22:
-                    name = 'HR確定 武器ガチャチケット';
-                    break;
-                case 23:
-                    name = 'HR以上確定 武器ガチャチケット';
-                    break;
-                case 24:
-                    name = 'SR確定 武器ガチャチケット';
-                    break;
-                case 27:
-                    name = '武器ガチャチケット';
-                    break;
-            }
+			if (id >= 21) {
+				name = extendItemName(id);
+			} else {
+				name = db.items[id] != null ? db.items[id].name : '';
+			}
             break;
         case 3: // 材料
             name = '<span class="type-rune"></span>' + db.rune[id].name;
@@ -2664,6 +2657,19 @@ function getAsset(type, id, value) {
     } else {
         return name + value.display();
     }
+}
+
+function extendItemName(id) {
+	var names = [
+		'スマイルポイント', 
+		'HR確定 武器ガチャチケット',
+		'HR以上確定 武器ガチャチケット',
+		'SR確定 武器ガチャチケット',
+		'',
+		'',
+		'武器ガチャチケット'
+	];
+	return names[id - 21];
 }
 
 var assessoryNames;

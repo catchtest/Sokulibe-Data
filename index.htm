@@ -55,7 +55,7 @@
                         <div class="well" style="box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset;">
                             <div class="well-legend">更新紀錄</div>
                             <ul>
-								<li>2016/12/16<br />裝備顯示強化前至後的圖片<br />圖片進行壓縮不然太肥了</li>
+								<li>2016/12/16<br />裝備顯示強化前至後的圖片<br />圖片進行壓縮不然太肥了<br />道具一覽加回</li>
                                 <li>2016/12/15<br />一覽增加角色、裝備跟武器的圖片</li>
                                 <li>2016/12/14<br />一覽增加徽章跟素材的圖片</li>
                                 <li>2016/12/13<br />所有職業特殊技顯示</li>
@@ -1460,7 +1460,7 @@
                     <li role="presentation"><a href="#weaponListTab" aria-controls="weaponListTab" role="tab" data-toggle="tab">武器</a></li>
                     <li role="presentation"><a href="#achievement" aria-controls="achievement" role="tab" data-toggle="tab">任務</a></li>
                     <li role="presentation"><a href="#icons" aria-controls="icons" role="tab" data-toggle="tab">徽章</a></li>
-                    <!--<li role="presentation"><a href="#items" aria-controls="items" role="tab" data-toggle="tab">道具</a></li>-->
+                    <li role="presentation"><a href="#items" aria-controls="items" role="tab" data-toggle="tab">道具</a></li>
                     <li role="presentation"><a href="#rune" aria-controls="rune" role="tab" data-toggle="tab">素材</a></li>
                     <li role="presentation"><a href="#expTab" aria-controls="expTab" role="tab" data-toggle="tab">經驗</a></li>
                     <li role="presentation"><a href="#tearsTab" aria-controls="tearsTab" role="tab" data-toggle="tab">交換所</a></li>
@@ -1565,6 +1565,7 @@
                         <table class="table table-bordered table-striped table-hover" id="itemsTable">
                             <thead>
                                 <tr>
+									<th class="width50 no-sort">圖示</th>
                                     <th>名稱</th>
                                     <th>說明</th>
                                 </tr>
@@ -1572,6 +1573,9 @@
                             <tbody>
                             </tbody>
                         </table>
+						<div>
+							由於官方將Items.json這檔案改成動態讀取，因此沒有辦法取得7月以後的版本
+						</div>
                     </div>
                     <div role="tabpanel" class="tab-pane" id="rune">
                         <table class="table table-bordered table-striped table-hover vertical-middle" id="runeTable">
