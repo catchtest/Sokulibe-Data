@@ -2629,7 +2629,7 @@ function getAsset(type, id, value) {
             if (id == 1) name = imgXs('Item/diamond.png') + '鑽石'
             break;
         case 2: // 道具
-			var name = imgXs(String.Format("Item/ci{0}_tex.png", padLeft(id.toString(), 4)));
+			var name = imgXs('Item/ci{0}_tex.png', id);
 			if (id >= 21) {
 				name += extendItemName(id);
 			} else {
@@ -2637,10 +2637,10 @@ function getAsset(type, id, value) {
 			}
             break;
         case 3: // 材料
-            name = '<span class="type-rune"></span>' + db.rune[id].name;
+            name = imgXs("Rune/ru{0}_tex.png", id) + '<span class="type-rune"></span>' + db.rune[id].name;
             break;
         case 4: // 裝備
-            name = '<span class="type-accessory"></span>' + getAssessoryNameByUpgradeID(id);
+            name = imgXs("Accessory/eq{0}_tex.png", id) + '<span class="type-accessory"></span>' + getAssessoryNameByUpgradeID(id);
             break;
         case 5:
             name = imgXs('Item/crystal.png') + '經驗水晶';
@@ -2649,13 +2649,13 @@ function getAsset(type, id, value) {
             if (id == 1) name = imgXs('Item/tear.png') + '妖精之淚'
             break;
         case 7: // 角色
-            name = '<span class="type-unit"></span>' + anchor(db.unit[id].name, "showUnit(" + id + ")") + getUnitJobComment(db.unit[id]);
+            name = imgXs("Mini/un{0}_mini_tex.png", id) + '<span class="type-unit"></span>' + anchor(db.unit[id].name, "showUnit(" + id + ")") + getUnitJobComment(db.unit[id]);
             break;
         case 10: // 徽章
-            name = '<span class="type-icons"></span>' + db.icons[id].name;
+            name = imgXs("Icon/pe{0}_tex.png", id) + '<span class="type-icons"></span>' + db.icons[id].name;
             break;
         case 12: // 武器
-            name = '<span class="type-weapon"></span>' + db.weapon[id].name;
+            name = imgXs("Weapon/wi{0}_tex.png", id) + '<span class="type-weapon"></span>' + db.weapon[id].name;
             break;
     }
     if (!name) {
@@ -2665,7 +2665,10 @@ function getAsset(type, id, value) {
     }
 }
 
-function imgXs(path) {
+function imgXs(path, id) {
+	if (id != null) {
+		path = String.Format(path, padLeft(id.toString(), 4));
+	}
 	return String.Format('<img src="{0}" class="img-xs"/>', path);	
 }
 
