@@ -2626,13 +2626,14 @@ function getAsset(type, id, value) {
     var name = '';
     switch (type) {
         case 1:
-            if (id == 1) name = '鑽石'
+            if (id == 1) name = imgXs('Item/diamond.png') + '鑽石'
             break;
         case 2: // 道具
+			var name = imgXs(String.Format("Item/ci{0}_tex.png", padLeft(id.toString(), 4)));
 			if (id >= 21) {
-				name = extendItemName(id);
+				name += extendItemName(id);
 			} else {
-				name = db.items[id] != null ? db.items[id].name : '';
+				name += db.items[id] != null ? db.items[id].name : '';
 			}
             break;
         case 3: // 材料
@@ -2642,10 +2643,10 @@ function getAsset(type, id, value) {
             name = '<span class="type-accessory"></span>' + getAssessoryNameByUpgradeID(id);
             break;
         case 5:
-            name = '經驗水晶';
+            name = imgXs('Item/crystal.png') + '經驗水晶';
             break;
         case 6:
-            if (id == 1) name = '妖精之淚'
+            if (id == 1) name = imgXs('Item/tear.png') + '妖精之淚'
             break;
         case 7: // 角色
             name = '<span class="type-unit"></span>' + anchor(db.unit[id].name, "showUnit(" + id + ")") + getUnitJobComment(db.unit[id]);
@@ -2662,6 +2663,10 @@ function getAsset(type, id, value) {
     } else {
         return name + value.display();
     }
+}
+
+function imgXs(path) {
+	return String.Format('<img src="{0}" class="img-xs"/>', path);	
 }
 
 function extendItemName(id) {

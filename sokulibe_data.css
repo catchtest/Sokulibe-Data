@@ -458,3 +458,8 @@ a > i {
 #tearsComputeTable2 input[type=number] {
 	color: initial;
 }
+
+.img-xs {
+	width: 30px;
+	margin: -5px 5px -5px 0px;
+}
