@@ -262,10 +262,6 @@ kbd + kbd {
 	margin-bottom: 0;
 }
 
-#tearsComputeTable.table > tbody > tr > td {
-	vertical-align: middle;	
-}
-
 .table-fixed-width {
 	width: auto;
 }
@@ -424,7 +420,7 @@ a > i {
 	color: white;
 }
 
-#overviewTab .table > tbody > tr > td {
+.table > tbody > tr > td {
 	vertical-align: middle;
 }
 
@@ -462,4 +458,33 @@ a > i {
 .img-xs {
 	width: 30px;
 	margin: -5px 5px -5px 0px;
+}
+
+#backToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    background: #f5f5f5;
+    color: #444;
+    cursor: pointer;
+    border: 0;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: opacity 0.2s ease-out;
+    opacity: 0;
+}
+#backToTop:hover {
+    background: #e9ebec;
+}
+#backToTop.show {
+    opacity: 0.8;
+}
+
+#backToTop > i {
+	padding: 0;
 }

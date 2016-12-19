@@ -3,7 +3,7 @@ var db;
 var localized = {};
 var enums;
 var skipDirty = true;
-var dirtyPrefix = 'x ';
+var dirtyPrefix = '× ';
 var disableTranslate = false;
 var defaultDataTablesOption = {
     "autoWidth": false,
@@ -178,6 +178,30 @@ var defaultDataTablesOption = {
     $("#theme").val(theme).change(function() {
         location.href = 'index.htm?theme=' + $(this).val();
     });
+	
+	// 捲到最上方
+	var $backToTop = $('#backToTop');
+	if ($backToTop.length) {
+		var scrollTrigger = 100, // px
+			backToTop = function () {
+				var scrollTop = $(window).scrollTop();
+				if (scrollTop > scrollTrigger) {
+					$backToTop.addClass('show');
+				} else {
+					$backToTop.removeClass('show');
+				}
+			};
+		backToTop();
+		$(window).on('scroll', function () {
+			backToTop();
+		});
+		$backToTop.on('click', function (e) {
+			e.preventDefault();
+			$('html,body').animate({
+				scrollTop: 0
+			}, 700);
+		});
+	}
 }(jQuery));
 
 // 初始化角色列表
@@ -827,6 +851,7 @@ function initTearsCompute() {
             $("#setR" + data.rarity + "LvTmpl").html();
 
         var list = [
+			imgHtml("Mini/un{0}_mini_tex.png", data.id),
             anchor(getUnitName(data), "showUnit(" + data.id + ")"),
             data.rarity,
             elementHtml(data.use_element),
@@ -1361,7 +1386,7 @@ function loadUnitData(id) {
     }
 	
 	// 圖片
-	$("#unitImgBlock").html(imgHtml("Mini/un{0}_mini_tex.png", data.id, true));
+	$("#unitMiniImage").html(imgHtml("Mini/un{0}_mini_tex.png", data.id, true));
 }
 
 // 產生技能資料
