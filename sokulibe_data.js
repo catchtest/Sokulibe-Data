@@ -1200,7 +1200,7 @@ function loadUnitData(id) {
     current_unit = id;
 
     // 讀取故事
-    $("#storyBlock").html(db.unit_story[id].story);
+    $("#storyBlock").html(db.unit_story[id]['1'].story);
 
     var data = db.unit[id];
     setTitle(getUnitName(data), getUnitJob(data));
