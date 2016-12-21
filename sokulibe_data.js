@@ -2224,6 +2224,18 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
     }
     $("#mission_bonus").closest("tr").toggle(missionBonusExist);
 
+	// 試煉之塔有利屬性
+	if (baseData.advantage_job != null && (baseData.advantage_job > 0 || baseData.advantage_element > 0 || baseData.advantage_debuff > 0)) {
+		var advantages = [];
+		advantages.push(baseData.advantage_job > 0 ? enums.job[baseData.advantage_job] : '-');
+		advantages.push(baseData.advantage_element > 0 ? enums.element[baseData.advantage_element] : '-');
+		advantages.push(baseData.advantage_debuff > 0 ? enums.debuff[baseData.advantage_debuff] : '-');
+		var advantagesText = advantages.join(' / ');
+		$("#advantage").html(advantagesText).closest("tr").show();
+	} else {
+		$("#advantage").closest("tr").hide();
+	}
+	
     // 掉落率
     for (var prop in dropData) {
         if (prop == 'id' || prop == 'event_id') continue;
@@ -2232,7 +2244,7 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
         var value = dropData[prop];
         $("#" + prop).html(value);
     }
-    console.log(dropData);
+    //console.log(dropData);
 
     ratioModify(["nocon_clear_rate1", "nocon_clear_rate2", "nocon_clear_rate3"], "nocon_clear_progress");
     ratioModify(["speed_clear_rate1", "speed_clear_rate2", "speed_clear_rate3"], "speed_clear_progress");
