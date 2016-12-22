@@ -1386,7 +1386,8 @@ function loadUnitData(id) {
     }
 	
 	// 圖片
-	$("#unitMiniImage").html(imgHtml("Mini/un{0}_mini_tex.png", data.id, true));
+	$("#unitProtraitImage").html(imgHtml("Portrait/un{0}_up.png", data.id, true));
+	//$("#unitMiniImage").html(imgHtml("Mini/un{0}_mini_tex.png", data.id, true));
 }
 
 // 產生技能資料

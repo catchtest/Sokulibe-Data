@@ -488,3 +488,7 @@ a > i {
 #backToTop > i {
 	padding: 0;
 }
+
+#unitProtraitImage > img {
+	width: 100%;
+}

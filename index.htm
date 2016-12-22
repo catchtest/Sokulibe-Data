@@ -55,14 +55,15 @@
                         <div class="well" style="box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset;">
                             <div class="well-legend">更新紀錄</div>
                             <ul>
-								<li>2016/12/21<br />元素塔關卡增加有利顯示</li>
-								<li>2016/12/18<br />道具增加小圖示</li>
+                                <li>2016/12/22<br />角色增加半身像</li>
+                                <li>2016/12/21<br />元素塔關卡增加有利顯示</li>
+                                <li>2016/12/18<br />道具增加小圖示</li>
                                 <li>2016/12/16<br />裝備顯示強化前至後的圖片<br />圖片進行壓縮不然太肥了<br />道具一覽加回</li>
                             </ul>
-							
-							<button type="button" onclick="$('#oldUpdate').toggle();" class="btn btn-default btn-xs btn-block">顯示/隱藏舊紀錄 ▼</button>
-							<br />
-							<ul id="oldUpdate" style="display: none;">
+
+                            <button type="button" onclick="$('#oldUpdate').toggle();" class="btn btn-default btn-xs btn-block">顯示/隱藏舊紀錄 ▼</button>
+                            <br />
+                            <ul id="oldUpdate" style="display: none;">
                                 <li>2016/12/15<br />一覽增加角色、裝備跟武器的圖片</li>
                                 <li>2016/12/14<br />一覽增加徽章跟素材的圖片</li>
                                 <li>2016/12/13<br />所有職業特殊技顯示</li>
@@ -163,57 +164,63 @@
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="unitBaseTab">
-								<!--<div id="unitImgBlock"></div>-->
-                                <div class="table-responsive">
-                                    <table class="table table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <th class="width100">CV</th>
-                                                <td id="cv"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>對應角色</th>
-                                                <td id="partner"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>性別</th>
-                                                <td id="gender"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>體型</th>
-                                                <td id="unitSize"></td>
-                                            </tr>
-                                            <tr>
-                                                <th>使用減益</th>
-                                                <td id="use_debuff"></td>
-                                            </tr>
-                                            <tr>
-                                                <th rowspan="4">被動</th>
-                                                <td id="ability01"></td>
-                                            </tr>
-                                            <tr>
-                                                <td id="ability02"></td>
-                                            </tr>
-                                            <tr>
-                                                <td id="ability03"></td>
-                                            </tr>
-                                            <tr>
-                                                <td id="ability04"></td>
-                                            </tr>
-                                            <tr>
-                                                <th rowspan="3">特性</th>
-                                                <td id="characteristic1"></td>
-                                            </tr>
-                                            <tr>
-                                                <td id="characteristic2"></td>
-                                            </tr>
-                                            <tr>
-                                                <td id="characteristic3"></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="row">
+                                    <div class="col-md-5" id="unitProtraitImage">
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr>
+                                                        <th class="width100">CV</th>
+                                                        <td id="cv"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>對應角色</th>
+                                                        <td id="partner"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>性別</th>
+                                                        <td id="gender"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>體型</th>
+                                                        <td id="unitSize"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>使用減益</th>
+                                                        <td id="use_debuff"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th rowspan="4">被動</th>
+                                                        <td id="ability01"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="ability02"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="ability03"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="ability04"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th rowspan="3">特性</th>
+                                                        <td id="characteristic1"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="characteristic2"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="characteristic3"></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
-								<div id="unitMiniImage"></div>
+
+                                <!--<div id="unitMiniImage"></div>-->
                             </div>
                             <div role="tabpanel" class="tab-pane" id="unitPowerTab">
                                 <div class="table-responsive">
@@ -977,7 +984,7 @@
                                                 </tbody>
                                             </table>
                                         </div>
-										<div id="weaponImgBlock"></div>
+                                        <div id="weaponImgBlock"></div>
                                     </div>
                                 </div>
                             </div>
@@ -1129,10 +1136,10 @@
                                                         <th>RAID點數</th>
                                                         <td id="raid_point"></td>
                                                     </tr>
-													<tr>
-														<th>有利項目</th>
-														<td id="advantage"></td>
-													</tr>
+                                                    <tr>
+                                                        <th>有利項目</th>
+                                                        <td id="advantage"></td>
+                                                    </tr>
                                                     <tr>
                                                         <th>地點</th>
                                                         <td id="bg_location"></td>
@@ -1859,7 +1866,7 @@
                 <table class="table table-bordered table-striped table-hover" id="tearsComputeTable">
                     <thead>
                         <tr>
-							<th class="no-sort width50">圖示</th>
+                            <th class="no-sort width50">圖示</th>
                             <th style="width: 300px;">名字</th>
                             <th>星數</th>
                             <th>屬性</th>
@@ -1874,7 +1881,7 @@
                 <table class="table table-bordered table-striped table-hover" id="tearsComputeTable2">
                     <thead>
                         <tr>
-							<th class="no-sort width50">圖示</th>
+                            <th class="no-sort width50">圖示</th>
                             <th style="width: 300px;">名字</th>
                             <th>星數</th>
                             <th>屬性</th>
@@ -1890,7 +1897,7 @@
         </div>
     </div>
     <div class="loader loader-default is-active" data-text="Loading"></div>
-	<a href="#" id="backToTop" title="回到頂端"><i class="glyphicon glyphicon-chevron-up"></i></a>
+    <a href="#" id="backToTop" title="回到頂端"><i class="glyphicon glyphicon-chevron-up"></i></a>
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="sokulibe_data.js"></script>
