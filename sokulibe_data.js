@@ -1256,9 +1256,13 @@ function loadUnitData(id) {
     }
 
     // 對話
-    for (var i = 1; i <= 11; i++) {
-        $("#comment" + i).html(db.unit_comment[id]["comment" + i].pre());
-    }
+	if (db.unit_comment[id] != null) {
+		for (var i = 1; i <= 11; i++) {
+			$("#comment" + i).html(db.unit_comment[id]["comment" + i].pre());
+		}
+	} else {
+		$("#unitCommentTab td").html('');
+	}
 
     // 技能說明列表
     var command = db.unit_command[id];
@@ -1321,6 +1325,9 @@ function loadUnitData(id) {
                 break;
             case 10:
                 specialTds = ['スポットヒール', '---', '回復', 1, 1200, 0, 0, 0, '---'];
+                break;
+			default:
+                specialTds = ['',  '', '', '', '', '', '', '---'];
                 break;
         }
         specialHtml = '<td>' + specialTds.join('</td><td>') + '</td>';
@@ -1387,6 +1394,8 @@ function loadUnitData(id) {
 	
 	// 圖片
 	$("#unitProtraitImage").html(imgHtml("Portrait/un{0}_up.png", data.id, true));
+	$("#unitFullImageTab").html(imgHtml("Full/un{0}_full.png", data.id, true));
+	
 	//$("#unitMiniImage").html(imgHtml("Mini/un{0}_mini_tex.png", data.id, true));
 }
 

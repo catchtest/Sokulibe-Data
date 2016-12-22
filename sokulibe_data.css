@@ -489,6 +489,7 @@ a > i {
 	padding: 0;
 }
 
-#unitProtraitImage > img {
+#unitProtraitImage > img,
+#unitFullImageTab > img {
 	width: 100%;
 }
