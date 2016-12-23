@@ -258,7 +258,7 @@ function initAccessory() {
         var data = db.accessory[id];
 
         var name = prefix + getAccessoryName(id);
-        var job = enums.weapon_job[data.job] + ' <div class="rarity">' + enums.rarity[data.rarity] + '</div>';
+        var job = enums.equip_job[data.job] + ' <div class="rarity">' + enums.rarity[data.rarity] + '</div>';
         var itemHtml = listItemHtml(id, name, job, "loadAccessoryData(" + id + ");", cssClass);
 
         if (data.category == 1) { // 戒指
@@ -296,7 +296,7 @@ function initWeapon() {
             htmls[3] += itemHtml;
             continue;
         }
-        var job = enums.weapon_job[data.job];
+        var job = enums.equip_job[data.job];
         var itemHtml = listItemHtml(id, name, job, "loadWeaponData(" + id + ");", cssClass);
 
         if (data.rarity == 4) {
@@ -674,38 +674,39 @@ function initAccessoryList() {
         return 0;
     });
 
-    var category = [null, '戒指', '護符'];
     var html = '';
     for (var index = 0, len = itemList.length; index < len; index++) {
-        var data = itemList[index];
-
-        var name = getAccessoryFirstName(data.id);
-        if (name == null) {
-            // 沒有滿前的名字，只顯示滿後的
-            name = getAccessoryLastName(data.id)
-        } else {
-            name += '<br />' + getAccessoryLastName(data.id);
-        }
-        var list = [
-            imgHtml("Accessory/eq{0}_tex.png", getAccessoryFirstId(data.id)),
-            category[data.category],
-            name,
-            enums.rarity[data.rarity],
-            enums.weapon_job[data.job],
-        ];
-
-        for (var i = 1; i <= 4; i++) {
-            var magicID = data["magic" + i];
-            var content = '';
-            if (magicID > 0) {
-                content = db.enchant_master[magicID].enchant_comment.i18n().replaceAll('\n', '<br />');
-            }
-            list.push(content);
-        }
-
+		var list = renderAccessory(itemList[index]);
         html += tableRow(list);
     }
     renderTable("accessoryListTable", html);
+}
+
+function renderAccessory(data) {
+	var name = getAccessoryFirstName(data.id);
+	if (name == null) {
+		// 沒有滿前的名字，只顯示滿後的
+		name = getAccessoryLastName(data.id)
+	} else {
+		name += '<br />' + getAccessoryLastName(data.id);
+	}
+	var list = [
+		imgHtml("Accessory/eq{0}_tex.png", getAccessoryFirstId(data.id)),
+		enums.accessory_category[data.category],
+		name,
+		enums.rarity[data.rarity],
+		enums.equip_job[data.job],
+	];
+
+	for (var i = 1; i <= 4; i++) {
+		var magicID = data["magic" + i];
+		var content = '';
+		if (magicID > 0) {
+			content = db.enchant_master[magicID].enchant_comment.i18n().replaceAll('\n', '<br />');
+		}
+		list.push(content);
+	}
+	return list;
 }
 
 // 初始化武器一覽
@@ -738,7 +739,7 @@ function initWeaponList() {
             imgHtml("Weapon/wi{0}_tex.png", data.id),
             data.name,
             enums.rarity[data.rarity],
-            enums.weapon_job[data.job],
+            enums.equip_job[data.job],
             weaponPower.hp,
             weaponPower.atk,
             weaponPower.agi,
@@ -1327,7 +1328,7 @@ function loadUnitData(id) {
                 specialTds = ['スポットヒール', '---', '回復', 1, 1200, 0, 0, 0, '---'];
                 break;
 			default:
-                specialTds = ['',  '', '', '', '', '', '', '---'];
+                specialTds = ['',  '', '', '', '', '', '', ''];
                 break;
         }
         specialHtml = '<td>' + specialTds.join('</td><td>') + '</td>';
@@ -1395,8 +1396,60 @@ function loadUnitData(id) {
 	// 圖片
 	$("#unitProtraitImage").html(imgHtml("Portrait/un{0}_up.png", data.id, true));
 	$("#unitFullImageTab").html(imgHtml("Full/un{0}_full.png", data.id, true));
-	
 	//$("#unitMiniImage").html(imgHtml("Mini/un{0}_mini_tex.png", data.id, true));
+	
+	// 裝備一覽
+	var allowJob = enums.job_equip_map[data.job_id];
+    var itemList = [];
+    for (var id in db.accessory) {
+        var data1 = db.accessory[id];
+
+        if (isDirtyAccessory(id)) continue;   // 強制跳過假資料
+		if (allowJob.indexOf(data1.job) < 0) continue;   // 必須是該職業可以裝備
+		if (data1.category === 1 && data1.rarity <= 3) continue;   // 戒指沒有SR都不要顯示
+		if (data1.category === 2 && data1.rarity <= 2) continue;   // 護符沒有HR都不要顯示
+		
+        itemList.push(data1);
+    }
+
+    // 以裝備稀有度排序
+    itemList = itemList.sort(function(a, b) {
+        if (b.category > a.category) return -1;
+        if (b.category < a.category) return 1;
+        if (b.rarity > a.rarity) return 1;
+        if (b.rarity < a.rarity) return -1;
+        return 0;
+    });
+	
+	var html = '';
+    for (var index = 0, len = itemList.length; index < len; index++) {
+		var list = renderAccessory(itemList[index]);
+		if (isOtherElement(list, data.use_element)) continue;   // 不顯示非本系戒指
+        html += tableRow(list);
+    }
+	$("#unitAccessoryTable > tbody").html(html);
+}
+
+function isOtherElement(list, element) {
+	// 搜尋是否有提升非自己屬性攻擊力的文字
+	// 例如自身火屬性，但裝備有水屬性攻擊力字樣，就回傳true
+	var queries = disableTranslate ? 
+		["火属性攻撃力", "水属性攻撃力", "地属性攻撃力", "光属性攻撃力", "闇属性攻撃力"] : 
+		["火屬性攻擊力", "水屬性攻擊力", "地屬性攻擊力", "光屬性攻擊力", "闇屬性攻擊力"];
+	if (element > 0) {
+		queries.splice(element - 1, 1);
+	}
+	
+	for (var len = list.length, index = len - 4; index < len; index++) {
+		var content = list[index];
+		
+		for (var q = 0; q < queries.length; q++) {
+			if (content.indexOf(queries[q]) >= 0) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 // 產生技能資料
@@ -2833,6 +2886,7 @@ function imgHtml(path, id, active) {
     path = String.Format(path, padLeft(id.toString(), 4));
 	if (active == true) {
 		var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
+		return '';
 		return String.Format('<img src="{0}" alt="{1}" />', path, fileId);
 	} else {
 		return String.Format('<a href="#" data-src="{0}" onclick="openImage(this); return false;">點選顯示</a>', path);
