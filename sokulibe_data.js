@@ -2927,7 +2927,6 @@ function imgHtml(path, id, active) {
     path = String.Format(path, padLeft(id.toString(), 4));
 	if (active == true) {
 		var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
-		return '';
 		return String.Format('<img src="{0}" alt="{1}" />', path, fileId);
 	} else {
 		return String.Format('<a href="#" data-src="{0}" onclick="openImage(this); return false;">點選顯示</a>', path);
