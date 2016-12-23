@@ -730,28 +730,31 @@ function initWeaponList() {
     });
     var html = '';
     for (var index = 0, len = itemList.length; index < len; index++) {
-        var data = itemList[index];
-        var weaponMainSkill = db.weapon_mainskillbase[data.main_weapon_skill_id] || {};
-        var weaponSubSkill = db.weapon_subskill[data.sub_weapon_skill_id] || {};
-        var weaponPower = calculateWeapon(data.id, 10, 4);
-
-        var list = [
-            imgHtml("Weapon/wi{0}_tex.png", data.id),
-            data.name,
-            enums.rarity[data.rarity],
-            enums.equip_job[data.job],
-            weaponPower.hp,
-            weaponPower.atk,
-            weaponPower.agi,
-            weaponMainSkill.dmg,
-            weaponMainSkill.break_,
-            weaponSubSkill[1] == null ? '' : weaponSubSkill[1].comment.i18n().pre(),
-            weaponSubSkill[5] == null ? '' : weaponSubSkill[5].comment.i18n().pre()
-        ];
-
+        var list = renderWeapon(itemList[index]);
         html += tableRow(list);
     }
     renderTable("weaponListTable", html);
+}
+
+function renderWeapon(data) {
+    var weaponMainSkill = db.weapon_mainskillbase[data.main_weapon_skill_id] || {};
+	var weaponSubSkill = db.weapon_subskill[data.sub_weapon_skill_id] || {};
+	var weaponPower = calculateWeapon(data.id, 10, 4);
+
+	var list = [
+		imgHtml("Weapon/wi{0}_tex.png", data.id),
+		data.name,
+		enums.rarity[data.rarity],
+		enums.equip_job[data.job],
+		weaponPower.hp,
+		weaponPower.atk,
+		weaponPower.agi,
+		weaponMainSkill.dmg,
+		weaponMainSkill.break_,
+		weaponSubSkill[1] == null ? '' : weaponSubSkill[1].comment.i18n().pre(),
+		weaponSubSkill[5] == null ? '' : weaponSubSkill[5].comment.i18n().pre()
+	];
+	return list;
 }
 
 // 初始化特性一覽
@@ -1422,15 +1425,52 @@ function loadUnitData(id) {
     });
 	
 	var html = '';
+	var html2 = '';
     for (var index = 0, len = itemList.length; index < len; index++) {
 		var list = renderAccessory(itemList[index]);
-		if (isOtherElement(list, data.use_element)) continue;   // 不顯示非本系戒指
+		if (isOtherElement(list, data.use_element, false)) continue;   // 不顯示非本系戒指
+		
+		list.splice(1, 1);   // 去掉類型，分成兩張表
+		
+		if (itemList[index].category == 1) {
+			html += tableRow(list);
+		} else if (itemList[index].category == 2) {
+			html2 += tableRow(list);
+		}
+    }
+	$("#unitRingTable > tbody").html(html);
+	$("#unitTalismanTable > tbody").html(html2);
+	
+	// 武器一覽
+	var itemList = [];
+    for (var id in db.weapon) {
+        var data1 = db.weapon[id];
+
+        if (isDirtyWeapon(data1)) continue;   // 強制跳過假資料
+		if (allowJob.indexOf(data1.job) < 0) continue;   // 必須是該職業可以裝備
+
+        itemList.push(data1);
+    }
+
+    // 以裝備職業、稀有度排序
+    itemList = itemList.sort(function(a, b) {
+        if (b.job > a.job) return -1;
+        if (b.job < a.job) return 1;
+        if (b.rarity > a.rarity) return 1;
+        if (b.rarity < a.rarity) return -1;
+        return 0;
+    });
+    var html = '';
+    for (var index = 0, len = itemList.length; index < len; index++) {
+        var list = renderWeapon(itemList[index]);
+		if (isOtherElement(list, data.use_element, true)) continue;   // 不顯示非本系戒指
+		list.splice(3, 1);   // 去掉可裝備職業，基本上只會是一種
         html += tableRow(list);
     }
-	$("#unitAccessoryTable > tbody").html(html);
+	$("#unitWeaponTable > tbody").html(html);
 }
 
-function isOtherElement(list, element) {
+function isOtherElement(list, element, isWeapon) {
 	// 搜尋是否有提升非自己屬性攻擊力的文字
 	// 例如自身火屬性，但裝備有水屬性攻擊力字樣，就回傳true
 	var queries = disableTranslate ? 
@@ -1440,7 +1480,8 @@ function isOtherElement(list, element) {
 		queries.splice(element - 1, 1);
 	}
 	
-	for (var len = list.length, index = len - 4; index < len; index++) {
+	var lastIndex = isWeapon ? 2 : 4;
+	for (var len = list.length, index = len - lastIndex; index < len; index++) {
 		var content = list[index];
 		
 		for (var q = 0; q < queries.length; q++) {
@@ -2886,7 +2927,7 @@ function imgHtml(path, id, active) {
     path = String.Format(path, padLeft(id.toString(), 4));
 	if (active == true) {
 		var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
-		//return '';
+		return '';
 		return String.Format('<img src="{0}" alt="{1}" />', path, fileId);
 	} else {
 		return String.Format('<a href="#" data-src="{0}" onclick="openImage(this); return false;">點選顯示</a>', path);

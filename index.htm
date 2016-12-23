@@ -161,7 +161,9 @@
                             <li role="presentation"><a href="#unitCommentTab" aria-controls="unitCommentTab" role="tab" data-toggle="tab">對話</a></li>
                             <li role="presentation"><a href="#unitStoryTab" aria-controls="unitStoryTab" role="tab" data-toggle="tab">故事</a></li>
 							<li role="presentation"><a href="#unitFullImageTab" aria-controls="unitFullImageTab" role="tab" data-toggle="tab">全身</a></li>
-							<li role="presentation"><a href="#unitEquipTab" aria-controls="unitEquipTab" role="tab" data-toggle="tab">裝備</a></li>
+							<li role="presentation"><a href="#unitWeaponTab" aria-controls="unitWeaponTab" role="tab" data-toggle="tab">武器</a></li>
+							<li role="presentation"><a href="#unitRingTab" aria-controls="unitRingTab" role="tab" data-toggle="tab">戒指</a></li>
+							<li role="presentation"><a href="#unitTalismanTab" aria-controls="unitTalismanTab" role="tab" data-toggle="tab">護符</a></li>
                         </ul>
 
                         <!-- Tab panes -->
@@ -711,13 +713,34 @@
                             </div>
 							<div role="tabpanel" class="tab-pane" id="unitFullImageTab">
 							</div>
-                            <div role="tabpanel" class="tab-pane" id="unitEquipTab">
+							<div role="tabpanel" class="tab-pane" id="unitWeaponTab">
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped table-hover" id="unitAccessoryTable">
+                                    <table class="table table-bordered table-striped table-hover" id="unitWeaponTable">
                                         <thead>
                                             <tr>
-												<th>圖示</th>
-												<th>類型</th>
+												<th class="width50 no-sort">圖示</th>
+												<th>名稱</th>
+												<th>稀有度</th>
+												<th>最大HP</th>
+												<th>最大攻擊</th>
+												<th>最大速度</th>
+												<th>主技能<br />傷害倍率</th>
+												<th>主技能<br />破盾倍率</th>
+												<th>副技能<br />效果</th>
+												<th>副技能<br />覺醒滿效果</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+							</div>
+							<div role="tabpanel" class="tab-pane" id="unitRingTab">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover" id="unitRingTable">
+                                        <thead>
+                                            <tr>
+												<th class="width50 no-sort">圖示</th>
                                                 <th>名稱</th>
 												<th>稀有度</th>
                                                 <th>職業</th>
@@ -731,7 +754,27 @@
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>
+							</div>
+							<div role="tabpanel" class="tab-pane" id="unitTalismanTab">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped table-hover" id="unitTalismanTable">
+                                        <thead>
+                                            <tr>
+												<th class="width50 no-sort">圖示</th>
+                                                <th>名稱</th>
+												<th>稀有度</th>
+                                                <th>職業</th>
+												<th>強化1</th>
+												<th>強化2</th>
+												<th>強化3</th>
+												<th>強化4</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+							</div>
                         </div>
                     </div>
                 </div>
