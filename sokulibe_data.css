@@ -493,3 +493,15 @@ a > i {
 #unitFullImageTab > img {
 	width: 100%;
 }
+
+.img-flex {
+	display: flex;
+}
+
+.img-flex > div > img {
+	width: 100%;
+}
+
+.item-summary {
+	line-height: 30px;
+}

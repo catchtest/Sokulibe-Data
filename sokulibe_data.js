@@ -5,6 +5,7 @@ var enums;
 var skipDirty = true;
 var dirtyPrefix = '× ';
 var disableTranslate = false;
+var disableImage = false;
 var defaultDataTablesOption = {
     "autoWidth": false,
     "order": [],
@@ -693,7 +694,7 @@ function renderAccessory(data) {
 	var list = [
 		imgHtml("Accessory/eq{0}_tex.png", getAccessoryFirstId(data.id)),
 		enums.accessory_category[data.category],
-		name,
+		anchor(name, "showAccessory(" + data.id + ")"),
 		enums.rarity[data.rarity],
 		enums.equip_job[data.job],
 	];
@@ -743,7 +744,7 @@ function renderWeapon(data) {
 
 	var list = [
 		imgHtml("Weapon/wi{0}_tex.png", data.id),
-		data.name,
+		anchor(data.name, "showWeapon(" + data.id + ")"),
 		enums.rarity[data.rarity],
 		enums.equip_job[data.job],
 		weaponPower.hp,
@@ -1176,9 +1177,25 @@ function setTitle(main, sub) {
 }
 
 function showUnit(id) {
-    $("a[href='#unit']").click();
-    var item = $("#unit").find("[data-id='" + id + "']");
-    var list_id = item.parents(".tab-pane").first().attr("id");
+	showEvent("unit", id);
+}
+
+function showAccessory(id) {
+	showEvent("accessory", id);
+}
+
+function showWeapon(id) {
+	showEvent("weapon", id);
+}
+
+function showEvent(name, id) {
+	$("a[href='#" + name + "']").click();
+    var item = $("#" + name).find("[data-id='" + id + "']");
+	if (item.length == 0) {
+		alert('Data not found.');
+		return;
+	}
+    var list_id = item.closest(".tab-pane").attr("id");
     $("a[href='#" + list_id + "']").click();
     item.click().focus();
 }
@@ -1951,7 +1968,7 @@ function loadAccessoryData(id) {
 		imgList.push(imgHtml("Accessory/eq{0}_tex.png", u.id, true));
     }
     $("#runeTotal").html(displayTotalRune(upgradeTotalRunes));
-	$("#accessoryImage").html(imgList.join(''));
+	$("#accessoryImage").html('<div>' + imgList.join('</div><div>') + '</div>');   // 修正chrome無法直接用image作flex
 }
 
 function displayTotalRune(obj) {
@@ -2252,6 +2269,7 @@ function loadQuestData(eventID, questID) {
     var point_summary = 0;
     var point_last = 0;
     var point_exchange_mode = false;
+	var item_summary = {};
 
     var data_points = raid_id > 0 ? db.raid_event_point[raid_id] : db.event_point[eventID];
     if (data_points != null) {
@@ -2270,13 +2288,32 @@ function loadQuestData(eventID, questID) {
             }
             point_last = data_point_sum;
             point_summary += point_last;
+			
+			// 統計可換物品總和
+			if (item_summary[data_point.item_type] == null) {
+				item_summary[data_point.item_type] = {};
+			}
+			var prev_count = item_summary[data_point.item_type][data_point.item_id] || 0;
+			item_summary[data_point.item_type][data_point.item_id] = prev_count + data_point.item_value;
         }
     }
 
     $("#exchangeTable > tbody").html(html);
 
+	// 顯示可換物品總和
+	var itemHtml = '';
+	if (!point_exchange_mode) {
+		var list = [];
+		for (var item_type in item_summary) {
+			for (var item_id in item_summary[item_type]) {
+				list.push(getAsset(parseInt(item_type), parseInt(item_id), parseInt(item_summary[item_type][item_id])));
+			}
+		}
+		itemHtml = '<div class="item-summary">' + list.join('<br />') + '</div>';
+	}
+	
     var total_point = point_exchange_mode ? point_summary : point_last;
-    var footerHtml = total_point == 0 ? '' : tableRow(['', '', '', total_point]);
+    var footerHtml = total_point == 0 ? '' : tableRow([itemHtml, '', '', total_point]);
     $("#exchangeTable > tfoot").html(footerHtml);
 
     $("#Recom_lv, #first_clear_bonus, #multi_exp").closest("tr").hide();
@@ -2781,7 +2818,8 @@ function getAsset(type, id, value) {
             name = imgXs("Rune/ru{0}_tex.png", id) + '<span class="type-rune"></span>' + db.rune[id].name;
             break;
         case 4: // 裝備
-            name = imgXs("Accessory/eq{0}_tex.png", id) + '<span class="type-accessory"></span>' + getAssessoryNameByUpgradeID(id);
+            name = imgXs("Accessory/eq{0}_tex.png", id) + '<span class="type-accessory"></span>'
+			     + anchor(getAccessoryNameByUpgradeID(id), "showAccessory(" + getAccessoryIdByUpgradeID(id) + ")");
             break;
         case 5:
             name = imgXs('Item/crystal.png') + '經驗水晶';
@@ -2790,13 +2828,16 @@ function getAsset(type, id, value) {
             if (id == 1) name = imgXs('Item/tear.png') + '妖精之淚'
             break;
         case 7: // 角色
-            name = imgXs("Mini/un{0}_mini_tex.png", id) + '<span class="type-unit"></span>' + anchor(db.unit[id].name, "showUnit(" + id + ")") + getUnitJobComment(db.unit[id]);
+            name = imgXs("Mini/un{0}_mini_tex.png", id) + '<span class="type-unit"></span>' 
+			     + anchor(db.unit[id].name, "showUnit(" + id + ")")
+				 + getUnitJobComment(db.unit[id]);
             break;
         case 10: // 徽章
             name = imgXs("Icon/pe{0}_tex.png", id) + '<span class="type-icons"></span>' + db.icons[id].name;
             break;
         case 12: // 武器
-            name = imgXs("Weapon/wi{0}_tex.png", id) + '<span class="type-weapon"></span>' + db.weapon[id].name;
+            name = imgXs("Weapon/wi{0}_tex.png", id) + '<span class="type-weapon"></span>'
+			     + anchor(db.weapon[id].name, "showWeapon(" + id + ")");
             break;
     }
     if (!name) {
@@ -2809,6 +2850,9 @@ function getAsset(type, id, value) {
 function imgXs(path, id) {
 	if (id != null) {
 		path = String.Format(path, padLeft(id.toString(), 4));
+	}
+	if (disableImage) {
+		return '';
 	}
 	return String.Format('<img src="{0}" class="img-xs"/>', path);	
 }
@@ -2826,20 +2870,31 @@ function extendItemName(id) {
 	return names[id - 21];
 }
 
-var assessoryNames;
-
-function getAssessoryNameByUpgradeID(id) {
-    if (assessoryNames == null) {
+var accessoryNames;
+function initAccessoryNames() {
+    if (accessoryNames == null) {
         // 修改原始資料結構變成單一物件，比較好處理
-        assessoryNames = {};
+        accessoryNames = {};
         for (var a in db.accessory_upgrade) {
             for (var b in db.accessory_upgrade[a]) {
                 var item = db.accessory_upgrade[a][b];
-                assessoryNames[item.id] = item.name;
+                accessoryNames[item.id] = {
+					name: item.name,
+					id: item.accessory_id
+				};
             }
         }
     }
-    return assessoryNames[id];
+}
+
+function getAccessoryNameByUpgradeID(id) {
+	initAccessoryNames();
+    return accessoryNames[id].name;
+}
+
+function getAccessoryIdByUpgradeID(id) {
+	initAccessoryNames();
+    return accessoryNames[id].id;
 }
 
 // 計算武器能力值
@@ -2927,6 +2982,9 @@ function imgHtml(path, id, active) {
     path = String.Format(path, padLeft(id.toString(), 4));
 	if (active == true) {
 		var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
+		if (disableImage) {
+			return fileId;
+		}
 		return String.Format('<img src="{0}" alt="{1}" />', path, fileId);
 	} else {
 		return String.Format('<a href="#" data-src="{0}" onclick="openImage(this); return false;">點選顯示</a>', path);
