@@ -1527,6 +1527,8 @@
                                         </thead>
                                         <tbody>
                                         </tbody>
+										<tfoot>
+                                        </tfoot>
                                     </table>
                                 </div>
                             </div>
@@ -2018,6 +2020,11 @@
             <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">50</button>
             <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">60</button>
         </div>
+    </script>
+	
+    <script type="text/template" id="itemListTmpl">
+        <button type="button" class="btn btn-link btn-xs" onclick="$(this).hide().next().show();"><i class="glyphicon glyphicon-th-list"></i> 顯示清單</button>
+		<div class="item-summary" style="display: none;">{0}</div>
     </script>
 
     <script>

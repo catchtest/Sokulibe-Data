@@ -388,7 +388,7 @@ table.table-bordered.dataTable th, table.table-bordered.dataTable td {
 	border-bottom-color: inherit;
 }
 
-a > i {
+a > i, button > i {
 	vertical-align: middle;
 	padding-left: 3px;
 }

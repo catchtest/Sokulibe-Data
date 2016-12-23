@@ -2246,9 +2246,9 @@ function loadQuestData(eventID, questID) {
     loadCommonQuestData(baseData, missionData, dropData, waveData);
 
     // 任務
-    var $missionTable = $("#missionTable > tbody");
     var html = '';
-
+	resetItems();
+	
     for (var missionID in db.event_mission) {
         var data_mission = db.event_mission[missionID];
 
@@ -2259,8 +2259,16 @@ function loadQuestData(eventID, questID) {
         var asset = getAsset(data_mission.asset_type, data_mission.asset_id, data_mission.asset_value);
 
         html += tableRow([title, comment, asset]);
+		
+		// 統計可換物品總和
+		addItems(data_mission.asset_type, data_mission.asset_id, data_mission.asset_value);
     }
-    $missionTable.html(html);
+    $("#missionTable > tbody").html(html);
+	if (!!html) {
+		$("#missionTable > tfoot").html(tableRow(['', '', displayItems()]));
+	} else {
+		$("#missionTable > tfoot").html('');
+	}
 
     // 交換所
     html = '';
@@ -2269,7 +2277,7 @@ function loadQuestData(eventID, questID) {
     var point_summary = 0;
     var point_last = 0;
     var point_exchange_mode = false;
-	var item_summary = {};
+	resetItems();
 
     var data_points = raid_id > 0 ? db.raid_event_point[raid_id] : db.event_point[eventID];
     if (data_points != null) {
@@ -2290,11 +2298,7 @@ function loadQuestData(eventID, questID) {
             point_summary += point_last;
 			
 			// 統計可換物品總和
-			if (item_summary[data_point.item_type] == null) {
-				item_summary[data_point.item_type] = {};
-			}
-			var prev_count = item_summary[data_point.item_type][data_point.item_id] || 0;
-			item_summary[data_point.item_type][data_point.item_id] = prev_count + data_point.item_value;
+			addItems(data_point.item_type, data_point.item_id, data_point.item_value);
         }
     }
 
@@ -2303,13 +2307,7 @@ function loadQuestData(eventID, questID) {
 	// 顯示可換物品總和
 	var itemHtml = '';
 	if (!point_exchange_mode) {
-		var list = [];
-		for (var item_type in item_summary) {
-			for (var item_id in item_summary[item_type]) {
-				list.push(getAsset(parseInt(item_type), parseInt(item_id), parseInt(item_summary[item_type][item_id])));
-			}
-		}
-		itemHtml = '<div class="item-summary">' + list.join('<br />') + '</div>';
+		itemHtml = displayItems();
 	}
 	
     var total_point = point_exchange_mode ? point_summary : point_last;
@@ -2331,6 +2329,30 @@ function loadQuestData(eventID, questID) {
         default:
             break;
     }
+}
+
+var item_summary = {};
+
+function resetItems() {
+	item_summary = {};
+}
+
+function addItems(type, id, value) {
+	if (item_summary[type] == null) {
+		item_summary[type] = {};
+	}
+	var prev_count = item_summary[type][id] || 0;
+	item_summary[type][id] = prev_count + value;
+}
+
+function displayItems() {
+	var list = [];
+	for (var item_type in item_summary) {
+		for (var item_id in item_summary[item_type]) {
+			list.push(getAsset(parseInt(item_type), parseInt(item_id), parseInt(item_summary[item_type][item_id])));
+		}
+	}
+	return String.Format($("#itemListTmpl").html(), list.join('<br />'));
 }
 
 // 共通關卡資料讀取
