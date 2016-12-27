@@ -505,3 +505,12 @@ a > i, button > i {
 .item-summary {
 	line-height: 30px;
 }
+
+.btn-show-item-summary {
+	padding: 0;
+}
+
+.btn-show-item-summary > i {
+	margin-right: 3px;
+	padding-left: 0;
+}

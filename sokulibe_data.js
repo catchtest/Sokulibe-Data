@@ -5,7 +5,8 @@ var enums;
 var skipDirty = true;
 var dirtyPrefix = '× ';
 var disableTranslate = false;
-var disableImage = false;
+var disableImage = true;
+var alwaysShowImage = false;
 var defaultDataTablesOption = {
     "autoWidth": false,
     "order": [],
@@ -3002,7 +3003,7 @@ function setDirtyClass() {
 
 function imgHtml(path, id, active) {
     path = String.Format(path, padLeft(id.toString(), 4));
-	if (active == true) {
+	if (active == true || alwaysShowImage) {
 		var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
 		if (disableImage) {
 			return fileId;
