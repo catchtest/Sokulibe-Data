@@ -5,7 +5,7 @@ var enums;
 var skipDirty = true;
 var dirtyPrefix = '× ';
 var disableTranslate = false;
-var disableImage = true;
+var disableImage = false;
 var alwaysShowImage = false;
 var defaultDataTablesOption = {
     "autoWidth": false,
@@ -176,6 +176,11 @@ var defaultDataTablesOption = {
             $(this).hide();
         }
     });
+	
+	$("#alwaysShowImage").click(function() {
+		alwaysShowImage = true;
+		$(this).hide();
+	});
 
     $("#theme").val(theme).change(function() {
         location.href = 'index.htm?theme=' + $(this).val();
