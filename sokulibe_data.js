@@ -3170,7 +3170,7 @@ function lotteryRarity(rateType) {
             }
 
             var divIndex = ($("#lotteryResult img").length >= 5) ? 1 : 0;
-            $("#lotteryResult > div").eq(divIndex).append(imgHtml("Mini/un{0}_mini_tex.png", unit_id, true));
+            $("#lotteryResult > div").eq(divIndex).append('<div>' + imgHtml("Mini/un{0}_mini_tex.png", unit_id, true) + '</div>');
             $("#lotteryHistory").append(imgHtml("Mini/un{0}_mini_tex.png", unit_id, true));
             break;
         } else {
