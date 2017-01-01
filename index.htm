@@ -46,6 +46,7 @@
             <li role="presentation"><a href="#craftBoardTab" aria-controls="craftBoardTab" role="tab" data-toggle="tab">星盤</a></li>
             <li role="presentation"><a href="#overviewTab" aria-controls="overviewTab" role="tab" data-toggle="tab">一覽</a></li>
             <li role="presentation"><a href="#tearsComputeTab" aria-controls="tearsComputeTab" role="tab" data-toggle="tab">眼淚消耗</a></li>
+            <li role="presentation"><a href="#lotteryTab" aria-controls="lotteryTab" role="tab" data-toggle="tab">轉蛋模擬器</a></li>
         </ul>
 
         <div class="tab-content">
@@ -55,7 +56,8 @@
                         <div class="well" style="box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset;">
                             <div class="well-legend">更新紀錄</div>
                             <ul>
-								<li>2016/12/23<br />角色增加允許裝備列表 (已扣除非加本系攻擊力戒指)<br />統計點數達成型關卡物品</li>
+								<li>2017/01/01<br />增加轉蛋模擬器
+                                <li>2016/12/23<br />角色增加允許裝備列表 (已扣除非加本系攻擊力戒指)<br />統計點數達成型關卡物品</li>
                                 <li>2016/12/22<br />角色增加半身像、全身像</li>
                                 <li>2016/12/21<br />元素塔關卡增加有利顯示</li>
                             </ul>
@@ -119,8 +121,8 @@
 							  </label>
                             </div>
                             <button id="disableTranslate" class="btn btn-default btn-xs">顯示原文</button>
-							<button id="alwaysShowImage" class="btn btn-default btn-xs">永遠顯示圖片</button>
-							
+                            <button id="alwaysShowImage" class="btn btn-default btn-xs">永遠顯示圖片</button>
+
                         </div>
                     </div>
                 </div>
@@ -162,10 +164,10 @@
                             <li role="presentation"><a href="#unitSkillTab" aria-controls="unitSkillTab" role="tab" data-toggle="tab">技能</a></li>
                             <li role="presentation"><a href="#unitCommentTab" aria-controls="unitCommentTab" role="tab" data-toggle="tab">對話</a></li>
                             <li role="presentation"><a href="#unitStoryTab" aria-controls="unitStoryTab" role="tab" data-toggle="tab">故事</a></li>
-							<li role="presentation"><a href="#unitFullImageTab" aria-controls="unitFullImageTab" role="tab" data-toggle="tab">全身</a></li>
-							<li role="presentation"><a href="#unitWeaponTab" aria-controls="unitWeaponTab" role="tab" data-toggle="tab">武器</a></li>
-							<li role="presentation"><a href="#unitRingTab" aria-controls="unitRingTab" role="tab" data-toggle="tab">戒指</a></li>
-							<li role="presentation"><a href="#unitTalismanTab" aria-controls="unitTalismanTab" role="tab" data-toggle="tab">護符</a></li>
+                            <li role="presentation"><a href="#unitFullImageTab" aria-controls="unitFullImageTab" role="tab" data-toggle="tab">全身</a></li>
+                            <li role="presentation"><a href="#unitWeaponTab" aria-controls="unitWeaponTab" role="tab" data-toggle="tab">武器</a></li>
+                            <li role="presentation"><a href="#unitRingTab" aria-controls="unitRingTab" role="tab" data-toggle="tab">戒指</a></li>
+                            <li role="presentation"><a href="#unitTalismanTab" aria-controls="unitTalismanTab" role="tab" data-toggle="tab">護符</a></li>
                         </ul>
 
                         <!-- Tab panes -->
@@ -713,70 +715,70 @@
                                 </div>
                                 <pre id="storyBlock"></pre>
                             </div>
-							<div role="tabpanel" class="tab-pane" id="unitFullImageTab">
-							</div>
-							<div role="tabpanel" class="tab-pane" id="unitWeaponTab">
+                            <div role="tabpanel" class="tab-pane" id="unitFullImageTab">
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="unitWeaponTab">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped table-hover" id="unitWeaponTable">
                                         <thead>
                                             <tr>
-												<th class="width50 no-sort">圖示</th>
-												<th>名稱</th>
-												<th>稀有度</th>
-												<th>最大HP</th>
-												<th>最大攻擊</th>
-												<th>最大速度</th>
-												<th>主技能<br />傷害倍率</th>
-												<th>主技能<br />破盾倍率</th>
-												<th>副技能<br />效果</th>
-												<th>副技能<br />覺醒滿效果</th>
+                                                <th class="width50 no-sort">圖示</th>
+                                                <th>名稱</th>
+                                                <th>稀有度</th>
+                                                <th>最大HP</th>
+                                                <th>最大攻擊</th>
+                                                <th>最大速度</th>
+                                                <th>主技能<br />傷害倍率</th>
+                                                <th>主技能<br />破盾倍率</th>
+                                                <th>副技能<br />效果</th>
+                                                <th>副技能<br />覺醒滿效果</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         </tbody>
                                     </table>
                                 </div>
-							</div>
-							<div role="tabpanel" class="tab-pane" id="unitRingTab">
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="unitRingTab">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped table-hover" id="unitRingTable">
                                         <thead>
                                             <tr>
-												<th class="width50 no-sort">圖示</th>
+                                                <th class="width50 no-sort">圖示</th>
                                                 <th>名稱</th>
-												<th>稀有度</th>
+                                                <th>稀有度</th>
                                                 <th>職業</th>
-												<th>強化1</th>
-												<th>強化2</th>
-												<th>強化3</th>
-												<th>強化4</th>
+                                                <th>強化1</th>
+                                                <th>強化2</th>
+                                                <th>強化3</th>
+                                                <th>強化4</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         </tbody>
                                     </table>
                                 </div>
-							</div>
-							<div role="tabpanel" class="tab-pane" id="unitTalismanTab">
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="unitTalismanTab">
                                 <div class="table-responsive">
                                     <table class="table table-bordered table-striped table-hover" id="unitTalismanTable">
                                         <thead>
                                             <tr>
-												<th class="width50 no-sort">圖示</th>
+                                                <th class="width50 no-sort">圖示</th>
                                                 <th>名稱</th>
-												<th>稀有度</th>
+                                                <th>稀有度</th>
                                                 <th>職業</th>
-												<th>強化1</th>
-												<th>強化2</th>
-												<th>強化3</th>
-												<th>強化4</th>
+                                                <th>強化1</th>
+                                                <th>強化2</th>
+                                                <th>強化3</th>
+                                                <th>強化4</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                         </tbody>
                                     </table>
                                 </div>
-							</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1529,7 +1531,7 @@
                                         </thead>
                                         <tbody>
                                         </tbody>
-										<tfoot>
+                                        <tfoot>
                                         </tfoot>
                                     </table>
                                 </div>
@@ -1924,7 +1926,7 @@
                     <button type="button" class="btn btn-default btn-sm" onclick="saveToText();">輸出成字串</button>
                     <button type="button" class="btn btn-default btn-sm" onclick="clearAllTears();">重設</button>
                 </div>
-                <div class="result-text">
+                <div class="result-text" id="tearsResult">
                     擁有4星角色<span id="unitCount" class="text-danger">0</span>+<span id="unitFreeCount" class="text-danger">0</span>位（200級有<span id="unitLv200Count" class="text-danger">0</span>位） 已消耗眼淚
                     <span id="tearsValue" class="text-danger">0</span>個（花在4星<span id="tearsFor4Value" class="text-danger">0</span>個）
                 </div>
@@ -1965,6 +1967,72 @@
                     <tbody>
                     </tbody>
                 </table>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="lotteryTab">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default btn-sm" onclick="lottery(1, 50);">單抽 (50)</button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="lottery(2, 500);">十連抽 (500)</button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="lottery(1, 10);">有償單抽 (10)</button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="lottery(2, 300);">有償十連 (300)</button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="lottery(7, 300);">有償保底 (300)</button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="lottery(3);">抽獎券</button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="lottery(4);">三星券</button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="lottery(5);">必三星券</button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="lottery(6);">四星券</button>
+                            <button type="button" class="btn btn-default btn-sm" onclick="initLottery();">重設</button>
+                        </div>
+
+                        <div class="table-responsive" style="margin-top: 10px;">
+                            <table class="table table-bordered table-fixed-width" id="lotteryResultTable">
+                                <thead>
+                                    <tr>
+                                        <th colspan="5">消費</th>
+                                        <th colspan="5">獲得</th>
+                                    </tr>
+                                    <tr>
+                                        <th>鑽石</th>
+                                        <th>抽獎券</th>
+                                        <th>三星券</th>
+                                        <th>必三星券</th>
+                                        <th>四星券</th>
+                                        <th>次數</th>
+                                        <th>四星</th>
+                                        <th>三星</th>
+                                        <th>二星</th>
+                                        <th><abbr title="限定角不計入淚數">預估眼淚</abbr></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="lotteryResult" class="well">
+                            <div class="img-flex"></div>
+                            <div class="img-flex"></div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="table-responsive" style="margin-top: 10px;">
+                            <table class="table table-bordered" id="lotteryR4Table">
+                                <thead>
+                                    <tr>
+                                        <th>角色名稱</th>
+                                        <th class="width100">次數</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="lotteryHistory">
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -2023,10 +2091,10 @@
             <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">60</button>
         </div>
     </script>
-	
+
     <script type="text/template" id="itemListTmpl">
         <button type="button" class="btn btn-link btn-xs btn-show-item-summary" onclick="$(this).hide().next().show();"><i class="glyphicon glyphicon-th-list"></i>顯示清單</button>
-		<div class="item-summary" style="display: none;">{0}</div>
+        <div class="item-summary" style="display: none;">{0}</div>
     </script>
 
     <script>

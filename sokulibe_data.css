@@ -514,3 +514,13 @@ a > i, button > i {
 	margin-right: 3px;
 	padding-left: 0;
 }
+
+#lotteryHistory {
+	max-height: 500px;
+	overflow-y: auto;
+}
+
+#lotteryHistory > img {
+	width: 50px;
+	margin: 2px;
+}

@@ -23,6 +23,39 @@ var defaultDataTablesOption = {
         orderable: false
     }]
 };
+var lotteryData = [{
+        rarity: 4,
+        rate: 76,
+        unit_id: [82],
+        festival: true
+    },
+    {
+        rarity: 4,
+        rate: 24,
+        unit_id: [74, 120, 104, 114],
+        festival: true
+    },
+    {
+        rarity: 4,
+        rate: 500,
+        unit_id: [76, 92, 98],
+        festival: false
+    },
+    {
+        rarity: 3,
+        rate: 3000,
+        unit_id: [29, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70],
+        festival: false
+    },
+    {
+        rarity: 2,
+        rate: 6400,
+        unit_id: [21, 22, 23, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
+        festival: false
+    }
+];
+
+
 
 (function($) {
     // 顯示讀取資料錯誤訊息
@@ -78,6 +111,7 @@ var defaultDataTablesOption = {
     $("a[href='#craftBoardTab']").one("click", initCraftBoard);
     $("a[href='#tearsComputeTab']").one("click", initTearsCompute);
     $("a[href='#loginBonusTab']").one("click", initLoginBonus);
+    $("a[href='#lotteryTab']").one("click", initLottery);
 
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
@@ -176,39 +210,39 @@ var defaultDataTablesOption = {
             $(this).hide();
         }
     });
-	
-	$("#alwaysShowImage").click(function() {
-		alwaysShowImage = true;
-		$(this).hide();
-	});
+
+    $("#alwaysShowImage").click(function() {
+        alwaysShowImage = true;
+        $(this).hide();
+    });
 
     $("#theme").val(theme).change(function() {
         location.href = 'index.htm?theme=' + $(this).val();
     });
-	
-	// 捲到最上方
-	var $backToTop = $('#backToTop');
-	if ($backToTop.length) {
-		var scrollTrigger = 100, // px
-			backToTop = function () {
-				var scrollTop = $(window).scrollTop();
-				if (scrollTop > scrollTrigger) {
-					$backToTop.addClass('show');
-				} else {
-					$backToTop.removeClass('show');
-				}
-			};
-		backToTop();
-		$(window).on('scroll', function () {
-			backToTop();
-		});
-		$backToTop.on('click', function (e) {
-			e.preventDefault();
-			$('html,body').animate({
-				scrollTop: 0
-			}, 700);
-		});
-	}
+
+    // 捲到最上方
+    var $backToTop = $('#backToTop');
+    if ($backToTop.length) {
+        var scrollTrigger = 100, // px
+            backToTop = function() {
+                var scrollTop = $(window).scrollTop();
+                if (scrollTop > scrollTrigger) {
+                    $backToTop.addClass('show');
+                } else {
+                    $backToTop.removeClass('show');
+                }
+            };
+        backToTop();
+        $(window).on('scroll', function() {
+            backToTop();
+        });
+        $backToTop.on('click', function(e) {
+            e.preventDefault();
+            $('html,body').animate({
+                scrollTop: 0
+            }, 700);
+        });
+    }
 }(jQuery));
 
 // 初始化角色列表
@@ -500,16 +534,16 @@ function initItems() {
     for (var id in db.items) {
         var data = db.items[id];
 
-		var img = imgHtml("Item/ci{0}_tex.png", id);
+        var img = imgHtml("Item/ci{0}_tex.png", id);
         var name = data.name;
         var comment = data.comment.replaceAll('\n', '');
 
         html += tableRow([img, name, comment]);
     }
-	for (var id = 21; id <= 27; id++) {
-		var img = imgHtml("Item/ci{0}_tex.png", id);
-		html += tableRow([img, extendItemName(id), '']);		
-	}
+    for (var id = 21; id <= 27; id++) {
+        var img = imgHtml("Item/ci{0}_tex.png", id);
+        html += tableRow([img, extendItemName(id), '']);
+    }
     renderTable("itemsTable", html);
 }
 
@@ -683,37 +717,37 @@ function initAccessoryList() {
 
     var html = '';
     for (var index = 0, len = itemList.length; index < len; index++) {
-		var list = renderAccessory(itemList[index]);
+        var list = renderAccessory(itemList[index]);
         html += tableRow(list);
     }
     renderTable("accessoryListTable", html);
 }
 
 function renderAccessory(data) {
-	var name = getAccessoryFirstName(data.id);
-	if (name == null) {
-		// 沒有滿前的名字，只顯示滿後的
-		name = getAccessoryLastName(data.id)
-	} else {
-		name += '<br />' + getAccessoryLastName(data.id);
-	}
-	var list = [
-		imgHtml("Accessory/eq{0}_tex.png", getAccessoryFirstId(data.id)),
-		enums.accessory_category[data.category],
-		anchor(name, "showAccessory(" + data.id + ")"),
-		enums.rarity[data.rarity],
-		enums.equip_job[data.job],
-	];
+    var name = getAccessoryFirstName(data.id);
+    if (name == null) {
+        // 沒有滿前的名字，只顯示滿後的
+        name = getAccessoryLastName(data.id)
+    } else {
+        name += '<br />' + getAccessoryLastName(data.id);
+    }
+    var list = [
+        imgHtml("Accessory/eq{0}_tex.png", getAccessoryFirstId(data.id)),
+        enums.accessory_category[data.category],
+        anchor(name, "showAccessory(" + data.id + ")"),
+        enums.rarity[data.rarity],
+        enums.equip_job[data.job],
+    ];
 
-	for (var i = 1; i <= 4; i++) {
-		var magicID = data["magic" + i];
-		var content = '';
-		if (magicID > 0) {
-			content = db.enchant_master[magicID].enchant_comment.i18n().replaceAll('\n', '<br />');
-		}
-		list.push(content);
-	}
-	return list;
+    for (var i = 1; i <= 4; i++) {
+        var magicID = data["magic" + i];
+        var content = '';
+        if (magicID > 0) {
+            content = db.enchant_master[magicID].enchant_comment.i18n().replaceAll('\n', '<br />');
+        }
+        list.push(content);
+    }
+    return list;
 }
 
 // 初始化武器一覽
@@ -745,23 +779,23 @@ function initWeaponList() {
 
 function renderWeapon(data) {
     var weaponMainSkill = db.weapon_mainskillbase[data.main_weapon_skill_id] || {};
-	var weaponSubSkill = db.weapon_subskill[data.sub_weapon_skill_id] || {};
-	var weaponPower = calculateWeapon(data.id, 10, 4);
+    var weaponSubSkill = db.weapon_subskill[data.sub_weapon_skill_id] || {};
+    var weaponPower = calculateWeapon(data.id, 10, 4);
 
-	var list = [
-		imgHtml("Weapon/wi{0}_tex.png", data.id),
-		anchor(data.name, "showWeapon(" + data.id + ")"),
-		enums.rarity[data.rarity],
-		enums.equip_job[data.job],
-		weaponPower.hp,
-		weaponPower.atk,
-		weaponPower.agi,
-		weaponMainSkill.dmg,
-		weaponMainSkill.break_,
-		weaponSubSkill[1] == null ? '' : weaponSubSkill[1].comment.i18n().pre(),
-		weaponSubSkill[5] == null ? '' : weaponSubSkill[5].comment.i18n().pre()
-	];
-	return list;
+    var list = [
+        imgHtml("Weapon/wi{0}_tex.png", data.id),
+        anchor(data.name, "showWeapon(" + data.id + ")"),
+        enums.rarity[data.rarity],
+        enums.equip_job[data.job],
+        weaponPower.hp,
+        weaponPower.atk,
+        weaponPower.agi,
+        weaponMainSkill.dmg,
+        weaponMainSkill.break_,
+        weaponSubSkill[1] == null ? '' : weaponSubSkill[1].comment.i18n().pre(),
+        weaponSubSkill[5] == null ? '' : weaponSubSkill[5].comment.i18n().pre()
+    ];
+    return list;
 }
 
 // 初始化特性一覽
@@ -862,7 +896,7 @@ function initTearsCompute() {
             $("#setR" + data.rarity + "LvTmpl").html();
 
         var list = [
-			imgHtml("Mini/un{0}_mini_tex.png", data.id),
+            imgHtml("Mini/un{0}_mini_tex.png", data.id),
             anchor(getUnitName(data), "showUnit(" + data.id + ")"),
             data.rarity,
             elementHtml(data.use_element),
@@ -1133,7 +1167,7 @@ function getAccessoryFirstId(id) {
     var item = db.accessory_upgrade[id];
     var keys = Object.keys(item);
     var first = db.accessory_upgrade[id][keys[0]];
-	return first.id;
+    return first.id;
 }
 
 function getUnitName(data) {
@@ -1183,24 +1217,24 @@ function setTitle(main, sub) {
 }
 
 function showUnit(id) {
-	showEvent("unit", id);
+    showEvent("unit", id);
 }
 
 function showAccessory(id) {
-	showEvent("accessory", id);
+    showEvent("accessory", id);
 }
 
 function showWeapon(id) {
-	showEvent("weapon", id);
+    showEvent("weapon", id);
 }
 
 function showEvent(name, id) {
-	$("a[href='#" + name + "']").click();
+    $("a[href='#" + name + "']").click();
     var item = $("#" + name).find("[data-id='" + id + "']");
-	if (item.length == 0) {
-		alert('Data not found.');
-		return;
-	}
+    if (item.length == 0) {
+        alert('Data not found.');
+        return;
+    }
     var list_id = item.closest(".tab-pane").attr("id");
     $("a[href='#" + list_id + "']").click();
     item.click().focus();
@@ -1283,13 +1317,13 @@ function loadUnitData(id) {
     }
 
     // 對話
-	if (db.unit_comment[id] != null) {
-		for (var i = 1; i <= 11; i++) {
-			$("#comment" + i).html(db.unit_comment[id]["comment" + i].pre());
-		}
-	} else {
-		$("#unitCommentTab td").html('');
-	}
+    if (db.unit_comment[id] != null) {
+        for (var i = 1; i <= 11; i++) {
+            $("#comment" + i).html(db.unit_comment[id]["comment" + i].pre());
+        }
+    } else {
+        $("#unitCommentTab td").html('');
+    }
 
     // 技能說明列表
     var command = db.unit_command[id];
@@ -1353,8 +1387,8 @@ function loadUnitData(id) {
             case 10:
                 specialTds = ['スポットヒール', '---', '回復', 1, 1200, 0, 0, 0, '---'];
                 break;
-			default:
-                specialTds = ['',  '', '', '', '', '', '', ''];
+            default:
+                specialTds = ['', '', '', '', '', '', '', ''];
                 break;
         }
         specialHtml = '<td>' + specialTds.join('</td><td>') + '</td>';
@@ -1418,23 +1452,23 @@ function loadUnitData(id) {
         }
         $resistTable.find("." + prop).html(value);
     }
-	
-	// 圖片
-	$("#unitProtraitImage").html(imgHtml("Portrait/un{0}_up.png", data.id, true));
-	$("#unitFullImageTab").html(imgHtml("Full/un{0}_full.png", data.id, true));
-	//$("#unitMiniImage").html(imgHtml("Mini/un{0}_mini_tex.png", data.id, true));
-	
-	// 裝備一覽
-	var allowJob = enums.job_equip_map[data.job_id];
+
+    // 圖片
+    $("#unitProtraitImage").html(imgHtml("Portrait/un{0}_up.png", data.id, true));
+    $("#unitFullImageTab").html(imgHtml("Full/un{0}_full.png", data.id, true));
+    //$("#unitMiniImage").html(imgHtml("Mini/un{0}_mini_tex.png", data.id, true));
+
+    // 裝備一覽
+    var allowJob = enums.job_equip_map[data.job_id];
     var itemList = [];
     for (var id in db.accessory) {
         var data1 = db.accessory[id];
 
-        if (isDirtyAccessory(id)) continue;   // 強制跳過假資料
-		if (allowJob.indexOf(data1.job) < 0) continue;   // 必須是該職業可以裝備
-		if (data1.category === 1 && data1.rarity <= 3) continue;   // 戒指沒有SR都不要顯示
-		if (data1.category === 2 && data1.rarity <= 2) continue;   // 護符沒有HR都不要顯示
-		
+        if (isDirtyAccessory(id)) continue; // 強制跳過假資料
+        if (allowJob.indexOf(data1.job) < 0) continue; // 必須是該職業可以裝備
+        if (data1.category === 1 && data1.rarity <= 3) continue; // 戒指沒有SR都不要顯示
+        if (data1.category === 2 && data1.rarity <= 2) continue; // 護符沒有HR都不要顯示
+
         itemList.push(data1);
     }
 
@@ -1446,31 +1480,31 @@ function loadUnitData(id) {
         if (b.rarity < a.rarity) return -1;
         return 0;
     });
-	
-	var html = '';
-	var html2 = '';
+
+    var html = '';
+    var html2 = '';
     for (var index = 0, len = itemList.length; index < len; index++) {
-		var list = renderAccessory(itemList[index]);
-		if (isOtherElement(list, data.use_element, false)) continue;   // 不顯示非本系戒指
-		
-		list.splice(1, 1);   // 去掉類型，分成兩張表
-		
-		if (itemList[index].category == 1) {
-			html += tableRow(list);
-		} else if (itemList[index].category == 2) {
-			html2 += tableRow(list);
-		}
+        var list = renderAccessory(itemList[index]);
+        if (isOtherElement(list, data.use_element, false)) continue; // 不顯示非本系戒指
+
+        list.splice(1, 1); // 去掉類型，分成兩張表
+
+        if (itemList[index].category == 1) {
+            html += tableRow(list);
+        } else if (itemList[index].category == 2) {
+            html2 += tableRow(list);
+        }
     }
-	$("#unitRingTable > tbody").html(html);
-	$("#unitTalismanTable > tbody").html(html2);
-	
-	// 武器一覽
-	var itemList = [];
+    $("#unitRingTable > tbody").html(html);
+    $("#unitTalismanTable > tbody").html(html2);
+
+    // 武器一覽
+    var itemList = [];
     for (var id in db.weapon) {
         var data1 = db.weapon[id];
 
-        if (isDirtyWeapon(data1)) continue;   // 強制跳過假資料
-		if (allowJob.indexOf(data1.job) < 0) continue;   // 必須是該職業可以裝備
+        if (isDirtyWeapon(data1)) continue; // 強制跳過假資料
+        if (allowJob.indexOf(data1.job) < 0) continue; // 必須是該職業可以裝備
 
         itemList.push(data1);
     }
@@ -1486,34 +1520,32 @@ function loadUnitData(id) {
     var html = '';
     for (var index = 0, len = itemList.length; index < len; index++) {
         var list = renderWeapon(itemList[index]);
-		if (isOtherElement(list, data.use_element, true)) continue;   // 不顯示非本系戒指
-		list.splice(3, 1);   // 去掉可裝備職業，基本上只會是一種
+        if (isOtherElement(list, data.use_element, true)) continue; // 不顯示非本系戒指
+        list.splice(3, 1); // 去掉可裝備職業，基本上只會是一種
         html += tableRow(list);
     }
-	$("#unitWeaponTable > tbody").html(html);
+    $("#unitWeaponTable > tbody").html(html);
 }
 
 function isOtherElement(list, element, isWeapon) {
-	// 搜尋是否有提升非自己屬性攻擊力的文字
-	// 例如自身火屬性，但裝備有水屬性攻擊力字樣，就回傳true
-	var queries = disableTranslate ? 
-		["火属性攻撃力", "水属性攻撃力", "地属性攻撃力", "光属性攻撃力", "闇属性攻撃力"] : 
-		["火屬性攻擊力", "水屬性攻擊力", "地屬性攻擊力", "光屬性攻擊力", "闇屬性攻擊力"];
-	if (element > 0) {
-		queries.splice(element - 1, 1);
-	}
-	
-	var lastIndex = isWeapon ? 2 : 4;
-	for (var len = list.length, index = len - lastIndex; index < len; index++) {
-		var content = list[index];
-		
-		for (var q = 0; q < queries.length; q++) {
-			if (content.indexOf(queries[q]) >= 0) {
-				return true;
-			}
-		}
-	}
-	return false;
+    // 搜尋是否有提升非自己屬性攻擊力的文字
+    // 例如自身火屬性，但裝備有水屬性攻擊力字樣，就回傳true
+    var queries = disableTranslate ? ["火属性攻撃力", "水属性攻撃力", "地属性攻撃力", "光属性攻撃力", "闇属性攻撃力"] : ["火屬性攻擊力", "水屬性攻擊力", "地屬性攻擊力", "光屬性攻擊力", "闇屬性攻擊力"];
+    if (element > 0) {
+        queries.splice(element - 1, 1);
+    }
+
+    var lastIndex = isWeapon ? 2 : 4;
+    for (var len = list.length, index = len - lastIndex; index < len; index++) {
+        var content = list[index];
+
+        for (var q = 0; q < queries.length; q++) {
+            if (content.indexOf(queries[q]) >= 0) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 // 產生技能資料
@@ -1965,16 +1997,16 @@ function loadAccessoryData(id) {
     setTitle(getAccessoryName(id), enums.rarity[data.rarity]);
 
     upgradeTotalRunes = {};
-	var imgList = [];
+    var imgList = [];
     for (var rank in db.accessory_upgrade[id]) {
         var u = db.accessory_upgrade[id][rank];
         $("#rank" + rank).html(u.name + u.flavor.pre());
         $("#rune" + rank).html(getUpgradeRune(u));
-		
-		imgList.push(imgHtml("Accessory/eq{0}_tex.png", u.id, true));
+
+        imgList.push(imgHtml("Accessory/eq{0}_tex.png", u.id, true));
     }
     $("#runeTotal").html(displayTotalRune(upgradeTotalRunes));
-	$("#accessoryImage").html('<div>' + imgList.join('</div><div>') + '</div>');   // 修正chrome無法直接用image作flex
+    $("#accessoryImage").html('<div>' + imgList.join('</div><div>') + '</div>'); // 修正chrome無法直接用image作flex
 }
 
 function displayTotalRune(obj) {
@@ -2079,8 +2111,8 @@ function loadWeaponData(id) {
     var data = db.weapon[id];
     setTitle(data.name, enums.rarity[data.rarity]);
 
-	$("#weaponImgBlock").html(imgHtml("Weapon/wi{0}_tex.png", data.id, true));
-	
+    $("#weaponImgBlock").html(imgHtml("Weapon/wi{0}_tex.png", data.id, true));
+
     ['HP', 'ATK', 'AGI'].forEach(function(e) {
         var e1 = e.toLowerCase();
 
@@ -2253,8 +2285,8 @@ function loadQuestData(eventID, questID) {
 
     // 任務
     var html = '';
-	resetItems();
-	
+    resetItems();
+
     for (var missionID in db.event_mission) {
         var data_mission = db.event_mission[missionID];
 
@@ -2265,16 +2297,16 @@ function loadQuestData(eventID, questID) {
         var asset = getAsset(data_mission.asset_type, data_mission.asset_id, data_mission.asset_value);
 
         html += tableRow([title, comment, asset]);
-		
-		// 統計可換物品總和
-		addItems(data_mission.asset_type, data_mission.asset_id, data_mission.asset_value);
+
+        // 統計可換物品總和
+        addItems(data_mission.asset_type, data_mission.asset_id, data_mission.asset_value);
     }
     $("#missionTable > tbody").html(html);
-	if (!!html) {
-		$("#missionTable > tfoot").html(tableRow(['', '', displayItems()]));
-	} else {
-		$("#missionTable > tfoot").html('');
-	}
+    if (!!html) {
+        $("#missionTable > tfoot").html(tableRow(['', '', displayItems()]));
+    } else {
+        $("#missionTable > tfoot").html('');
+    }
 
     // 交換所
     html = '';
@@ -2283,7 +2315,7 @@ function loadQuestData(eventID, questID) {
     var point_summary = 0;
     var point_last = 0;
     var point_exchange_mode = false;
-	resetItems();
+    resetItems();
 
     var data_points = raid_id > 0 ? db.raid_event_point[raid_id] : db.event_point[eventID];
     if (data_points != null) {
@@ -2302,20 +2334,20 @@ function loadQuestData(eventID, questID) {
             }
             point_last = data_point_sum;
             point_summary += point_last;
-			
-			// 統計可換物品總和
-			addItems(data_point.item_type, data_point.item_id, data_point.item_value);
+
+            // 統計可換物品總和
+            addItems(data_point.item_type, data_point.item_id, data_point.item_value);
         }
     }
 
     $("#exchangeTable > tbody").html(html);
 
-	// 顯示可換物品總和
-	var itemHtml = '';
-	if (!point_exchange_mode) {
-		itemHtml = displayItems();
-	}
-	
+    // 顯示可換物品總和
+    var itemHtml = '';
+    if (!point_exchange_mode) {
+        itemHtml = displayItems();
+    }
+
     var total_point = point_exchange_mode ? point_summary : point_last;
     var footerHtml = total_point == 0 ? '' : tableRow([itemHtml, '', '', total_point]);
     $("#exchangeTable > tfoot").html(footerHtml);
@@ -2340,25 +2372,25 @@ function loadQuestData(eventID, questID) {
 var item_summary = {};
 
 function resetItems() {
-	item_summary = {};
+    item_summary = {};
 }
 
 function addItems(type, id, value) {
-	if (item_summary[type] == null) {
-		item_summary[type] = {};
-	}
-	var prev_count = item_summary[type][id] || 0;
-	item_summary[type][id] = prev_count + value;
+    if (item_summary[type] == null) {
+        item_summary[type] = {};
+    }
+    var prev_count = item_summary[type][id] || 0;
+    item_summary[type][id] = prev_count + value;
 }
 
 function displayItems() {
-	var list = [];
-	for (var item_type in item_summary) {
-		for (var item_id in item_summary[item_type]) {
-			list.push(getAsset(parseInt(item_type), parseInt(item_id), parseInt(item_summary[item_type][item_id])));
-		}
-	}
-	return String.Format($("#itemListTmpl").html(), list.join('<br />'));
+    var list = [];
+    for (var item_type in item_summary) {
+        for (var item_id in item_summary[item_type]) {
+            list.push(getAsset(parseInt(item_type), parseInt(item_id), parseInt(item_summary[item_type][item_id])));
+        }
+    }
+    return String.Format($("#itemListTmpl").html(), list.join('<br />'));
 }
 
 // 共通關卡資料讀取
@@ -2393,18 +2425,18 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
     }
     $("#mission_bonus").closest("tr").toggle(missionBonusExist);
 
-	// 試煉之塔有利屬性
-	if (baseData.advantage_job != null && (baseData.advantage_job > 0 || baseData.advantage_element > 0 || baseData.advantage_debuff > 0)) {
-		var advantages = [];
-		advantages.push(baseData.advantage_job > 0 ? enums.job[baseData.advantage_job] : '-');
-		advantages.push(baseData.advantage_element > 0 ? enums.element[baseData.advantage_element] : '-');
-		advantages.push(baseData.advantage_debuff > 0 ? enums.debuff[baseData.advantage_debuff] : '-');
-		var advantagesText = advantages.join(' / ');
-		$("#advantage").html(advantagesText).closest("tr").show();
-	} else {
-		$("#advantage").closest("tr").hide();
-	}
-	
+    // 試煉之塔有利屬性
+    if (baseData.advantage_job != null && (baseData.advantage_job > 0 || baseData.advantage_element > 0 || baseData.advantage_debuff > 0)) {
+        var advantages = [];
+        advantages.push(baseData.advantage_job > 0 ? enums.job[baseData.advantage_job] : '-');
+        advantages.push(baseData.advantage_element > 0 ? enums.element[baseData.advantage_element] : '-');
+        advantages.push(baseData.advantage_debuff > 0 ? enums.debuff[baseData.advantage_debuff] : '-');
+        var advantagesText = advantages.join(' / ');
+        $("#advantage").html(advantagesText).closest("tr").show();
+    } else {
+        $("#advantage").closest("tr").hide();
+    }
+
     // 掉落率
     for (var prop in dropData) {
         if (prop == 'id' || prop == 'event_id') continue;
@@ -2835,19 +2867,19 @@ function getAsset(type, id, value) {
             if (id == 1) name = imgXs('Item/diamond.png') + '鑽石'
             break;
         case 2: // 道具
-			var name = imgXs('Item/ci{0}_tex.png', id);
-			if (id >= 21) {
-				name += extendItemName(id);
-			} else {
-				name += db.items[id] != null ? db.items[id].name : '';
-			}
+            var name = imgXs('Item/ci{0}_tex.png', id);
+            if (id >= 21) {
+                name += extendItemName(id);
+            } else {
+                name += db.items[id] != null ? db.items[id].name : '';
+            }
             break;
         case 3: // 材料
             name = imgXs("Rune/ru{0}_tex.png", id) + '<span class="type-rune"></span>' + db.rune[id].name;
             break;
         case 4: // 裝備
-            name = imgXs("Accessory/eq{0}_tex.png", id) + '<span class="type-accessory"></span>'
-			     + anchor(getAccessoryNameByUpgradeID(id), "showAccessory(" + getAccessoryIdByUpgradeID(id) + ")");
+            name = imgXs("Accessory/eq{0}_tex.png", id) + '<span class="type-accessory"></span>' +
+                anchor(getAccessoryNameByUpgradeID(id), "showAccessory(" + getAccessoryIdByUpgradeID(id) + ")");
             break;
         case 5:
             name = imgXs('Item/crystal.png') + '經驗水晶';
@@ -2856,16 +2888,16 @@ function getAsset(type, id, value) {
             if (id == 1) name = imgXs('Item/tear.png') + '妖精之淚'
             break;
         case 7: // 角色
-            name = imgXs("Mini/un{0}_mini_tex.png", id) + '<span class="type-unit"></span>' 
-			     + anchor(db.unit[id].name, "showUnit(" + id + ")")
-				 + getUnitJobComment(db.unit[id]);
+            name = imgXs("Mini/un{0}_mini_tex.png", id) + '<span class="type-unit"></span>' +
+                anchor(db.unit[id].name, "showUnit(" + id + ")") +
+                getUnitJobComment(db.unit[id]);
             break;
         case 10: // 徽章
             name = imgXs("Icon/pe{0}_tex.png", id) + '<span class="type-icons"></span>' + db.icons[id].name;
             break;
         case 12: // 武器
-            name = imgXs("Weapon/wi{0}_tex.png", id) + '<span class="type-weapon"></span>'
-			     + anchor(db.weapon[id].name, "showWeapon(" + id + ")");
+            name = imgXs("Weapon/wi{0}_tex.png", id) + '<span class="type-weapon"></span>' +
+                anchor(db.weapon[id].name, "showWeapon(" + id + ")");
             break;
     }
     if (!name) {
@@ -2876,29 +2908,30 @@ function getAsset(type, id, value) {
 }
 
 function imgXs(path, id) {
-	if (id != null) {
-		path = String.Format(path, padLeft(id.toString(), 4));
-	}
-	if (disableImage) {
-		return '';
-	}
-	return String.Format('<img src="{0}" class="img-xs"/>', path);	
+    if (id != null) {
+        path = String.Format(path, padLeft(id.toString(), 4));
+    }
+    if (disableImage) {
+        return '';
+    }
+    return String.Format('<img src="{0}" class="img-xs"/>', path);
 }
 
 function extendItemName(id) {
-	var names = [
-		'スマイルポイント', 
-		'HR確定 武器ガチャチケット',
-		'HR以上確定 武器ガチャチケット',
-		'SR確定 武器ガチャチケット',
-		'',
-		'',
-		'武器ガチャチケット'
-	];
-	return names[id - 21];
+    var names = [
+        'スマイルポイント',
+        'HR確定 武器ガチャチケット',
+        'HR以上確定 武器ガチャチケット',
+        'SR確定 武器ガチャチケット',
+        '',
+        '',
+        '武器ガチャチケット'
+    ];
+    return names[id - 21];
 }
 
 var accessoryNames;
+
 function initAccessoryNames() {
     if (accessoryNames == null) {
         // 修改原始資料結構變成單一物件，比較好處理
@@ -2907,21 +2940,21 @@ function initAccessoryNames() {
             for (var b in db.accessory_upgrade[a]) {
                 var item = db.accessory_upgrade[a][b];
                 accessoryNames[item.id] = {
-					name: item.name,
-					id: item.accessory_id
-				};
+                    name: item.name,
+                    id: item.accessory_id
+                };
             }
         }
     }
 }
 
 function getAccessoryNameByUpgradeID(id) {
-	initAccessoryNames();
+    initAccessoryNames();
     return accessoryNames[id].name;
 }
 
 function getAccessoryIdByUpgradeID(id) {
-	initAccessoryNames();
+    initAccessoryNames();
     return accessoryNames[id].id;
 }
 
@@ -3008,26 +3041,201 @@ function setDirtyClass() {
 
 function imgHtml(path, id, active) {
     path = String.Format(path, padLeft(id.toString(), 4));
-	if (active == true || alwaysShowImage) {
-		var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
-		if (disableImage) {
-			return fileId;
-		}
-		return String.Format('<img src="{0}" alt="{1}" />', path, fileId);
-	} else {
-		return String.Format('<a href="#" data-src="{0}" onclick="openImage(this); return false;">點選顯示</a>', path);
-	}
+    if (active == true || alwaysShowImage) {
+        var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
+        if (disableImage) {
+            return fileId;
+        }
+        return String.Format('<img src="{0}" alt="{1}" />', path, fileId);
+    } else {
+        return String.Format('<a href="#" data-src="{0}" onclick="openImage(this); return false;">點選顯示</a>', path);
+    }
 }
 
 function openImage(sender) {
-	$(sender).closest("tbody").find("[data-src]").each(function() {
-		var $this = $(this);
-		var path = $this.data("src");
-		var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
-		$this.after(String.Format('<img src="{0}" alt="{1}" />', path, fileId));
-		$this.remove();
-	});
+    $(sender).closest("tbody").find("[data-src]").each(function() {
+        var $this = $(this);
+        var path = $this.data("src");
+        var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
+        $this.after(String.Format('<img src="{0}" alt="{1}" />', path, fileId));
+        $this.remove();
+    });
 }
+
+// 計算轉蛋結果
+function lottery(type, diamond) {
+    var data;
+    $("#lotteryResult img").remove();
+    switch (type) {
+        case 1: // 單抽
+            lotteryRarity(1);
+            lotteryGain.useDiamond += diamond;
+            break;
+        case 2: // 十連抽，最後一抽四星機率加倍
+            for (var i = 0; i < 9; i++) {
+                lotteryRarity(1);
+            }
+            lotteryRarity(2);
+            lotteryGain.useDiamond += diamond;
+            break;
+        case 7: // 有償十連保底，最後一抽必定四星
+            for (var i = 0; i < 9; i++) {
+                lotteryRarity(1);
+            }
+            lotteryRarity(5);
+            lotteryGain.useDiamond += diamond;
+            break;
+        case 3: // 抽獎券
+            lotteryRarity(1);
+            lotteryGain.useTicket++;
+            break;
+        case 4: // 三星券
+            lotteryRarity(3);
+            lotteryGain.useTicket3++;
+            break;
+        case 5: // 必三星券
+            lotteryRarity(4);
+            lotteryGain.useTicket3s++;
+            break;
+        case 6: // 四星券
+            lotteryRarity(5);
+            lotteryGain.useTicket4++;
+            break;
+        default:
+            break;
+    }
+    lotteryUpdate();
+
+
+}
+
+function initLotteryData(rateType) {
+    var newLottery = [];
+    var rateRarity4 = 0;
+    for (var i = 0; i < lotteryData.length; i++) {
+        var data = lotteryData[i];
+        if (rateType == 1) { // 正常
+            newLottery.push(data);
+
+        } else if (rateType == 2) { // 四星加倍，二星機率扣掉四星機率
+            var newData = $.extend({}, data);
+
+            if (data.rarity == 4) {
+                rateRarity4 += newData.rarity;
+                newData.rate *= 2;
+            } else if (data.rarity == 2) {
+                newData.rate -= rateRarity4;
+            }
+            newLottery.push(newData);
+
+        } else if (rateType == 3) {
+            if (data.rarity >= 3) {
+                newLottery.push(data);
+            }
+        } else if (rateType == 4) {
+            if (data.rarity == 3) {
+                newLottery.push(data);
+            }
+        } else if (rateType == 5) {
+            if (data.rarity == 4) {
+                newLottery.push(data);
+            }
+        }
+    }
+    return newLottery;
+}
+
+function lotteryRarity(rateType) {
+    var data = initLotteryData(rateType);
+
+    var sumPercentage = 0;
+    data.forEach(function(obj) {
+        sumPercentage += obj.rate;
+    });
+    var num = Math.floor((Math.random() * sumPercentage) + 1); // 產生亂數
+    console.log(num);
+
+    for (var i = 0; i < data.length; i++) {
+        if (num < data[i].rate) {
+            var unit_id = lotteryUnit(data[i].unit_id);
+            var unitData = db.unit[unit_id];
+            lotteryGain.count++;
+            lotteryGain["gainR" + unitData.rarity]++;
+            // 不是限定角，計算眼淚
+            if (data[i].festival == false) {
+                lotteryGain.tears += [6, 15, 100][unitData.rarity - 2];
+            }
+            if (unitData.rarity >= 4) {
+                lotteryGainUnit[unit_id] = (lotteryGainUnit[unit_id] || 0) + 1;
+            }
+
+            var divIndex = ($("#lotteryResult img").length >= 5) ? 1 : 0;
+            $("#lotteryResult > div").eq(divIndex).append(imgHtml("Mini/un{0}_mini_tex.png", unit_id, true));
+            $("#lotteryHistory").append(imgHtml("Mini/un{0}_mini_tex.png", unit_id, true));
+            break;
+        } else {
+            num -= data[i].rate;
+        }
+    }
+}
+
+// 從陣列中隨機取出一個項目
+function lotteryUnit(array) {
+    var index = Math.floor((Math.random() * array.length));
+    return array[index];
+}
+
+function lotteryUpdate() {
+    var array = [
+        lotteryGain.useDiamond,
+        lotteryGain.useTicket,
+        lotteryGain.useTicket3,
+        lotteryGain.useTicket3s,
+        lotteryGain.useTicket4,
+        lotteryGain.count,
+        lotteryGainFormat(lotteryGain.gainR4, lotteryGain.count),
+        lotteryGainFormat(lotteryGain.gainR3, lotteryGain.count),
+        lotteryGainFormat(lotteryGain.gainR2, lotteryGain.count),
+        lotteryGain.tears
+    ];
+
+    $("#lotteryResultTable > tbody").html(tableRow(array));
+
+    var html = '';
+    for (var id in lotteryGainUnit) {
+        html += tableRow([
+            anchor(getUnitName(db.unit[id]), "showUnit(" + db.unit[id].id + ")"),
+            lotteryGainUnit[id]
+        ]);
+    }
+    $("#lotteryR4Table > tbody").html(html);
+}
+
+function lotteryGainFormat(value, count) {
+    if (count == 0) return '---';
+    else return String.Format('{0} ({1}%)', value, (value * 100 / count).toFixed(1));
+}
+
+function initLottery() {
+    lotteryGain = {
+        useDiamond: 0,
+        useTicket: 0,
+        useTicket3: 0,
+        useTicket3s: 0,
+        useTicket4: 0,
+        count: 0,
+        gainR4: 0,
+        gainR3: 0,
+        gainR2: 0,
+        tears: 0
+    };
+    lotteryGainUnit = {};
+    $("#lotteryResult img").remove();
+    lotteryUpdate();
+}
+
+var lotteryGainUnit = {};
+var lotteryGain = {};
 
 // 擴充方法
 String.Format = function(format) {
