@@ -3231,6 +3231,7 @@ function initLottery() {
     };
     lotteryGainUnit = {};
     $("#lotteryResult img").remove();
+	$("#lotteryHistory").empty();
     lotteryUpdate();
 }
 
