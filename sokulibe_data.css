@@ -515,8 +515,12 @@ a > i, button > i {
 	padding-left: 0;
 }
 
+#lotteryResult {
+	padding: 15px;
+}
+
 #lotteryHistory {
-	max-height: 500px;
+	max-height: 380px;
 	overflow-y: auto;
 }
 

@@ -3105,8 +3105,6 @@ function lottery(type, diamond) {
             break;
     }
     lotteryUpdate();
-
-
 }
 
 function initLotteryData(rateType) {
@@ -3209,6 +3207,8 @@ function lotteryUpdate() {
         ]);
     }
     $("#lotteryR4Table > tbody").html(html);
+	var divHistory = document.getElementById("lotteryHistory");
+	divHistory.scrollTop = divHistory.scrollHeight;
 }
 
 function lotteryGainFormat(value, count) {
