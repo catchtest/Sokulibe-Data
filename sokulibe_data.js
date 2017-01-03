@@ -23,39 +23,8 @@ var defaultDataTablesOption = {
         orderable: false
     }]
 };
-var lotteryData = [{
-        rarity: 4,
-        rate: 76,
-        unit_id: [82],
-        festival: true
-    },
-    {
-        rarity: 4,
-        rate: 24,
-        unit_id: [74, 120, 104, 114],
-        festival: true
-    },
-    {
-        rarity: 4,
-        rate: 500,
-        unit_id: [76, 92, 98],
-        festival: false
-    },
-    {
-        rarity: 3,
-        rate: 3000,
-        unit_id: [29, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70],
-        festival: false
-    },
-    {
-        rarity: 2,
-        rate: 6400,
-        unit_id: [21, 22, 23, 24, 25, 26, 27, 28, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40],
-        festival: false
-    }
-];
-
-
+var lotteryDefine;
+var lotteryData;
 
 (function($) {
     // 顯示讀取資料錯誤訊息
@@ -72,7 +41,7 @@ var lotteryData = [{
     // 讀取Json
     var loadCount = 0;
     var loadSuccess = function() {
-        if (++loadCount >= 3) {
+        if (++loadCount >= 4) {
             $(".loader").hide();
         }
     };
@@ -89,6 +58,12 @@ var lotteryData = [{
 
     $.getJSON('enums.zh-TW.json', function(data) {
         enums = data;
+        loadSuccess();
+    });
+	
+    $.getJSON('lottery.json', function(data) {
+        lotteryDefine = data;
+		lotteryData = data['1'].data;
         loadSuccess();
     });
 
@@ -2122,9 +2097,12 @@ function loadWeaponData(id) {
         $("#weapon" + e).html(base);
         $("#weapon" + e + "_grow").html(grow);
         $("#weapon" + e + "_awakening").html(awakening);
-        var maxValue = calculateWeaponProperty(base, grow, awakening, 10, 4);
-        $("#weaponMax" + e).html(maxValue);
     });
+	var maxValue = calculateWeapon(id, 10, 4);
+	$("#weaponMaxHP").html(maxValue.hp);
+	$("#weaponMaxATK").html(maxValue.atk);
+	$("#weaponMaxAGI").html(maxValue.agi);
+	
     $("#weaponLevelSelect").change();
 
     // 武器主技能
@@ -2961,53 +2939,52 @@ function getAccessoryIdByUpgradeID(id) {
 // 計算武器能力值
 function calculateWeapon(id, level, awaken) {
     var data = db.weapon[id];
+	var calc = function(base, grow, awakening_rate, level, awaken) {
+		var value = base + grow * (level - 1);
+		while (awaken > 0) {
+			value = Math.ceil(value * awakening_rate / 100);
+			awaken--;
+		}
+		return value;
+	}
+	
     return {
-        hp: calculateWeaponProperty(data.hp, data.hp_grow, data.hp_awakening_rate, level, awaken),
-        atk: calculateWeaponProperty(data.atk, data.atk_grow, data.atk_awakening_rate, level, awaken),
-        agi: calculateWeaponProperty(data.agi, data.agi_grow, data.agi_awakening_rate, level, awaken)
+        hp: calc(data.hp, data.hp_grow, data.hp_awakening_rate, level, awaken),
+        atk: calc(data.atk, data.atk_grow, data.atk_awakening_rate, level, awaken),
+        agi: calc(data.agi, data.agi_grow, data.agi_awakening_rate, level, awaken)
     }
-}
-
-function calculateWeaponProperty(base, grow, awakening_rate, level, awaken) {
-    var value = base + grow * (level - 1);
-    while (awaken > 0) {
-        value = Math.ceil(value * awakening_rate / 100);
-        awaken--;
-    }
-    return value;
 }
 
 // 計算角色能力值
 function calculateUnit(id, level) {
     var data = db.unit[id];
+	var calc = function(base, grow, level) {
+		var value = base;
+		for (var i = 1; i < level; i++) {
+			var growValue;
+			if (i < 30) {
+				growValue = Math.floor(grow * 1);
+			} else if (i < 50) {
+				growValue = Math.floor(grow * 1.02);
+			} else if (i < 80) {
+				growValue = Math.floor(grow * 1.04);
+			} else if (i < 100) {
+				growValue = Math.floor(grow * 1.06);
+			} else if (i < 150) {
+				growValue = Math.floor(grow * 1.08);
+			} else {
+				growValue = Math.floor(grow * 1.1);
+			}
+			value += growValue;
+		}
+		return value;
+	}
     return {
-        hp: calculateUnitProperty(data.hp, data.hp_grow, level),
-        atk: calculateUnitProperty(data.atk, data.atk_grow, level),
+        hp: calc(data.hp, data.hp_grow, level),
+        atk: calc(data.atk, data.atk_grow, level),
         agi: data.agi,
-        knockback: calculateUnitProperty(data.knock_back_regist, data.knock_back_grow, level)
+        knockback: calc(data.knock_back_regist, data.knock_back_grow, level)
     };
-}
-
-function calculateUnitProperty(base, grow, level) {
-    var value = base;
-    for (var i = 1; i < level; i++) {
-        var growValue;
-        if (i < 30) {
-            growValue = Math.floor(grow * 1);
-        } else if (i < 50) {
-            growValue = Math.floor(grow * 1.02);
-        } else if (i < 80) {
-            growValue = Math.floor(grow * 1.04);
-        } else if (i < 100) {
-            growValue = Math.floor(grow * 1.06);
-        } else if (i < 150) {
-            growValue = Math.floor(grow * 1.08);
-        } else {
-            growValue = Math.floor(grow * 1.1);
-        }
-        value += growValue;
-    }
-    return value;
 }
 
 function tableRow(array) {
