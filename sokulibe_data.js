@@ -5,7 +5,7 @@ var enums;
 var skipDirty = true;
 var dirtyPrefix = '× ';
 var disableTranslate = false;
-var disableImage = false;
+var disableImage = true;
 var alwaysShowImage = false;
 var defaultDataTablesOption = {
     "autoWidth": false,
@@ -22,6 +22,16 @@ var defaultDataTablesOption = {
         targets: 'no-sort',
         orderable: false
     }]
+};
+var path = {
+	"icon": "Icon/pe{0}_tex.png",
+	"item": "Item/ci{0}_tex.png",
+	"rune": "Rune/ru{0}_tex.png",
+	"unit_mini": "Mini/un{0}_mini_tex.png",
+	"unit_up": "Portrait/un{0}_up.png",
+	"unit_full": "Full/un{0}_full.png",
+	"accessory": "Accessory/eq{0}_tex.png",
+	"weapon": "Weapon/wi{0}_tex.png"
 };
 var lotteryDefine;
 var lotteryData;
@@ -487,7 +497,7 @@ function initIcons() {
     for (var id in db.icons) {
         var data = db.icons[id];
 
-        var img = imgHtml("Icon/pe{0}_tex.png", id);
+        var img = imgHtml(path.icon, id);
         var name = data.name;
         var comment = data.comment;
 
@@ -509,14 +519,14 @@ function initItems() {
     for (var id in db.items) {
         var data = db.items[id];
 
-        var img = imgHtml("Item/ci{0}_tex.png", id);
+        var img = imgHtml(path.item, id);
         var name = data.name;
         var comment = data.comment.replaceAll('\n', '');
 
         html += tableRow([img, name, comment]);
     }
     for (var id = 21; id <= 27; id++) {
-        var img = imgHtml("Item/ci{0}_tex.png", id);
+        var img = imgHtml(path.item, id);
         html += tableRow([img, extendItemName(id), '']);
     }
     renderTable("itemsTable", html);
@@ -528,7 +538,7 @@ function initRune() {
     for (var id in db.rune) {
         var data = db.rune[id];
 
-        var img = imgHtml("Rune/ru{0}_tex.png", id);
+        var img = imgHtml(path.rune, id);
         var name = data.name;
         var comment = data.tips.replaceAll('\n', '');
 
@@ -627,7 +637,7 @@ function initUnitList() {
         });
 
         var list = [
-            imgHtml("Mini/un{0}_mini_tex.png", data.id),
+            imgHtml(path.unit_mini, data.id),
             anchor(getUnitName(data), "showUnit(" + data.id + ")"),
             getUnitPartner(data, false),
             anchor(data.cv, "quickSearch('" + data.cv + "')"),
@@ -707,7 +717,7 @@ function renderAccessory(data) {
         name += '<br />' + getAccessoryLastName(data.id);
     }
     var list = [
-        imgHtml("Accessory/eq{0}_tex.png", getAccessoryFirstId(data.id)),
+        imgHtml(path.accessory, getAccessoryFirstId(data.id)),
         enums.accessory_category[data.category],
         anchor(name, "showAccessory(" + data.id + ")"),
         enums.rarity[data.rarity],
@@ -716,10 +726,7 @@ function renderAccessory(data) {
 
     for (var i = 1; i <= 4; i++) {
         var magicID = data["magic" + i];
-        var content = '';
-        if (magicID > 0) {
-            content = db.enchant_master[magicID].enchant_comment.i18n().replaceAll('\n', '<br />');
-        }
+        var content = displayEffect(magicID);
         list.push(content);
     }
     return list;
@@ -758,7 +765,7 @@ function renderWeapon(data) {
     var weaponPower = calculateWeapon(data.id, 10, 4);
 
     var list = [
-        imgHtml("Weapon/wi{0}_tex.png", data.id),
+        imgHtml(path.weapon, data.id),
         anchor(data.name, "showWeapon(" + data.id + ")"),
         enums.rarity[data.rarity],
         enums.equip_job[data.job],
@@ -871,7 +878,7 @@ function initTearsCompute() {
             $("#setR" + data.rarity + "LvTmpl").html();
 
         var list = [
-            imgHtml("Mini/un{0}_mini_tex.png", data.id),
+            imgHtml(path.unit_mini, data.id),
             anchor(getUnitName(data), "showUnit(" + data.id + ")"),
             data.rarity,
             elementHtml(data.use_element),
@@ -1281,6 +1288,17 @@ function loadUnitData(id) {
         if (abilityID != 0) {
             var abilityData = db.ability[abilityID];
             abilityHtml = abilityData.name.replaceAll('\n', '') + '<br />' + abilityData.comment.pre();
+			
+			var converts = [];
+			for (var a = 1; a <= 4; a++) {
+				var magicID = abilityData['ability' + a];
+				if (magicID > 0) {
+					converts.push(displayEffect(magicID));
+				}
+			}
+			if (converts.length) {
+				abilityHtml += '<div class="text-warning">' + converts.join('<br />') + '</div>';
+			}
         }
         $("#ability0" + i).html(abilityHtml);
     }
@@ -1429,9 +1447,9 @@ function loadUnitData(id) {
     }
 
     // 圖片
-    $("#unitProtraitImage").html(imgHtml("Portrait/un{0}_up.png", data.id, true));
-    $("#unitFullImageTab").html(imgHtml("Full/un{0}_full.png", data.id, true));
-    //$("#unitMiniImage").html(imgHtml("Mini/un{0}_mini_tex.png", data.id, true));
+    $("#unitProtraitImage").html(imgHtml(path.unit_up, data.id, true));
+    $("#unitFullImageTab").html(imgHtml(path.unit_full, data.id, true));
+    //$("#unitMiniImage").html(imgHtml(path.unit_mini, data.id, true));
 
     // 裝備一覽
     var allowJob = enums.job_equip_map[data.job_id];
@@ -1961,10 +1979,7 @@ function loadAccessoryData(id) {
     // 效果
     for (var i = 1; i <= 4; i++) {
         var magicID = data["magic" + i];
-        var content = '&nbsp;';
-        if (magicID > 0) {
-            content = db.enchant_master[magicID].enchant_comment.i18n().replaceAll('\n', '<br />');
-        }
+        var content = displayEffect(magicID);
         $("#magic" + i).html(content);
     }
 
@@ -1978,10 +1993,34 @@ function loadAccessoryData(id) {
         $("#rank" + rank).html(u.name + u.flavor.pre());
         $("#rune" + rank).html(getUpgradeRune(u));
 
-        imgList.push(imgHtml("Accessory/eq{0}_tex.png", u.id, true));
+        imgList.push(imgHtml(path.accessory, u.id, true));
     }
     $("#runeTotal").html(displayTotalRune(upgradeTotalRunes));
     $("#accessoryImage").html('<div>' + imgList.join('</div><div>') + '</div>'); // 修正chrome無法直接用image作flex
+}
+
+function displayEffect(id) {
+	if (id <= 0) return '&nbsp;';
+	
+	var enchant = db.enchant_master[id];
+	var content = enchant.enchant_comment.i18n().replaceAll('\n', '<br />');
+	if (content.endsWith('秒')) {
+		// 已經寫上時間的不處理
+	}
+	else if (enchant.enchant_id === 41) {   // BUFF類
+		if ((enchant.requirement_id === 1 || enchant.requirement_id === 2) && enchant.requirement_value1 === 1) {
+			// HP限制類，條件達到就會常時發動因此不計
+		} else if (enchant.enchant_target_id === 4) {
+			// 裝甲士特殊技發動，只加到護罩持續時間的一秒
+		} else {
+			var time = enchant.enchant_value2 / 30;
+			if (time % 1 !== 0) {
+				time = time.toFixed(1);   // 小數時間只顯示後一位
+			}
+			content += time + '秒';
+		}
+	}
+	return content;
 }
 
 function displayTotalRune(obj) {
@@ -2086,7 +2125,7 @@ function loadWeaponData(id) {
     var data = db.weapon[id];
     setTitle(data.name, enums.rarity[data.rarity]);
 
-    $("#weaponImgBlock").html(imgHtml("Weapon/wi{0}_tex.png", data.id, true));
+    $("#weaponImgBlock").html(imgHtml(path.weapon, data.id, true));
 
     ['HP', 'ATK', 'AGI'].forEach(function(e) {
         var e1 = e.toLowerCase();
@@ -2853,10 +2892,10 @@ function getAsset(type, id, value) {
             }
             break;
         case 3: // 材料
-            name = imgXs("Rune/ru{0}_tex.png", id) + '<span class="type-rune"></span>' + db.rune[id].name;
+            name = imgXs(path.rune, id) + '<span class="type-rune"></span>' + db.rune[id].name;
             break;
         case 4: // 裝備
-            name = imgXs("Accessory/eq{0}_tex.png", id) + '<span class="type-accessory"></span>' +
+            name = imgXs(path.accessory, id) + '<span class="type-accessory"></span>' +
                 anchor(getAccessoryNameByUpgradeID(id), "showAccessory(" + getAccessoryIdByUpgradeID(id) + ")");
             break;
         case 5:
@@ -2866,15 +2905,15 @@ function getAsset(type, id, value) {
             if (id == 1) name = imgXs('Item/tear.png') + '妖精之淚'
             break;
         case 7: // 角色
-            name = imgXs("Mini/un{0}_mini_tex.png", id) + '<span class="type-unit"></span>' +
+            name = imgXs(path.unit_mini, id) + '<span class="type-unit"></span>' +
                 anchor(db.unit[id].name, "showUnit(" + id + ")") +
                 getUnitJobComment(db.unit[id]);
             break;
         case 10: // 徽章
-            name = imgXs("Icon/pe{0}_tex.png", id) + '<span class="type-icons"></span>' + db.icons[id].name;
+            name = imgXs(path.icon, id) + '<span class="type-icons"></span>' + db.icons[id].name;
             break;
         case 12: // 武器
-            name = imgXs("Weapon/wi{0}_tex.png", id) + '<span class="type-weapon"></span>' +
+            name = imgXs(path.weapon, id) + '<span class="type-weapon"></span>' +
                 anchor(db.weapon[id].name, "showWeapon(" + id + ")");
             break;
     }
@@ -3145,8 +3184,8 @@ function lotteryRarity(rateType) {
             }
 
             var divIndex = ($("#lotteryResult img").length >= 5) ? 1 : 0;
-            $("#lotteryResult > div").eq(divIndex).append('<div>' + imgHtml("Mini/un{0}_mini_tex.png", unit_id, true) + '</div>');
-            $("#lotteryHistory").append(imgHtml("Mini/un{0}_mini_tex.png", unit_id, true));
+            $("#lotteryResult > div").eq(divIndex).append('<div>' + imgHtml(path.unit_mini, unit_id, true) + '</div>');
+            $("#lotteryHistory").append(imgHtml(path.unit_mini, unit_id, true));
             break;
         } else {
             num -= data[i].rate;
