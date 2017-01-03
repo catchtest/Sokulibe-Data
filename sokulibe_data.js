@@ -1293,7 +1293,7 @@ function loadUnitData(id) {
 			for (var a = 1; a <= 4; a++) {
 				var magicID = abilityData['ability' + a];
 				if (magicID > 0) {
-					converts.push(displayEffect(magicID));
+					converts.push(displayEffect(magicID).replaceAll('<br />', ''));
 				}
 			}
 			if (converts.length) {
