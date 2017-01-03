@@ -5,7 +5,7 @@ var enums;
 var skipDirty = true;
 var dirtyPrefix = '× ';
 var disableTranslate = false;
-var disableImage = true;
+var disableImage = false;
 var alwaysShowImage = false;
 var defaultDataTablesOption = {
     "autoWidth": false,
