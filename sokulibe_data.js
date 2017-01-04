@@ -33,8 +33,6 @@ var path = {
 	"accessory": "Accessory/eq{0}_tex.png",
 	"weapon": "Weapon/wi{0}_tex.png"
 };
-var lotteryDefine;
-var lotteryData;
 
 (function($) {
     // 顯示讀取資料錯誤訊息
@@ -72,8 +70,8 @@ var lotteryData;
     });
 	
     $.getJSON('lottery.json', function(data) {
-        lotteryDefine = data;
-		lotteryData = data['1'].data;
+		window.lottery = new LotteryModel();
+		window.lottery.setDefine(data);
         loadSuccess();
     });
 
@@ -96,7 +94,6 @@ var lotteryData;
     $("a[href='#craftBoardTab']").one("click", initCraftBoard);
     $("a[href='#tearsComputeTab']").one("click", initTearsCompute);
     $("a[href='#loginBonusTab']").one("click", initLoginBonus);
-    $("a[href='#lotteryTab']").one("click", initLottery);
 	$("a[href='#enchantTab']").one("click", initEnchant);
 
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
@@ -3154,181 +3151,197 @@ function openImage(sender) {
     });
 }
 
-// 計算轉蛋結果
-function lottery(type, diamond) {
-    var data;
-    $("#lotteryResult img").remove();
-    switch (type) {
-        case 1: // 單抽
-            lotteryRarity(1);
-            lotteryGain.useDiamond += diamond;
-            break;
-        case 2: // 十連抽，最後一抽四星機率加倍
-            for (var i = 0; i < 9; i++) {
-                lotteryRarity(1);
-            }
-            lotteryRarity(2);
-            lotteryGain.useDiamond += diamond;
-            break;
-        case 7: // 有償十連保底，最後一抽必定四星
-            for (var i = 0; i < 9; i++) {
-                lotteryRarity(1);
-            }
-            lotteryRarity(5);
-            lotteryGain.useDiamond += diamond;
-            break;
-        case 3: // 抽獎券
-            lotteryRarity(1);
-            lotteryGain.useTicket++;
-            break;
-        case 4: // 三星券
-            lotteryRarity(3);
-            lotteryGain.useTicket3++;
-            break;
-        case 5: // 必三星券
-            lotteryRarity(4);
-            lotteryGain.useTicket3s++;
-            break;
-        case 6: // 四星券
-            lotteryRarity(5);
-            lotteryGain.useTicket4++;
-            break;
-        default:
-            break;
-    }
-    lotteryUpdate();
+var lottery;
+
+function LotteryModel() {
+	var recordUnit = {};
+	var record = {};
+	var define = null;
+	var lotteryData = null;
+	
+	this.initial = function() {
+		record = {
+			useDiamond: 0,
+			useTicket: 0,
+			useTicket3: 0,
+			useTicket3s: 0,
+			useTicket4: 0,
+			count: 0,
+			gainR4: 0,
+			gainR3: 0,
+			gainR2: 0,
+			tears: 0
+		};
+		recordUnit = {};
+		$("#lotteryResult > div").empty();
+		$("#lotteryHistory").empty();
+		update();
+	}
+	
+	this.setDefine = function(data) {
+		define = data;
+		lotteryData = data['1'].data;
+		this.initial();
+	}
+	
+	var rateFormat = function (value, count) {
+		if (count == 0) return '---';
+		else return String.Format('{0} ({1}%)', value, (value * 100 / count).toFixed(1));
+	}
+	
+	var update = function() {
+		var array = [
+			record.useDiamond,
+			record.useTicket,
+			record.useTicket3,
+			record.useTicket3s,
+			record.useTicket4,
+			record.count,
+			rateFormat(record.gainR4, record.count),
+			rateFormat(record.gainR3, record.count),
+			rateFormat(record.gainR2, record.count),
+			record.tears
+		];
+
+		$("#lotteryResultTable > tbody").html(tableRow(array));
+
+		var html = '';
+		for (var id in recordUnit) {
+			html += tableRow([
+				anchor(getUnitName(db.unit[id]), "showUnit(" + db.unit[id].id + ")"),
+				recordUnit[id]
+			]);
+		}
+		$("#lotteryR4Table > tbody").html(html);
+		var divHistory = document.getElementById("lotteryHistory");
+		divHistory.scrollTop = divHistory.scrollHeight;
+	}
+	
+	// 計算轉蛋結果
+	this.lottery = function(type, diamond) {
+		var data;
+		$("#lotteryResult > div").empty();
+		switch (type) {
+			case 1: // 單抽
+				lotteryRarity(1);
+				record.useDiamond += diamond;
+				break;
+			case 2: // 十連抽，最後一抽四星機率加倍
+				for (var i = 0; i < 9; i++) {
+					lotteryRarity(1);
+				}
+				lotteryRarity(2);
+				record.useDiamond += diamond;
+				break;
+			case 7: // 有償十連保底，最後一抽必定四星
+				for (var i = 0; i < 9; i++) {
+					lotteryRarity(1);
+				}
+				lotteryRarity(5);
+				record.useDiamond += diamond;
+				break;
+			case 3: // 抽獎券
+				lotteryRarity(1);
+				record.useTicket++;
+				break;
+			case 4: // 三星券
+				lotteryRarity(3);
+				record.useTicket3++;
+				break;
+			case 5: // 必三星券
+				lotteryRarity(4);
+				record.useTicket3s++;
+				break;
+			case 6: // 四星券
+				lotteryRarity(5);
+				record.useTicket4++;
+				break;
+			default:
+				break;
+		}
+		update();
+	}
+
+	var initialData = function(rateType) {
+		var newLottery = [];
+		var rateRarity4 = 0;
+		for (var i = 0; i < lotteryData.length; i++) {
+			var data = lotteryData[i];
+			if (rateType == 1) { // 正常
+				newLottery.push(data);
+
+			} else if (rateType == 2) { // 四星加倍，二星機率扣掉四星機率
+				var newData = $.extend({}, data);
+
+				if (data.rarity == 4) {
+					rateRarity4 += newData.rarity;
+					newData.rate *= 2;
+				} else if (data.rarity == 2) {
+					newData.rate -= rateRarity4;
+				}
+				newLottery.push(newData);
+
+			} else if (rateType == 3) {
+				if (data.rarity >= 3) {
+					newLottery.push(data);
+				}
+			} else if (rateType == 4) {
+				if (data.rarity == 3) {
+					newLottery.push(data);
+				}
+			} else if (rateType == 5) {
+				if (data.rarity == 4) {
+					newLottery.push(data);
+				}
+			}
+		}
+		return newLottery;
+	}
+
+	var lotteryRarity = function(rateType) {
+		var data = initialData(rateType);
+
+		var sumRate = 0;
+		data.forEach(function(obj) {
+			sumRate += obj.rate;
+		});
+		var num = randInt(0, sumRate); // 產生亂數
+		console.log(num);
+
+		for (var i = 0; i < data.length; i++) {
+			if (num < data[i].rate) {
+				var unit_id = draw(data[i].unit_id);
+				var unitData = db.unit[unit_id];
+				record.count++;
+				record["gainR" + unitData.rarity]++;
+				// 不是限定角，計算眼淚
+				if (data[i].festival == false) {
+					record.tears += [6, 15, 100][unitData.rarity - 2];
+				}
+				if (unitData.rarity >= 4) {
+					recordUnit[unit_id] = (recordUnit[unit_id] || 0) + 1;
+				}
+
+				var divIndex = parseInt($("#lotteryResult img").length / 5);   // 每五個換一行
+				$("#lotteryResult > div").eq(divIndex).append('<div>' + imgHtml(path.unit_mini, unit_id, true) + '</div>');
+				$("#lotteryHistory").append(imgHtml(path.unit_mini, unit_id, true));
+				break;
+			} else {
+				num -= data[i].rate;
+			}
+		}
+	}
+
+	// 從陣列中隨機取出一個項目
+	var draw = function(array) {
+		var index = randInt(0, array.length);
+		return array[index];
+	}
+	
+	var randInt = function(min, max) {
+		return Math.floor(Math.random() * (max - min)) + min;
+	}
 }
-
-function initLotteryData(rateType) {
-    var newLottery = [];
-    var rateRarity4 = 0;
-    for (var i = 0; i < lotteryData.length; i++) {
-        var data = lotteryData[i];
-        if (rateType == 1) { // 正常
-            newLottery.push(data);
-
-        } else if (rateType == 2) { // 四星加倍，二星機率扣掉四星機率
-            var newData = $.extend({}, data);
-
-            if (data.rarity == 4) {
-                rateRarity4 += newData.rarity;
-                newData.rate *= 2;
-            } else if (data.rarity == 2) {
-                newData.rate -= rateRarity4;
-            }
-            newLottery.push(newData);
-
-        } else if (rateType == 3) {
-            if (data.rarity >= 3) {
-                newLottery.push(data);
-            }
-        } else if (rateType == 4) {
-            if (data.rarity == 3) {
-                newLottery.push(data);
-            }
-        } else if (rateType == 5) {
-            if (data.rarity == 4) {
-                newLottery.push(data);
-            }
-        }
-    }
-    return newLottery;
-}
-
-function lotteryRarity(rateType) {
-    var data = initLotteryData(rateType);
-
-    var sumPercentage = 0;
-    data.forEach(function(obj) {
-        sumPercentage += obj.rate;
-    });
-    var num = Math.floor((Math.random() * sumPercentage) + 1); // 產生亂數
-    console.log(num);
-
-    for (var i = 0; i < data.length; i++) {
-        if (num < data[i].rate) {
-            var unit_id = lotteryUnit(data[i].unit_id);
-            var unitData = db.unit[unit_id];
-            lotteryGain.count++;
-            lotteryGain["gainR" + unitData.rarity]++;
-            // 不是限定角，計算眼淚
-            if (data[i].festival == false) {
-                lotteryGain.tears += [6, 15, 100][unitData.rarity - 2];
-            }
-            if (unitData.rarity >= 4) {
-                lotteryGainUnit[unit_id] = (lotteryGainUnit[unit_id] || 0) + 1;
-            }
-
-            var divIndex = ($("#lotteryResult img").length >= 5) ? 1 : 0;
-            $("#lotteryResult > div").eq(divIndex).append('<div>' + imgHtml(path.unit_mini, unit_id, true) + '</div>');
-            $("#lotteryHistory").append(imgHtml(path.unit_mini, unit_id, true));
-            break;
-        } else {
-            num -= data[i].rate;
-        }
-    }
-}
-
-// 從陣列中隨機取出一個項目
-function lotteryUnit(array) {
-    var index = Math.floor((Math.random() * array.length));
-    return array[index];
-}
-
-function lotteryUpdate() {
-    var array = [
-        lotteryGain.useDiamond,
-        lotteryGain.useTicket,
-        lotteryGain.useTicket3,
-        lotteryGain.useTicket3s,
-        lotteryGain.useTicket4,
-        lotteryGain.count,
-        lotteryGainFormat(lotteryGain.gainR4, lotteryGain.count),
-        lotteryGainFormat(lotteryGain.gainR3, lotteryGain.count),
-        lotteryGainFormat(lotteryGain.gainR2, lotteryGain.count),
-        lotteryGain.tears
-    ];
-
-    $("#lotteryResultTable > tbody").html(tableRow(array));
-
-    var html = '';
-    for (var id in lotteryGainUnit) {
-        html += tableRow([
-            anchor(getUnitName(db.unit[id]), "showUnit(" + db.unit[id].id + ")"),
-            lotteryGainUnit[id]
-        ]);
-    }
-    $("#lotteryR4Table > tbody").html(html);
-	var divHistory = document.getElementById("lotteryHistory");
-	divHistory.scrollTop = divHistory.scrollHeight;
-}
-
-function lotteryGainFormat(value, count) {
-    if (count == 0) return '---';
-    else return String.Format('{0} ({1}%)', value, (value * 100 / count).toFixed(1));
-}
-
-function initLottery() {
-    lotteryGain = {
-        useDiamond: 0,
-        useTicket: 0,
-        useTicket3: 0,
-        useTicket3s: 0,
-        useTicket4: 0,
-        count: 0,
-        gainR4: 0,
-        gainR3: 0,
-        gainR2: 0,
-        tears: 0
-    };
-    lotteryGainUnit = {};
-    $("#lotteryResult img").remove();
-	$("#lotteryHistory").empty();
-    lotteryUpdate();
-}
-
-var lotteryGainUnit = {};
-var lotteryGain = {};
 
 // 擴充方法
 String.Format = function(format) {
