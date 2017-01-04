@@ -97,6 +97,7 @@ var lotteryData;
     $("a[href='#tearsComputeTab']").one("click", initTearsCompute);
     $("a[href='#loginBonusTab']").one("click", initLoginBonus);
     $("a[href='#lotteryTab']").one("click", initLottery);
+	$("a[href='#enchantTab']").one("click", initEnchant);
 
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
@@ -198,8 +199,14 @@ var lotteryData;
 
     $("#alwaysShowImage").click(function() {
         alwaysShowImage = true;
-        $(this).hide();
+        $(this).add('#disableImage').hide();
     });
+	
+    $("#disableImage").click(function() {
+        disableImage = true;
+        $(this).add('#alwaysShowImage').hide();
+    });
+	
 
     $("#theme").val(theme).change(function() {
         location.href = 'index.htm?theme=' + $(this).val();
@@ -1096,6 +1103,23 @@ function initLoginBonus() {
     $("#loginBonusTable > tbody").html(html);
 }
 
+// 初始化效果一覽
+function initEnchant() {
+    var html = '';
+    for (var id in db.enchant_master) {
+        var data = db.enchant_master[id];
+		var comment = data.enchant_comment;
+		comment += '<div class="text-warning">' + displayEffect(id)/*.replaceAll('<br />', '')*/ + '</div>';
+		
+        var list = [
+            comment
+        ];
+
+        html += tableRow(list);
+    }
+    renderTable("enchantTable", html);
+}
+
 // 判斷是否為尚未完成的裝備
 function isDirtyAccessory(id) {
     var item = db.accessory_upgrade[id];
@@ -1729,11 +1753,59 @@ function getSkillAtkItemList(data, ext) {
                 case 1:
                     text = atkUp("傷害", value);
                     break;
+                case 2:
+                    text = atkUp("增益效果", value);
+                    break;
+                case 3:
+                    text = atkUp("增益時間", value);
+                    break;
+                case 4:
+                    text = atkUp("減益效果", value);
+                    break;
+                case 5:
+                    text = atkUp("增益時間", value);
+                    break;
+                case 6:
+                    text = atkUp("重力值", value);
+                    break;
+                case 7:
+                    text = atkUp("仇恨值", value);
+                    break;
                 case 8:
                     text = atkUp("破盾值", value);
                     break;
+                case 9:
+                    text = atkUp("打擊停頓", value);
+                    break;
+                case 10:
+                    text = atkUp("PowerX", value);
+                    break;
+                case 11:
+                    text = atkUp("PowerY", value);
+                    break;
+                case 12:
+                    text = "擊飛";
+                    break;
+                case 13:
+                    text = "挖地";
+                    break;
+                case 14:
+                    text = "扣殺";
+                    break;
+                case 15:
+                    text = "大車輪２";
+                    break;
                 case 16:
                     text = "大車輪";
+                    break;
+                case 17:
+                    text = "定身";
+                    break;
+                case 18:
+                    text = atkUp("擊倒值", value);
+                    break;
+                case 19:
+                    text = atkUp("擊退值", value);
                     break;
                 default:
                     text = String.Format("type:{0} value:{1}", type, value);
@@ -3073,7 +3145,11 @@ function openImage(sender) {
         var $this = $(this);
         var path = $this.data("src");
         var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
-        $this.after(String.Format('<img src="{0}" alt="{1}" />', path, fileId));
+		if (disableImage) {
+			$this.after(fileId);
+		} else {
+			$this.after(String.Format('<img src="{0}" alt="{1}" />', path, fileId));
+		}
         $this.remove();
     });
 }
