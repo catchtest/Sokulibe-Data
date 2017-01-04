@@ -3156,8 +3156,12 @@ var lottery;
 function LotteryModel() {
 	var recordUnit = {};
 	var record = {};
-	var define = null;
-	var lotteryData = null;
+	var define;
+	var lotteryData;
+	
+	var $history = $("#lotteryHistory");
+	var $result = $("#lotteryResult > div");
+	var $recordTable = $("#lotteryResultTable > tbody");
 	
 	this.initial = function() {
 		record = {
@@ -3173,8 +3177,8 @@ function LotteryModel() {
 			tears: 0
 		};
 		recordUnit = {};
-		$("#lotteryResult > div").empty();
-		$("#lotteryHistory").empty();
+		$result.empty();
+		$history.empty();
 		update();
 	}
 	
@@ -3203,7 +3207,7 @@ function LotteryModel() {
 			record.tears
 		];
 
-		$("#lotteryResultTable > tbody").html(tableRow(array));
+		$recordTable.html(tableRow(array));
 
 		var html = '';
 		for (var id in recordUnit) {
@@ -3213,14 +3217,12 @@ function LotteryModel() {
 			]);
 		}
 		$("#lotteryR4Table > tbody").html(html);
-		var divHistory = document.getElementById("lotteryHistory");
-		divHistory.scrollTop = divHistory.scrollHeight;
+		$history[0].scrollTop = $history[0].scrollHeight;
 	}
 	
 	// 計算轉蛋結果
 	this.lottery = function(type, diamond) {
-		var data;
-		$("#lotteryResult > div").empty();
+		$result.empty();
 		switch (type) {
 			case 1: // 單抽
 				lotteryRarity(1);
@@ -3323,8 +3325,8 @@ function LotteryModel() {
 				}
 
 				var divIndex = parseInt($("#lotteryResult img").length / 5);   // 每五個換一行
-				$("#lotteryResult > div").eq(divIndex).append('<div>' + imgHtml(path.unit_mini, unit_id, true) + '</div>');
-				$("#lotteryHistory").append(imgHtml(path.unit_mini, unit_id, true));
+				$result.eq(divIndex).append('<div>' + imgHtml(path.unit_mini, unit_id, true) + '</div>');
+				$history.append(imgHtml(path.unit_mini, unit_id, true));
 				break;
 			} else {
 				num -= data[i].rate;
