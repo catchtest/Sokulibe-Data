@@ -1131,7 +1131,7 @@ function getEnchantFrom(enchantId) {
 			}
 		}
 	}
-	// 由被動尋找的角色
+	// 由被動尋找角色
 	if (abilities.length) {
 		var unitList = getUnitSortList();
 
@@ -1142,7 +1142,7 @@ function getEnchantFrom(enchantId) {
 				if (abilityId == 0) continue;
 				
 				if (abilities.indexOf(abilityId) >= 0) {
-					result.push(anchor(data.name, "showUnit(" + data.id + ")"));
+					result.push(getAsset(7, data.id, 1));
 					break;
 				}
 			}
@@ -1152,14 +1152,14 @@ function getEnchantFrom(enchantId) {
 	// 找尋擁有此效果的裝備
     for (var id in db.accessory) {
         var data = db.accessory[id];
-        if (isDirtyAccessory(id)) continue; // 強制跳過假資料
+        if (isDirtyAccessory(data.id)) continue; // 強制跳過假資料
 		
 		for (var j = 1; j <= 5; j++) {
 			var abilityId = data['magic' + j];
 			if (abilityId == 0) continue;
 			
 			if (abilityId == enchantId) {
-				result.push(anchor(getAccessoryName(data.id), "showAccessory(" + data.id + ")"));
+				result.push(getAsset(4, data.id, 1));
 				break;
 			}
 		}

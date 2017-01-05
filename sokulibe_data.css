@@ -528,3 +528,7 @@ a > i, button > i {
 	width: 50px;
 	margin: 2px;
 }
+
+#enchantTable .img-xs {
+	margin: 0 5px 1px 0;
+}
