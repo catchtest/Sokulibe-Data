@@ -1109,12 +1109,93 @@ function initEnchant() {
 		comment += '<div class="text-warning">' + displayEffect(id)/*.replaceAll('<br />', '')*/ + '</div>';
 		
         var list = [
-            comment
+            comment,
+			getEnchantFrom(id).join('<br />')
         ];
 
         html += tableRow(list);
     }
     renderTable("enchantTable", html);
+}
+
+function getEnchantFrom(enchantId) {
+	var result = [];
+	
+	// 找尋擁有此效果的被動
+	var abilities = [];
+	for (var id in db.ability) {
+		for (var i = 1; i <= 3; i++) {
+			if (db.ability[id]['ability' + i] == enchantId) {
+				abilities.push(db.ability[id].id);
+				break;
+			}
+		}
+	}
+	// 由被動尋找的角色
+	if (abilities.length) {
+		var unitList = getUnitSortList();
+
+		for (var i = 0; i < unitList.length; i++) {
+			var data = unitList[i];
+			for (var j = 1; j <= 4; j++) {
+				var abilityId = data['ability0' + j];
+				if (abilityId == 0) continue;
+				
+				if (abilities.indexOf(abilityId) >= 0) {
+					result.push(anchor(data.name, "showUnit(" + data.id + ")"));
+					break;
+				}
+			}
+		}
+	}
+	
+	// 找尋擁有此效果的裝備
+    for (var id in db.accessory) {
+        var data = db.accessory[id];
+        if (isDirtyAccessory(id)) continue; // 強制跳過假資料
+		
+		for (var j = 1; j <= 5; j++) {
+			var abilityId = data['magic' + j];
+			if (abilityId == 0) continue;
+			
+			if (abilityId == enchantId) {
+				result.push(anchor(getAccessoryName(data.id), "showAccessory(" + data.id + ")"));
+				break;
+			}
+		}
+    }
+	
+	// 找尋擁有此效果的武器
+	var subskills = [];
+    for (var id in db.weapon_subskill) {
+		for (var upgrade in db.weapon_subskill[id]) {
+			var data = db.weapon_subskill[id][upgrade];
+			
+			for (var j = 1; j <= 3; j++) {
+				var abilityId = data['ability' + j];
+				if (abilityId == 0) continue;
+				
+				if (abilityId == enchantId) {
+					subskills.push(data.id);
+					
+					break;
+				}
+			}
+		}
+    }
+	
+	if (subskills.length) {
+		for (var id in db.weapon) {
+			if (isDirtyWeapon(id)) continue; // 強制跳過假資料
+			
+			var data = db.weapon[id];
+			if (subskills.indexOf(data.sub_weapon_skill_id) >= 0) {
+				result.push(getAsset(12, data.id, 1));
+			}
+		}
+	}
+	
+	return result;
 }
 
 // 判斷是否為尚未完成的裝備
