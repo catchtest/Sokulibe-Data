@@ -1150,7 +1150,7 @@ function getEnchantFrom(enchantId) {
 	}
 	
 	// 找尋擁有此效果的裝備
-    /*for (var id in db.accessory) {
+    for (var id in db.accessory) {
         var data = db.accessory[id];
         if (isDirtyAccessory(data.id)) continue; // 強制跳過假資料
 		
@@ -1159,11 +1159,11 @@ function getEnchantFrom(enchantId) {
 			if (abilityId == 0) continue;
 			
 			if (abilityId == enchantId) {
-				result.push(getAsset(4, data.id, 1));
+				result.push(getAsset(4, getAccessoryFirstId(data.id), 1));
 				break;
 			}
 		}
-    }*/
+    }
 	
 	// 找尋擁有此效果的武器
 	var subskills = [];

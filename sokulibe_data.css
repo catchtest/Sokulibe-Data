@@ -532,3 +532,7 @@ a > i, button > i {
 #enchantTable .img-xs {
 	margin: 0 5px 1px 0;
 }
+
+#unitListTable > tbody > tr > td > img {
+	border-radius: 8px;
+}
