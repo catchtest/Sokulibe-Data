@@ -3059,6 +3059,9 @@ function getAsset(type, id, value) {
                 anchor(db.unit[id].name, "showUnit(" + id + ")") +
                 getUnitJobComment(db.unit[id]);
             break;
+		case 9:
+			name = db.event_item[id].name;
+			break;
         case 10: // 徽章
             name = imgXs(path.icon, id) + '<span class="type-icons"></span>' + db.icons[id].name;
             break;
