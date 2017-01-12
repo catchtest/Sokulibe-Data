@@ -1342,8 +1342,12 @@ function loadUnitData(id) {
     loadDataEvent(id);
     current_unit = id;
 
-    // 讀取故事
-    $("#storyBlock").html(db.unit_story[id]['1'].story);
+    // 讀取故事 (現在可能有多個index)
+	var story = '';
+	for (var index in db.unit_story[id]) {
+		story += db.unit_story[id][index].story;
+	}
+    $("#storyBlock").html(story);
 
     var data = db.unit[id];
     setTitle(getUnitName(data), getUnitJob(data));
@@ -2573,7 +2577,10 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
     $("#bg_location").html(db.bg_location[baseData.bg_id].name);
     $("#boss1_name").html(getMonsterName(baseData.boss01_id));
     $("#boss2_name").html(getMonsterName(baseData.boss02_id));
-
+	var timeLimit = baseData.time_limit || baseData.timelimit;
+	$("#time_limit").html(String.Format("{0}分", timeLimit / 60));
+	$("#speedclear").html(String.Format("{0}分", baseData.speedclear / 60));
+	
     // 三冠條件
     if (missionData != null) {
         var i = 1;
