@@ -222,9 +222,7 @@ var path = {
                 }
             };
         backToTop();
-        $(window).on('scroll', function() {
-            backToTop();
-        });
+        $(window).on('scroll', backToTop);
         $backToTop.on('click', function(e) {
             e.preventDefault();
             $('html,body').animate({
