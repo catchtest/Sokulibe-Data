@@ -533,6 +533,22 @@ a > i, button > i {
 	margin: 0 5px 1px 0;
 }
 
-#unitListTable > tbody > tr > td > img {
+#unitListTable img,
+#tearsComputeTable img,
+#lotteryHistory img {
 	border-radius: 8px;
+}
+
+#weaponListTable img,
+#accessoryListTable img {
+	border-radius: 4px;
+}
+
+#accessoryImage img,
+#weaponImgBlock img {
+	border-radius: 10px;
+}
+
+#lotteryResult img {
+	border-radius: 21px;
 }
