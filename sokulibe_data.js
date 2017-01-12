@@ -31,7 +31,8 @@ var path = {
 	"unit_up": "Portrait/un{0}_up.png",
 	"unit_full": "Full/un{0}_full.png",
 	"accessory": "Accessory/eq{0}_tex.png",
-	"weapon": "Weapon/wi{0}_tex.png"
+	"weapon": "Weapon/wi{0}_tex.png",
+	"event_item": "EventItem/ei{0}_tex.png"
 };
 
 (function($) {
@@ -3065,7 +3066,7 @@ function getAsset(type, id, value) {
                 getUnitJobComment(db.unit[id]);
             break;
 		case 9:
-			name = db.event_item[id].name;
+			name = imgXs(path.event_item, id) + db.event_item[id].name;
 			break;
         case 10: // 徽章
             name = imgXs(path.icon, id) + '<span class="type-icons"></span>' + db.icons[id].name;
