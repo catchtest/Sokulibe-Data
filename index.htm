@@ -56,6 +56,7 @@
                         <div class="well" style="box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset;">
                             <div class="well-legend">更新紀錄</div>
                             <ul>
+								<li>2017/01/13<br />增加點數一覽<br />轉蛋模擬器可以切換活動
 								<li>2017/01/12<br />關卡增加時限資料<br />補活動道具圖片
 								<li>2017/01/05<br />效果一覽加上來源
 								<li>2017/01/04<br />增加效果一覽
@@ -1580,6 +1581,7 @@
                     <li role="presentation"><a href="#achievement" aria-controls="achievement" role="tab" data-toggle="tab">任務</a></li>
                     <li role="presentation"><a href="#icons" aria-controls="icons" role="tab" data-toggle="tab">徽章</a></li>
                     <li role="presentation"><a href="#items" aria-controls="items" role="tab" data-toggle="tab">道具</a></li>
+					<li role="presentation"><a href="#eventItems" aria-controls="eventItems" role="tab" data-toggle="tab">點數</a></li>
                     <li role="presentation"><a href="#rune" aria-controls="rune" role="tab" data-toggle="tab">素材</a></li>
                     <li role="presentation"><a href="#expTab" aria-controls="expTab" role="tab" data-toggle="tab">經驗</a></li>
                     <li role="presentation"><a href="#tearsTab" aria-controls="tearsTab" role="tab" data-toggle="tab">交換所</a></li>
@@ -1891,6 +1893,10 @@
                             </tbody>
                         </table>
                     </div>
+                    <div role="tabpanel" class="tab-pane" id="eventItems">
+						<div class="row">
+						</div>
+                    </div>
                 </div>
             </div>
             <div role="tabpanel" class="tab-pane" id="craftBoardTab">
@@ -2042,6 +2048,8 @@
 
                     </div>
                     <div class="col-md-4">
+						<select id="lotteryName" class="form-control">
+						</select>
                         <div class="table-responsive" style="margin-top: 10px;">
                             <table class="table table-bordered" id="lotteryR4Table">
                                 <thead>

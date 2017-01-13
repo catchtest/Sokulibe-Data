@@ -96,6 +96,8 @@ var path = {
     $("a[href='#tearsComputeTab']").one("click", initTearsCompute);
     $("a[href='#loginBonusTab']").one("click", initLoginBonus);
 	$("a[href='#enchantTab']").one("click", initEnchant);
+	$("a[href='#eventItems']").one("click", initEventItem);
+	$("a[href='#lotteryTab']").one("click", initLottery);
 
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
@@ -1195,6 +1197,14 @@ function getEnchantFrom(enchantId) {
 	}
 	
 	return result;
+}
+
+function initEventItem() {
+	var html = '';
+	for (var id in db.event_item) {
+		html += String.Format('<div class="col-md-2 col-sm-3 col-xs-4 text-center">{0}<br />{1}</div>', imgHtml(path.event_item, id, false), db.event_item[id].name);
+	}
+	$("#eventItems > .row").html(html);
 }
 
 // 判斷是否為尚未完成的裝備
@@ -3065,7 +3075,7 @@ function getAsset(type, id, value) {
                 anchor(db.unit[id].name, "showUnit(" + id + ")") +
                 getUnitJobComment(db.unit[id]);
             break;
-		case 9:
+		case 9:  // 活動點數
 			name = imgXs(path.event_item, id) + db.event_item[id].name;
 			break;
         case 10: // 徽章
@@ -3243,6 +3253,19 @@ function openImage(sender) {
 
 var lottery;
 
+function initLottery() {
+	var $lotteryName = $('#lotteryName');
+	$.each(lottery.itemList(), function (i, item) {
+		$lotteryName.append($('<option>', { 
+			value: item.value,
+			text : item.text 
+		}));
+	});
+	$lotteryName.change(function(){
+		lottery.change($(this).val());
+	}).children("option:last").attr("selected", "selected").change();
+}
+
 function LotteryModel() {
 	var recordUnit = {};
 	var record = {};
@@ -3250,7 +3273,8 @@ function LotteryModel() {
 	var lotteryData;
 	
 	var $history = $("#lotteryHistory");
-	var $result = $("#lotteryResult > div");
+	var $resultDiv = $("#lotteryResult");
+	var $result = $resultDiv.children("div");
 	var $recordTable = $("#lotteryResultTable > tbody");
 	
 	this.initial = function() {
@@ -3270,12 +3294,27 @@ function LotteryModel() {
 		$result.empty();
 		$history.empty();
 		update();
+		$resultDiv.hide();
 	}
 	
 	this.setDefine = function(data) {
 		define = data;
-		lotteryData = data['1'].data;
+	}
+	
+	this.change = function(id) {
+		lotteryData = define[id].data;
 		this.initial();
+	}
+	
+	this.itemList = function() {
+		var items = [];
+		for (var id in define) {
+			items.push({
+				text: define[id].name,
+				value: id
+			});
+		}
+		return items;
 	}
 	
 	var rateFormat = function (value, count) {
@@ -3306,6 +3345,7 @@ function LotteryModel() {
 				recordUnit[id]
 			]);
 		}
+		$resultDiv.show();
 		$("#lotteryR4Table > tbody").html(html);
 		$history[0].scrollTop = $history[0].scrollHeight;
 	}

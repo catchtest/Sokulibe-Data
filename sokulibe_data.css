@@ -552,3 +552,11 @@ a > i, button > i {
 #lotteryResult img {
 	border-radius: 21px;
 }
+
+#eventItems > .row > div {
+	margin-bottom: 10px;
+}
+
+#eventItems img {
+	max-width: 100%;
+}
