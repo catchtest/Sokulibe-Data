@@ -1202,7 +1202,7 @@ function getEnchantFrom(enchantId) {
 function initEventItem() {
 	var html = '';
 	for (var id in db.event_item) {
-		html += String.Format('<div class="col-md-2 col-sm-3 col-xs-4 text-center">{0}<br />{1}</div>', imgHtml(path.event_item, id, false), db.event_item[id].name);
+		html += String.Format('<div class="col-md-2 col-sm-3 col-xs-4 text-center">{0}<br />{1}</div>', imgHtml(path.event_item, id, true), db.event_item[id].name);
 	}
 	$("#eventItems > .row").html(html);
 }
