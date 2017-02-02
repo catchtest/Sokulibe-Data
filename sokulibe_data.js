@@ -32,7 +32,8 @@ var path = {
 	"unit_full": "Full/un{0}_full.png",
 	"accessory": "Accessory/eq{0}_tex.png",
 	"weapon": "Weapon/wi{0}_tex.png",
-	"event_item": "EventItem/ei{0}_tex.png"
+	"event_item": "EventItem/ei{0}_tex.png",
+	"monster": "Monster/mm{0}_tex.png"
 };
 
 (function($) {
@@ -2756,7 +2757,8 @@ var $monsterList;
 
 function getMonsterName(id) {
     if (id == 0) return '&nbsp;';
-    return db.monster_base[db.monster[id].base_id].name;
+	var baseId = db.monster[id].base_id;
+    return imgXs(path.monster, baseId) + db.monster_base[db.monster[id].base_id].name;
 }
 
 function getMonsterPrefix(type) {

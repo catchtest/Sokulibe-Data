@@ -173,7 +173,7 @@ pre {
 }
 
 .m-boss::after {
-	content: '[BOSS]';
+	content: '[尾王]';
 	color: #ff3333;
 	margin-right: 5px;
 }
@@ -559,4 +559,10 @@ a > i, button > i {
 
 #eventItems img {
 	max-width: 100%;
+}
+
+#monsterList img,
+#boss1_name img,
+#boss2_name img {
+	border-radius: 5px;
 }
