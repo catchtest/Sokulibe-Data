@@ -3111,11 +3111,13 @@ function extendItemName(id) {
         'HR確定 武器ガチャチケット',
         'HR以上確定 武器ガチャチケット',
         'SR確定 武器ガチャチケット',
-        '',
-        '',
-        '武器ガチャチケット'
+        null,
+        null,
+        '武器ガチャチケット',
+		null,
+		'コラボ武器確定 武器ガチャチケット'
     ];
-    return names[id - 21];
+    return names[id - 21] || ('id: ' + id);
 }
 
 var accessoryNames;
