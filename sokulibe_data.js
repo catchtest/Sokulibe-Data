@@ -2579,7 +2579,7 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
     current_quest = baseData;
 
     // 基本資料
-    var attrs = ['exp', 'crystal', 'multi_exp', 'job_exp', 'required_lv', 'raid_point', 'Recom_lv', 'first_clear_bonus'];
+    var attrs = ['exp', 'crystal', 'multi_exp', 'job_exp', 'required_lv', 'raid_point', 'Recom_lv', 'first_clear_bonus', 'battle_bgm_id', 'boss_bgm_id'];
 
     attrs.forEach(function(name) {
         $("#" + name).html(baseData[name]);
