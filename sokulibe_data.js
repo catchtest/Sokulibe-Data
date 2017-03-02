@@ -3501,7 +3501,8 @@ function initStory() {
 function loadStoryData(id) {
 	loadDataEvent(id);
 
-	$("#mainStoryBlock").html(main_story[id]).show();
+	var html = main_story[id].replace(/(\S+)：/g, "<span class='text-success'>$1</span>：").replace(/\n/g, "<br />");
+	$("#mainStoryBlock").html(html).show();
 }
 
 // 擴充方法
