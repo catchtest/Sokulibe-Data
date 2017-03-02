@@ -2,6 +2,7 @@
 var db;
 var localized = {};
 var enums;
+var main_story;
 var skipDirty = true;
 var dirtyPrefix = '× ';
 var disableTranslate = false;
@@ -51,7 +52,7 @@ var path = {
     // 讀取Json
     var loadCount = 0;
     var loadSuccess = function() {
-        if (++loadCount >= 4) {
+        if (++loadCount >= 5) {
             $(".loader").hide();
         }
     };
@@ -74,6 +75,11 @@ var path = {
     $.getJSON('lottery.json', function(data) {
 		window.lottery = new LotteryModel();
 		window.lottery.setDefine(data);
+        loadSuccess();
+    });
+	
+    $.getJSON('main_story.json', function(data) {
+        main_story = data;
         loadSuccess();
     });
 
@@ -99,6 +105,7 @@ var path = {
 	$("a[href='#enchantTab']").one("click", initEnchant);
 	$("a[href='#eventItems']").one("click", initEventItem);
 	$("a[href='#lotteryTab']").one("click", initLottery);
+	$("a[href='#storyTab']").one("click", initStory);
 
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
@@ -3477,6 +3484,24 @@ function LotteryModel() {
 	var randInt = function(min, max) {
 		return Math.floor(Math.random() * (max - min)) + min;
 	}
+}
+
+function initStory() {
+    var $list = $("#storyList");
+    var html = '';
+
+    for (var id in main_story) {
+        var itemHtml = listItemHtml(id, id, '', "loadStoryData('" + id + "');");
+
+        html += itemHtml;
+    }
+    $list.html(html);
+}
+
+function loadStoryData(id) {
+	loadDataEvent(id);
+
+	$("#mainStoryBlock").html(main_story[id]).show();
 }
 
 // 擴充方法

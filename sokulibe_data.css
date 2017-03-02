@@ -32,7 +32,7 @@ body {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#207ce5', endColorstr='#499bea',GradientType=0 ); /* IE6-9 */
 }
 
-#storyBlock {
+#storyBlock, #mainStoryBlock {
 	white-space: pre-wrap;
 	/* Since CSS 2.1 */
 	white-space: -moz-pre-wrap;
