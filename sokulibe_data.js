@@ -3501,7 +3501,7 @@ function initStory() {
 function loadStoryData(id) {
 	loadDataEvent(id);
 
-	var html = main_story[id].replace(/(\S+)：/g, "<span class='text-success'>$1</span>：").replace(/\n/g, "<br />");
+	var html = main_story[id].replace(/(\S+)：/g, "<span class='text-success'>$1</span>").replace(/\n/g, "<br />");
 	$("#mainStoryBlock").html(html).show();
 }
 
