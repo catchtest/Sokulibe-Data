@@ -2175,7 +2175,7 @@ function displayEffect(id) {
 	
 	var enchant = db.enchant_master[id];
 	var content = enchant.enchant_comment.i18n().replaceAll('\n', '<br />');
-	if (content.endsWith('秒')) {
+	if (content.endsWith('秒') || content.endsWith('秒間付与')) {
 		// 已經寫上時間的不處理
 	}
 	else if (enchant.enchant_id === 41) {   // BUFF類
