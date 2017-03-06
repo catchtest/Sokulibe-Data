@@ -57,7 +57,7 @@
                         <div class="well" style="box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset;">
                             <div class="well-legend">更新紀錄</div>
                             <ul>
-								<li>2017/03/02<br />增加故事文本(資料未完成)
+								<li>2017/03/02<br />增加故事文本
 								<li>2017/02/02<br />增加怪物圖片
 								<li>2017/01/13<br />增加點數一覽<br />轉蛋模擬器可以切換活動
 								<li>2017/01/12<br />關卡增加時限資料<br />補活動道具圖片
@@ -2080,10 +2080,22 @@
 			<div role="tabpanel" class="tab-pane" id="storyTab">
                 <div class="row">
                     <div class="col-sm-3">
-                        <div class="list-group" id="storyList"></div>
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#eventStoryTab" aria-controls="eventStoryTab" role="tab" data-toggle="tab">活動</a></li>
+                            <li role="presentation"><a href="#mainStoryTab" aria-controls="mainStoryTab" role="tab" data-toggle="tab">主線</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="eventStoryTab">
+                                <div class="list-group"></div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="mainStoryTab">
+                                <div class="list-group"></div>
+                            </div>
+                        </div>
                     </div>
                     <div class="col-sm-9">
-						<div id="mainStoryBlock"></div>
+						<div id="storyBlock2"></div>
                     </div>
                 </div>
             </div>

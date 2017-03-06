@@ -3,6 +3,7 @@ var db;
 var localized = {};
 var enums;
 var main_story;
+var event_story;
 var skipDirty = true;
 var dirtyPrefix = '× ';
 var disableTranslate = false;
@@ -52,7 +53,7 @@ var path = {
     // 讀取Json
     var loadCount = 0;
     var loadSuccess = function() {
-        if (++loadCount >= 5) {
+        if (++loadCount >= 6) {
             $(".loader").hide();
         }
     };
@@ -83,6 +84,11 @@ var path = {
         loadSuccess();
     });
 
+	$.getJSON('event_story.json', function(data) {
+        event_story = data;
+        loadSuccess();
+    });
+	
     // 綁定initial事件
     $("a[href='#unit']").one("click", initUnit);
     $("a[href='#accessory']").one("click", initAccessory);
@@ -3487,22 +3493,31 @@ function LotteryModel() {
 }
 
 function initStory() {
-    var $list = $("#storyList");
+    var $list = $("#mainStoryTab > .list-group");
     var html = '';
 
     for (var id in main_story) {
-        var itemHtml = listItemHtml(id, id, '', "loadStoryData('" + id + "');");
+        html += listItemHtml(id, main_story[id].title, '', "loadStoryData('" + id + "', 'ms');");
+    }
+    $list.html(html);
+	
+    var $list = $("#eventStoryTab > .list-group");
+    html = '';
 
-        html += itemHtml;
+    for (var id in event_story) {
+        html += listItemHtml(id, event_story[id].title, '', "loadStoryData('" + id + "', 'es');");
     }
     $list.html(html);
 }
 
-function loadStoryData(id) {
+function loadStoryData(id, type) {
 	loadDataEvent(id);
 
-	var html = main_story[id].replace(/(\S+)：/g, "<span class='text-success'>$1</span>").replace(/\n/g, "<br />");
-	$("#mainStoryBlock").html(html).show();
+	var html = (type == 'ms') ? main_story[id].story 
+	         : (type == 'es') ? event_story[id].story : '';
+	
+	html = html.replace(/(\S+)：/g, "<span class='text-success'>$1</span>").replace(/\n/g, "<br />");
+	$("#storyBlock2").html(html).show();
 }
 
 // 擴充方法
