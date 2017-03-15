@@ -34,22 +34,55 @@
 </head>
 
 <body>
-    <div class="container-fluid">
-        <h3 style='font-weight: bold;'>蒼空解放資料網</h3>
-
-        <ul class="nav nav-pills" role="tablist">
-            <li role="presentation" class="active"><a href="#homepage" aria-controls="homepage" role="tab" data-toggle="tab">首頁</a></li>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#homepage" aria-controls="homepage" role="tab" data-toggle="tab">蒼空解放資料網</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
             <li role="presentation"><a href="#unit" aria-controls="unit" role="tab" data-toggle="tab">角色</a></li>
             <li role="presentation"><a href="#accessory" aria-controls="ring" role="tab" data-toggle="tab">裝備</a></li>
             <li role="presentation"><a href="#weapon" aria-controls="weapon" role="tab" data-toggle="tab">武器</a></li>
             <li role="presentation"><a href="#event" aria-controls="event" role="tab" data-toggle="tab">關卡</a></li>
             <li role="presentation"><a href="#craftBoardTab" aria-controls="craftBoardTab" role="tab" data-toggle="tab">星盤</a></li>
             <li role="presentation"><a href="#overviewTab" aria-controls="overviewTab" role="tab" data-toggle="tab">一覽</a></li>
+            <!--<li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">一覽 <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+                    <li role="presentation"><a href="#unitListTab" aria-controls="unitListTab" role="tab" data-toggle="tab">角色</a></li>
+                    <li role="presentation"><a href="#accessoryListTab" aria-controls="accessoryListTab" role="tab" data-toggle="tab">裝備</a></li>
+                    <li role="presentation"><a href="#weaponListTab" aria-controls="weaponListTab" role="tab" data-toggle="tab">武器</a></li>
+                    <li role="presentation"><a href="#achievement" aria-controls="achievement" role="tab" data-toggle="tab">任務</a></li>
+                    <li role="presentation"><a href="#icons" aria-controls="icons" role="tab" data-toggle="tab">徽章</a></li>
+                    <li role="presentation"><a href="#items" aria-controls="items" role="tab" data-toggle="tab">道具</a></li>
+					<li role="presentation"><a href="#eventItems" aria-controls="eventItems" role="tab" data-toggle="tab">點數</a></li>
+                    <li role="presentation"><a href="#rune" aria-controls="rune" role="tab" data-toggle="tab">素材</a></li>
+                    <li role="presentation"><a href="#expTab" aria-controls="expTab" role="tab" data-toggle="tab">經驗</a></li>
+                    <li role="presentation"><a href="#tearsTab" aria-controls="tearsTab" role="tab" data-toggle="tab">交換所</a></li>
+                    <li role="presentation"><a href="#abilityListTab" aria-controls="abilityListTab" role="tab" data-toggle="tab">被動</a></li>
+                    <li role="presentation"><a href="#limitbreakTab" aria-controls="limitbreakTab" role="tab" data-toggle="tab">突破</a></li>
+                    <li role="presentation"><a href="#loginBonusTab" aria-controls="tearsComputeTab" role="tab" data-toggle="tab">登入獎勵</a></li>
+					<li role="presentation"><a href="#enchantTab" aria-controls="enchantTab" role="tab" data-toggle="tab">效果</a></li>
+              </ul>
+            </li>-->
             <li role="presentation"><a href="#tearsComputeTab" aria-controls="tearsComputeTab" role="tab" data-toggle="tab">眼淚消耗</a></li>
             <li role="presentation"><a href="#lotteryTab" aria-controls="lotteryTab" role="tab" data-toggle="tab">轉蛋模擬器</a></li>
 			<li role="presentation"><a href="#storyTab" aria-controls="storyTab" role="tab" data-toggle="tab">故事</a></li>
-        </ul>
 
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 30px;">
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="homepage">
                 <div class="row">
@@ -59,17 +92,17 @@
                             <ul>
 								<li>2017/03/02<br />增加故事文本
 								<li>2017/02/02<br />增加怪物圖片
+                            </ul>
+
+                            <button type="button" onclick="$('#oldUpdate').toggle();" class="btn btn-default btn-xs btn-block">顯示/隱藏舊紀錄 ▼</button>
+                            <br />
+                            <ul id="oldUpdate" style="display: none;">
 								<li>2017/01/13<br />增加點數一覽<br />轉蛋模擬器可以切換活動
 								<li>2017/01/12<br />關卡增加時限資料<br />補活動道具圖片
 								<li>2017/01/05<br />效果一覽加上來源
 								<li>2017/01/04<br />增加效果一覽
 								<li>2017/01/03<br />BUFF類效果寫上時間 (HP限制類因達到條件即會常時發動，故不顯示)
 								<li>2017/01/01<br />增加轉蛋模擬器
-                            </ul>
-
-                            <button type="button" onclick="$('#oldUpdate').toggle();" class="btn btn-default btn-xs btn-block">顯示/隱藏舊紀錄 ▼</button>
-                            <br />
-                            <ul id="oldUpdate" style="display: none;">
                                 <li>2016/12/23<br />角色增加允許裝備列表 (已扣除非加本系攻擊力戒指)<br />統計點數達成型關卡物品</li>
                                 <li>2016/12/22<br />角色增加半身像、全身像</li>
                                 <li>2016/12/21<br />元素塔關卡增加有利顯示</li>

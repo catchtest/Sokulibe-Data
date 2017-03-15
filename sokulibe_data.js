@@ -194,6 +194,10 @@ var path = {
                 break;
         }
     });
+	
+	$('.navbar-collapse a').click(function(){
+		$(".navbar-collapse").collapse('hide');
+	});
 
     $("#showDirty").change(function() {
         skipDirty = !this.checked;
