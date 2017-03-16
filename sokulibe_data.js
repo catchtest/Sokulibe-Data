@@ -394,7 +394,7 @@ function initEvent() {
 
     for (var id in db.event) {
         // 底下沒有任何一關，不要顯示
-        if (!(id in db.event_multi_quest)) continue;
+        if (!(id in db.event_multi_quest) && !(id in db.event_point)) continue;
 
         var data = db.event[id];
         var event_flag = [];
@@ -2389,11 +2389,78 @@ function loadEventData(id) {
     var item = $list.find(".list-group-item").first();
     if (item.length) {
         item.click();
+		$("#quest").removeClass('hidden');
     } else {
-        // 清空原有資料
-        $(".table:visible").find("tbody td").empty();
+		$("#quest").addClass('hidden');
     }
 
+    // 任務
+    var html = '';
+    resetItems();
+
+    for (var missionID in db.event_mission) {
+        var data_mission = db.event_mission[missionID];
+
+        if (data_mission.event_id != id) continue;
+
+        var title = data_mission.title;
+        var comment = data_mission.comment;
+        var asset = getAsset(data_mission.asset_type, data_mission.asset_id, data_mission.asset_value);
+
+        html += tableRow([title, comment, asset]);
+
+        // 統計可換物品總和
+        addItems(data_mission.asset_type, data_mission.asset_id, data_mission.asset_value);
+    }
+    $("#missionTable > tbody").html(html);
+    if (!!html) {
+        $("#missionTable > tfoot").html(tableRow(['', '', displayItems()]));
+    } else {
+        $("#missionTable > tfoot").html('');
+    }
+
+    // 交換所
+    html = '';
+    var raid_id = data.raid_id;
+    var point_summary = 0;
+    var point_last = 0;
+    var point_exchange_mode = false;
+    resetItems();
+
+    var data_points = raid_id > 0 ? db.raid_event_point[raid_id] : db.event_point[id];
+    if (data_points != null) {
+        for (var pid in data_points) {
+            var data_point = data_points[pid];
+
+            var asset = getAsset(data_point.item_type, data_point.item_id, data_point.item_value);
+            var exchange_limit = raid_id > 0 ? 1 : data_point.exchange_limit
+            var data_point_sum = data_point.points * exchange_limit;
+            html += tableRow([asset, data_point.points, exchange_limit, data_point_sum]);
+
+            // 判斷是點數交換還是到達即可領取
+            // 如果是到達即可領取那可換次數都是1
+            if (exchange_limit > 1) {
+                point_exchange_mode = true;
+            }
+            point_last = data_point_sum;
+            point_summary += point_last;
+
+            // 統計可換物品總和
+            addItems(data_point.item_type, data_point.item_id, data_point.item_value);
+        }
+    }
+
+    $("#exchangeTable > tbody").html(html);
+
+    // 顯示可換物品總和
+    var itemHtml = '';
+    if (!point_exchange_mode) {
+        itemHtml = displayItems();
+    }
+
+    var total_point = point_exchange_mode ? point_summary : point_last;
+    var footerHtml = total_point == 0 ? '' : tableRow([itemHtml, '', '', total_point]);
+    $("#exchangeTable > tfoot").html(footerHtml);
 }
 
 // 讀取共鬥資料
@@ -2481,81 +2548,8 @@ function loadQuestData(eventID, questID) {
 
     loadCommonQuestData(baseData, missionData, dropData, waveData);
 
-    // 任務
-    var html = '';
-    resetItems();
-
-    for (var missionID in db.event_mission) {
-        var data_mission = db.event_mission[missionID];
-
-        if (data_mission.event_id != eventID) continue;
-
-        var title = data_mission.title;
-        var comment = data_mission.comment;
-        var asset = getAsset(data_mission.asset_type, data_mission.asset_id, data_mission.asset_value);
-
-        html += tableRow([title, comment, asset]);
-
-        // 統計可換物品總和
-        addItems(data_mission.asset_type, data_mission.asset_id, data_mission.asset_value);
-    }
-    $("#missionTable > tbody").html(html);
-    if (!!html) {
-        $("#missionTable > tfoot").html(tableRow(['', '', displayItems()]));
-    } else {
-        $("#missionTable > tfoot").html('');
-    }
-
-    // 交換所
-    html = '';
-    var eventData = db.event[eventID];
-    var raid_id = eventData.raid_id;
-    var point_summary = 0;
-    var point_last = 0;
-    var point_exchange_mode = false;
-    resetItems();
-
-    var data_points = raid_id > 0 ? db.raid_event_point[raid_id] : db.event_point[eventID];
-    if (data_points != null) {
-        for (var pid in data_points) {
-            var data_point = data_points[pid];
-
-            var asset = getAsset(data_point.item_type, data_point.item_id, data_point.item_value);
-            var exchange_limit = raid_id > 0 ? 1 : data_point.exchange_limit
-            var data_point_sum = data_point.points * exchange_limit;
-            html += tableRow([asset, data_point.points, exchange_limit, data_point_sum]);
-
-            // 判斷是點數交換還是到達即可領取
-            // 如果是到達即可領取那可換次數都是1
-            if (exchange_limit > 1) {
-                point_exchange_mode = true;
-            }
-            point_last = data_point_sum;
-            point_summary += point_last;
-
-            // 統計可換物品總和
-            addItems(data_point.item_type, data_point.item_id, data_point.item_value);
-        }
-    }
-
-    $("#exchangeTable > tbody").html(html);
-
-    // 顯示可換物品總和
-    var itemHtml = '';
-    if (!point_exchange_mode) {
-        itemHtml = displayItems();
-    }
-
-    var total_point = point_exchange_mode ? point_summary : point_last;
-    var footerHtml = total_point == 0 ? '' : tableRow([itemHtml, '', '', total_point]);
-    $("#exchangeTable > tfoot").html(footerHtml);
-
-    $("#Recom_lv, #first_clear_bonus, #multi_exp").closest("tr").hide();
-    $("#raid_point, #continue_limit, #required_lv").closest("tr").show();
-    $("#questTab").show();
-    $("#questList").show();
-
     // 特殊處理: 特殊情形下required_lv其實是Recom_lv不是MR限制
+	var eventData = db.event[eventID];
     switch (eventData.event_type) {
         case 5: // 新職踏破
         case 9: // 試煉之塔
@@ -2565,6 +2559,11 @@ function loadQuestData(eventID, questID) {
         default:
             break;
     }
+	
+	$("#Recom_lv, #first_clear_bonus, #multi_exp").closest("tr").hide();
+    $("#raid_point, #continue_limit, #required_lv").closest("tr").show();
+    $("#questTab").show();
+    $("#questList").show();
 }
 
 var item_summary = {};
