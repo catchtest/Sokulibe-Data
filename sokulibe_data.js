@@ -62,7 +62,7 @@ var path = {
 		
 		var $img = $("<img></img>", {
 			src: String.Format(path.unit_up, padLeft(unitId.toString(), 4)),
-			style: "width: 100%;"
+			style: "width: 100%; cursor: pointer;"
 		});
 		$img.click(function(){
 			alert(db.unit_comment[unitId]['comment' + randInt(5, 7)]);
