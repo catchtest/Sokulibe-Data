@@ -50,6 +50,26 @@ var path = {
         }
     });
 
+	var showFavoriteUnit = function() {
+		// 隨機選擇一個角色
+		var unitIdList = Object.keys(db.unit);
+		var unitId;
+		
+		do {
+			var randIndex = randInt(0, unitIdList.length - 1);
+			unitId = unitIdList[randIndex];
+		} while(isDirtyUnit(db.unit[unitId]));
+		
+		var $img = $("<img></img>", {
+			src: String.Format(path.unit_up, padLeft(unitId.toString(), 4)),
+			style: "width: 100%;"
+		});
+		$img.click(function(){
+			alert(db.unit_comment[unitId]['comment' + randInt(5, 7)]);
+		});
+		$("#favoriteDiv").append($img);
+	};
+	
     // 讀取Json
     var loadCount = 0;
     var loadSuccess = function() {
@@ -61,6 +81,8 @@ var path = {
     $.getJSON('sokulibe_data.json', function(data) {
         db = data;
         loadSuccess();
+		
+		showFavoriteUnit();
     });
 
     $.getJSON('localize.zh-TW.json', function(data) {
@@ -3498,10 +3520,10 @@ function LotteryModel() {
 		var index = randInt(0, array.length);
 		return array[index];
 	}
-	
-	var randInt = function(min, max) {
-		return Math.floor(Math.random() * (max - min)) + min;
-	}
+}
+
+function randInt(min, max) {
+	return Math.floor(Math.random() * (max - min)) + min;
 }
 
 function initStory() {
