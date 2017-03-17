@@ -1487,19 +1487,19 @@ function loadUnitData(id) {
         switch (data.job_id) {
             case 1:
                 // name, ---, 特殊, 傷害, CD, Break, Hate, Cast, Range
-                specialTds = ['クリティカルアッパー', '---', '攻擊', 1, 1800, 20, 10, 0, '0-200'];
+                specialTds = ['クリティカルアッパー', '---', '攻擊', 1, cdFormat(1800), 20, 10, 0, '0-200'];
                 break;
             case 2:
-                specialTds = ['回避', '---', '特殊', 0, 600, 0, 0, 0, '---'];
+                specialTds = ['回避', '---', '特殊', 0, cdFormat(600), 0, 0, 0, '---'];
                 break;
             case 3:
-                specialTds = ['トルネード', '---', '特殊', 0, 400, 0, 0, 20, '0-10000'];
+                specialTds = ['トルネード', '---', '特殊', 0, cdFormat(400), 0, 0, 20, '0-10000'];
                 break;
             case 4:
-                specialTds = ['バーサーク', '---', '特殊', 0, 3600, 0, 0, 0, '---'];
+                specialTds = ['バーサーク', '---', '特殊', 0, cdFormat(3600), 0, 0, 0, '---'];
                 break;
             case 5:
-                specialTds = ['タウント', '---', '特殊', 0, 600, 0, 700, 0, '0-500'];
+                specialTds = ['タウント', '---', '特殊', 0, cdFormat(600), 0, 700, 0, '0-500'];
                 break;
             case 6:
                 specialTds = ['エリアシールド', '---', '特殊', 0, '動態', 0, 0, 0, '---'];
@@ -1508,10 +1508,10 @@ function loadUnitData(id) {
                 specialTds = ['スナイプモード', '---', '特殊', 0, 0, 0, 0, 0, '---'];
                 break;
             case 9:
-                specialTds = ['コンセントレート', '---', '特殊', 0, 2700, 0, 0, 0, '---'];
+                specialTds = ['コンセントレート', '---', '特殊', 0, cdFormat(2700), 0, 0, 0, '---'];
                 break;
             case 10:
-                specialTds = ['スポットヒール', '---', '回復', 1, 1200, 0, 0, 0, '---'];
+                specialTds = ['スポットヒール', '---', '回復', 1, cdFormat(1200), 0, 0, 0, '---'];
                 break;
             default:
                 specialTds = ['', '', '', '', '', '', '', ''];
@@ -1685,7 +1685,7 @@ function getSkillTd(base_id) {
         data.name,
         enums.skill_type[data.skill_type],
         data.dmg,
-        data.cd,
+        cdFormat(data.cd),
         data.break_,
         data.hate,
         data.casttime,
@@ -1701,7 +1701,7 @@ function getTrapSkillTd(trap_id) {
         data.name,
         '攻擊',
         data.dmg,
-        data.cd,
+        cdFormat(data.cd),
         data.break_,
         '---',
         '---',
@@ -1715,7 +1715,7 @@ function getOugiTd(id) {
     var data = db.ougi[id];
     var name = anchor(data.name, "loadOugiAtk(" + id + ")");
     var target = ['攻擊', '回復', '回復<br />攻擊'][data.target];
-    var list = [name, '---', target, data.dmg, data.cd, data.break_, '---', '---', '---'];
+    var list = [name, '---', target, data.dmg, cdFormat(data.cd), data.break_, '---', '---', '---'];
     return '<td>' + list.join('</td><td>') + '</td>';
 }
 
@@ -2194,14 +2194,22 @@ function displayEffect(id) {
 		} else if (enchant.enchant_target_id === 4) {
 			// 裝甲士特殊技發動，只加到護罩持續時間的一秒
 		} else {
-			var time = enchant.enchant_value2 / 30;
-			if (time % 1 !== 0) {
-				time = time.toFixed(1);   // 小數時間只顯示後一位
-			}
-			content += time + '秒';
+			content += cdTime(enchant.enchant_value2) + '秒';
 		}
 	}
 	return content;
+}
+
+function cdTime(value) {
+	var time = value / 30;
+	if (time % 1 !== 0) {
+		time = time.toFixed(1);   // 小數時間只顯示後一位
+	}
+	return time;
+}
+
+function cdFormat(value) {
+	return String.Format("{0} ({1}秒)", value, cdTime(value));
 }
 
 function displayTotalRune(obj) {
