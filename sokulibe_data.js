@@ -7,7 +7,7 @@ var event_story;
 var skipDirty = true;
 var dirtyPrefix = '× ';
 var disableTranslate = false;
-var disableImage = false;
+var disableImage = true;
 var alwaysShowImage = false;
 var defaultDataTablesOption = {
     "autoWidth": false,
@@ -51,6 +51,7 @@ var path = {
     });
 
 	var showFavoriteUnit = function() {
+		if (disableImage) return;
 		// 隨機選擇一個角色
 		var unitIdList = Object.keys(db.unit);
 		var unitId;
@@ -693,6 +694,7 @@ function initUnitList() {
             unitPower.atk,
             unitPower.agi,
             unitPower.knockback,
+			displayDebuff(data.use_debuff),
             strongHtml,
             weakHtml,
             resistItems.join('<br />')
@@ -1437,27 +1439,43 @@ function loadUnitData(id) {
 
     $("#unitLevelSelect").change();
 
+	var getAbilityDesc = function(abilityID) {
+		var abilityHtml = '&nbsp;';
+		if (abilityID === 0) return abilityHtml;
+		
+		var abilityData = db.ability[abilityID];
+		abilityHtml = abilityData.name.replaceAll('\n', '') + '<br />' + abilityData.comment.pre();
+		
+		var converts = [];
+		for (var a = 1; a <= 4; a++) {
+			var magicID = abilityData['ability' + a];
+			if (magicID > 0) {
+				converts.push(displayEffect(magicID).replaceAll('<br />', ''));
+			}
+		}
+		if (converts.length) {
+			abilityHtml += '<div class="text-warning">' + converts.join('<br />') + '</div>';
+		}
+		return abilityHtml;
+	};
+	
+	// 被動
     for (var i = 1; i <= 4; i++) {
-        var abilityHtml = '&nbsp;';
         var abilityID = data["ability0" + i];
-        if (abilityID != 0) {
-            var abilityData = db.ability[abilityID];
-            abilityHtml = abilityData.name.replaceAll('\n', '') + '<br />' + abilityData.comment.pre();
-			
-			var converts = [];
-			for (var a = 1; a <= 4; a++) {
-				var magicID = abilityData['ability' + a];
-				if (magicID > 0) {
-					converts.push(displayEffect(magicID).replaceAll('<br />', ''));
-				}
-			}
-			if (converts.length) {
-				abilityHtml += '<div class="text-warning">' + converts.join('<br />') + '</div>';
-			}
-        }
-        $("#ability0" + i).html(abilityHtml);
+        $("#ability0" + i).html(getAbilityDesc(abilityID));
     }
+	
+	// 職業被動
+	var job_rowspan = 0;
+	for (var i = 1; i <= 4; i++) {
+		var abilityID = db.job[data.job_id]["ability0" + i];
+		var abilityExist = abilityID > 0;
+		$("#job_ability0" + i).html(getAbilityDesc(abilityID)).closest("tr").toggle(abilityExist);
+		if (abilityExist) { job_rowspan++; }
+	}
+	$("#job_th").attr("rowspan", job_rowspan);
 
+	// 特性
     for (var i = 1; i <= 3; i++) {
         var content = data["Characteristic" + i];
         if (!content.length) content = '&nbsp;';

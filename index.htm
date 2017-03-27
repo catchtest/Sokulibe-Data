@@ -96,20 +96,21 @@
                         <div class="well" style="box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset;">
                             <div class="well-legend">更新紀錄</div>
                             <ul>
-								<li>2017/03/16<br />補上稀有敵人，雖然沒啥意義
-								<li>2017/03/02<br />增加故事文本
-								<li>2017/02/02<br />增加怪物圖片
+								<li>2017/03/27<br />補上職業被動</li>
+								<li>2017/03/16<br />補上稀有敵人，雖然沒啥意義</li>
+								<li>2017/03/02<br />增加故事文本</li>
                             </ul>
 
                             <button type="button" onclick="$('#oldUpdate').toggle();" class="btn btn-default btn-xs btn-block">顯示/隱藏舊紀錄 ▼</button>
                             <br />
                             <ul id="oldUpdate" style="display: none;">
-								<li>2017/01/13<br />增加點數一覽<br />轉蛋模擬器可以切換活動
-								<li>2017/01/12<br />關卡增加時限資料<br />補活動道具圖片
-								<li>2017/01/05<br />效果一覽加上來源
-								<li>2017/01/04<br />增加效果一覽
-								<li>2017/01/03<br />BUFF類效果寫上時間 (HP限制類因達到條件即會常時發動，故不顯示)
-								<li>2017/01/01<br />增加轉蛋模擬器
+								<li>2017/02/02<br />增加怪物圖片</li>
+								<li>2017/01/13<br />增加點數一覽<br />轉蛋模擬器可以切換活動</li>
+								<li>2017/01/12<br />關卡增加時限資料<br />補活動道具圖片</li>
+								<li>2017/01/05<br />效果一覽加上來源</li>
+								<li>2017/01/04<br />增加效果一覽</li>
+								<li>2017/01/03<br />BUFF類效果寫上時間 (HP限制類因達到條件即會常時發動，故不顯示)</li>
+								<li>2017/01/01<br />增加轉蛋模擬器</li>
                                 <li>2016/12/23<br />角色增加允許裝備列表 (已扣除非加本系攻擊力戒指)<br />統計點數達成型關卡物品</li>
                                 <li>2016/12/22<br />角色增加半身像、全身像</li>
                                 <li>2016/12/21<br />元素塔關卡增加有利顯示</li>
@@ -261,6 +262,19 @@
                                                     </tr>
                                                     <tr>
                                                         <td id="ability04"></td>
+                                                    </tr>
+													<tr>
+                                                        <th id="job_th" rowspan="3">職業被動</th>
+                                                        <td id="job_ability01"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="job_ability02"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="job_ability03"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td id="job_ability04"></td>
                                                     </tr>
                                                     <tr>
                                                         <th rowspan="3">特性</th>
@@ -1663,6 +1677,7 @@
                                     <th>最大攻擊</th>
                                     <th>最大速度</th>
                                     <th>擊倒抵抗</th>
+									<th>減益</th>
                                     <th>有利屬性</th>
                                     <th>弱點屬性</th>
                                     <th>異常耐性</th>
