@@ -3332,7 +3332,7 @@ function initLottery() {
 	});
 	$lotteryName.change(function(){
 		lottery.change($(this).val());
-	}).children("option:last").attr("selected", "selected").change();
+	}).children("option:nth-last-child(2)").attr("selected", "selected").change();
 }
 
 function LotteryModel() {
@@ -3371,6 +3371,8 @@ function LotteryModel() {
 	}
 	
 	this.change = function(id) {
+		console.log(id);
+		console.log(define[id].data);
 		lotteryData = define[id].data;
 		this.initial();
 	}
@@ -3537,6 +3539,26 @@ function LotteryModel() {
 	var draw = function(array) {
 		var index = randInt(0, array.length);
 		return array[index];
+	}
+	
+	this.exportRatio = function() {
+		$("#lotteryExport").val(JSON.stringify(lotteryData));
+		$("#lotteryExportDiv").show();
+		$("#lotteryImportDiv").hide();
+	}
+
+	this.prepareImportRatio = function() {
+		$("#lotteryImport").val('');
+		$("#lotteryImportDiv").show();
+		$("#lotteryExportDiv").hide();
+	}
+	
+	this.importRatio = function() {
+		var obj = JSON.parse($("#lotteryImport").val());
+		define.custom.data = obj;
+		$("#lotteryImportDiv").hide();
+		
+		$ddl.val("custom").change();
 	}
 }
 

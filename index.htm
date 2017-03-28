@@ -2132,6 +2132,17 @@
                                 </tbody>
                             </table>
                         </div>
+						<div class="btn-group" style="width: 100%">
+							<button type="button" class="btn btn-default" style="width: 50%;" onclick="lottery.exportRatio();">匯出機率</button>
+							<button type="button" class="btn btn-default" style="width: 50%;" onclick="lottery.prepareImportRatio();">匯入機率</button>
+						</div>
+						<div id="lotteryExportDiv" style="display: none;">
+							<textarea id="lotteryExport" class="form-control"></textarea>
+						</div>
+						<div id="lotteryImportDiv" style="display: none;">
+							<textarea id="lotteryImport" class="form-control"></textarea>
+							<button type="button" class="btn btn-default" onclick="lottery.importRatio();">確定</button>
+						</div>
                     </div>
                 </div>
 
