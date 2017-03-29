@@ -445,12 +445,14 @@ a > i, button > i {
 	min-width: 35px;
 }
 
-.result-text {
-	margin: 10px 0px;
+#tearsResult span {
+	margin: 0 3px;
 }
 
-.result-text span {
-	margin: 0 3px;
+#tearsAccount {
+	display: inline-block;
+	width: auto;
+	font-size: inherit;
 }
 
 #tearsComputeTable tr:hover .btn-lv, 

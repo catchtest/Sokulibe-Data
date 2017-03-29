@@ -96,6 +96,7 @@
                         <div class="well" style="box-shadow: 0 0 3px rgba(0, 0, 0, 0.3) inset;">
                             <div class="well-legend">更新紀錄</div>
                             <ul>
+								<li>2017/03/29<br />眼淚消耗修改成可儲存多帳號</li>
 								<li>2017/03/27<br />補上職業被動</li>
 								<li>2017/03/16<br />補上稀有敵人，雖然沒啥意義</li>
 								<li>2017/03/02<br />增加故事文本</li>
@@ -2028,9 +2029,23 @@
                     <button type="button" class="btn btn-default btn-sm" onclick="saveToText();">輸出成字串</button>
                     <button type="button" class="btn btn-default btn-sm" onclick="clearAllTears();">重設</button>
                 </div>
-                <div class="result-text" id="tearsResult">
-                    擁有4星角色<span id="unitCount" class="text-danger">0</span>+<span id="unitFreeCount" class="text-danger">0</span>位（200級有<span id="unitLv200Count" class="text-danger">0</span>位） 已消耗眼淚
-                    <span id="tearsValue" class="text-danger">0</span>個（花在4星<span id="tearsFor4Value" class="text-danger">0</span>個）
+				<div style="display: inline-block;">
+					<select id="tearsAccount" class="form-control input-sm" style="display: inline-block;">
+					</select>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default btn-sm" id="tearsCreateAccount">新增</button>
+						<button type="button" class="btn btn-default btn-sm" id="tearsDeleteAccount">刪除</button>
+					</div>
+					<div class="input-group" style="width: 100px; display: inline-flex;">
+					    <input type="text" class="form-control input-sm" id="tearsRenameInput">
+					    <span class="input-group-btn" style="font-size: inherit;">
+						    <button type="button" class="btn btn-default btn-sm" id="tearsRenameAccount">更名</button>
+					    </span>
+					</div><!-- /input-group -->
+				</div>
+                <div class="well" id="tearsResult" style="margin: 5px 0 0 0; padding: 5px 10px;">
+                    <div style="display: inline-block;">擁有4星角色<span id="unitCount" class="text-danger">0</span>+<span id="unitFreeCount" class="text-danger">0</span>位（200級有<span id="unitLv200Count" class="text-danger">0</span>位）</div>
+					<div style="display: inline-block;">已消耗眼淚<span id="tearsValue" class="text-danger">0</span>個（花在4星<span id="tearsFor4Value" class="text-danger">0</span>個）</div>
                 </div>
                 <div id="loadFromText" style="display: none;">
                     <textarea class="form-control"></textarea>

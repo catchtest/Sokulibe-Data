@@ -955,7 +955,60 @@ function initTearsCompute() {
     });
     renderTable("tearsComputeTable", html, dtOption);
     renderTable("tearsComputeTable2", html2, dtOption);
+	
+	var $tearsAccount = $("#tearsAccount");
+	previous = $tearsAccount.val();
+	
+	$tearsAccount.change(function() {
+		saveToObject(previous);
+		loadFromObject(this.value);
+		
+		previous = this.value;
+	}).append("<option selected>帳號1</option>");
+	
+	$("#tearsCreateAccount").click(function() {
+		saveToObject();
+		
+		var count = 1;
+		while ($tearsAccount.has('option:contains("帳號' + count + '")').length) {
+			count++;
+		}
+		
+		$tearsAccount.append("<option selected>帳號" + count + "</option>");
+		clearAllTears();
+		previous = $tearsAccount.val();
+	});
+	
+	$("#tearsRenameAccount").click(function() {
+		var accountName = $tearsAccount.val();
+		var newName = $("#tearsRenameInput").val();
+		
+		tearsGlobalData = tearsGlobalData || {};
+		if (tearsGlobalData[accountName]) {
+			delete tearsGlobalData[accountName];
+		}
+		$("#tearsAccount > option:selected").html(newName);
+		saveToObject();
+	});
+	
+	$("#tearsDeleteAccount").click(function() {
+		var accountName = $("#tearsAccount").val();
+		tearsGlobalData = tearsGlobalData || {};
+		if (tearsGlobalData[accountName]) {
+			delete tearsGlobalData[accountName];
+		}
+		
+		// 只剩一個項目時不作刪除
+		if ($("#tearsAccount > option").length === 1) {
+			clearAllTears();
+			$("#tearsAccount > option:selected").html('帳號1');
+		} else {
+			$("#tearsAccount > option:selected").remove();
+		}
+		previous = $tearsAccount.val();
+	});
 }
+var previous;
 
 function setLv(sender) {
     var $sender = $(sender);
@@ -1008,7 +1061,15 @@ function saveToText() {
     $("#saveToText").show().children("textarea").val(json);
 }
 
+var tearsGlobalData;
+
 function saveCommon() {
+	saveToObject();
+	
+    return JSON.stringify(tearsGlobalData);
+}
+
+function saveToObject(accountName) {
     var saveData = {};
     $tearsTable.find("tbody > tr").each(function() {
         var $lv = $(this).find("[name=unitLv]");
@@ -1021,7 +1082,11 @@ function saveCommon() {
             tear: parseInt($tear.val())
         };
     });
-    return JSON.stringify(saveData);
+	// 將更新內容塞進去
+	accountName = accountName || $("#tearsAccount").val();
+	tearsGlobalData = tearsGlobalData || {};
+	tearsGlobalData[accountName] = saveData;
+	console.log(tearsGlobalData);
 }
 
 function loadFromLocal() {
@@ -1053,8 +1118,22 @@ function loadFromTextButton() {
 }
 
 function loadCommon(json) {
-    var saveData = JSON.parse(json);
+    tearsGlobalData = JSON.parse(json);
+	var accounts = Object.keys(tearsGlobalData);
+	var html = '';
+	accounts.forEach(function(account) {
+		html += '<option>' + account + '</option>';
+	});
+	$("#tearsAccount").html(html);
+	loadFromObject(accounts[0]);
+	previous = accounts[0];
 
+    alert('讀取成功');
+}
+
+function loadFromObject(account) {
+	var saveData = tearsGlobalData[account];
+	
     $tearsTable.find("tbody > tr").each(function() {
         var $lv = $(this).find("[name=unitLv]");
         var $tear = $(this).find("[name=unitTear]");
@@ -1071,7 +1150,6 @@ function loadCommon(json) {
         }
     });
     updateResultText();
-    alert('讀取成功');
 }
 
 function updateResultText() {
