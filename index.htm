@@ -2023,11 +2023,11 @@
             </div>
             <div role="tabpanel" class="tab-pane" id="tearsComputeTab">
                 <div class="btn-group">
-                    <button type="button" class="btn btn-default btn-sm" onclick="loadFromLocal();">從本地讀取</button>
-                    <button type="button" class="btn btn-default btn-sm" onclick="saveToLocal();">儲存至本地</button>
-                    <button type="button" class="btn btn-default btn-sm" onclick="loadFromText();">從字串讀取</button>
-                    <button type="button" class="btn btn-default btn-sm" onclick="saveToText();">輸出成字串</button>
-                    <button type="button" class="btn btn-default btn-sm" onclick="clearAllTears();">重設</button>
+                    <button type="button" class="btn btn-default btn-sm" onclick="tears.loadFromLocal();">從本地讀取</button>
+                    <button type="button" class="btn btn-default btn-sm" onclick="tears.saveToLocal();">儲存至本地</button>
+                    <button type="button" class="btn btn-default btn-sm" onclick="tears.loadFromText();">從字串讀取</button>
+                    <button type="button" class="btn btn-default btn-sm" onclick="tears.saveToText();">輸出成字串</button>
+                    <button type="button" class="btn btn-default btn-sm" onclick="tears.clearAllTears();">重設</button>
                 </div>
 				<div style="display: inline-block;">
 					<select id="tearsAccount" class="form-control input-sm" style="display: inline-block;">
@@ -2191,54 +2191,56 @@
 
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script src="sokulibe_data.js"></script>
+	<script src="sokulibe_lottery.js"></script>
+	<script src="sokulibe_tears.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
 
     <script type="text/template" id="setCommonLvTmpl">
         <div class="btn-group btn-lv">
-            <button type="button" class="btn btn-default btn-xs" onclick="addLv(this);">-5</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="addLv(this);">+5</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.addLv(this);">-5</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.addLv(this);">+5</button>
         </div>
     </script>
 
     <script type="text/template" id="setR4LvTmpl">
         <div class="btn-group btn-lv">
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">100</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">120</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">140</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">160</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">200</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">100</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">120</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">140</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">160</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">200</button>
         </div>
     </script>
 
     <script type="text/template" id="setR3LvTmpl">
         <div class="btn-group btn-lv">
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">80</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">100</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">120</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">140</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">160</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">80</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">100</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">120</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">140</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">160</button>
         </div>
     </script>
 
     <script type="text/template" id="setR2LvTmpl">
         <div class="btn-group btn-lv">
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">50</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">75</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">80</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">90</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">100</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">50</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">75</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">80</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">90</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">100</button>
         </div>
     </script>
 
     <script type="text/template" id="setR1LvTmpl">
         <div class="btn-group btn-lv">
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">30</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">35</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">40</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">50</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="setLv(this);">60</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">30</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">35</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">40</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">50</button>
+            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">60</button>
         </div>
     </script>
 
