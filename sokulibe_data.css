@@ -428,7 +428,8 @@ a > i, button > i {
 	color: white;
 }
 
-.table > tbody > tr > td {
+.table > tbody > tr > td,
+.table > tbody > tr > th {
 	vertical-align: middle;
 }
 

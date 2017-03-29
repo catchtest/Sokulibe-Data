@@ -1352,7 +1352,8 @@ function loadUnitData(id) {
         specialHtml = '<td>' + specialTds.join('</td><td>') + '</td>';
     }
     $skillBase.children("tr").eq(7).append(specialHtml);
-
+	$skillDesc.children("tr").eq(7).children("td").eq(0).html(db.job[data.job_id].special_tips.pre());
+	
     // 奧義
     var ougiData = db.ougi[data.ougi_id];
     $skillDesc.children("tr").eq(8).children("td").eq(0).html(getOugiDesc(ougiData));
