@@ -60,7 +60,7 @@
 			updatePrev(this.value);
 		}).append("<option selected>帳號1</option>");
 		
-		var clearAllTears = this.clearAllTears();   // 匿名function無法抓到外部定義的function
+		var parent = this;   // 匿名function無法抓到外部定義的function
 				
 		$("#tearsCreateAccount").click(function() {
 			saveToObject();
@@ -71,8 +71,7 @@
 			}
 			
 			$tearsAccount.append("<option selected>帳號" + count + "</option>");
-			clearAllTears;
-			updatePrev();
+			parent.clearAllTears();
 		});
 		
 		$("#tearsRenameAccount").click(function() {
@@ -98,7 +97,7 @@
 			// 只剩一個項目時不作刪除
 			var $options = $tearsAccount.children("option");
 			if ($options.length === 1) {
-				clearAllTears;
+				parent.clearAllTears();
 				$options.filter(":selected").html('帳號1');
 			} else {
 				$options.filter(":selected").remove();
@@ -160,7 +159,7 @@
 		var json = saveCommon;
 
 		hideResultInput();
-		$("#saveToText").show().children("textarea").val(json);
+		showModal(json);
 	}
 
 	function saveCommon() {

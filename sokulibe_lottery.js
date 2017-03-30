@@ -216,9 +216,7 @@
 	}
 	
 	this.exportRatio = function() {
-		$("#lotteryExport").val(JSON.stringify(lotteryData));
-		$("#lotteryExportDiv").show();
-		$("#lotteryImportDiv").hide();
+		showModal(JSON.stringify(lotteryData));
 	}
 
 	this.prepareImportRatio = function() {

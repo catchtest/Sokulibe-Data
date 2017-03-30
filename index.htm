@@ -99,12 +99,12 @@
 								<li>2017/03/29<br />眼淚消耗修改成可儲存多帳號</li>
 								<li>2017/03/27<br />補上職業被動</li>
 								<li>2017/03/16<br />補上稀有敵人，雖然沒啥意義</li>
-								<li>2017/03/02<br />增加故事文本</li>
                             </ul>
 
                             <button type="button" onclick="$('#oldUpdate').toggle();" class="btn btn-default btn-xs btn-block">顯示/隱藏舊紀錄 ▼</button>
                             <br />
                             <ul id="oldUpdate" style="display: none;">
+								<li>2017/03/02<br />增加故事文本</li>
 								<li>2017/02/02<br />增加怪物圖片</li>
 								<li>2017/01/13<br />增加點數一覽<br />轉蛋模擬器可以切換活動</li>
 								<li>2017/01/12<br />關卡增加時限資料<br />補活動道具圖片</li>
@@ -144,7 +144,7 @@
                                 <li>在技能列表可按 <kbd>↑</kbd><kbd>↓</kbd> 直接切換項目</li>
                                 <li>本網頁使用響應式設計，使用手機也可觀看</li>
                             </ul>
-                            <hr /> 樣式
+                            <hr /> <!--樣式
                             <select id="theme" class="simple-input">
 								<option>Default</option>
 								<option>Cerulean</option>
@@ -163,7 +163,7 @@
 								<option>Superhero</option>
 								<option>United</option>
 								<option>Yeti</option>
-							</select>
+							</select>-->
 
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default btn-xs">
@@ -2056,9 +2056,6 @@
                     <textarea class="form-control"></textarea>
                     <button type="button" class="btn btn-primary btn-sm" onclick="loadFromTextButton();">確定</button> 從文字框貼上先前輸出的字串後，按下確定鍵
                 </div>
-                <div id="saveToText" style="display: none;">
-                    <textarea class="form-control"></textarea> 將以上文字複製並儲存到別處
-                </div>
                 <table class="table table-bordered table-striped table-hover" id="tearsComputeTable">
                     <thead>
                         <tr>
@@ -2156,9 +2153,6 @@
 							<button type="button" class="btn btn-default" style="width: 50%;" onclick="lottery.exportRatio();">匯出機率</button>
 							<button type="button" class="btn btn-default" style="width: 50%;" onclick="lottery.prepareImportRatio();">匯入機率</button>
 						</div>
-						<div id="lotteryExportDiv" style="display: none;">
-							<textarea id="lotteryExport" class="form-control"></textarea>
-						</div>
 						<div id="lotteryImportDiv" style="display: none;">
 							<textarea id="lotteryImport" class="form-control"></textarea>
 							<button type="button" class="btn btn-default" onclick="lottery.importRatio();">確定</button>
@@ -2191,6 +2185,15 @@
             </div>
         </div>
     </div>
+	
+	<div class="modal fade bs-example-modal-lg" id="outputModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<textarea class="form-control" style="height: 200px;" readonly="readonly"></textarea>
+			</div>
+		</div>
+	</div>
+	
     <div class="loader loader-default is-active" data-text="Loading"></div>
     <a href="#" id="backToTop" title="回到頂端"><i class="glyphicon glyphicon-chevron-up"></i></a>
 

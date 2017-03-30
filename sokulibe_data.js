@@ -3151,6 +3151,10 @@ function loadStoryData(id, type) {
 	$("#storyBlock2").html(html).show();
 }
 
+function showModal(text) {
+	$('#outputModal').find('textarea').val(text).end().modal('show');
+}
+
 // 擴充方法
 String.Format = function(format) {
     var args = Array.prototype.slice.call(arguments, 1);
