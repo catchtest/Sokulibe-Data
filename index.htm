@@ -2052,10 +2052,6 @@
                     <div style="display: inline-block;">擁有4星角色<span id="unitCount" class="text-danger">0</span>+<span id="unitFreeCount" class="text-danger">0</span>位（200級有<span id="unitLv200Count" class="text-danger">0</span>位）</div>
 					<div style="display: inline-block;">已消耗眼淚<span id="tearsValue" class="text-danger">0</span>個（花在4星<span id="tearsFor4Value" class="text-danger">0</span>個）</div>
                 </div>
-                <div id="loadFromText" style="display: none;">
-                    <textarea class="form-control"></textarea>
-                    <button type="button" class="btn btn-primary btn-sm" onclick="loadFromTextButton();">確定</button> 從文字框貼上先前輸出的字串後，按下確定鍵
-                </div>
                 <table class="table table-bordered table-striped table-hover" id="tearsComputeTable">
                     <thead>
                         <tr>
@@ -2153,10 +2149,6 @@
 							<button type="button" class="btn btn-default" style="width: 50%;" onclick="lottery.exportRatio();">匯出機率</button>
 							<button type="button" class="btn btn-default" style="width: 50%;" onclick="lottery.prepareImportRatio();">匯入機率</button>
 						</div>
-						<div id="lotteryImportDiv" style="display: none;">
-							<textarea id="lotteryImport" class="form-control"></textarea>
-							<button type="button" class="btn btn-default" onclick="lottery.importRatio();">確定</button>
-						</div>
                     </div>
                 </div>
 
@@ -2189,7 +2181,21 @@
 	<div class="modal fade bs-example-modal-lg" id="outputModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
-				<textarea class="form-control" style="height: 200px;" readonly="readonly"></textarea>
+				<textarea class="form-control" style="height: 200px; background-color: white;" readonly="readonly"></textarea>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade bs-example-modal-lg" id="inputModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+			      <div class="modal-body" style="padding: 0px;">
+					<textarea class="form-control" style="height: 200px;" id="inputTextarea"></textarea>
+				  </div>
+				
+				  <div class="modal-footer" style="padding: 1px;">
+					<button type="button" class="btn btn-default btn-block" data-dismiss="modal">確定</button>
+				  </div>
 			</div>
 		</div>
 	</div>

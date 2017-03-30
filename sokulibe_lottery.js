@@ -8,9 +8,9 @@
 	var $resultDiv = $("#lotteryResult");
 	var $result = $resultDiv.children("div");
 	var $recordTable = $("#lotteryResultTable > tbody");
+	var $lotteryName = $('#lotteryName');
 	
 	this.initial = function() {
-		var $lotteryName = $('#lotteryName');
 		$.each(lottery.itemList(), function (i, item) {
 			$lotteryName.append($('<option>', { 
 				value: item.value,
@@ -220,15 +220,17 @@
 	}
 
 	this.prepareImportRatio = function() {
-		$("#lotteryImport").val('');
-		$("#lotteryImportDiv").show();
-		$("#lotteryExportDiv").hide();
+		showInputModal(this.importRatio);
 	}
 	
-	this.importRatio = function() {
-		var obj = JSON.parse($("#lotteryImport").val());
+	function importRatio(text) {
+		if (!text) {
+			alert('沒有輸入文字');
+			return;
+		}
+		
+		var obj = JSON.parse(text);
 		define.custom.data = obj;
-		$("#lotteryImportDiv").hide();
 		
 		$lotteryName.val("custom").change();
 	}

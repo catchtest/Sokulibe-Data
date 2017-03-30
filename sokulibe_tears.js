@@ -72,6 +72,7 @@
 			
 			$tearsAccount.append("<option selected>帳號" + count + "</option>");
 			parent.clearAllTears();
+			updatePrev();
 		});
 		
 		$("#tearsRenameAccount").click(function() {
@@ -156,9 +157,7 @@
 	}
 
 	this.saveToText = function() {
-		var json = saveCommon;
-
-		hideResultInput();
+		var json = saveCommon();
 		showModal(json);
 	}
 
@@ -203,12 +202,10 @@
 	}
 
 	this.loadFromText = function() {
-		hideResultInput();
-		$("#loadFromText").show();
+		showInputModal(loadFromTextProcess);
 	}
 
-	this.loadFromTextButton = function() {
-		var json = $("#loadFromText").children("textarea").val();
+	function loadFromTextProcess(json) {
 		if (!json) {
 			alert('沒有輸入文字');
 			return;
@@ -286,17 +283,10 @@
 		$("#unitCount").html(units);
 		$("#unitFreeCount").html(unitsFree);
 		$("#unitLv200Count").html(unitsLv200);
-		hideResultInput();
 	}
 
 	this.clearAllTears = function() {
 		$tearsTable.find("[name=unitLv], [name=unitTear]").val('');
 		updateResultText();
-		hideResultInput();
-	}
-
-	function hideResultInput() {
-		$("#saveToText").hide();
-		$("#loadFromText").hide();
 	}
 }

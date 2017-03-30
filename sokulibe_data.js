@@ -3155,6 +3155,14 @@ function showModal(text) {
 	$('#outputModal').find('textarea').val(text).end().modal('show');
 }
 
+function showInputModal(callback) {
+	$('#inputModal').find('textarea').val('').end()
+		.find('.modal-footer > button').unbind("click").bind("click", function() {
+			callback && callback.call(this, $("#inputTextarea").val());
+		}).end()
+		.modal('show');
+}
+
 // 擴充方法
 String.Format = function(format) {
     var args = Array.prototype.slice.call(arguments, 1);
