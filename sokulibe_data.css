@@ -564,6 +564,12 @@ a > i, button > i {
 	border-radius: 21px;
 }
 
+#unitSelectModal img {
+	border-radius: 16%;
+	width: 20%;
+	padding: 5px;
+}
+
 #eventItems > .row > div {
 	margin-bottom: 10px;
 }
@@ -594,4 +600,18 @@ a > i, button > i {
 	padding: 8px;
 	margin: 0px;
 	border-radius: 0;
+}
+
+.grayscale {
+	-webkit-filter: grayscale(100%);
+	-moz-filter: grayscale(100%);
+	-ms-filter: grayscale(100%);
+	-o-filter: grayscale(100%);
+	filter: grayscale(100%);
+	filter: gray; /* IE 6-9 */
+}
+
+#unitSelectModal .modal-dialog {
+    max-height: 90%;
+    overflow-y: auto;
 }

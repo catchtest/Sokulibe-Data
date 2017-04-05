@@ -22,6 +22,8 @@
 		$lotteryName.change(function(){
 			lottery.change($(this).val());
 		}).children("option:nth-last-child(2)").attr("selected", "selected").change();
+		
+		unitSelectModal
 	}
 	
 	this.reset = function() {
@@ -233,5 +235,46 @@
 		define.custom.data = obj;
 		
 		$lotteryName.val("custom").change();
+	}
+	
+	var initSelectUnitModal = false;
+	this.prepareSelectUnit = function() {
+		var $modal = $("#unitSelectModal");
+		
+		if (!initSelectUnitModal) {
+			var html = '';
+			var itemList = getUnitSortList(true);
+			for (var i = 0, len = itemList.length; i < len; i++) {
+				var data = itemList[i];
+				
+				if (data.rarity === 4) {
+					var fileName = String.Format(path.unit_mini, padLeft(data.id.toString(), 4));
+					html += String.Format('<img src="{0}" alt="{1}" class=" grayscale" />', fileName, data.id);
+				}
+			}
+			var $row = $modal.find(".modal-body");
+			$row.html(html).find("img").click(function() {
+				$(this).toggleClass('grayscale');
+			});
+			
+			$modal.find(".modal-footer > button").click(function() {
+				var selectList = $row.find('img:not(".grayscale")').map(function() {
+					return parseInt($(this).attr("alt"));
+				}).get();
+				
+				$modal.modal('hide');
+				if (selectList.length) {
+					showModal(JSON.stringify({
+						"rarity": 4,
+						"rate": 600,
+						"unit_id": selectList,
+						"festival": false
+					}, '', 4));
+				}
+			});
+			
+			initSelectUnitModal = true;
+		}
+		$modal.modal('show');
 	}
 }

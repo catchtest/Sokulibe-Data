@@ -551,11 +551,11 @@ function initIcons() {
     renderTable("iconsTable", html);
 }
 
-function padLeft(str, lenght) {
-    if (str.length >= lenght)
+function padLeft(str, length) {
+    if (str.length >= length)
         return str;
     else
-        return padLeft("0" + str, lenght);
+        return padLeft("0" + str, length);
 }
 
 // 初始化道具列表
@@ -703,12 +703,12 @@ function initUnitList() {
     renderTable("unitListTable", html);
 }
 
-function getUnitSortList() {
+function getUnitSortList(forceAll) {
     var itemList = [];
     for (var id in db.unit) {
         var data = db.unit[id];
 
-        if (skipDirty && isDirtyUnit(data)) continue;
+        if (!forceAll && skipDirty && isDirtyUnit(data)) continue;
         itemList.push(data);
     }
 

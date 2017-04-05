@@ -2146,8 +2146,9 @@
                             </table>
                         </div>
 						<div class="btn-group" style="width: 100%">
-							<button type="button" class="btn btn-default" style="width: 50%;" onclick="lottery.exportRatio();">匯出機率</button>
-							<button type="button" class="btn btn-default" style="width: 50%;" onclick="lottery.prepareImportRatio();">匯入機率</button>
+							<button type="button" class="btn btn-default" style="width: 33%;" onclick="lottery.exportRatio();">匯出機率</button>
+							<button type="button" class="btn btn-default" style="width: 34%;" onclick="lottery.prepareImportRatio();">匯入機率</button>
+							<button type="button" class="btn btn-default" style="width: 33%;" onclick="lottery.prepareSelectUnit();">選擇</button>
 						</div>
                     </div>
                 </div>
@@ -2189,11 +2190,24 @@
 	<div class="modal fade bs-example-modal-lg" id="inputModal" tabindex="-1" role="dialog">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
-			      <div class="modal-body" style="padding: 0px;">
+			      <div class="modal-body" style="padding: 0;">
 					<textarea class="form-control" style="height: 200px;" id="inputTextarea"></textarea>
 				  </div>
 				
-				  <div class="modal-footer" style="padding: 1px;">
+				  <div class="modal-footer" style="padding: 0;">
+					<button type="button" class="btn btn-default btn-block" data-dismiss="modal">確定</button>
+				  </div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="unitSelectModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+			      <div class="modal-body" style="padding: 5px;">
+				  </div>
+				
+				  <div class="modal-footer" style="padding: 0;">
 					<button type="button" class="btn btn-default btn-block" data-dismiss="modal">確定</button>
 				  </div>
 			</div>
