@@ -269,7 +269,7 @@
 						"rate": 600,
 						"unit_id": selectList,
 						"festival": false
-					}, '', 4));
+					}));
 				}
 			});
 			
