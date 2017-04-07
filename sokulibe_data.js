@@ -822,7 +822,8 @@ function renderWeapon(data) {
         weaponMainSkill.dmg,
         weaponMainSkill.break_,
         weaponSubSkill[1] == null ? '' : weaponSubSkill[1].comment.i18n().pre(),
-        weaponSubSkill[5] == null ? '' : weaponSubSkill[5].comment.i18n().pre()
+        weaponSubSkill[5] == null ? '' : weaponSubSkill[5].comment.i18n().pre(),
+		(data.exchange_flag === 1).display()
     ];
     return list;
 }
