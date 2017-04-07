@@ -134,6 +134,7 @@ var path = {
 	$("a[href='#eventItems']").one("click", initEventItem);
 	$("a[href='#lotteryTab']").one("click", initLottery);
 	$("a[href='#storyTab']").one("click", initStory);
+	$("a[href='#treasureTab']").one("click", initTreasure);
 
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
@@ -3149,6 +3150,20 @@ function loadStoryData(id, type) {
 	
 	html = html.replace(/(\S+)：/g, "<span class='text-success'>$1</span>").replace(/\n/g, "<br />");
 	$("#storyBlock2").html(html).show();
+}
+
+function initTreasure() {
+    var html = '';
+    for (var diff in db.treasure_step_difficulty) {
+		for (var step in db.treasure_step_difficulty[diff]) {
+			var data = db.treasure_step_difficulty[diff][step];
+
+			var asset = getAsset(data.mission_bonus_type, data.mission_bonus_id, data.mission_bonus_value);
+
+			html += tableRow([diff, step, asset]);
+		}
+    }
+    renderTable("treasureTable", html);
 }
 
 function showModal(text) {
