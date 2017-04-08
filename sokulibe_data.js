@@ -132,6 +132,7 @@ var path = {
     $("a[href='#loginBonusTab']").one("click", initLoginBonus);
 	$("a[href='#enchantTab']").one("click", initEnchant);
 	$("a[href='#eventItems']").one("click", initEventItem);
+	$("a[href='#weaponExchangeTab']").one("click", initWeaponExchange);
 	$("a[href='#lotteryTab']").one("click", initLottery);
 	$("a[href='#storyTab']").one("click", initStory);
 	$("a[href='#treasureTab']").one("click", initTreasure);
@@ -822,8 +823,7 @@ function renderWeapon(data) {
         weaponMainSkill.dmg,
         weaponMainSkill.break_,
         weaponSubSkill[1] == null ? '' : weaponSubSkill[1].comment.i18n().pre(),
-        weaponSubSkill[5] == null ? '' : weaponSubSkill[5].comment.i18n().pre(),
-		(data.exchange_flag === 1).display()
+        weaponSubSkill[5] == null ? '' : weaponSubSkill[5].comment.i18n().pre()
     ];
     return list;
 }
@@ -1041,6 +1041,16 @@ function initEventItem() {
 		html += String.Format('<div class="col-md-2 col-sm-3 col-xs-4 text-center">{0}<br />{1}</div>', imgHtml(path.event_item, id, true), db.event_item[id].name);
 	}
 	$("#eventItems > .row").html(html);
+}
+
+function initWeaponExchange() {
+	var html = '';
+	for (var id in db.weapon) {
+		var data = db.weapon[id];
+		if (data.exchange_flag !== 1) continue;
+		html += String.Format('<a href="#" onclick="showWeapon(\'{2}\')"><div class="col-md-2 col-sm-3 col-xs-4 text-center">{0}<br />{1}</div></a>', imgHtml(path.weapon, id, true), data.name, id);
+	}
+	$("#weaponExchangeTab > .row").html(html);
 }
 
 // 判斷是否為尚未完成的裝備

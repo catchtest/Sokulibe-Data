@@ -570,12 +570,21 @@ a > i, button > i {
 	padding: 5px;
 }
 
-#eventItems > .row > div {
+#eventItems > .row > div,
+#weaponExchangeTab > .row > a > div {
 	margin-bottom: 10px;
+	overflow : hidden;
+	text-overflow : ellipsis;
+	white-space : nowrap;
 }
 
-#eventItems img {
+#eventItems img,
+#weaponExchangeTab img {
 	max-width: 100%;
+}
+
+#weaponExchangeTab img {
+	border-radius: 7%;
 }
 
 #monsterList img,
