@@ -624,3 +624,7 @@ a > i, button > i {
     max-height: 90%;
     overflow-y: auto;
 }
+
+#unit .img-xs {
+	border-radius: 16%;
+}

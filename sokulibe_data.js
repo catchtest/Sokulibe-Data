@@ -293,7 +293,7 @@ function initUnit() {
         var name = prefix + getUnitName(data);
         var job = getUnitJob(data);
 
-        var itemHtml = listItemHtml(id, name, job, "loadUnitData(" + id + ");", cssClass);
+        var itemHtml = listItemHtml(id, imgXs(path.unit_mini, id) + name, job, "loadUnitData(" + id + ");", cssClass);
         htmls[data.rarity] += itemHtml;
     }
     for (var i = 1; i <= 4; i++) {
@@ -330,7 +330,7 @@ function initAccessory() {
 
         var data = db.accessory[id];
 
-        var name = prefix + getAccessoryName(id);
+        var name = imgXs(path.accessory, getAccessoryFirstId(id)) + prefix + getAccessoryName(id);
         var job = enums.equip_job[data.job] + ' <div class="rarity">' + enums.rarity[data.rarity] + '</div>';
         var itemHtml = listItemHtml(id, name, job, "loadAccessoryData(" + id + ");", cssClass);
 
@@ -362,7 +362,7 @@ function initWeapon() {
             prefix = dirtyPrefix;
         }
 
-        var name = prefix + data.name;
+        var name = imgXs(path.weapon, id) + prefix + data.name;
         // 不能裝備的武器
         if (data.job == -1) {
             var itemHtml = listItemHtml(id, name, enums.rarity[data.rarity], cssClass);
