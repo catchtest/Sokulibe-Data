@@ -3159,7 +3159,7 @@ function loadStoryData(id, type) {
 	var html = (type == 'ms') ? main_story[id].story 
 	         : (type == 'es') ? event_story[id].story : '';
 	
-	html = html.replace(/(\S+)：/g, "<span class='text-success'>$1</span>").replace(/\n/g, "<br />");
+	html = html.replace(/([\S ]+)：/g, "<span class='text-success'>$1</span>").replace(/\n/g, "<br />");
 	$("#storyBlock2").html(html).show();
 }
 
