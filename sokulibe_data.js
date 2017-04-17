@@ -1027,9 +1027,10 @@ function getUnitPartner(data, showJob) {
     var html = '無';
     var partnerData = db.unit[db.unit_base[data.base_id].partner_id];
     if (partnerData != null) {
-        html = String.Format("<a href='#' onclick='showUnit({0});'>{1}</a>",
+        html = String.Format("<a href='#' onclick='showUnit({0});'>{2}{1}</a>",
             partnerData.id,
-            getUnitName(partnerData));
+            getUnitName(partnerData),
+			imgXs(path.unit_mini, partnerData.id));
         if (showJob) {
             html += getUnitJobComment(partnerData);
         }
@@ -2624,11 +2625,11 @@ function getAsset(type, id, value) {
 }
 
 function imgXs(path, id) {
-    if (id != null) {
-        path = String.Format(path, padLeft(id.toString(), 4));
-    }
     if (disableImage) {
         return '';
+    }
+    if (id != null) {
+        path = String.Format(path, padLeft(id.toString(), 4));
     }
     return String.Format('<img src="{0}" class="img-xs"/>', path);
 }
