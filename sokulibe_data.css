@@ -123,7 +123,7 @@ pre {
 	text-align: right;
 }
 
-.name {
+h3.name {
 	margin-top: 0;
 	padding: 8px;
     background: -webkit-linear-gradient(left, rgba(0,0,0,0.15), rgba(0,0,0,0)); /* For Safari 5.1 to 6.0 */
@@ -440,6 +440,16 @@ a > i, button > i {
 	vertical-align: middle;
 }
 
+.table th {
+	/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#355258+0,353a41+100 */
+	background: #355258; /* Old browsers */
+	background: -moz-linear-gradient(top,  #355258 0%, #353a41 100%); /* FF3.6-15 */
+	background: -webkit-linear-gradient(top,  #355258 0%,#353a41 100%); /* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(to bottom,  #355258 0%,#353a41 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#355258', endColorstr='#353a41',GradientType=0 ); /* IE6-9 */
+	text-shadow: 1px 1px black;
+}
+
 .table img {
 	max-width: 50px;
 }
@@ -634,4 +644,24 @@ a > i, button > i {
 
 #unit .img-xs {
 	border-radius: 16%;
+}
+
+.nav-tabs > li {
+	text-align: center;
+}
+
+.nav-tabs.item-5 > li {
+	width: 20%;
+}
+
+.nav-tabs.item-4 > li {
+	width: 25%;
+}
+
+.nav-tabs.item-3 > li {
+	width: 33%;
+}
+
+.nav-tabs.item-3 > li:last-child {
+	width: 34%;
 }
