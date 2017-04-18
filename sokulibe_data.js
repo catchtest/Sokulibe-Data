@@ -2162,6 +2162,9 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
     $("#bg_location").html(db.bg_location[baseData.bg_id].name);
     $("#boss1_name").html(getMonsterName(baseData.boss01_id));
     $("#boss2_name").html(getMonsterName(baseData.boss02_id));
+	$("#required_light").html(baseData.required_light > 0 ? baseData.required_light : '---');
+	$("#light_element_bonus").html(baseData.light_element_bonus > 0 && baseData.bonus_element_id1 >= 0 ? ' + ' + baseData.light_element_bonus : '');
+	$("#bonus_element_id").html(displayElement(baseData.bonus_element_id1, baseData.bonus_element_id2));
     $("#rareenemy_id").html(getMonsterName(baseData.rareenemy_id));
     var timeLimit = baseData.time_limit || baseData.timelimit;
     $("#time_limit").html(String.Format("{0}分", timeLimit / 60));
@@ -2549,6 +2552,7 @@ function setMonValue(className, content) {
 }
 
 function displayElement(value1, value2) {
+	if (value1 < 0) return '';
     var value = elementHtml(value1);
     if (value2 > 0) {
         value += elementHtml(value2);
