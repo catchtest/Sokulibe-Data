@@ -345,80 +345,84 @@ function initWeapon() {
 }
 // 初始化關卡列表
 function initEvent() {
-    // 活動
-    var $list = $("#eventTab > .list-group");
-    var html = '';
-    for (var id in db.event) {
-        // 底下沒有任何一關，不要顯示
-        if (!(id in db.event_multi_quest) && !(id in db.event_point)) continue;
-        var data = db.event[id];
-        var event_flag = [];
-        if (data.multi_flag === 1 || data.event_type === 5 || data.event_type === 9) {
-            event_flag.push("<單刷>");
-        }
-        if (data.ranking_flag === 1) {
-            event_flag.push("<排名>");
-        }
-        var name = data.name;
-        var job = event_flag.join(' ');
-        var itemHtml = listItemHtml(id, name, job, "loadEventData(" + id + ");");
-        // 越後面的關卡排越前
-        html = itemHtml + html;
-    }
-    $list.html(html);
-    // 共鬥
-    $list = $("#multiTab > .list-group");
-    html = '';
-    for (var mrcate in db.multi_quest) {
-        for (var id in db.multi_quest[mrcate]) {
-            var data = db.multi_quest[mrcate][id];
-            var name = 'MR' + data.required_lv + '&nbsp;&nbsp;' + data.name;
-            var job = String.Format("體力 {0}", data.stamina);
-            var itemHtml = listItemHtml(id, name, job, "loadMultiData(" + id + ", " + mrcate + ");");
-            // 越後面的關卡排越前
-            html = itemHtml + html;
-        }
-    }
-    $list.html(html);
-    // 主線
-    $list = $("#zoneTab > .list-group");
-    html = '';
-    for (var chapter in db.zone) {
-        for (var id in db.zone[chapter]) {
-            // 不知道為什麼第二章的內容跟第一章完全一樣，可能是copy，先隱藏
-            if (chapter == 2) continue;
-            var data = db.zone[chapter][id];
-            var name = getStoryName(id);
-            var job = String.Format("體力 {0}", data.stamina);
-            var itemHtml = listItemHtml(id, name, job, "loadZoneData(" + id + ", " + chapter + ");");
-            html += itemHtml;
-        }
-    }
-    $list.html(html);
-    // 支路
-    $list = $("#battleStepTab > .list-group");
-    html = '';
-    for (var chapter in db.battle_step_difficulty) {
-        for (var id in db.battle_step_difficulty[chapter]) {
-            var data = db.battle_step_difficulty[chapter][id];
-            var name = data.name;
-            var job = String.Format("體力 {0}", data.stamina);
-            var itemHtml = listItemHtml(id, name, job, "loadBattleStepData(" + id + ", " + chapter + ");");
-            html += itemHtml;
-        }
-    }
-    $list.html(html);
-    // 單人經驗關
-    $list = $("#expZoneTab > .list-group");
-    html = '';
-    for (var id in db.experience_zone) {
-        var data = db.experience_zone[id];
-        var name = data.name;
-        var job = String.Format("體力 {0}", data.stamina);
-        var itemHtml = listItemHtml(id, name, job, "loadExpZoneData(" + id + ");");
-        html += itemHtml;
-    }
-    $list.html(html);
+	$.getJSON('sokulibe_battle_data.json', function(data) {
+		$.extend(db, data);
+		
+		// 活動
+		var $list = $("#eventTab > .list-group");
+		var html = '';
+		for (var id in db.event) {
+			// 底下沒有任何一關，不要顯示
+			if (!(id in db.event_multi_quest) && !(id in db.event_point)) continue;
+			var data = db.event[id];
+			var event_flag = [];
+			if (data.multi_flag === 1 || data.event_type === 5 || data.event_type === 9) {
+				event_flag.push("<單刷>");
+			}
+			if (data.ranking_flag === 1) {
+				event_flag.push("<排名>");
+			}
+			var name = data.name;
+			var job = event_flag.join(' ');
+			var itemHtml = listItemHtml(id, name, job, "loadEventData(" + id + ");");
+			// 越後面的關卡排越前
+			html = itemHtml + html;
+		}
+		$list.html(html);
+		// 共鬥
+		$list = $("#multiTab > .list-group");
+		html = '';
+		for (var mrcate in db.multi_quest) {
+			for (var id in db.multi_quest[mrcate]) {
+				var data = db.multi_quest[mrcate][id];
+				var name = 'MR' + data.required_lv + '&nbsp;&nbsp;' + data.name;
+				var job = String.Format("體力 {0}", data.stamina);
+				var itemHtml = listItemHtml(id, name, job, "loadMultiData(" + id + ", " + mrcate + ");");
+				// 越後面的關卡排越前
+				html = itemHtml + html;
+			}
+		}
+		$list.html(html);
+		// 主線
+		$list = $("#zoneTab > .list-group");
+		html = '';
+		for (var chapter in db.zone) {
+			for (var id in db.zone[chapter]) {
+				// 不知道為什麼第二章的內容跟第一章完全一樣，可能是copy，先隱藏
+				if (chapter == 2) continue;
+				var data = db.zone[chapter][id];
+				var name = getStoryName(id);
+				var job = String.Format("體力 {0}", data.stamina);
+				var itemHtml = listItemHtml(id, name, job, "loadZoneData(" + id + ", " + chapter + ");");
+				html += itemHtml;
+			}
+		}
+		$list.html(html);
+		// 支路
+		$list = $("#battleStepTab > .list-group");
+		html = '';
+		for (var chapter in db.battle_step_difficulty) {
+			for (var id in db.battle_step_difficulty[chapter]) {
+				var data = db.battle_step_difficulty[chapter][id];
+				var name = data.name;
+				var job = String.Format("體力 {0}", data.stamina);
+				var itemHtml = listItemHtml(id, name, job, "loadBattleStepData(" + id + ", " + chapter + ");");
+				html += itemHtml;
+			}
+		}
+		$list.html(html);
+		// 單人經驗關
+		$list = $("#expZoneTab > .list-group");
+		html = '';
+		for (var id in db.experience_zone) {
+			var data = db.experience_zone[id];
+			var name = data.name;
+			var job = String.Format("體力 {0}", data.stamina);
+			var itemHtml = listItemHtml(id, name, job, "loadExpZoneData(" + id + ");");
+			html += itemHtml;
+		}
+		$list.html(html);
+	});
 }
 var storyNames;
 
