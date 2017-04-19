@@ -76,6 +76,14 @@ pre {
 	padding-top: 10px;
 }
 
+.left-menu > .tab-pane {
+	padding-top: 0;
+}
+
+.left-menu > .tab-pane > .list-group > a {
+	border-radius: 0;
+}
+
 .list-group {
 	height: 800px;
 	overflow-y: auto;
