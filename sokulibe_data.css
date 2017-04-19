@@ -678,3 +678,41 @@ a > i, button > i {
 .nav-tabs.item-3 > li:last-child {
 	width: 34%;
 }
+
+/* 總合力資料 */
+.light {
+	color: #ffe066;
+	font-weight: bold;
+	text-shadow: 1px 1px #665200;
+    -webkit-animation: color-change 3s infinite;
+    -moz-animation: color-change 3s infinite;
+	-ms-animation: color-change 3s infinite;
+    -o-animation: color-change 3s infinite;
+    animation: color-change 3s infinite;
+}
+
+@-webkit-keyframes color-change {
+    0% { color: #ffe066; }
+	50% { color: white; }
+    100% { color: #ffe066; }
+}
+@-moz-keyframes color-change {
+    0% { color: #ffe066; }
+	50% { color: white; }
+    100% { color: #ffe066; }
+}
+@-ms-keyframes color-change {
+    0% { color: #ffe066; }
+	50% { color: white; }
+    100% { color: #ffe066; }
+}
+@-o-keyframes color-change {
+    0% { color: #ffe066; }
+	50% { color: white; }
+    100% { color: #ffe066; }
+}
+@keyframes color-change {
+    0% { color: #ffe066; }
+	50% { color: white; }
+    100% { color: #ffe066; }
+}

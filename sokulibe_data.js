@@ -35,7 +35,8 @@ var path = {
     "accessory": "Accessory/eq{0}_tex.png",
     "weapon": "Weapon/wi{0}_tex.png",
     "event_item": "EventItem/ei{0}_tex.png",
-    "monster": "Monster/mm{0}_tex.png"
+    "monster": "Monster/mm{0}_tex.png",
+	"guild_icon": "GuildIcon/ig{0}_tex.png",
 };
 (function($) {
     // 顯示讀取資料錯誤訊息
@@ -102,6 +103,23 @@ var path = {
     $("a[href='#lotteryTab']").one("click", initLottery);
     $("a[href='#storyTab']").one("click", initStory);
     $("a[href='#treasureTab']").one("click", initTreasure);
+	$("a[href='#guildIconTab']").one("click", function() {
+		// 公會徽章
+		var html = '';
+		for (var id in db.guild_icon) {
+			var data = db.guild_icon[id];
+			var list = [
+				imgHtml(path.guild_icon, id),
+				data.name,
+				data.comment,
+				data.unlock_comment
+			];
+			html += tableRow(list);
+		}
+		renderTable("guildIconTable", html);
+	});
+	
+	
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
         $(this).closest("tr").addClass("active");
@@ -2166,8 +2184,8 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
     $("#bg_location").html(db.bg_location[baseData.bg_id].name);
     $("#boss1_name").html(getMonsterName(baseData.boss01_id));
     $("#boss2_name").html(getMonsterName(baseData.boss02_id));
-	$("#required_light").html(baseData.required_light > 0 ? baseData.required_light : '---');
-	$("#light_element_bonus").html(baseData.light_element_bonus > 0 && baseData.bonus_element_id1 >= 0 ? ' + ' + baseData.light_element_bonus : '');
+	$("#required_light").html(baseData.required_light > 0 ? '<span class="light">' + baseData.required_light + '</span>' : '---');
+	$("#light_element_bonus").html(baseData.light_element_bonus > 0 && baseData.bonus_element_id1 >= 0 ? ' + ' + baseData.light_element_bonus : '---');
 	$("#bonus_element_id").html(displayElement(baseData.bonus_element_id1, baseData.bonus_element_id2));
     $("#rareenemy_id").html(getMonsterName(baseData.rareenemy_id));
     var timeLimit = baseData.time_limit || baseData.timelimit;
@@ -2624,6 +2642,9 @@ function getAsset(type, id, value) {
             name = imgXs(path.weapon, id) + '<span class="type-weapon"></span>' +
                 anchor(db.weapon[id].name, "showWeapon(" + id + ")");
             break;
+		case 15: // 貢獻點
+			if (id == 1) name = 'ユニオンメダル'
+			break;
     }
     if (!name) {
         return "type:" + type + " id:" + id + " value:" + value;
