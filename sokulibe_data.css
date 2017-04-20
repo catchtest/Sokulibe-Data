@@ -170,7 +170,7 @@ h3.name {
 
 .type-awaken::after {
 	content: '[覺醒]';
-	color: purple;
+	color: #ff99dd;
 	margin-right: 5px;
 }
 
@@ -576,7 +576,8 @@ a > i, button > i {
 	margin: 2px;
 }
 
-#enchantTable .img-xs {
+#enchantTable .img-xs,
+#unitAwakeningTable .img-xs {
 	margin: 0 5px 1px 0;
 }
 

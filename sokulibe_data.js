@@ -2047,29 +2047,31 @@ function loadWeaponData(id) {
         $("#weaponMainSkill_range").html(weaponMainSkill.min_range + '-' + weaponMainSkill.max_range);
         $("#weaponMainSkillType").html(enums.skill_type[weaponMainSkill.skill_type]);
         $("#weaponMainSkillCount").html(data.normal_mws_value + "（最大：" + data.awakening_mws_value + "）");
-        // 計算武器技威力帳面數值
-        // 威力好像固定是1.1/1.2/1.3/1.5
-        // 暗狂斧紀錄的是增加破盾威力但帳面威力仍然遵照規則，所以先寫死
-        var powerList = [];
-        [100, 110, 120, 130, 150].forEach(function(ratio) {
-            powerList.push((weaponMainSkill.dmg * ratio).toFixed(0));
-        });
-        $("#weaponMainSkillPower").html(powerList.join('→'));
         commonLoadAtk($("#weaponSkillAtk"), db.weapon_mainskill_atk[data.main_weapon_skill_id]);
     } else {
         $("[id^=weaponMainSkill]").empty();
         $("#weaponMainSkill").html('無');
         $("#weaponSkillAtk").hide();
     }
+	
+	// 計算武器技威力帳面數值
+	// 威力好像固定是1.1/1.2/1.3/1.5
+	// 暗狂斧紀錄的是增加破盾威力但帳面威力仍然遵照規則，所以先寫死
+	var powerList = [];
+	[100, 110, 120, 130, 150].forEach(function(ratio) {
+		powerList.push((weaponMainSkill.dmg * ratio).toFixed(0));
+	});
+	
     // 武器副技能
-    if (data.sub_weapon_skill_id != 0) {
-        var data_sub = db.weapon_subskill[data.sub_weapon_skill_id];
-        for (var i in data_sub) {
-            $("#weaponSubSkill" + i).html(data_sub[i].name + '<br />' + data_sub[i].comment.i18n().pre());
-        }
-    } else {
-        $("[id^=weaponSubSkill]").empty();
-    }
+	$("#weaponAwakenTable > tbody td").remove();
+	var data_sub = db.weapon_subskill[data.sub_weapon_skill_id];
+	for (var i in data_sub) {
+		var subskillComment = data_sub[i].name + '<br />' + data_sub[i].comment.i18n().pre();
+		var mainSkillPower = powerList[i - 1];
+		
+		var html = String.Format('<td>{0}</td><td>{1}</td><td>{2}</td>', subskillComment, mainSkillPower, 'todo');
+		$("#weaponAwakenTable > tbody > tr").eq(i - 1).append(html);
+	}
 }
 // 讀取活動資料
 function loadEventData(id) {
