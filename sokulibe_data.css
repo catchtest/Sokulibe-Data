@@ -168,6 +168,12 @@ h3.name {
 	margin-right: 5px;
 }
 
+.type-awaken::after {
+	content: '[覺醒]';
+	color: purple;
+	margin-right: 5px;
+}
+
 .type-accessory::after {
 	content: '[裝備]';
 	color: #2196f3;

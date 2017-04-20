@@ -96,6 +96,7 @@
                         <div class="well">
                             <div class="well-legend">更新紀錄</div>
                             <ul style="height: 160px; overflow-y: auto;">
+								<li>2017/04/20<br />增加覺醒資料、Stack一覽、關卡特性一覽</li>
 								<li>2017/04/19<br />增加公會徽章一覽</li>
 								<li>2017/04/18<br />關卡增加總合力資料、主線故事補完</li>
 								<li>2017/04/08<br />增加武器交換一覽</li>
@@ -212,6 +213,7 @@
                             <li role="presentation"><a href="#unitPowerTab" aria-controls="unitPowerTab" role="tab" data-toggle="tab">能力</a></li>
                             <li role="presentation"><a href="#unitResistTab" aria-controls="unitResistTab" role="tab" data-toggle="tab">抗性</a></li>
                             <li role="presentation"><a href="#unitSkillTab" aria-controls="unitSkillTab" role="tab" data-toggle="tab">技能</a></li>
+							<li role="presentation"><a href="#unitAwakeningTab" aria-controls="unitAwakeningTab" role="tab" data-toggle="tab">覺醒</a></li>
                             <li role="presentation"><a href="#unitCommentTab" aria-controls="unitCommentTab" role="tab" data-toggle="tab">對話</a></li>
                             <li role="presentation"><a href="#unitStoryTab" aria-controls="unitStoryTab" role="tab" data-toggle="tab">故事</a></li>
                             <li role="presentation"><a href="#unitFullImageTab" aria-controls="unitFullImageTab" role="tab" data-toggle="tab">全身</a></li>
@@ -433,6 +435,30 @@
                                                 <th>沉默耐性</th>
                                                 <td class="silence_resist"></td>
                                             </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div role="tabpanel" class="tab-pane" id="unitAwakeningTab">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="unitAwakeningTable">
+                                        <thead>
+                                            <tr>
+                                                <th>覺醒</th>
+												<th>需求等級</th>
+												<th>需求升技</th>
+												<th>需求物品</th>
+												<th>HP</th>
+												<th>攻擊</th>
+												<th>速度</th>
+												<th>擊倒抵抗</th>
+												<th>總合力</th>
+												<th>Stack</th>
+												<th>抗性增加</th>
+												<th>被動改變</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                         </tbody>
                                     </table>
                                 </div>
@@ -1673,7 +1699,9 @@
                     <li role="presentation"><a href="#limitbreakTab" aria-controls="limitbreakTab" role="tab" data-toggle="tab">突破</a></li>
                     <li role="presentation"><a href="#loginBonusTab" aria-controls="tearsComputeTab" role="tab" data-toggle="tab">登入獎勵</a></li>
 					<li role="presentation"><a href="#enchantTab" aria-controls="enchantTab" role="tab" data-toggle="tab">效果</a></li>
-					<li role="presentation"><a href="#treasureTab" aria-controls="treasureTab" role="tab" data-toggle="tab">寶藏</a></li>
+					<!--<li role="presentation"><a href="#treasureTab" aria-controls="treasureTab" role="tab" data-toggle="tab">地圖寶箱</a></li>-->
+					<li role="presentation"><a href="#stackTab" aria-controls="stackTab" role="tab" data-toggle="tab">Stack</a></li>
+					<li role="presentation"><a href="#gimmickTab" aria-controls="gimmickTab" role="tab" data-toggle="tab">關卡特性</a></li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -1991,9 +2019,9 @@
                         <table class="table table-bordered table-striped table-hover" id="treasureTable">
                             <thead>
                                 <tr>
-                                    <th>層數</th>
-									<th>關卡</th>
-									<th>獎勵</th>
+                                    <th>地圖</th>
+									<th>編號</th>
+									<th>寶箱</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -2008,6 +2036,33 @@
 									<th>名稱</th>
 									<th>說明</th>
 									<th>解鎖條件</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="stackTab">
+                        <table class="table table-bordered table-striped table-hover" id="stackTable">
+                            <thead>
+                                <tr>
+                                    <th class="no-sort">名稱</th>
+									<th>堆疊數</th>
+									<th>完整名稱</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="gimmickTab">
+                        <table class="table table-bordered table-striped table-hover" id="gimmickTable">
+                            <thead>
+                                <tr>
+                                    <th class="width50 no-sort">圖示</th>
+									<th>分類</th>
+									<th>名稱</th>
+									<th>說明</th>
                                 </tr>
                             </thead>
                             <tbody>

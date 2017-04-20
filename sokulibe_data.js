@@ -37,6 +37,8 @@ var path = {
     "event_item": "EventItem/ei{0}_tex.png",
     "monster": "Monster/mm{0}_tex.png",
 	"guild_icon": "GuildIcon/ig{0}_tex.png",
+	"stack": "Stack/gs{0}_tex.png",
+	"awaken_item": "AwakeningItem/ia{0}_tex.png",
 };
 (function($) {
     // 顯示讀取資料錯誤訊息
@@ -104,7 +106,7 @@ var path = {
     $("a[href='#storyTab']").one("click", initStory);
     $("a[href='#treasureTab']").one("click", initTreasure);
 	$("a[href='#guildIconTab']").one("click", function() {
-		// 公會徽章
+		// 公會徽章一覽
 		var html = '';
 		for (var id in db.guild_icon) {
 			var data = db.guild_icon[id];
@@ -117,6 +119,43 @@ var path = {
 			html += tableRow(list);
 		}
 		renderTable("guildIconTable", html);
+	});
+	
+	$("a[href='#stackTab']").one("click", function() {
+		// Stack一覽
+		var html = '';
+		for (var id in db.stack) {
+			var data = db.stack[id];
+			
+			var innerHtml = '';
+			var count = 0;
+			for (var sid in db.stack_ability[id]) {
+				var data_sa = db.stack_ability[id][sid];
+				innerHtml += tableRow([data_sa.stack, data_sa.stack_ability_name]);
+				count++;
+			}
+			var nameBlock = imgHtml(path.stack, id) + '<br />' + data.stack_name;
+			// 在<tr>後插入一個包含rowspan的<td>
+			html += innerHtml.insert(4, String.Format("<td class='text-center' rowspan='{0}'>{1}</td>", count, nameBlock));
+		}
+		$("#stackTable > tbody").html(html);
+		//renderTable("stackTable", html);
+	});
+	
+	$("a[href='#gimmickTab']").one("click", function() {
+		// 關卡特性一覽
+		var html = '';
+		for (var id in db.gimmick) {
+			var data = db.gimmick[id];
+			var list = [
+				'',//imgHtml(path.stack, id),
+				data.gimmick_category_name,
+				data.gimmick_name,
+				data.gimmick_comment.pre(),
+			];
+			html += tableRow(list);
+		}
+		renderTable("gimmickTable", html);
 	});
 	
 	
@@ -1264,9 +1303,9 @@ function loadUnitData(id) {
     // 裝備一覽
     var allowJob = enums.job_equip_map[data.job_id];
     var itemList = [];
-    for (var id in db.accessory) {
-        var data1 = db.accessory[id];
-        if (isDirtyAccessory(id)) continue; // 強制跳過假資料
+    for (var aid in db.accessory) {
+        var data1 = db.accessory[aid];
+        if (isDirtyAccessory(aid)) continue; // 強制跳過假資料
         if (allowJob.indexOf(data1.job) < 0) continue; // 必須是該職業可以裝備
         if (data1.category === 1 && data1.rarity <= 3) continue; // 戒指沒有SR都不要顯示
         if (data1.category === 2 && data1.rarity <= 2) continue; // 護符沒有HR都不要顯示
@@ -1296,8 +1335,8 @@ function loadUnitData(id) {
     $("#unitTalismanTable > tbody").html(html2);
     // 武器一覽
     var itemList = [];
-    for (var id in db.weapon) {
-        var data1 = db.weapon[id];
+    for (var wid in db.weapon) {
+        var data1 = db.weapon[wid];
         if (isDirtyWeapon(data1)) continue; // 強制跳過假資料
         if (allowJob.indexOf(data1.job) < 0) continue; // 必須是該職業可以裝備
         itemList.push(data1);
@@ -1318,6 +1357,47 @@ function loadUnitData(id) {
         html += tableRow(list);
     }
     $("#unitWeaponTable > tbody").html(html);
+	
+	// 覺醒資料
+	html = '';
+	var data_awaken = db.unit_awakening[id];
+	if (data_awaken != null) {
+		for (var time in data_awaken) {
+			var dat = data_awaken[time];
+			var items = [];
+			for (var i = 1; i <= 4; i++) {
+				items.push(getAsset(dat['required_item_type_' + i], dat['required_item_id_' + i], dat['required_item_value_' + i]));
+			}
+			var stack = [];
+			for (var i = 1; i <= 2; i++) {
+				var sid = dat['stack0' + i + '_id'];
+				if (sid > 0) {
+					var num = dat['stack0' + i + '_number'];
+					stack.push(db.stack[sid].stack_name + ' ' + num);
+				}
+			}
+			
+			var list = [
+				dat.awakening,
+				dat.required_lv,
+				dat.required_skill_upgrade,
+				items.join('<br />'),
+				dat.hp,
+				dat.atk,
+				dat.agi,
+				dat.knock_back_regist,
+				'<span class="light">' + dat.light_lv + '<span>',
+				stack.join('<br />'),
+				'todo',
+				'todo'
+			];
+			html += tableRow(list);
+		}
+	} else {
+		html = '<tr><td colspan="100" class="text-center">無法覺醒</td></tr>';
+	}
+	$("#unitAwakeningTable > tbody").html(html);
+	
 }
 
 function isOtherElement(list, element, isWeapon) {
@@ -2645,6 +2725,9 @@ function getAsset(type, id, value) {
 		case 15: // 貢獻點
 			if (id == 1) name = 'ユニオンメダル'
 			break;
+		case 16: // 覺醒材料
+			name = imgXs(path.awaken_item, id) + '<span class="type-awaken"></span>' + db.awakening_item[id].name;
+			break;
     }
     if (!name) {
         return "type:" + type + " id:" + id + " value:" + value;
@@ -2910,6 +2993,12 @@ String.prototype.pre = function() {
 }
 String.prototype.replaceAll = function(target, replacement) {
     return this.split(target).join(replacement);
+};
+String.prototype.insert = function (index, string) {
+  if (index > 0)
+    return this.substring(0, index) + string + this.substring(index, this.length);
+  else
+    return string + this;
 };
 Number.prototype.display = function() {
     return (this.valueOf() > 1 ? ' x' + this.valueOf() : '');
