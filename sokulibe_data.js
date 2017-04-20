@@ -32,6 +32,9 @@ var path = {
     "unit_mini": "Mini/un{0}_mini_tex.png",
     "unit_up": "Portrait/un{0}_up.png",
     "unit_full": "Full/un{0}_full.png",
+	"unit_awaken_mini": "Mini/un{0}_s{1}_mini_tex.png",
+	"unit_awaken_up": "Portrait/un{0}_s{1}_up.png",
+	"unit_awaken_full": "Full/un{0}_s{1}_full.png",
     "accessory": "Accessory/eq{0}_tex.png",
     "weapon": "Weapon/wi{0}_tex.png",
     "event_item": "EventItem/ei{0}_tex.png",
@@ -1382,7 +1385,7 @@ function loadUnitData(id) {
 				var sid = dat['stack0' + i + '_id'];
 				if (sid > 0) {
 					var num = dat['stack0' + i + '_number'];
-					stack.push(db.stack[sid].stack_name + ' ' + num);
+					stack.push(imgXs(path.stack, sid, db.stack[sid].stack_name) + num);
 				}
 			}
 			
@@ -1406,6 +1409,17 @@ function loadUnitData(id) {
 		html = '<tr><td colspan="100" class="text-center">無法覺醒</td></tr>';
 	}
 	$("#unitAwakeningTable > tbody").html(html);
+	
+	// 衣服
+	html = '';
+	for (var sid in db.skin) {
+		var data_skin = db.skin[sid];
+		if (data_skin.chara_id === id) {
+			var img_html = String.Format('<img src="{0}" />', path2(path.unit_awaken_up, id, data_skin.skin_index));
+			html += String.Format($("#unitSkinTmpl").html(), img_html, data_skin.skin_name, data_skin.skin_txt.pre(), data_skin.hp, data_skin.atk, data_skin.agi);
+		}
+	}
+	$("#unitSkinTab > .row").html(html);
 	
 }
 
@@ -2747,14 +2761,14 @@ function getAsset(type, id, value) {
     }
 }
 
-function imgXs(path, id) {
+function imgXs(path, id, title) {
     if (disableImage) {
         return '';
     }
     if (id != null) {
         path = String.Format(path, padLeft(id.toString(), 4));
     }
-    return String.Format('<img src="{0}" class="img-xs"/>', path);
+    return String.Format('<img src="{0}" class="img-xs" title="{1}" />', path, title || '');
 }
 
 function extendItemName(id) {
@@ -2887,6 +2901,10 @@ function imgHtml(path, id, active) {
     } else {
         return String.Format('<a href="#" data-src="{0}" onclick="openImage(this); return false;">點選顯示</a>', path);
     }
+}
+
+function path2(path, id, index) {
+	return String.Format(path, padLeft(id.toString(), 4), padLeft((index + 1).toString(), 4));
 }
 
 function openImage(sender) {

@@ -607,17 +607,14 @@ a > i, button > i {
 	padding: 5px;
 }
 
-#eventItems > .row > div,
-#weaponExchangeTab > .row > a > div,
-#awakenItemTab > .row > div {
+.img-list div {
 	margin-bottom: 10px;
 	overflow : hidden;
 	text-overflow : ellipsis;
 	white-space : nowrap;
 }
 
-#eventItems img,
-#weaponExchangeTab img {
+.img-list img {
 	max-width: 100%;
 }
 
