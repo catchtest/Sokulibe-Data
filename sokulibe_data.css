@@ -608,7 +608,8 @@ a > i, button > i {
 }
 
 #eventItems > .row > div,
-#weaponExchangeTab > .row > a > div {
+#weaponExchangeTab > .row > a > div,
+#awakenItemTab > .row > div {
 	margin-bottom: 10px;
 	overflow : hidden;
 	text-overflow : ellipsis;
@@ -722,4 +723,8 @@ a > i, button > i {
     0% { color: #ffe066; }
 	50% { color: white; }
     100% { color: #ffe066; }
+}
+
+#awakenItemTab img {
+	border-radius: 8%;
 }

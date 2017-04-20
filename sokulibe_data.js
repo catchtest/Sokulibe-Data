@@ -158,6 +158,15 @@ var path = {
 		renderTable("gimmickTable", html);
 	});
 	
+	$("a[href='#awakenItemTab']").one("click", function() {
+		var html = '';
+		for (var id in db.awakening_item) {
+			var data = db.awakening_item[id];
+			html += String.Format('<div class="col-md-2 col-sm-3 col-xs-4 text-center" title="{2}">{0}<br />{1}</div>', imgHtml(path.awaken_item, id, true), data.name, data.comment);
+		}
+		$("#awakenItemTab > .row").html(html);
+	});
+	
 	
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
@@ -2064,13 +2073,13 @@ function loadWeaponData(id) {
 	
     // 武器副技能
 	$("#weaponAwakenTable > tbody td").remove();
-	var data_sub = db.weapon_subskill[data.sub_weapon_skill_id];
-	for (var i in data_sub) {
-		var subskillComment = data_sub[i].name + '<br />' + data_sub[i].comment.i18n().pre();
+	for (var i = 0; i < 5; i++) {
+		var data_sub = db.weapon_subskill[data.sub_weapon_skill_id][i + 1];
+		var subskillComment = data_sub.name + '<br />' + data_sub.comment.i18n().pre();
 		var mainSkillPower = powerList[i - 1];
 		
 		var html = String.Format('<td>{0}</td><td>{1}</td><td>{2}</td>', subskillComment, mainSkillPower, 'todo');
-		$("#weaponAwakenTable > tbody > tr").eq(i - 1).append(html);
+		$("#weaponAwakenTable > tbody > tr").eq(i).append(html);
 	}
 }
 // 讀取活動資料
