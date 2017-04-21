@@ -443,7 +443,7 @@ function initEvent() {
 			for (var id in db.multi_quest[mrcate]) {
 				var data = db.multi_quest[mrcate][id];
 				var name = 'MR' + data.required_lv + '&nbsp;&nbsp;' + data.name;
-				var job = String.Format("體力 {0}", data.stamina);
+				var job = String.Format('總和力 {1}&nbsp;&nbsp;體力 {0}', data.stamina, displayLight(data.required_light));
 				var itemHtml = listItemHtml(id, name, job, "loadMultiData(" + id + ", " + mrcate + ");");
 				// 越後面的關卡排越前
 				html = itemHtml + html;
@@ -477,20 +477,27 @@ function initEvent() {
 				html += itemHtml;
 			}
 		}
-		$list.html(html);
-		// 單人經驗關
-		$list = $("#expZoneTab > .list-group");
-		html = '';
+		
+		// 單人經驗關 (併到支路顯示)
 		for (var id in db.experience_zone) {
 			var data = db.experience_zone[id];
 			var name = data.name;
 			var job = String.Format("體力 {0}", data.stamina);
-			var itemHtml = listItemHtml(id, name, job, "loadExpZoneData(" + id + ");");
+			var itemHtml = listItemHtml(id, '[經驗] ' + name, job, "loadExpZoneData(" + id + ");");
 			html += itemHtml;
 		}
 		$list.html(html);
 	});
 }
+
+function displayLight(value) {
+	if (value > 0) {
+		return '<span class="light">' + value + '</span>';
+	} else {
+		return '---'
+	}
+}
+
 var storyNames;
 
 function getStoryName(id) {
@@ -617,7 +624,7 @@ function initUnitList() {
         var unitPower = calculateUnit(data.id, maxLevel);
         // 顯示抵抗異常狀態
         var resist = db.unit_resist[data.id];
-        var resistNames = ['poison', 'paralysis', 'freeze', 'burn', 'feather', 'curse', 'silence'];
+        var resistNames = ['poison', 'paralysis', 'freeze', 'burn', 'feather', 'curse', 'silence', 'darkness', 'death', 'confusion', 'charm'];
         var resistItems = [];
         resistNames.forEach(function(name, index) {
             var value = resist[name + '_resist'];
@@ -2113,7 +2120,8 @@ function loadEventData(id) {
     var html = '';
     for (var questID in data_quest) {
         var quest = data_quest[questID];
-        var sub = String.Format('WAVE {0}&nbsp;&nbsp;體力 {1}', Object.keys(db.event_quest_wave[questID]).length, quest.stamina);
+        var sub = String.Format('總和力 {2}&nbsp;&nbsp;WAVE {0}&nbsp;&nbsp;體力 {1}', 
+			Object.keys(db.event_quest_wave[questID]).length, quest.stamina, displayLight(quest.required_light));
         var itemHtml = listItemHtml(quest.id, quest.name, sub, "loadQuestData(" + id + ", " + quest.id + ");");
         html = itemHtml + html; // 難度越高排越上面
     }
@@ -2296,7 +2304,6 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
     $("#bg_location").html(db.bg_location[baseData.bg_id].name);
     $("#boss1_name").html(getMonsterName(baseData.boss01_id));
     $("#boss2_name").html(getMonsterName(baseData.boss02_id));
-	$("#required_light").html(baseData.required_light > 0 ? '<span class="light">' + baseData.required_light + '</span>' : '---');
 	$("#light_element_bonus").html(baseData.light_element_bonus > 0 && baseData.bonus_element_id1 >= 0 ? ' + ' + baseData.light_element_bonus : '---');
 	$("#bonus_element_id").html(displayElement(baseData.bonus_element_id1, baseData.bonus_element_id2));
     $("#rareenemy_id").html(getMonsterName(baseData.rareenemy_id));

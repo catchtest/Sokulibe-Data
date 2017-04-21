@@ -351,8 +351,6 @@
                                     <table class="table table-bordered table-fixed-width" id="unitResist">
                                         <thead>
                                             <tr>
-                                                <th>物理</th>
-                                                <th></th>
                                                 <th>屬性</th>
                                                 <th></th>
                                                 <th>狀態</th>
@@ -361,40 +359,30 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <th>斬耐性</th>
-                                                <td class="slash_resist"></td>
                                                 <th>火耐性</th>
                                                 <td class="fire_resist"></td>
                                                 <th>毒耐性</th>
                                                 <td class="poison_resist"></td>
                                             </tr>
                                             <tr>
-                                                <th>碎耐性</th>
-                                                <td class="smash_resist"></td>
                                                 <th>水耐性</th>
                                                 <td class="water_resist"></td>
                                                 <th>麻痺耐性</th>
                                                 <td class="paralysis_resist"></td>
                                             </tr>
                                             <tr>
-                                                <th>射耐性</th>
-                                                <td class="shot_resist"></td>
                                                 <th>地耐性</th>
                                                 <td class="earth_resist"></td>
                                                 <th>冰結耐性</th>
                                                 <td class="freeze_resist"></td>
                                             </tr>
                                             <tr>
-                                                <th>魔耐性</th>
-                                                <td class="sorcery_resist"></td>
                                                 <th>光耐性</th>
                                                 <td class="light_resist"></td>
                                                 <th>火傷耐性</th>
                                                 <td class="burn_resist"></td>
                                             </tr>
                                             <tr>
-                                                <th></th>
-                                                <td></td>
                                                 <th>暗耐性</th>
                                                 <td class="dark_resist"></td>
                                                 <th>浮遊耐性</th>
@@ -403,18 +391,38 @@
                                             <tr>
                                                 <th></th>
                                                 <td></td>
-                                                <th></th>
-                                                <td></td>
                                                 <th>詛咒耐性</th>
                                                 <td class="curse_resist"></td>
                                             </tr>
                                             <tr>
-                                                <th></th>
-                                                <td></td>
-                                                <th></th>
-                                                <td></td>
+                                                <th>斬耐性</th>
+                                                <td class="slash_resist"></td>
                                                 <th>沉默耐性</th>
                                                 <td class="silence_resist"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>碎耐性</th>
+                                                <td class="smash_resist"></td>
+                                                <th>暗黑耐性</th>
+                                                <td class="darkness_resist"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>射耐性</th>
+                                                <td class="shot_resist"></td>
+                                                <th>即死耐性</th>
+                                                <td class="death_resist"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>魔耐性</th>
+                                                <td class="sorcery_resist"></td>
+                                                <th>混亂耐性</th>
+                                                <td class="confusion_resist"></td>
+                                            </tr>
+                                            <tr>
+                                                <th></th>
+                                                <td></td>
+                                                <th>魅惑耐性</th>
+                                                <td class="charm_resist"></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1182,7 +1190,6 @@
                             <li role="presentation"><a href="#multiTab" aria-controls="multiTab" role="tab" data-toggle="tab">共鬥</a></li>
                             <li role="presentation"><a href="#zoneTab" aria-controls="zoneTab" role="tab" data-toggle="tab">主線</a></li>
                             <li role="presentation"><a href="#battleStepTab" aria-controls="battleStepTab" role="tab" data-toggle="tab">支路</a></li>
-                            <li role="presentation"><a href="#expZoneTab" aria-controls="expZoneTab" role="tab" data-toggle="tab">經驗</a></li>
                         </ul>
                         <div class="tab-content left-menu">
                             <div role="tabpanel" class="tab-pane active" id="eventTab">
@@ -1195,9 +1202,6 @@
                                 <div class="list-group"></div>
                             </div>
                             <div role="tabpanel" class="tab-pane" id="battleStepTab">
-                                <div class="list-group"></div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="expZoneTab">
                                 <div class="list-group"></div>
                             </div>
                         </div>
@@ -1249,10 +1253,6 @@
                                                     </tr>
                                                     <tr>
                                                         <td id="boss2_name"></td>
-                                                    </tr>
-													<tr>
-                                                        <th class="width100">推薦總合力</th>
-                                                        <td id="required_light"></td>
                                                     </tr>
 													<tr>
                                                         <th class="width100">加成屬性</th>
