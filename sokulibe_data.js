@@ -165,7 +165,7 @@ var path = {
 		var html = '';
 		for (var id in db.awakening_item) {
 			var data = db.awakening_item[id];
-			html += String.Format('<div class="col-md-2 col-sm-3 col-xs-4 text-center" title="{2}">{0}<br />{1}</div>', imgHtml(path.awaken_item, id, true), data.name, data.comment);
+			html += generateImageItem(imgHtml(path.awaken_item, id, true), data.name, data.comment);
 		}
 		$("#awakenItemTab > .row").html(html);
 	});
@@ -270,9 +270,7 @@ var path = {
         disableImage = true;
         $(this).add('#alwaysShowImage').hide();
     });
-    $("#theme").val(theme).change(function() {
-        location.href = 'index.htm?theme=' + $(this).val();
-    });
+
     // 捲到最上方
     var $backToTop = $('#backToTop');
     if ($backToTop.length) {
@@ -958,7 +956,7 @@ function getEnchantFrom(enchantId) {
 function initEventItem() {
     var html = '';
     for (var id in db.event_item) {
-        html += String.Format('<div class="col-md-2 col-sm-3 col-xs-4 text-center">{0}<br />{1}</div>', imgHtml(path.event_item, id, true), db.event_item[id].name);
+        html += generateImageItem(imgHtml(path.event_item, id, true), db.event_item[id].name);
     }
     $("#eventItems > .row").html(html);
 }
@@ -968,10 +966,19 @@ function initWeaponExchange() {
     for (var id in db.weapon) {
         var data = db.weapon[id];
         if (data.exchange_flag !== 1) continue;
-        html += String.Format('<a href="#" onclick="showWeapon(\'{2}\')"><div class="col-md-2 col-sm-3 col-xs-4 text-center">{0}<br />{1}</div></a>', imgHtml(path.weapon, id, true), data.name, id);
+        html += generateImageItem(imgHtml(path.weapon, id, true), data.name, null, 'showWeapon(' + id + ')');
     }
     $("#weaponExchangeTab > .row").html(html);
 }
+
+function generateImageItem(img, name, title, onclick) {
+	var html = String.Format('<div class="col-md-2 col-sm-3 col-xs-4 text-center" title="{2}">{0}<br />{1}</div>', img, name, title || name);
+	if (onclick != null) {
+		html = String.Format('<a href="#" onclick="{1}">{0}</a>', html, onclick);
+	}
+	return html;
+}
+
 // 判斷是否為尚未完成的裝備
 function isDirtyAccessory(id) {
     var item = db.accessory_upgrade[id];
