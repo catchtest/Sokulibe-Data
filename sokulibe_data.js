@@ -2099,7 +2099,6 @@ function loadWeaponData(id) {
         ['dmg', 'cd', 'break_', 'hate', 'casttime'].forEach(function(name) {
             $("#weaponMainSkill_" + name).html(weaponMainSkill[name]);
         });
-		$("#weaponEventFlag").html((data.event_ === 1).display());
         $("#weaponMainSkill_range").html(weaponMainSkill.min_range + '-' + weaponMainSkill.max_range);
         $("#weaponMainSkillType").html(enums.skill_type[weaponMainSkill.skill_type]);
         $("#weaponMainSkillCount").html(data.normal_mws_value + "（最大：" + data.awakening_mws_value + "）");
@@ -2109,6 +2108,10 @@ function loadWeaponData(id) {
         $("#weaponMainSkill").html('無');
         $("#weaponSkillAtk").hide();
     }
+	$("#weaponEventFlag").html((data.event_ === 1).display());
+	
+	var stackHtml = data.stack_id > 0 ? imgXs(path.stack, data.stack_id) + db.stack[data.stack_id].stack_name : '無';
+	$("#weaponStack").html(stackHtml);
 	
 	// 計算武器技威力帳面數值
 	// 威力好像固定是1.1/1.2/1.3/1.5
