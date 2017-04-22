@@ -2104,9 +2104,9 @@ function loadWeaponData(id) {
 	for (var i = 0; i < 5; i++) {
 		var data_sub = db.weapon_subskill[data.sub_weapon_skill_id][i + 1];
 		var subskillComment = data_sub.name + '<br />' + data_sub.comment.i18n().pre();
-		var mainSkillPower = powerList[i - 1];
+		var mainSkillPower = powerList[i];
 		
-		var html = String.Format('<td>{0}</td><td>{1}</td><td>{2}</td>', subskillComment, mainSkillPower, 'todo');
+		var html = String.Format('<td>{0}</td><td>{1}</td>', subskillComment, mainSkillPower);
 		$("#weaponAwakenTable > tbody > tr").eq(i).append(html);
 	}
 }
