@@ -443,7 +443,7 @@ function initEvent() {
 			for (var id in db.multi_quest[mrcate]) {
 				var data = db.multi_quest[mrcate][id];
 				var name = 'MR' + data.required_lv + '&nbsp;&nbsp;' + data.name;
-				var job = String.Format('總和力 {1}&nbsp;&nbsp;體力 {0}', data.stamina, displayLight(data.required_light));
+				var job = String.Format('總合力 {1}&nbsp;&nbsp;體力 {0}', data.stamina, displayLight(data.required_light));
 				var itemHtml = listItemHtml(id, name, job, "loadMultiData(" + id + ", " + mrcate + ");");
 				// 越後面的關卡排越前
 				html = itemHtml + html;
@@ -490,8 +490,8 @@ function initEvent() {
 	});
 }
 
-function displayLight(value) {
-	if (value > 0) {
+function displayLight(value, showZero) {
+	if (value > 0 || showZero) {
 		return '<span class="light">' + value + '</span>';
 	} else {
 		return '---'
@@ -2081,6 +2081,7 @@ function loadWeaponData(id) {
         ['dmg', 'cd', 'break_', 'hate', 'casttime'].forEach(function(name) {
             $("#weaponMainSkill_" + name).html(weaponMainSkill[name]);
         });
+		$("#weaponEventFlag").html((data.event_ === 1).display());
         $("#weaponMainSkill_range").html(weaponMainSkill.min_range + '-' + weaponMainSkill.max_range);
         $("#weaponMainSkillType").html(enums.skill_type[weaponMainSkill.skill_type]);
         $("#weaponMainSkillCount").html(data.normal_mws_value + "（最大：" + data.awakening_mws_value + "）");
@@ -2109,6 +2110,32 @@ function loadWeaponData(id) {
 		var html = String.Format('<td>{0}</td><td>{1}</td>', subskillComment, mainSkillPower);
 		$("#weaponAwakenTable > tbody > tr").eq(i).append(html);
 	}
+	
+	// 計算武器總合力
+	if ($("#weaponLightTmpl").length) {
+		// 先產生相關表格
+		var tmpl = $("#weaponLightTmpl").html();
+		var html = '';
+
+		for (var r = 2; r <= 5; r++) {
+			for (var e = 0; e <= 1; e++) {
+				var content = '';
+				for (var lv = 1; lv <= 10; lv++) {
+					var tds = [];
+					for (var a = 0; a <= 4; a++) {
+						var light = db.weapn_light_lv[r][a][lv][e].light_lv;
+						tds.push(displayLight(light, true));
+					}
+					content += String.Format('<tr><th>Lv{0}</th><td>{1}</td></tr>', lv, tds.join('</td><td>'));
+				}
+				html += String.Format(tmpl, r, e, content);
+			}
+		}
+		$("#weaponLightTab").html(html);
+	}
+	$("#weaponLightTab table").hide();
+	$(String.Format("#weaponLightR{0}E{1}", data.rarity, data.event_)).show();
+
 }
 // 讀取活動資料
 function loadEventData(id) {
@@ -2120,7 +2147,7 @@ function loadEventData(id) {
     var html = '';
     for (var questID in data_quest) {
         var quest = data_quest[questID];
-        var sub = String.Format('總和力 {2}&nbsp;&nbsp;WAVE {0}&nbsp;&nbsp;體力 {1}', 
+        var sub = String.Format('總合力 {2}&nbsp;&nbsp;WAVE {0}&nbsp;&nbsp;體力 {1}', 
 			Object.keys(db.event_quest_wave[questID]).length, quest.stamina, displayLight(quest.required_light));
         var itemHtml = listItemHtml(quest.id, quest.name, sub, "loadQuestData(" + id + ", " + quest.id + ");");
         html = itemHtml + html; // 難度越高排越上面
