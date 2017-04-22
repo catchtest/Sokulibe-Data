@@ -87,7 +87,7 @@ var path = {
     $("a[href='#unit']").one("click", initUnit);
     $("a[href='#accessory']").one("click", initAccessory);
     $("a[href='#weapon']").one("click", initWeapon);
-    $("a[href='#event']").one("click", initEvent);
+    $("a[href='#battleTab']").one("click", initBattle);
     $("a[href='#achievement']").one("click", initAchievement);
     $("a[href='#icons']").one("click", initIcons);
     $("a[href='#items']").one("click", initItems);
@@ -310,7 +310,7 @@ function initUnit() {
         htmls[data.rarity] += itemHtml;
     }
     for (var i = 1; i <= 4; i++) {
-        $("#unitR" + i + " > .list-group").html(htmls[i]);
+		insertToList("unitR" + i, htmls[i]);
     }
     var $levelSelect = $("#unitLevelSelect");
     var html = '';
@@ -351,9 +351,9 @@ function initAccessory() {
             htmls[2] += itemHtml;
         }
     }
-    $("#ringSR > .list-group").html(htmls[0]);
-    $("#ringR > .list-group").html(htmls[1]);
-    $("#talisman > .list-group").html(htmls[2]);
+	insertToList("ringSR", htmls[0]);
+	insertToList("ringR", htmls[1]);
+	insertToList("talisman", htmls[2]);
 }
 // 初始化武器列表
 function initWeapon() {
@@ -383,10 +383,11 @@ function initWeapon() {
             htmls[2] += itemHtml;
         }
     }
-    $("#weaponSR > .list-group").html(htmls[0]);
-    $("#weaponHR > .list-group").html(htmls[1]);
-    $("#weaponR > .list-group").html(htmls[2]);
-    $("#weaponOther > .list-group").html(htmls[3]);
+	insertToList("weaponSR", htmls[0]);
+	insertToList("weaponHR", htmls[1]);
+	insertToList("weaponR", htmls[2]);
+	insertToList("weaponOther", htmls[3]);
+
     var $levelSelect = $("#weaponLevelSelect");
     var $awakeningSelect = $("#weaponAwakeningSelect");
     var contentHtml = ''
@@ -411,12 +412,11 @@ function initWeapon() {
     });
 }
 // 初始化關卡列表
-function initEvent() {
+function initBattle() {
 	$.getJSON('sokulibe_battle_data.json', function(data) {
 		$.extend(db, data);
 		
 		// 活動
-		var $list = $("#eventTab > .list-group");
 		var html = '';
 		for (var id in db.event) {
 			// 底下沒有任何一關，不要顯示
@@ -435,9 +435,9 @@ function initEvent() {
 			// 越後面的關卡排越前
 			html = itemHtml + html;
 		}
-		$list.html(html);
+		insertToList("eventTab", html);
+		
 		// 共鬥
-		$list = $("#multiTab > .list-group");
 		html = '';
 		for (var mrcate in db.multi_quest) {
 			for (var id in db.multi_quest[mrcate]) {
@@ -449,9 +449,9 @@ function initEvent() {
 				html = itemHtml + html;
 			}
 		}
-		$list.html(html);
+		insertToList("multiTab", html);
+		
 		// 主線
-		$list = $("#zoneTab > .list-group");
 		html = '';
 		for (var chapter in db.zone) {
 			for (var id in db.zone[chapter]) {
@@ -464,9 +464,9 @@ function initEvent() {
 				html += itemHtml;
 			}
 		}
-		$list.html(html);
+		insertToList("zoneTab", html);
+		
 		// 支路
-		$list = $("#battleStepTab > .list-group");
 		html = '';
 		for (var chapter in db.battle_step_difficulty) {
 			for (var id in db.battle_step_difficulty[chapter]) {
@@ -486,8 +486,23 @@ function initEvent() {
 			var itemHtml = listItemHtml(id, '[經驗] ' + name, job, "loadExpZoneData(" + id + ");");
 			html += itemHtml;
 		}
-		$list.html(html);
+		insertToList("battleStepTab", html);
+		
+		// 次元之門
+		html = '';
+		for (var id in db.dimension_category) {
+			var data = db.dimension_category[id];
+			var name = data.name;
+			var subText = '獎勵範圍 ' + data.reward_bar_range;
+			var itemHtml = listItemHtml(id, name, subText, "loadDimensionData(" + id + ");");
+			html += itemHtml;
+		}
+		insertToList("dimensionTab", html);
 	});
+}
+
+function insertToList(id, html) {
+	$("#" + id + " > .list-group").html(html);
 }
 
 function displayLight(value, showZero) {
@@ -1045,7 +1060,7 @@ function getUnitName(data) {
 }
 
 function getUnitJob(data) {
-    var elementText = data.use_element == 0 ? '　' : enums.element[data.use_element];
+    var elementText = data.use_element == 0 ? '' : enums.element[data.use_element];
     return enums.unit_rarity[data.rarity] + ' ' + elementText + enums.job[data.job_id];
 }
 
@@ -2215,6 +2230,31 @@ function loadEventData(id) {
     var footerHtml = total_point == 0 ? '' : tableRow([itemHtml, '', '', total_point]);
     $("#exchangeTable > tfoot").html(footerHtml);
 }
+
+// 讀取次元之門資料
+function loadDimensionData(id) {
+	loadDataEvent(id);
+    var data_quest = db.dimension_quest[id];
+    setTitle(db.dimension_category[id].name, '');
+    var $list = $("#questList");
+    var html = '';
+    for (var questID in data_quest) {
+        var quest = data_quest[questID];
+        var sub = String.Format('總合力 {2}&nbsp;&nbsp;WAVE {0}&nbsp;&nbsp;體力 {1}', 
+			Object.keys(db.event_quest_wave[questID]).length, quest.stamina, displayLight(quest.required_light));
+        var itemHtml = listItemHtml(quest.id, quest.name, sub, "loadDimensionQuestData(" + id + ", " + quest.id + ");");
+        html = itemHtml + html; // 難度越高排越上面
+    }
+    $list.html(html);
+    var item = $list.find(".list-group-item").first();
+    if (item.length) {
+        item.click();
+        $("#quest").removeClass('hidden');
+    } else {
+        $("#quest").addClass('hidden');
+    }
+}
+
 // 讀取共鬥資料
 function loadMultiData(id, mrcate) {
     loadDataEvent(id);
@@ -2224,7 +2264,7 @@ function loadMultiData(id, mrcate) {
     var waveData = db.multi_quest_wave[id];
     loadCommonQuestData(baseData, missionData, dropData, waveData);
     setTitle(String.Format("MR{0} {1}", baseData.required_lv, baseData.name), '');
-    $("#Recom_lv, #first_clear_bonus, #continue_limit, #required_lv").closest("tr").show();
+    $("#Recom_lv, #first_clear_bonus, #continue_limit, #required_lv, #exp, #crystal, #job_exp, #speedclear").closest("tr").show();
     $("#raid_point").closest("tr").hide();
     $("#questTab").hide().find("a:first").tab('show');
     $("#questList").hide();
@@ -2264,7 +2304,7 @@ function loadExpZoneData(id) {
 }
 
 function singleQuestField() {
-    $("#Recom_lv").closest("tr").show();
+    $("#Recom_lv, #exp, #crystal, #job_exp").closest("tr").show();
     $("#raid_point, #first_clear_bonus, #multi_exp, #continue_limit, #required_lv").closest("tr").hide();
     $("#questTab").hide().find("a:first").tab('show');
     $("#questList").hide();
@@ -2291,11 +2331,43 @@ function loadQuestData(eventID, questID) {
         default:
             break;
     }
-    $("#Recom_lv, #first_clear_bonus, #multi_exp").closest("tr").hide();
-    $("#raid_point, #continue_limit, #required_lv").closest("tr").show();
+    $("#Recom_lv, #first_clear_bonus, #multi_exp, #raid_point").closest("tr").hide();
+    $("#continue_limit, #required_lv, #exp, #crystal, #job_exp, #speedclear").closest("tr").show();
+    $("#questTab").show();
+    $("#questList").show();
+	$("#dimTreasureTable > tbody").html('');
+}
+
+function loadDimensionQuestData(eventID, questID) {
+    setActive($("#questList"), questID);
+    var baseData = db.dimension_quest[eventID][questID];
+    var missionData = db.dimension_mission[questID];
+    //var dropData = db.event_quest_drop[eventID][questID];
+    var waveData = db.dimension_wave[questID];
+    loadCommonQuestData(baseData, missionData, null, waveData);
+
+	// 無任務跟交換所
+	$("#missionTable > tbody").html('');
+	$("#exchangeTable > tbody").html('');
+
+	// 增加寶藏
+	var html = '';
+	for (var group in db.dimension_treasure[eventID]) {
+		for (var index in db.dimension_treasure[eventID][group]) {
+			var data = db.dimension_treasure[eventID][group][index];
+			var asset = getAsset(data.item_type_1, data.item_id_1, data.item_value_1);
+			
+			html += tableRow([group, index, data.rate, asset]);
+		}
+	}
+	$("#dimTreasureTable > tbody").html(html);
+	
+    $("#Recom_lv, #first_clear_bonus, #multi_exp, #exp, #crystal, #job_exp, #raid_point, #speedclear").closest("tr").hide();
+    $("#continue_limit, #required_lv").closest("tr").show();
     $("#questTab").show();
     $("#questList").show();
 }
+
 var item_summary = {};
 
 function resetItems() {
@@ -2333,7 +2405,7 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
     $("#boss2_name").html(getMonsterName(baseData.boss02_id));
 	$("#light_element_bonus").html(baseData.light_element_bonus > 0 && baseData.bonus_element_id1 >= 0 ? ' + ' + baseData.light_element_bonus : '---');
 	$("#bonus_element_id").html(displayElement(baseData.bonus_element_id1, baseData.bonus_element_id2));
-    $("#rareenemy_id").html(getMonsterName(baseData.rareenemy_id));
+    $("#rareenemy_id").html(baseData.rareenemy_id != null ? getMonsterName(baseData.rareenemy_id) : '無');
     var timeLimit = baseData.time_limit || baseData.timelimit;
     $("#time_limit").html(String.Format("{0}分", timeLimit / 60));
     $("#speedclear").html(String.Format("{0}分", baseData.speedclear / 60));
@@ -2364,12 +2436,18 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
         $("#advantage").closest("tr").hide();
     }
     // 掉落率
-    for (var prop in dropData) {
-        if (prop == 'id' || prop == 'event_id') continue;
-        if ($("#" + prop).length == 0) continue;
-        var value = dropData[prop];
-        $("#" + prop).html(value);
-    }
+	if (dropData != null) {
+		for (var prop in dropData) {
+			if (prop == 'id' || prop == 'event_id') continue;
+			if ($("#" + prop).length == 0) continue;
+			var value = dropData[prop];
+			$("#" + prop).html(value);
+		}
+		$("#dropData table").show();
+	} else {
+		$("#dropData table").hide();
+	}
+
     //console.log(dropData);
     ratioModify(["nocon_clear_rate1", "nocon_clear_rate2", "nocon_clear_rate3"], "nocon_clear_progress");
     ratioModify(["speed_clear_rate1", "speed_clear_rate2", "speed_clear_rate3"], "speed_clear_progress");
@@ -2979,18 +3057,18 @@ function initStory() {
     $.when($.getJSON('main_story.json'), $.getJSON('event_story.json')).done(function(a1, a2) {
         main_story = a1[0];
         event_story = a2[0];
-        var $list = $("#mainStoryTab > .list-group");
+
         var html = '';
         for (var id in main_story) {
             html += listItemHtml(id, main_story[id].title, '', "loadStoryData('" + id + "', 'ms');");
         }
-        $list.html(html);
-        var $list = $("#eventStoryTab > .list-group");
+		insertToList("mainStoryTab", html);
+
         html = '';
         for (var id in event_story) {
             html += listItemHtml(id, event_story[id].title, '', "loadStoryData('" + id + "', 'es');");
         }
-        $list.html(html);
+		insertToList("eventStoryTab", html);
     });
 }
 
