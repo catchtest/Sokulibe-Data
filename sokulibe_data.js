@@ -134,7 +134,16 @@ var path = {
 			var count = 0;
 			for (var sid in db.stack_ability[id]) {
 				var data_sa = db.stack_ability[id][sid];
-				innerHtml += tableRow([data_sa.stack, data_sa.stack_ability_name]);
+				var content = data_sa.stack_ability_name;
+				var converts = [];
+				for (var a = 1; a <= 3; a++) {
+					var magicID = data_sa['ability' + a];
+					if (magicID > 0) {
+						converts.push(displayEffect(magicID).replaceAll('<br />', ''));
+					}
+				}
+				content = data_sa.stack_ability_name + '<div class="text-warning">' + converts.join('<br />') + '</div>';
+				innerHtml += tableRow([data_sa.stack, content]);
 				count++;
 			}
 			var nameBlock = imgHtml(path.stack, id) + '<br />' + data.stack_name;
