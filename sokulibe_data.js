@@ -413,6 +413,7 @@ function initWeapon() {
 }
 // 初始化關卡列表
 function initBattle() {
+	$(".loader").show();
 	$.getJSON('sokulibe_battle_data.json', function(data) {
 		$.extend(db, data);
 		
@@ -498,6 +499,8 @@ function initBattle() {
 			html += itemHtml;
 		}
 		insertToList("dimensionTab", html);
+		
+		$(".loader").hide();
 	});
 }
 
