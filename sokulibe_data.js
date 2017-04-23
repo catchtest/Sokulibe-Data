@@ -304,23 +304,33 @@ var path = {
 }(jQuery));
 // 初始化角色列表
 function initUnit() {
-    var htmls = [null, '', '', '', ''];
-    for (var id in db.unit) {
-        var data = db.unit[id];
-        var cssClass = '';
-        var prefix = '';
-        if (isDirtyUnit(data)) {
-            cssClass = setDirtyClass();
-            prefix = dirtyPrefix;
-        }
-        var name = prefix + getUnitName(data);
-        var job = getUnitJob(data);
-        var itemHtml = listItemHtml(id, imgXs(path.unit_mini, id) + name, job, "loadUnitData(" + id + ");", cssClass);
-        htmls[data.rarity] += itemHtml;
-    }
-    for (var i = 1; i <= 4; i++) {
-		insertToList("unitR" + i, htmls[i]);
-    }
+	// 因為加上圖片導致傳輸時間大增，改成點選tab時才產生列表
+	var generateUnitList = function(rarity) {
+		var html = '';
+		for (var id in db.unit) {
+			var data = db.unit[id];
+			if (data.rarity != rarity) continue;
+			
+			var cssClass = '';
+			var prefix = '';
+			if (isDirtyUnit(data)) {
+				cssClass = setDirtyClass();
+				prefix = dirtyPrefix;
+			}
+			var name = prefix + getUnitName(data);
+			var job = getUnitJob(data);
+			var itemHtml = listItemHtml(id, imgXs(path.unit_mini, id) + name, job, "loadUnitData(" + id + ");", cssClass);
+			html += itemHtml;
+		}
+		insertToList("unitR" + rarity, html);
+	}
+	for (var r = 1; r <= 3; r++) {
+		$("a[href='#unitR" + r + "']").one("click", function() { 
+			generateUnitList($(this).data("r")); 
+		});
+	}
+	generateUnitList(4);
+	
     var $levelSelect = $("#unitLevelSelect");
     var html = '';
     for (var i = 1; i <= 200; i++) {
@@ -814,6 +824,8 @@ function renderWeapon(data) {
 // 初始化特性一覽
 function initAbilityList() {
     var unitAbility = {};
+	
+	// 檢查所有角色被動技能
     for (var id in db.unit) {
         var data = db.unit[id];
         if (skipDirty && isDirtyUnit(data)) continue;
@@ -825,9 +837,29 @@ function initAbilityList() {
                 unitAbility[typeId] = [];
                 obj = unitAbility[typeId];
             }
-            obj.push(anchor(getUnitName(data), "showUnit(" + id + ")"));
+			
+            obj.push(anchor(imgXs(path.unit_mini, id) + getUnitName(data), "showUnit(" + id + ")"));
         }
     }
+	
+	// 檢查所有角色覺醒後的被動
+    for (var id in db.unit_awakening) {
+        var data = db.unit[id];
+		for (var a in db.unit_awakening[id]) {
+			for (var i = 1; i <= 4; i++) {
+				var typeId = db.unit_awakening[id][a]['ability0' + i];
+				if (typeId == 0) continue;
+				var obj = unitAbility[typeId];
+				if (obj == null) {
+					unitAbility[typeId] = [];
+					obj = unitAbility[typeId];
+				}
+				console.log(typeId);
+				obj.push(anchor(imgXs(path.unit_mini, id) + '<span class="type-awaken"></span>' + getUnitName(data), "showUnit(" + id + ")"));
+			}
+		}
+    }
+	
     var ability = [];
     var html = '';
     for (var id in db.ability) {
@@ -1429,6 +1461,43 @@ function loadUnitData(id) {
 					stack.push(imgXs(path.stack, sid, db.stack[sid].stack_name) + num);
 				}
 			}
+			// 被動改變
+			var abilityHtml = '';
+			for (var i = 1; i <= 4; i++) {
+				var aid = dat['ability0' + i];
+				if (aid <= 0) continue;
+				
+				abilityHtml += String.Format('<div title="{1}">{0}</div>', db.ability[aid].name, db.ability[aid].comment);
+			}
+			// 抗性改變
+			var resists = [];
+			var resistMap = {
+				"slash": "斬",
+				"smash": "碎",
+				"shot": "射",
+				"sorcery": "魔",
+				"fire": "火",
+				"water": "水",
+				"earth": "地",
+				"light": "光",
+				"dark": "暗",
+				"poison": "毒",
+				"paralysis": "麻痺",
+				"freeze": "冰結",
+				"burn": "火傷",
+				"feather": "浮遊",
+				"curse": "詛咒",
+				"silence": "沉默",
+				"darkness": "暗黑",
+				"death": "即死",
+				"confusion": "混亂",
+				"charm": "魅惑"
+			};
+			for (var key in resistMap) {
+				var value = dat[key + '_resist'];
+				if (value <= 0) continue;
+				resists.push(String.Format('{0}耐性 + {1}', resistMap[key], value));
+			}
 			
 			var list = [
 				dat.awakening,
@@ -1441,8 +1510,8 @@ function loadUnitData(id) {
 				dat.knock_back_regist,
 				'<span class="light">' + dat.light_lv + '<span>',
 				stack.join('<br />'),
-				'todo',
-				'todo'
+				resists.join('<br />'),
+				abilityHtml
 			];
 			html += tableRow(list);
 		}
@@ -2183,6 +2252,7 @@ function loadEventData(id) {
         html = itemHtml + html; // 難度越高排越上面
     }
     $list.html(html);
+	// 有關卡資料時，自動點選第一筆
     var item = $list.find(".list-group-item").first();
     if (item.length) {
         item.click();
@@ -2261,6 +2331,7 @@ function loadDimensionData(id) {
         html = itemHtml + html; // 難度越高排越上面
     }
     $list.html(html);
+	// 有關卡資料時，自動點選第一筆
     var item = $list.find(".list-group-item").first();
     if (item.length) {
         item.click();
@@ -2277,7 +2348,8 @@ function loadMultiData(id, mrcate) {
     var missionData = db.multi_quest_mission[id];
     var dropData = db.multi_quest_drop[id];
     var waveData = db.multi_quest_wave[id];
-    loadCommonQuestData(baseData, missionData, dropData, waveData);
+	var gimmickData = db.multi_quest_gimmick[id];
+    loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickData);
     setTitle(String.Format("MR{0} {1}", baseData.required_lv, baseData.name), '');
     $("#Recom_lv, #first_clear_bonus, #continue_limit, #required_lv, #exp, #crystal, #job_exp, #speedclear").closest("tr").show();
     $("#raid_point").closest("tr").hide();
@@ -2291,7 +2363,8 @@ function loadZoneData(id, chapter) {
     var missionData = db.zone_mission[id];
     var dropData = db.zone_drop[id];
     var waveData = db.zone_wave[id];
-    loadCommonQuestData(baseData, missionData, dropData, waveData);
+	var gimmickData = db.zone_gimmick[id];
+    loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickData);
     setTitle(getStoryName(id), '');
     singleQuestField();
 }
@@ -2302,7 +2375,8 @@ function loadBattleStepData(id, chapter) {
     var missionData = null;
     var dropData = db.battle_step_drop[id];
     var waveData = db.battle_step_wave[id];
-    loadCommonQuestData(baseData, missionData, dropData, waveData);
+	var gimmickData = db.battle_step_gimmick[id];
+    loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickData);
     setTitle(baseData.name, '');
     singleQuestField();
 }
@@ -2313,7 +2387,8 @@ function loadExpZoneData(id) {
     var missionData = db.experience_zone_mission[id];
     var dropData = db.experience_zone_drop[id];
     var waveData = db.experience_zone_wave[id];
-    loadCommonQuestData(baseData, missionData, dropData, waveData);
+	var gimmickData = null;   // 無此檔案
+    loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickData);
     setTitle(baseData.name, '');
     singleQuestField();
 }
@@ -2334,7 +2409,8 @@ function loadQuestData(eventID, questID) {
     var missionData = db.event_quest_mission[questID];
     var dropData = db.event_quest_drop[eventID][questID];
     var waveData = db.event_quest_wave[questID];
-    loadCommonQuestData(baseData, missionData, dropData, waveData);
+	var gimmickData = db.event_quest_gimmick[questID];
+    loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickData);
     // 特殊處理: 特殊情形下required_lv其實是Recom_lv不是MR限制
     var eventData = db.event[eventID];
     switch (eventData.event_type) {
@@ -2359,7 +2435,8 @@ function loadDimensionQuestData(eventID, questID) {
     var missionData = db.dimension_mission[questID];
     //var dropData = db.event_quest_drop[eventID][questID];
     var waveData = db.dimension_wave[questID];
-    loadCommonQuestData(baseData, missionData, null, waveData);
+	var gimmickData = db.dimension_gimmick[questID];
+    loadCommonQuestData(baseData, missionData, null, waveData, gimmickData);
 
 	// 無任務跟交換所
 	$("#missionTable > tbody").html('');
@@ -2407,7 +2484,7 @@ function displayItems() {
     return String.Format($("#itemListTmpl").html(), list.join('<br />'));
 }
 // 共通關卡資料讀取
-function loadCommonQuestData(baseData, missionData, dropData, waveData) {
+function loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickData) {
     current_quest = baseData;
     // 基本資料
     var attrs = ['exp', 'crystal', 'multi_exp', 'job_exp', 'required_lv', 'raid_point', 'Recom_lv', 'first_clear_bonus', 'battle_bgm_id', 'boss_bgm_id'];
@@ -2424,6 +2501,20 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData) {
     var timeLimit = baseData.time_limit || baseData.timelimit;
     $("#time_limit").html(String.Format("{0}分", timeLimit / 60));
     $("#speedclear").html(String.Format("{0}分", baseData.speedclear / 60));
+	
+	// 關卡特性
+	var ghtml = '';
+	if (gimmickData != null) {
+		for (var index in gimmickData) {
+			var data_i = gimmickData[index];
+			var data_g = db.gimmick[data_i.gimmick_id];
+			ghtml += String.Format('<div title="{2}">{0} Lv{1}</div>', data_g.gimmick_name, data_i.gimmick_lv, data_g.gimmick_comment);
+		}
+	} else {
+		ghtml = '---';
+	}
+	$("#quest_gimmick").html(ghtml);
+	
     // 三冠條件
     if (missionData != null) {
         var i = 1;
@@ -2813,7 +2904,7 @@ function setMonValue(className, content) {
 }
 
 function displayElement(value1, value2) {
-	if (value1 < 0) return '';
+	if (value1 == null || value1 < 0) return '';
     var value = elementHtml(value1);
     if (value2 > 0) {
         value += elementHtml(value2);

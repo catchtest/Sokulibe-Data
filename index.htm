@@ -56,6 +56,7 @@
                         <div class="well">
                             <div class="well-legend">更新紀錄</div>
                             <ul style="height: 160px; overflow-y: auto;">
+								<li>2017/04/23<br />增加關卡特性，補完todo資料，優化角色讀取</li>
 								<li>2017/04/22<br />增加武器總合力、次元之門資料</li>
 								<li>2017/04/20<br />增加覺醒資料、Stack一覽、關卡特性一覽、覺醒素材一覽、衣裝</li>
 								<li>2017/04/19<br />增加公會徽章一覽</li>
@@ -145,10 +146,10 @@
                     <div class="col-sm-3">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs item-4" role="tablist">
-                            <li role="presentation" class="active"><a href="#unitR4" aria-controls="unitR4" role="tab" data-toggle="tab">★4</a></li>
-                            <li role="presentation"><a href="#unitR3" aria-controls="unitR3" role="tab" data-toggle="tab">★3</a></li>
-                            <li role="presentation"><a href="#unitR2" aria-controls="unitR2" role="tab" data-toggle="tab">★2</a></li>
-                            <li role="presentation"><a href="#unitR1" aria-controls="unitR1" role="tab" data-toggle="tab">★1</a></li>
+                            <li role="presentation" class="active"><a href="#unitR4" aria-controls="unitR4" role="tab" data-toggle="tab" data-r="4">★4</a></li>
+                            <li role="presentation"><a href="#unitR3" aria-controls="unitR3" role="tab" data-toggle="tab" data-r="3">★3</a></li>
+                            <li role="presentation"><a href="#unitR2" aria-controls="unitR2" role="tab" data-toggle="tab" data-r="2">★2</a></li>
+                            <li role="presentation"><a href="#unitR1" aria-controls="unitR1" role="tab" data-toggle="tab" data-r="1">★1</a></li>
                         </ul>
                         <div class="tab-content left-menu">
                             <div role="tabpanel" class="tab-pane active" id="unitR4">
@@ -1266,6 +1267,10 @@
                                                     </tr>
                                                     <tr>
                                                         <td id="boss2_name"></td>
+                                                    </tr>
+													<tr>
+                                                        <th class="width100">關卡特性</th>
+                                                        <td id="quest_gimmick"></td>
                                                     </tr>
 													<tr>
                                                         <th class="width100">加成屬性</th>

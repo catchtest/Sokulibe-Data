@@ -577,7 +577,8 @@ a > i, button > i {
 }
 
 #enchantTable .img-xs,
-#unitAwakeningTable .img-xs {
+#unitAwakeningTable .img-xs,
+#abilityTable .img-xs {
 	margin: 0 5px 1px 0;
 }
 
@@ -660,7 +661,8 @@ a > i, button > i {
     overflow-y: auto;
 }
 
-#unit .img-xs {
+#unit .img-xs,
+#abilityTable .img-xs {
 	border-radius: 16%;
 }
 
