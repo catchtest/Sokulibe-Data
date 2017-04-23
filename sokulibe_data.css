@@ -728,6 +728,7 @@ a > i, button > i {
 	border-radius: 8%;
 }
 
-.gimmick + .gimmick {
-	margin-top: 5px;
+.tooltip-inner {
+    white-space: pre;
+    max-width: none;
 }

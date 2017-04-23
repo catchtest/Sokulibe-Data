@@ -1533,6 +1533,7 @@ function loadUnitData(id) {
 		html = '<tr><td colspan="100" class="text-center">無法覺醒</td></tr>';
 	}
 	$("#unitAwakeningTable > tbody").html(html);
+	$("#unitAwakeningTable [title]").tooltip();
 	
 	// 衣服
 	html = '';
@@ -2528,7 +2529,7 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickD
 			var data_i = gimmickData[index];
 			var data_g = db.gimmick[data_i.gimmick_id];
 			var name = imgXs(path.gimmick(data_i.gimmick_id)) + data_g.gimmick_name;
-			ghtml += String.Format('<div class="gimmick" title="{2}">{0} Lv{1}</div>', name, data_i.gimmick_lv, data_g.gimmick_comment);
+			ghtml += String.Format('<span class="gimmick" title="{2}">{0} Lv{1}</span><br />', name, data_i.gimmick_lv, data_g.gimmick_comment);
 		}
 	} else {
 		ghtml = '---';
@@ -2645,6 +2646,7 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickD
             }
         }
     }
+	$("#quest [title]").tooltip();
 }
 
 function getMonsterLink(monster_id, prefix) {
