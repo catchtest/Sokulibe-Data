@@ -2474,8 +2474,11 @@ function loadDimensionQuestData(eventID, questID) {
 	}
 	$("#dimTreasureTable > tbody").html(html);
 	
-    $("#Recom_lv, #first_clear_bonus, #multi_exp, #exp, #crystal, #job_exp, #raid_point, #speedclear").closest("tr").hide();
-    $("#continue_limit, #required_lv").closest("tr").show();
+	$("#Recom_lv").html($("#required_lv").html()).closest("tr").show();
+    $("#required_lv").html('').closest("tr").hide();
+	
+    $("#first_clear_bonus, #multi_exp, #exp, #crystal, #job_exp, #raid_point, #speedclear").closest("tr").hide();
+    $("#continue_limit").closest("tr").show();
     $("#questTab").show();
     $("#questList").show();
 }
