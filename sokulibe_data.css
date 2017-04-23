@@ -727,3 +727,7 @@ a > i, button > i {
 #awakenItemTab img {
 	border-radius: 8%;
 }
+
+.gimmick + .gimmick {
+	margin-top: 5px;
+}

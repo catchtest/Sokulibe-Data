@@ -42,6 +42,12 @@ var path = {
 	"guild_icon": "GuildIcon/ig{0}_tex.png",
 	"stack": "Stack/gs{0}_tex.png",
 	"awaken_item": "AwakeningItem/ia{0}_tex.png",
+	"gimmick": function(id) {
+		var cate = db.gimmick[id].gimmick_category_id;
+		var subId = (cate === 1) ? id : (id - 12) % 6;
+		var myPath = String.Format("Gimmick/gm{0}_{1}_tex.png", padLeft(cate, 4), padLeft(subId, 4));
+		return myPath;
+	}
 };
 (function($) {
     // 顯示讀取資料錯誤訊息
@@ -159,8 +165,13 @@ var path = {
 		var html = '';
 		for (var id in db.gimmick) {
 			var data = db.gimmick[id];
+			
+			//var cate = data.gimmick_category_id;
+			//var subId = (cate === 1) ? id : (id - 12) % 6;
+			//var myPath = String.Format(path.gimmick, padLeft(cate, 4), padLeft(subId, 4));
+			
 			var list = [
-				'',//imgHtml(path.stack, id),
+				imgHtml(path.gimmick(id), null),
 				data.gimmick_category_name,
 				data.gimmick_name,
 				data.gimmick_comment.pre(),
@@ -171,6 +182,7 @@ var path = {
 	});
 	
 	$("a[href='#awakenItemTab']").one("click", function() {
+		// 覺醒道具
 		var html = '';
 		for (var id in db.awakening_item) {
 			var data = db.awakening_item[id];
@@ -2325,8 +2337,8 @@ function loadDimensionData(id) {
     var html = '';
     for (var questID in data_quest) {
         var quest = data_quest[questID];
-        var sub = String.Format('總合力 {2}&nbsp;&nbsp;WAVE {0}&nbsp;&nbsp;體力 {1}', 
-			Object.keys(db.event_quest_wave[questID]).length, quest.stamina, displayLight(quest.required_light));
+        var sub = String.Format('總合力 {1}&nbsp;&nbsp;WAVE {0}', 
+			Object.keys(db.dimension_wave[questID]).length, displayLight(quest.required_light));
         var itemHtml = listItemHtml(quest.id, quest.name, sub, "loadDimensionQuestData(" + id + ", " + quest.id + ");");
         html = itemHtml + html; // 難度越高排越上面
     }
@@ -2508,7 +2520,8 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickD
 		for (var index in gimmickData) {
 			var data_i = gimmickData[index];
 			var data_g = db.gimmick[data_i.gimmick_id];
-			ghtml += String.Format('<div title="{2}">{0} Lv{1}</div>', data_g.gimmick_name, data_i.gimmick_lv, data_g.gimmick_comment);
+			var name = imgXs(path.gimmick(data_i.gimmick_id)) + data_g.gimmick_name;
+			ghtml += String.Format('<div class="gimmick" title="{2}">{0} Lv{1}</div>', name, data_i.gimmick_lv, data_g.gimmick_comment);
 		}
 	} else {
 		ghtml = '---';
@@ -2973,7 +2986,7 @@ function getAsset(type, id, value) {
                 anchor(db.weapon[id].name, "showWeapon(" + id + ")");
             break;
 		case 15: // 貢獻點
-			if (id == 1) name = 'ユニオンメダル'
+			if (id == 1) name = imgXs('Item/guild_coin.png') + 'ユニオンメダル'
 			break;
 		case 16: // 覺醒材料
 			name = imgXs(path.awaken_item, id) + '<span class="type-awaken"></span>' + db.awakening_item[id].name;
@@ -3116,7 +3129,10 @@ function setDirtyClass() {
 }
 
 function imgHtml(path, id, active) {
-    path = String.Format(path, padLeft(id.toString(), 4));
+	// 有傳id進行字串取代，否則直接以path處理
+	if (id != null) {
+		path = String.Format(path, padLeft(id.toString(), 4));
+	}
     if (active == true || alwaysShowImage) {
         var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
         if (disableImage) {
