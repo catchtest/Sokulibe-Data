@@ -43,6 +43,7 @@ var path = {
 	"stack": "Stack/gs{0}_tex.png",
 	"awaken_item": "AwakeningItem/ia{0}_tex.png",
 	"gimmick": function(id) {
+		// 關卡特性圖片並非跟ID相同，故需做轉換
 		var cate = db.gimmick[id].gimmick_category_id;
 		var subId = (cate === 1) ? id : (id - 12) % 6;
 		var myPath = String.Format("Gimmick/gm{0}_{1}_tex.png", padLeft(cate, 4), padLeft(subId, 4));
@@ -829,7 +830,8 @@ function renderWeapon(data) {
         weaponMainSkill.dmg,
         weaponMainSkill.break_,
         weaponSubSkill[1] == null ? '' : weaponSubSkill[1].comment.i18n().pre(),
-        weaponSubSkill[5] == null ? '' : weaponSubSkill[5].comment.i18n().pre()
+        weaponSubSkill[5] == null ? '' : weaponSubSkill[5].comment.i18n().pre(),
+		displayStack(data.stack_id, false)
     ];
     return list;
 }
@@ -2199,9 +2201,7 @@ function loadWeaponData(id) {
         $("#weaponSkillAtk").hide();
     }
 	$("#weaponEventFlag").html((data.event_ === 1).display());
-	
-	var stackHtml = data.stack_id > 0 ? imgXs(path.stack, data.stack_id) + db.stack[data.stack_id].stack_name : '無';
-	$("#weaponStack").html(stackHtml);
+	$("#weaponStack").html(displayStack(data.stack_id, true));
 	
 	// 計算武器技威力帳面數值
 	// 威力好像固定是1.1/1.2/1.3/1.5
@@ -2248,6 +2248,13 @@ function loadWeaponData(id) {
 	$(String.Format("#weaponLightR{0}E{1}", data.rarity, data.event_)).show();
 
 }
+
+function displayStack(id, showName) {
+	if (id <= 0) return '';
+	var data = db.stack[id];
+	return String.Format("{0}{1}", imgHtml(path.stack, id, true), !!showName ? data.stack_name : '');
+}
+
 // 讀取活動資料
 function loadEventData(id) {
     loadDataEvent(id);
