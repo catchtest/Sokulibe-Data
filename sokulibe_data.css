@@ -731,4 +731,5 @@ a > i, button > i {
 .tooltip-inner {
     white-space: pre;
     max-width: none;
+	text-align: left;
 }

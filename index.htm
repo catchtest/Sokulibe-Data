@@ -56,6 +56,7 @@
                         <div class="well">
                             <div class="well-legend">更新紀錄</div>
                             <ul style="height: 160px; overflow-y: auto;">
+								<li>2017/04/24<br />次元之門的獎勵，修改公會徽章一覽</li>
 								<li>2017/04/23<br />增加關卡特性，補完todo資料，優化角色讀取</li>
 								<li>2017/04/22<br />增加武器總合力、次元之門資料</li>
 								<li>2017/04/20<br />增加覺醒資料、Stack一覽、關卡特性一覽、覺醒素材一覽、衣裝</li>
@@ -1229,6 +1230,7 @@
                             <li role="presentation" class="active"><a href="#quest" aria-controls="quest" role="tab" data-toggle="tab">關卡</a></li>
                             <li role="presentation"><a href="#mission" aria-controls="mission" role="tab" data-toggle="tab">任務</a></li>
                             <li role="presentation"><a href="#exchange" aria-controls="exchange" role="tab" data-toggle="tab">交換所</a></li>
+							<li role="presentation"><a href="#dimReward" aria-controls="dimReward" role="tab" data-toggle="tab">獎勵</a></li>
 							<li role="presentation"><a href="#dimTreasure" aria-controls="dimTreasure" role="tab" data-toggle="tab">寶藏</a></li>
                         </ul>
                         <div class="tab-content">
@@ -1676,6 +1678,20 @@
                                     </table>
                                 </div>
                             </div>
+                            <div role="tabpanel" class="tab-pane" id="dimReward">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dimRewardTable">
+                                        <thead>
+                                            <tr>
+                                                <th>點數</th>
+                                                <th>物品</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                             <div role="tabpanel" class="tab-pane" id="dimTreasure">
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dimTreasureTable">
@@ -1706,7 +1722,7 @@
                     <li role="presentation"><a href="#icons" aria-controls="icons" role="tab" data-toggle="tab">徽章</a></li>
 					<li role="presentation"><a href="#guildIconTab" aria-controls="icons" role="tab" data-toggle="tab">公會徽章</a></li>
                     <li role="presentation"><a href="#items" aria-controls="items" role="tab" data-toggle="tab">道具</a></li>
-					<li role="presentation"><a href="#eventItems" aria-controls="eventItems" role="tab" data-toggle="tab">點數</a></li>
+					<li role="presentation"><a href="#eventItemsTab" aria-controls="eventItemsTab" role="tab" data-toggle="tab">點數</a></li>
                     <li role="presentation"><a href="#rune" aria-controls="rune" role="tab" data-toggle="tab">素材</a></li>
 					<li role="presentation"><a href="#awakenItemTab" aria-controls="awakenItemTab" role="tab" data-toggle="tab">覺醒素材</a></li>
                     <li role="presentation"><a href="#expTab" aria-controls="expTab" role="tab" data-toggle="tab">經驗</a></li>
@@ -2025,7 +2041,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="eventItems">
+                    <div role="tabpanel" class="tab-pane" id="eventItemsTab">
 						<div class="row img-list">
 						</div>
                     </div>

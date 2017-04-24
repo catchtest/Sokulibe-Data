@@ -90,6 +90,18 @@ var path = {
 		showFavoriteUnit();
     });
 
+
+	var generateImageItem = function(img, name, title, onclick) {
+		title = title || name;
+		var html = String.Format('<a href="#" onclick="{3}"><div class="col-md-2 col-sm-3 col-xs-4 text-center" title="{2}">{0}<br />{1}</div></a>', 
+			img, name, title, onclick || "alert('" + title + "');");
+		return html;
+	}
+	
+	var renderImageList = function(id, html) {
+		$("#" + id + " > .row").html(html).find("[title]").tooltip();
+	}
+	
     // 綁定initial事件
     $("a[href='#unit']").one("click", initUnit);
     $("a[href='#accessory']").one("click", initAccessory);
@@ -110,13 +122,13 @@ var path = {
     $("a[href='#tearsComputeTab']").one("click", initTearsCompute);
     $("a[href='#loginBonusTab']").one("click", initLoginBonus);
     $("a[href='#enchantTab']").one("click", initEnchant);
-    $("a[href='#eventItems']").one("click", function() {
+    $("a[href='#eventItemsTab']").one("click", function() {
 		// 活動道具
 		var html = '';
 		for (var id in db.event_item) {
 			html += generateImageItem(imgHtml(path.event_item, id, true), db.event_item[id].name);
 		}
-		$("#eventItems > .row").html(html).find("[title]").tooltip();
+		renderImageList("eventItemsTab", html);
 	});
     $("a[href='#weaponExchangeTab']").one("click", function() {
 		// 武器交換一覽
@@ -126,7 +138,7 @@ var path = {
 			if (data.exchange_flag !== 1) continue;
 			html += generateImageItem(imgHtml(path.weapon, id, true), data.name, null, 'showWeapon(' + id + ')');
 		}
-		$("#weaponExchangeTab > .row").html(html).find("[title]").tooltip();
+		renderImageList("weaponExchangeTab", html);
 	});
     $("a[href='#lotteryTab']").one("click", initLottery);
     $("a[href='#storyTab']").one("click", initStory);
@@ -138,7 +150,7 @@ var path = {
 			var data = db.guild_icon[id];
 			html += generateImageItem(imgHtml(path.guild_icon, id, true), data.name, data.unlock_comment);
 		}
-		$("#guildIconTab > .row").html(html).find("[title]").tooltip();
+		renderImageList("guildIconTab", html);
 	});
 	
 	$("a[href='#stackTab']").one("click", function() {
@@ -199,7 +211,7 @@ var path = {
 			var data = db.awakening_item[id];
 			html += generateImageItem(imgHtml(path.awaken_item, id, true), data.name, data.comment);
 		}
-		$("#awakenItemTab > .row").html(html).find("[title]").tooltip();
+		renderImageList("awakenItemTab", html);
 	});
 	
 	
@@ -1041,14 +1053,6 @@ function getEnchantFrom(enchantId) {
         }
     }
     return result;
-}
-
-function generateImageItem(img, name, title, onclick) {
-	var html = String.Format('<div class="col-md-2 col-sm-3 col-xs-4 text-center" title="{2}">{0}<br />{1}</div>', img, name, title || name);
-	if (onclick != null) {
-		html = String.Format('<a href="#" onclick="{1}">{0}</a>', html, onclick);
-	}
-	return html;
 }
 
 // 判斷是否為尚未完成的裝備
@@ -2438,7 +2442,7 @@ function loadQuestData(eventID, questID) {
     $("#continue_limit, #required_lv, #exp, #crystal, #job_exp, #speedclear").closest("tr").show();
     $("#questTab").show();
     $("#questList").show();
-	$("#dimTreasureTable > tbody").html('');
+	$("#dimTreasureTable > tbody, #dimRewardTable > tbody").html('');
 }
 
 function loadDimensionQuestData(eventID, questID) {
@@ -2451,9 +2455,19 @@ function loadDimensionQuestData(eventID, questID) {
     loadCommonQuestData(baseData, missionData, null, waveData, gimmickData);
 
 	// 無任務跟交換所
-	$("#missionTable > tbody").html('');
-	$("#exchangeTable > tbody").html('');
+	$("#missionTable > tbody, #missionTable > tfoot").html('');
+	$("#exchangeTable > tbody, #exchangeTable > tfoot").html('');
 
+	// 增加獎勵
+	var html = '';
+	for (var index in db.dimension_reward[eventID]) {
+		var data = db.dimension_reward[eventID][index];
+		var asset = getAsset(data.item_type_1, data.item_id_1, data.item_value_1);
+		
+		html += tableRow([index, asset]);
+	}
+	$("#dimRewardTable > tbody").html(html);
+	
 	// 增加寶藏
 	var html = '';
 	for (var group in db.dimension_treasure[eventID]) {
