@@ -110,8 +110,24 @@ var path = {
     $("a[href='#tearsComputeTab']").one("click", initTearsCompute);
     $("a[href='#loginBonusTab']").one("click", initLoginBonus);
     $("a[href='#enchantTab']").one("click", initEnchant);
-    $("a[href='#eventItems']").one("click", initEventItem);
-    $("a[href='#weaponExchangeTab']").one("click", initWeaponExchange);
+    $("a[href='#eventItems']").one("click", function() {
+		// 活動道具
+		var html = '';
+		for (var id in db.event_item) {
+			html += generateImageItem(imgHtml(path.event_item, id, true), db.event_item[id].name);
+		}
+		$("#eventItems > .row").html(html).find("[title]").tooltip();
+	});
+    $("a[href='#weaponExchangeTab']").one("click", function() {
+		// 武器交換一覽
+		var html = '';
+		for (var id in db.weapon) {
+			var data = db.weapon[id];
+			if (data.exchange_flag !== 1) continue;
+			html += generateImageItem(imgHtml(path.weapon, id, true), data.name, null, 'showWeapon(' + id + ')');
+		}
+		$("#weaponExchangeTab > .row").html(html).find("[title]").tooltip();
+	});
     $("a[href='#lotteryTab']").one("click", initLottery);
     $("a[href='#storyTab']").one("click", initStory);
     $("a[href='#treasureTab']").one("click", initTreasure);
@@ -120,15 +136,9 @@ var path = {
 		var html = '';
 		for (var id in db.guild_icon) {
 			var data = db.guild_icon[id];
-			var list = [
-				imgHtml(path.guild_icon, id),
-				data.name,
-				data.comment,
-				data.unlock_comment
-			];
-			html += tableRow(list);
+			html += generateImageItem(imgHtml(path.guild_icon, id, true), data.name, data.unlock_comment);
 		}
-		renderTable("guildIconTable", html);
+		$("#guildIconTab > .row").html(html).find("[title]").tooltip();
 	});
 	
 	$("a[href='#stackTab']").one("click", function() {
@@ -189,7 +199,7 @@ var path = {
 			var data = db.awakening_item[id];
 			html += generateImageItem(imgHtml(path.awaken_item, id, true), data.name, data.comment);
 		}
-		$("#awakenItemTab > .row").html(html);
+		$("#awakenItemTab > .row").html(html).find("[title]").tooltip();
 	});
 	
 	
@@ -1031,24 +1041,6 @@ function getEnchantFrom(enchantId) {
         }
     }
     return result;
-}
-
-function initEventItem() {
-    var html = '';
-    for (var id in db.event_item) {
-        html += generateImageItem(imgHtml(path.event_item, id, true), db.event_item[id].name);
-    }
-    $("#eventItems > .row").html(html);
-}
-
-function initWeaponExchange() {
-    var html = '';
-    for (var id in db.weapon) {
-        var data = db.weapon[id];
-        if (data.exchange_flag !== 1) continue;
-        html += generateImageItem(imgHtml(path.weapon, id, true), data.name, null, 'showWeapon(' + id + ')');
-    }
-    $("#weaponExchangeTab > .row").html(html);
 }
 
 function generateImageItem(img, name, title, onclick) {
