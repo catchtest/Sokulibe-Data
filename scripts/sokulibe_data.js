@@ -189,11 +189,6 @@ $(function() {
 		var html = '';
 		for (var id in db.gimmick) {
 			var data = db.gimmick[id];
-			
-			//var cate = data.gimmick_category_id;
-			//var subId = (cate === 1) ? id : (id - 12) % 6;
-			//var myPath = String.Format(path.gimmick, padLeft(cate, 4), padLeft(subId, 4));
-			
 			var list = [
 				imgHtml(path.gimmick(id), null),
 				data.gimmick_category_name,
@@ -342,7 +337,7 @@ $(function() {
 // 初始化角色列表
 function initUnit() {
 	// 因為加上圖片導致傳輸時間大增，改成點選tab時才產生列表
-	var generateUnitList = function(rarity) {
+	var generate = function(rarity) {
 		var html = '';
 		for (var id in db.unit) {
 			var data = db.unit[id];
@@ -362,11 +357,11 @@ function initUnit() {
 		insertToList("unitR" + rarity, html);
 	}
 	for (var r = 1; r <= 3; r++) {
-		$("a[href='#unitR" + r + "']").one("click", function() { 
-			generateUnitList($(this).data("r")); 
+		$("a[href='#unitR" + r + "']").one("click", { rarity: r }, function(event) { 
+			generate(event.data.rarity); 
 		});
 	}
-	generateUnitList(4);
+	generate(4);
 	
     var $levelSelect = $("#unitLevelSelect");
     var html = '';
@@ -385,64 +380,85 @@ function initUnit() {
 }
 // 初始化裝備列表
 function initAccessory() {
-    var htmls = ['', '', ''];
-    for (var id in db.accessory) {
-        var cssClass = '';
-        var prefix = '';
-        if (isDirtyAccessory(id)) {
-            cssClass = setDirtyClass();
-            prefix = dirtyPrefix;
-        }
-        var data = db.accessory[id];
-        var name = imgXs(path.accessory, getAccessoryFirstId(id)) + prefix + getAccessoryName(id);
-        var job = enums.equip_job[data.job] + ' <div class="rarity">' + enums.rarity[data.rarity] + '</div>';
-        var itemHtml = listItemHtml(id, name, job, "loadAccessoryData(" + id + ");", cssClass);
-        if (data.category == 1) { // 戒指
-            if (data.rarity >= 4) {
-                htmls[0] += itemHtml;
-            } else {
-                htmls[1] += itemHtml;
-            }
-        } else if (data.category == 2) { // 護符
-            htmls[2] += itemHtml;
-        }
-    }
-	insertToList("ringSR", htmls[0]);
-	insertToList("ringR", htmls[1]);
-	insertToList("talisman", htmls[2]);
+	// 因為加上圖片導致傳輸時間大增，改成點選tab時才產生列表
+	var generate = function(type, listId) {
+		var html = '';
+		for (var id in db.accessory) {
+			var cssClass = '';
+			var prefix = '';
+			if (isDirtyAccessory(id)) {
+				cssClass = setDirtyClass();
+				prefix = dirtyPrefix;
+			}
+			var data = db.accessory[id];
+			var name = imgXs(path.accessory, getAccessoryFirstId(id)) + prefix + getAccessoryName(id);
+			var job = enums.equip_job[data.job] + ' <div class="rarity">' + enums.rarity[data.rarity] + '</div>';
+			var itemHtml = listItemHtml(id, name, job, "loadAccessoryData(" + id + ");", cssClass);
+			
+			switch (type) {
+				case 1:   // SR戒指
+					if (data.category === 1 && data.rarity >= 4) html += itemHtml;
+					break;
+				case 2:   // 低階戒指
+					if (data.category === 1 && data.rarity < 4) html += itemHtml;
+					break;
+				case 3:   // 護符
+					if (data.category === 2) html += itemHtml;
+					break;
+			}
+		}
+		insertToList(listId, html);
+	}
+	
+	$("a[href='#ringR']").one("click", function() { 
+		generate(2, 'ringR'); 
+	});
+	$("a[href='#talisman']").one("click", function() { 
+		generate(3, 'talisman'); 
+	});
+	generate(1, 'ringSR');
 }
 // 初始化武器列表
 function initWeapon() {
-    var htmls = ['', '', '', ''];
-    for (var id in db.weapon) {
-        var data = db.weapon[id];
-        var cssClass = '';
-        var prefix = '';
-        if (isDirtyWeapon(data)) {
-            cssClass = setDirtyClass();
-            prefix = dirtyPrefix;
-        }
-        var name = imgXs(path.weapon, id) + prefix + data.name;
-        // 不能裝備的武器
-        if (data.job == -1) {
-            var itemHtml = listItemHtml(id, name, enums.rarity[data.rarity], cssClass);
-            htmls[3] += itemHtml;
-            continue;
-        }
-        var job = enums.equip_job[data.job];
-        var itemHtml = listItemHtml(id, name, job, "loadWeaponData(" + id + ");", cssClass);
-        if (data.rarity == 4) {
-            htmls[0] += itemHtml;
-        } else if (data.rarity == 3) {
-            htmls[1] += itemHtml;
-        } else if (data.rarity == 2) {
-            htmls[2] += itemHtml;
-        }
-    }
-	insertToList("weaponSR", htmls[0]);
-	insertToList("weaponHR", htmls[1]);
-	insertToList("weaponR", htmls[2]);
-	insertToList("weaponOther", htmls[3]);
+	var generate = function(rarity, listId) {
+		var html = '';
+		for (var id in db.weapon) {
+			var data = db.weapon[id];
+			var cssClass = '';
+			var prefix = '';
+			if (isDirtyWeapon(data)) {
+				cssClass = setDirtyClass();
+				prefix = dirtyPrefix;
+			}
+			var name = imgXs(path.weapon, id) + prefix + data.name;
+			// 不能裝備的武器
+			if (data.job == -1) {
+				if (rarity === 1) {
+					name = String.Format("<span title='{1}'>{0}</span>", name, data.material_comment);
+					var itemHtml = listItemHtml(id, name, enums.rarity[data.rarity], cssClass);
+					html += itemHtml;
+				}
+				continue;
+			}
+			if (data.rarity === rarity) {
+				var job = enums.equip_job[data.job];
+				var itemHtml = listItemHtml(id, name, job, "loadWeaponData(" + id + ");", cssClass);
+				html += itemHtml;
+			}
+		}
+		insertToList(listId, html);
+	}
+	
+	$("a[href='#weaponHR']").one("click", function(event) { 
+		generate(3, 'weaponHR'); 
+	});
+	$("a[href='#weaponR']").one("click", function(event) { 
+		generate(2, 'weaponR'); 
+	});
+	$("a[href='#weaponOther']").one("click", function(event) { 
+		generate(1, 'weaponOther'); 
+	});
+	generate(4, 'weaponSR');
 
     var $levelSelect = $("#weaponLevelSelect");
     var $awakeningSelect = $("#weaponAwakeningSelect");
@@ -465,6 +481,7 @@ function initWeapon() {
         $("#weaponHP_rate").progressRate(weaponPower.hp, 1000);
         $("#weaponATK_rate").progressRate(weaponPower.atk, 4000);
         $("#weaponAGI_rate").progressRate(weaponPower.agi, 1000);
+		$("#weaponCurrentLight").html(weaponPower.light);
     });
 }
 // 初始化關卡列表
@@ -2281,7 +2298,7 @@ function loadEventData(id) {
     }
     // 任務
     var html = '';
-    resetItems();
+    itemSummary.reset();
     for (var missionID in db.event_mission) {
         var data_mission = db.event_mission[missionID];
         if (data_mission.event_id != id) continue;
@@ -2290,11 +2307,11 @@ function loadEventData(id) {
         var asset = getAsset(data_mission.asset_type, data_mission.asset_id, data_mission.asset_value);
         html += tableRow([title, comment, asset]);
         // 統計可換物品總和
-        addItems(data_mission.asset_type, data_mission.asset_id, data_mission.asset_value);
+        itemSummary.add(data_mission.asset_type, data_mission.asset_id, data_mission.asset_value);
     }
     $("#missionTable > tbody").html(html);
     if (!!html) {
-        $("#missionTable > tfoot").html(tableRow(['', '', displayItems()]));
+        $("#missionTable > tfoot").html(tableRow(['', '', itemSummary.display()]));
     } else {
         $("#missionTable > tfoot").html('');
     }
@@ -2304,7 +2321,7 @@ function loadEventData(id) {
     var point_summary = 0;
     var point_last = 0;
     var point_exchange_mode = false;
-    resetItems();
+    itemSummary.reset();
     var data_points = raid_id > 0 ? db.raid_event_point[raid_id] : db.event_point[id];
     if (data_points != null) {
         for (var pid in data_points) {
@@ -2321,15 +2338,12 @@ function loadEventData(id) {
             point_last = data_point_sum;
             point_summary += point_last;
             // 統計可換物品總和
-            addItems(data_point.item_type, data_point.item_id, data_point.item_value);
+            itemSummary.add(data_point.item_type, data_point.item_id, data_point.item_value);
         }
     }
     $("#exchangeTable > tbody").html(html);
     // 顯示可換物品總和
-    var itemHtml = '';
-    if (!point_exchange_mode) {
-        itemHtml = displayItems();
-    }
+    var itemHtml = !point_exchange_mode ? itemSummary.display() : '';
     var total_point = point_exchange_mode ? point_summary : point_last;
     var footerHtml = total_point == 0 ? '' : tableRow([itemHtml, '', '', total_point]);
     $("#exchangeTable > tfoot").html(footerHtml);
@@ -2492,29 +2506,31 @@ function loadDimensionQuestData(eventID, questID) {
     $("#questList").show();
 }
 
-var item_summary = {};
-
-function resetItems() {
-    item_summary = {};
+function ItemSummary() {
+	var data = {};
+	
+	this.reset = function() {
+		data = {};
+	}
+	this.add = function(type, id, value) {
+		if (data[type] == null) {
+			data[type] = {};
+		}
+		var prev = data[type][id] || 0;
+		data[type][id] = prev + value;
+	}
+	this.display = function() {
+		var list = [];
+		for (var item_type in data) {
+			for (var item_id in data[item_type]) {
+				list.push(getAsset(parseInt(item_type), parseInt(item_id), parseInt(data[item_type][item_id])));
+			}
+		}
+		return String.Format($("#itemListTmpl").html(), list.join('<br />'));
+	}
 }
+var itemSummary = new ItemSummary();
 
-function addItems(type, id, value) {
-    if (item_summary[type] == null) {
-        item_summary[type] = {};
-    }
-    var prev_count = item_summary[type][id] || 0;
-    item_summary[type][id] = prev_count + value;
-}
-
-function displayItems() {
-    var list = [];
-    for (var item_type in item_summary) {
-        for (var item_id in item_summary[item_type]) {
-            list.push(getAsset(parseInt(item_type), parseInt(item_id), parseInt(item_summary[item_type][item_id])));
-        }
-    }
-    return String.Format($("#itemListTmpl").html(), list.join('<br />'));
-}
 // 共通關卡資料讀取
 function loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickData) {
     current_quest = baseData;
@@ -2527,7 +2543,7 @@ function loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickD
     $("#bg_location").html(db.bg_location[baseData.bg_id].name);
     $("#boss1_name").html(getMonsterName(baseData.boss01_id));
     $("#boss2_name").html(getMonsterName(baseData.boss02_id));
-	$("#light_element_bonus").html(baseData.light_element_bonus > 0 && baseData.bonus_element_id1 >= 0 ? ' + ' + baseData.light_element_bonus : '---');
+	$("#light_element_bonus").html(baseData.light_element_bonus > 0 && baseData.bonus_element_id1 >= 0 ? displayLight(baseData.light_element_bonus) : '---');
 	$("#bonus_element_id").html(displayElement(baseData.bonus_element_id1, baseData.bonus_element_id2));
     $("#rareenemy_id").html(baseData.rareenemy_id != null ? getMonsterName(baseData.rareenemy_id) : '無');
     var timeLimit = baseData.time_limit || baseData.timelimit;
@@ -2968,10 +2984,10 @@ function getAsset(type, id, value) {
     var name = '';
     switch (type) {
         case 1:
-            if (id == 1) name = imgXs('Item/diamond.png') + '鑽石'
+            if (id == 1) name = imgXs('images/Item/diamond.png') + '鑽石'
             break;
         case 2: // 道具
-            var name = imgXs('Item/ci{0}_tex.png', id);
+            var name = imgXs('images/Item/ci{0}_tex.png', id);
             if (id >= 21) {
                 name += extendItemName(id);
             } else {
@@ -2986,10 +3002,10 @@ function getAsset(type, id, value) {
                 anchor(getAccessoryNameByUpgradeID(id), "showAccessory(" + getAccessoryIdByUpgradeID(id) + ")");
             break;
         case 5:
-            name = imgXs('Item/crystal.png') + '經驗水晶';
+            name = imgXs('images/Item/crystal.png') + '經驗水晶';
             break;
         case 6:
-            if (id == 1) name = imgXs('Item/tear.png') + '妖精之淚'
+            if (id == 1) name = imgXs('images/Item/tear.png') + '妖精之淚'
             break;
         case 7: // 角色
             name = imgXs(path.unit_mini, id) + '<span class="type-unit"></span>' +
@@ -3007,7 +3023,7 @@ function getAsset(type, id, value) {
                 anchor(db.weapon[id].name, "showWeapon(" + id + ")");
             break;
 		case 15: // 貢獻點
-			if (id == 1) name = imgXs('Item/guild_coin.png') + 'ユニオンメダル'
+			if (id == 1) name = imgXs('images/Item/guild_coin.png') + 'ユニオンメダル'
 			break;
 		case 16: // 覺醒材料
 			name = imgXs(path.awaken_item, id) + '<span class="type-awaken"></span>' + db.awakening_item[id].name;
@@ -3085,7 +3101,8 @@ function calculateWeapon(id, level, awaken) {
     return {
         hp: calc(data.hp, data.hp_grow, data.hp_awakening_rate, level, awaken),
         atk: calc(data.atk, data.atk_grow, data.atk_awakening_rate, level, awaken),
-        agi: calc(data.agi, data.agi_grow, data.agi_awakening_rate, level, awaken)
+        agi: calc(data.agi, data.agi_grow, data.agi_awakening_rate, level, awaken),
+		light: db.weapn_light_lv[data.rarity][awaken][level][data.event_].light_lv
     }
 }
 // 計算角色能力值
