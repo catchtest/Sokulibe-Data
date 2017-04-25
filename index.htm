@@ -56,6 +56,7 @@
                         <div class="well">
                             <div class="well-legend">更新紀錄</div>
                             <ul style="height: 160px; overflow-y: auto;">
+								<li>2017/04/25<br />Stack敘述補完、角色等級跟技能總合力</li>
 								<li>2017/04/24<br />次元之門的獎勵，修改公會徽章一覽</li>
 								<li>2017/04/23<br />增加關卡特性，補完todo資料，優化角色讀取</li>
 								<li>2017/04/22<br />增加武器總合力、次元之門資料</li>
@@ -446,7 +447,7 @@
                                     <li role="presentation"><a href="#skillDescTab" aria-controls="skillDescTab" role="tab" data-toggle="tab">描述</a></li>
                                     <li role="presentation"><a href="#skillRuneTab" aria-controls="skillRuneTab" role="tab" data-toggle="tab">素材</a></li>
                                     <li role="presentation"><a href="#skillUpgradeTab" aria-controls="skillUpgradeTab" role="tab" data-toggle="tab">強化效果</a></li>
-
+									<li role="presentation"><a href="#skillLightTab" aria-controls="skillLightTab" role="tab" data-toggle="tab">總合力</a></li>
                                 </ul>
                                 <div class="tab-content">
                                     <div role="tabpanel" class="tab-pane active" id="skillBaseTab">
@@ -721,7 +722,72 @@
                                             </table>
                                         </div>
                                     </div>
-
+                                    <div role="tabpanel" class="tab-pane" id="skillLightTab">
+                                        <div class="table-responsive">
+                                            <table id="skillLight" class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+														<th>Lv1</th>
+                                                        <th>Lv2</th>
+                                                        <th>Lv3</th>
+                                                        <th>Lv4</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>N0</th>
+														<td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>N1</th>
+														<td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>N2</th>
+														<td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S0</th>
+														<td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S1</th>
+														<td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S2</th>
+														<td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>S3</th>
+														<td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane" id="unitCommentTab">
@@ -1880,6 +1946,7 @@
                                                 <th>角色等級</th>
                                                 <th>升級經驗</th>
                                                 <th>累積經驗</th>
+												<th>總合力</th>
                                             </tr>
                                         </thead>
                                         <tbody>

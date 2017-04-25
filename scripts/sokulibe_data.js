@@ -95,7 +95,7 @@ $(function() {
 	var generateImageItem = function(img, name, title, onclick) {
 		title = title || name;
 		var html = String.Format('<a href="#" onclick="{3}"><div class="col-md-2 col-sm-3 col-xs-4 text-center" title="{2}">{0}<br />{1}</div></a>', 
-			img, name, title, onclick || "alert('" + title + "');");
+			img, name, title, onclick || "alert(this.title);");
 		return html;
 	}
 	
@@ -668,17 +668,24 @@ function initRune() {
 // 初始化經驗列表
 function initExp() {
     $("#mrExpTable > tbody").html(createExpTable(db.multi_rank, "point"));
-    $("#unitExpTable > tbody").html(createExpTable(db.unit_exp, "exp"));
+    $("#unitExpTable > tbody").html(createExpTable(db.unit_exp, "exp", "add_light_lv"));
     $("#jobExpTable > tbody").html(createExpTable(db.job_lv, "exp"));
 }
 
-function createExpTable(data, attrName) {
+function createExpTable(data, attrName, attrName2) {
     var html = '';
     var accumulate = 0;
+	var accumulate2 = 0;
     for (var level in data) {
         var value = data[level][attrName];
         accumulate += value;
-        html += tableRow([level, value, accumulate]);
+		var list = [level, value, accumulate];
+		// 為了總合力的例外處理
+		if (!!attrName2) {
+			accumulate2 += data[level][attrName2];
+			list.push(displayLight(accumulate2, true))
+		}
+        html += tableRow(list);
     }
     return html;
 }
@@ -1374,6 +1381,7 @@ function loadUnitData(id) {
     // 技能強化素材
     var $skillRune = $("#skillRune > tbody");
     var $skillUpgrade = $("#skillUpgrade > tbody");
+	var $skillLight = $("#skillLight > tbody");
     var skillTotalRune = {};
     $skillRune.find("td").empty();
     for (var i = 0; i <= 7; i++) {
@@ -1383,10 +1391,14 @@ function loadUnitData(id) {
         var skill_id = command[i].skill_id;
         upgradeTotalRunes = {};
         for (var rankID in db.skill_upgrade[skill_id]) {
+			var data_upgrade = db.skill_upgrade[skill_id][rankID];
+			var rank = data_upgrade.rank;
+			
+			// 總合力 (需要寫入Lv1的值)
+			$skillLight.children("tr").eq(i).children("td").eq(rank - 1).html(displayLight(data_upgrade.light_lv, true));
+			
             if (rankID == 1) continue; // 原始狀態不用升級跟提升能力
             // 素材需求
-            var rank = parseInt(rankID);
-            var data_upgrade = db.skill_upgrade[skill_id][rankID];
             var html = getUpgradeRune(data_upgrade);
             $skillRune.children("tr").eq(i).children("td").eq(rank - 2).html(html);
             // 強化效果
