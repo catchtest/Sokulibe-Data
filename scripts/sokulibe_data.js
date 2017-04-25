@@ -164,15 +164,7 @@ $(function() {
 			var count = 0;
 			for (var sid in db.stack_ability[id]) {
 				var data_sa = db.stack_ability[id][sid];
-				var content = data_sa.stack_ability_name;
-				var converts = [];
-				for (var a = 1; a <= 3; a++) {
-					var magicID = data_sa['ability' + a];
-					if (magicID > 0) {
-						converts.push(displayEffect(magicID).replaceAll('<br />', ''));
-					}
-				}
-				content = data_sa.stack_ability_name + '<div class="text-warning">' + converts.join('<br />') + '</div>';
+				var content = data_sa.stack_ability_name + '<div class="text-warning">' + displayStackEffect(data_sa).join('<br />') + '</div>';
 				innerHtml += tableRow([data_sa.stack, content]);
 				count++;
 			}
@@ -333,6 +325,17 @@ $(function() {
         });
     }
 });
+
+function displayStackEffect(data) {
+	var list = [];
+	for (var a = 1; a <= 3; a++) {
+		var magicID = data['ability' + a];
+		if (magicID > 0) {
+			list.push(displayEffect(magicID).replaceAll('<br />', ''));
+		}
+	}
+	return list;
+}
 
 // 初始化角色列表
 function initUnit() {
@@ -872,7 +875,7 @@ function renderWeapon(data) {
         weaponMainSkill.break_,
         weaponSubSkill[1] == null ? '' : weaponSubSkill[1].comment.i18n().pre(),
         weaponSubSkill[5] == null ? '' : weaponSubSkill[5].comment.i18n().pre(),
-		displayStack(data.stack_id, false)
+		displayStack(data.stack_id, false, false)
     ];
     return list;
 }
@@ -1488,7 +1491,7 @@ function loadUnitData(id) {
 				var sid = dat['stack0' + i + '_id'];
 				if (sid > 0) {
 					var num = dat['stack0' + i + '_number'];
-					stack.push(imgXs(path.stack, sid, db.stack[sid].stack_name) + num);
+					stack.push(displayStack(sid, true, false) + num);
 				}
 			}
 			// 被動改變
@@ -1747,7 +1750,15 @@ function getSkillAtkItemList(data, ext) {
                 }
             });
         }
-        var hold_effect = [];
+        var effect = [];
+		
+        if (hit.recovery_debuff_id > 0) {
+			effect.push('回復 ' + debuffHtml(hit.recovery_debuff_id));
+		}
+		if (hit.buff > 0) {
+			effect.push('附加 ' + displaySkillBuff(hit.buff, hit.buff_value, hit.buff_time));
+		}
+		
         for (var i = 1; i <= 3; i++) {
             var type = hit['hold_type' + i];
             if (type == null || type == 0) {
@@ -1817,7 +1828,7 @@ function getSkillAtkItemList(data, ext) {
                     text = String.Format("type:{0} value:{1}", type, value);
                     break;
             }
-            hold_effect.push(text);
+            effect.push('蓄力 ' + text);
         }
         // 計算debuff總和，雖然一招大概只有一種負面狀態
         // 但為了擴充方便還是設計成允許多種負面狀態
@@ -1834,8 +1845,6 @@ function getSkillAtkItemList(data, ext) {
             hit_num,
             hitType,
             hit.dmg > 0 ? hit.dmg : '',
-            hit.recovery_debuff_id == 0 ? '' : debuffHtml(hit.recovery_debuff_id),
-            displaySkillBuff(hit.buff, hit.buff_value, hit.buff_time),
             displaySkillDebuff(hit.debuff, hit.debuff_value, hit.debuff_time),
             atkType,
             elementType,
@@ -1847,7 +1856,7 @@ function getSkillAtkItemList(data, ext) {
             hit.huge_knockback,
             hit.hitstop,
             ani_xy,
-            hold_effect.join('<br />'),
+            effect.join('<br />'),
         ];
         bodyList.push(list);
     }
@@ -1881,10 +1890,8 @@ function getSkillAtkItemList(data, ext) {
         }
         var list = [
             String.Format("{0} Hits", sum_hit),
-            '',
+			'',
             sum_dmg,
-            '',
-            '',
             html_debuff,
             sum_atk_type,
             sum_element,
@@ -1896,7 +1903,7 @@ function getSkillAtkItemList(data, ext) {
             isNaN(sum_huge_knockback) ? '' : sum_huge_knockback,
             '',
             '',
-            '',
+			''
         ];
         footList.push(list);
     }
@@ -2205,9 +2212,10 @@ function loadWeaponData(id) {
         var weaponMainSkill = db.weapon_mainskillbase[data.main_weapon_skill_id];
         var upgrade = db.weapon_mainskill_upgrade[data.main_weapon_skill_id];
         $("#weaponMainSkill").html(weaponMainSkill.name + '<br />' + upgrade["1"].skill_tips.pre());
-        ['dmg', 'cd', 'break_', 'hate', 'casttime'].forEach(function(name) {
+        ['dmg', 'break_', 'hate', 'casttime'].forEach(function(name) {
             $("#weaponMainSkill_" + name).html(weaponMainSkill[name]);
         });
+		$("#weaponMainSkill_cd").html(cdFormat(weaponMainSkill['cd']));
         $("#weaponMainSkill_range").html(weaponMainSkill.min_range + '-' + weaponMainSkill.max_range);
         $("#weaponMainSkillType").html(enums.skill_type[weaponMainSkill.skill_type]);
         $("#weaponMainSkillCount").html(data.normal_mws_value + "（最大：" + data.awakening_mws_value + "）");
@@ -2218,7 +2226,7 @@ function loadWeaponData(id) {
         $("#weaponSkillAtk").hide();
     }
 	$("#weaponEventFlag").html((data.event_ === 1).display());
-	$("#weaponStack").html(displayStack(data.stack_id, true));
+	$("#weaponStack").html(displayStack(data.stack_id, true, true));
 	
 	// 計算武器技威力帳面數值
 	// 威力好像固定是1.1/1.2/1.3/1.5
@@ -2261,15 +2269,36 @@ function loadWeaponData(id) {
 		}
 		$("#weaponLightTab").html(html);
 	}
+	// 只顯示符合武器能力的總合力表格
 	$("#weaponLightTab table").hide();
 	$(String.Format("#weaponLightR{0}E{1}", data.rarity, data.event_)).show();
 
+	$("#weapon").find("[title]").tooltip();
 }
 
-function displayStack(id, showName) {
+function displayStack(id, imgSmallSize, showName) {
 	if (id <= 0) return '';
-	var data = db.stack[id];
-	return String.Format("{0}{1}", imgHtml(path.stack, id, true), !!showName ? data.stack_name : '');
+	
+	var html = '';
+	// 顯示大圖或小圖或不顯示
+	if (imgSmallSize === true) {
+		html += imgXs(path.stack, id);
+	} else if (imgSmallSize === false) {
+		html += imgHtml(path.stack, id, true);
+	}
+	if (showName) {
+		html += db.stack[id].stack_name;
+	}
+	
+	var contents = [];
+	for (var sid in db.stack_ability[id]) {
+		var data_sa = db.stack_ability[id][sid];
+		contents.push('Lv' + data_sa.stack)
+		contents.push(displayStackEffect(data_sa).join('\n'));
+	}
+	var title = contents.join('\n');
+	
+	return String.Format("<span title='{1}'>{0}</span>", html, title);
 }
 
 // 讀取活動資料
@@ -3148,8 +3177,9 @@ function anchor(text, onclick) {
 
 function renderTable(id, html, dataTablesOption) {
     var $table = $("#" + id);
-    $table.children("tbody").html(html)
+    $table.children("tbody").html(html);
     $table.DataTable(dataTablesOption || defaultDataTablesOption);
+	$table.find("[title]").tooltip();
     $table.wrap("<div class='table-responsive'></div>"); // 增加響應div
 }
 
