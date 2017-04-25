@@ -13,11 +13,11 @@
     "weakness": ["", "是", "是（隱藏）"],
 	"craft_job": [
 		"玩家", 
-		"<img class='img-xs' src='Job/jo0001_mini_tex.png' />輕戰士", 
-		"<img class='img-xs' src='Job/jo0003_mini_tex.png' />重戰士", 
-		"<img class='img-xs' src='Job/jo0006_mini_tex.png' />裝甲士", 
-		"<img class='img-xs' src='Job/jo0007_mini_tex.png' />游擊士", 
-		"<img class='img-xs' src='Job/jo0010_mini_tex.png' />術士", 
+		"<img class='img-xs' src='images/Job/jo0001_mini_tex.png' />輕戰士", 
+		"<img class='img-xs' src='images/Job/jo0003_mini_tex.png' />重戰士", 
+		"<img class='img-xs' src='images/Job/jo0006_mini_tex.png' />裝甲士", 
+		"<img class='img-xs' src='images/Job/jo0007_mini_tex.png' />游擊士", 
+		"<img class='img-xs' src='images/Job/jo0010_mini_tex.png' />術士", 
 		"全職業"],
 	"craft_type": ["", "體力", "HP", "攻擊力", "速度", "破盾值", "冷卻時間"],
     "limitbreak": {

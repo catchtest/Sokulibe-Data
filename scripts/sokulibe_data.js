@@ -26,31 +26,32 @@ var defaultDataTablesOption = {
     }]
 };
 var path = {
-    "icon": "Icon/pe{0}_tex.png",
-    "item": "Item/ci{0}_tex.png",
-    "rune": "Rune/ru{0}_tex.png",
-    "unit_mini": "Mini/un{0}_mini_tex.png",
-    "unit_up": "Portrait/un{0}_up.png",
-    "unit_full": "Full/un{0}_full.png",
-	"unit_awaken_mini": "Mini/un{0}_s{1}_mini_tex.png",
-	"unit_awaken_up": "Portrait/un{0}_s{1}_up.png",
-	"unit_awaken_full": "Full/un{0}_s{1}_full.png",
-    "accessory": "Accessory/eq{0}_tex.png",
-    "weapon": "Weapon/wi{0}_tex.png",
-    "event_item": "EventItem/ei{0}_tex.png",
-    "monster": "Monster/mm{0}_tex.png",
-	"guild_icon": "GuildIcon/ig{0}_tex.png",
-	"stack": "Stack/gs{0}_tex.png",
-	"awaken_item": "AwakeningItem/ia{0}_tex.png",
+    "icon": "images/Icon/pe{0}_tex.png",
+    "item": "images/Item/ci{0}_tex.png",
+    "rune": "images/Rune/ru{0}_tex.png",
+    "unit_mini": "images/Mini/un{0}_mini_tex.png",
+    "unit_up": "images/Portrait/un{0}_up.png",
+    "unit_full": "images/Full/un{0}_full.png",
+	"unit_awaken_mini": "images/Mini/un{0}_s{1}_mini_tex.png",
+	"unit_awaken_up": "images/Portrait/un{0}_s{1}_up.png",
+	"unit_awaken_full": "images/Full/un{0}_s{1}_full.png",
+    "accessory": "images/Accessory/eq{0}_tex.png",
+    "weapon": "images/Weapon/wi{0}_tex.png",
+    "event_item": "images/EventItem/ei{0}_tex.png",
+    "monster": "images/Monster/mm{0}_tex.png",
+	"guild_icon": "images/GuildIcon/ig{0}_tex.png",
+	"stack": "images/Stack/gs{0}_tex.png",
+	"awaken_item": "images/AwakeningItem/ia{0}_tex.png",
 	"gimmick": function(id) {
 		// 關卡特性圖片並非跟ID相同，故需做轉換
 		var cate = db.gimmick[id].gimmick_category_id;
 		var subId = (cate === 1) ? id : (id - 12) % 6;
-		var myPath = String.Format("Gimmick/gm{0}_{1}_tex.png", padLeft(cate, 4), padLeft(subId, 4));
+		var myPath = String.Format("images/Gimmick/gm{0}_{1}_tex.png", padLeft(cate, 4), padLeft(subId, 4));
 		return myPath;
 	}
 };
-(function($) {
+
+$(function() {
     // 顯示讀取資料錯誤訊息
     $.ajaxSetup({
         "error": function(jqXHR, textStatus, errorThrown) {
@@ -80,7 +81,7 @@ var path = {
         $("#favoriteDiv").append($img);
     };
     // 讀取Json
-	$.when($.getJSON('sokulibe_data.json'), $.getJSON('localize.zh-TW.json'), $.getJSON('enums.zh-TW.json')).done(function(a1, a2, a3) {
+	$.when($.getJSON('data/sokulibe_data.json'), $.getJSON('data/localize.json'), $.getJSON('data/enums.json')).done(function(a1, a2, a3) {
 		$(".loader").hide();
 	
 		db = a1[0];
@@ -336,7 +337,8 @@ var path = {
             }, 700);
         });
     }
-}(jQuery));
+});
+
 // 初始化角色列表
 function initUnit() {
 	// 因為加上圖片導致傳輸時間大增，改成點選tab時才產生列表
@@ -468,7 +470,7 @@ function initWeapon() {
 // 初始化關卡列表
 function initBattle() {
 	$(".loader").show();
-	$.getJSON('sokulibe_battle_data.json', function(data) {
+	$.getJSON('data/sokulibe_battle_data.json', function(data) {
 		$.extend(db, data);
 		
 		// 活動
@@ -1076,7 +1078,8 @@ function isDirtyUnit(data) {
 // 判斷是否為未完成的武器
 function isDirtyWeapon(data) {
     // 隱藏未設定的武器
-    if (data.hp == 1 && data.atk == 1 && data.agi == 1) return true;
+    if (data.hp === 1 && data.atk === 1 && data.agi === 1) return true;
+	if (data.id === 7141) return true;   // 官方自己多複製的重複資料
     return false;
 }
 
@@ -3182,7 +3185,7 @@ function openImage(sender) {
 var lottery;
 
 function initLottery() {
-    $.getJSON('lottery.json', function(data) {
+    $.getJSON('data/lottery.json', function(data) {
         lottery = new LotteryModel(data);
         lottery.initial();
     });
@@ -3194,7 +3197,7 @@ function randInt(min, max) {
 
 function initStory() {
     // 讀取Json
-    $.when($.getJSON('main_story.json'), $.getJSON('event_story.json')).done(function(a1, a2) {
+    $.when($.getJSON('data/main_story.json'), $.getJSON('data/event_story.json')).done(function(a1, a2) {
         main_story = a1[0];
         event_story = a2[0];
 
