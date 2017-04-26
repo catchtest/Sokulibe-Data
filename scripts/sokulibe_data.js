@@ -1547,7 +1547,7 @@ function loadUnitData(id) {
 			}
 			
 			var list = [
-				dat.awakening,
+				dat.awakening + (dat.super_awakening_flag > 0 ? '<div class="text-info">(超)</div>' : ''),
 				dat.required_lv,
 				dat.required_skill_upgrade,
 				items.join('<br />'),
