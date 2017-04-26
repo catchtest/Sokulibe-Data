@@ -42,6 +42,8 @@ var path = {
 	"guild_icon": "images/GuildIcon/ig{0}_tex.png",
 	"stack": "images/Stack/gs{0}_tex.png",
 	"awaken_item": "images/AwakeningItem/ia{0}_tex.png",
+	"buff": "images/Buff/ib{0}_tex.png",
+	"debuff": "images/Debuff/id{0}_tex.png",
 	"gimmick": function(id) {
 		// 關卡特性圖片並非跟ID相同，故需做轉換
 		var cate = db.gimmick[id].gimmick_category_id;
@@ -296,11 +298,11 @@ $(function() {
     });
     $("#alwaysShowImage").click(function() {
         alwaysShowImage = true;
-        $(this).add('#disableImage').hide();
+        $(this).closest(".btn-group").hide();
     });
     $("#disableImage").click(function() {
         disableImage = true;
-        $(this).add('#alwaysShowImage').hide();
+        $(this).closest(".btn-group").hide();
     });
 
     // 捲到最上方
@@ -1486,7 +1488,7 @@ function loadUnitData(id) {
         list.splice(3, 1); // 去掉可裝備職業，基本上只會是一種
         html += tableRow(list);
     }
-    $("#unitWeaponTable > tbody").html(html);
+    $("#unitWeaponTable > tbody").html(html).find("[title]").tooltip();
 	
 	// 覺醒資料
 	html = '';
@@ -1840,7 +1842,7 @@ function getSkillAtkItemList(data, ext) {
                     text = String.Format("type:{0} value:{1}", type, value);
                     break;
             }
-            effect.push('蓄力 ' + text);
+            effect.push('蓄力時 ' + text);
         }
         // 計算debuff總和，雖然一招大概只有一種負面狀態
         // 但為了擴充方便還是設計成允許多種負面狀態
@@ -2033,6 +2035,8 @@ function displaySkillBuff(buff, value, time) {
             text = "狂戰";
             break;
         case 36: // モーションが早くなる強化効果を付与
+			text = "加速";
+			break;
         default:
             return String.Format("{0} {1} {2}", buff, value, time);
     }
