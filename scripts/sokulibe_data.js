@@ -1575,14 +1575,9 @@ function loadUnitData(id) {
 	for (var sid in db.skin) {
 		var data_skin = db.skin[sid];
 		if (data_skin.chara_id === id) {
-			var skin_index = data_skin.skin_index;
-			// 水法第一件竟然檔名是s0002，只好例外處理
-			if (id === 112 && skin_index === 1) {
-				skin_index = 2;
-			}
 			html += String.Format($("#unitSkinTmpl").html(), 
-				path2(path.unit_awaken_up, id, skin_index),
-				path2(path.unit_awaken_full, id, skin_index),
+				path2(path.unit_awaken_up, id, sid),
+				path2(path.unit_awaken_full, id, sid),
 				data_skin.skin_name, data_skin.skin_txt.pre(), data_skin.hp, data_skin.atk, data_skin.agi);
 		}
 	}
