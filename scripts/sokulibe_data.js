@@ -921,8 +921,10 @@ function initAbilityList() {
 					unitAbility[typeId] = [];
 					obj = unitAbility[typeId];
 				}
-				console.log(typeId);
-				obj.push(anchor(imgXs(path.unit_mini, id) + '<span class="type-awaken"></span>' + getUnitName(data), "showUnit(" + id + ")"));
+				var content = anchor(imgXs(path.unit_mini, id) + '<span class="type-awaken"></span>' + getUnitName(data), "showUnit(" + id + ")");
+				if (obj.indexOf(content) < 0) {   // 不重複放
+					obj.push(content);
+				}
 			}
 		}
     }
@@ -1573,8 +1575,15 @@ function loadUnitData(id) {
 	for (var sid in db.skin) {
 		var data_skin = db.skin[sid];
 		if (data_skin.chara_id === id) {
-			var img_html = String.Format('<img src="{0}" />', path2(path.unit_awaken_up, id, data_skin.skin_index));
-			html += String.Format($("#unitSkinTmpl").html(), img_html, data_skin.skin_name, data_skin.skin_txt.pre(), data_skin.hp, data_skin.atk, data_skin.agi);
+			var skin_index = data_skin.skin_index;
+			// 水法第一件竟然檔名是s0002，只好例外處理
+			if (id === 112 && skin_index === 1) {
+				skin_index = 2;
+			}
+			html += String.Format($("#unitSkinTmpl").html(), 
+				path2(path.unit_awaken_up, id, skin_index),
+				path2(path.unit_awaken_full, id, skin_index),
+				data_skin.skin_name, data_skin.skin_txt.pre(), data_skin.hp, data_skin.atk, data_skin.agi);
 		}
 	}
 	$("#unitSkinTab > .row").html(html);
@@ -3067,8 +3076,11 @@ function getAsset(type, id, value) {
             name = imgXs(path.weapon, id) + '<span class="type-weapon"></span>' +
                 anchor(db.weapon[id].name, "showWeapon(" + id + ")");
             break;
+		case 14:
+			if (id == 1) name = '次元之鍵';
+			break;
 		case 15: // 貢獻點
-			if (id == 1) name = imgXs('images/Item/guild_coin.png') + 'ユニオンメダル'
+			if (id == 1) name = imgXs('images/Item/guild_coin.png') + 'ユニオンメダル';
 			break;
 		case 16: // 覺醒材料
 			name = imgXs(path.awaken_item, id) + '<span class="type-awaken"></span>' + db.awakening_item[id].name;
@@ -3229,7 +3241,7 @@ function imgHtml(path, id, active) {
 }
 
 function path2(path, id, index) {
-	return String.Format(path, padLeft(id.toString(), 4), padLeft((index + 1).toString(), 4));
+	return String.Format(path, padLeft(id.toString(), 4), padLeft(index, 4));
 }
 
 function openImage(sender) {
