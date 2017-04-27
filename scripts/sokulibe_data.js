@@ -3080,7 +3080,7 @@ function getAsset(type, id, value) {
                 anchor(db.weapon[id].name, "showWeapon(" + id + ")");
             break;
 		case 14:
-			if (id == 1) name = '次元之鍵';
+			if (id == 1) name = imgXs('images/Item/pg0001_raid_tex.png') + '次元之鍵';
 			break;
 		case 15: // 貢獻點
 			if (id == 1) name = imgXs('images/Item/guild_coin.png') + 'ユニオンメダル';
