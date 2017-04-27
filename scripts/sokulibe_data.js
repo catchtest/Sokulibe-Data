@@ -735,6 +735,7 @@ function initUnitList() {
                 resistItems.push(debuffHtml(index + 1, value) + ' ' + value);
             }
         });
+		// 抗性
         var elemNames = ['slash', 'smash', 'shot', 'sorcery', 'fire', 'water', 'earth', 'light', 'dark'];
         var strongHtml = '';
         var weakHtml = '';
@@ -754,6 +755,15 @@ function initUnitList() {
                 }
             }
         });
+		// 覺醒次數
+		var data_awaken = db.unit_awakening[data.id];
+		var awakening = 0;
+		if (data_awaken != null) {
+			var keys = Object.keys(data_awaken);
+			var last = data_awaken[keys[keys.length - 1]];
+			awakening = last.awakening;
+		}		
+		
         var list = [
             imgHtml(path.unit_mini, data.id),
             anchor(getUnitName(data), "showUnit(" + data.id + ")"),
@@ -766,6 +776,7 @@ function initUnitList() {
             unitPower.atk,
             unitPower.agi,
             unitPower.knockback,
+			awakening,
             displayDebuff(data.use_debuff),
             strongHtml,
             weakHtml,
@@ -1678,9 +1689,6 @@ function loadMonsterSkillAtk(id) {
     var $table = $("#monsterSkillAtk");
     var data = db.monster_skill_atk[id];
     commonLoadAtk($table, data);
-    $table.find("tbody > tr, tfoot > tr").each(function() {
-        $(this).children("td").last().hide();
-    });
 }
 
 function commonLoadAtk($table, data, ext) {
@@ -3158,7 +3166,7 @@ function calculateWeapon(id, level, awaken) {
     }
 }
 // 計算角色能力值
-function calculateUnit(id, level) {
+function calculateUnit(id, level, awaken) {
     var data = db.unit[id];
     var calc = function(base, grow, level) {
         var value = base;
@@ -3181,12 +3189,21 @@ function calculateUnit(id, level) {
         }
         return value;
     }
-    return {
+	var result = {
         hp: calc(data.hp, data.hp_grow, level),
         atk: calc(data.atk, data.atk_grow, level),
         agi: data.agi,
         knockback: calc(data.knock_back_regist, data.knock_back_grow, level)
     };
+	// 加上覺醒後數值
+	if (awaken > 0 && db.unit_awakening[id] != null) {
+		var data_awaken = db.unit_awakening[id][awaken];
+		result.hp += data_awaken.hp;
+		result.atk += data_awaken.atk;
+		result.agi += data_awaken.agi;
+		result.knockback += data_awaken.knock_back_regist;
+	}
+    return result;
 }
 
 function tableRow(array) {
