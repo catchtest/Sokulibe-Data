@@ -759,11 +759,19 @@ function initUnitList() {
 		// 覺醒次數
 		var data_awaken = db.unit_awakening[data.id];
 		var awakening = 0;
+		var stackHtml = '';
 		if (data_awaken != null) {
 			var keys = Object.keys(data_awaken);
 			var last = data_awaken[keys[keys.length - 1]];
 			awakening = last.awakening;
-		}		
+			
+			for (var s = 1 ; s <= 2; s++) {
+				var sid = last['stack0' + s + '_id'];
+				if (sid > 0) {
+					stackHtml += displayStack(sid, false, false);
+				}
+			}
+		}
 		
         var list = [
             imgHtml(path.unit_mini, data.id),
@@ -781,7 +789,8 @@ function initUnitList() {
             displayDebuff(data.use_debuff),
             strongHtml,
             weakHtml,
-            resistItems.join('<br />')
+            resistItems.join('<br />'),
+			stackHtml			
         ];
         html += tableRow(list);
     }
@@ -1122,7 +1131,7 @@ function isDirtyUnit(data) {
 function isDirtyWeapon(data) {
     // 隱藏未設定的武器
     if (data.hp === 1 && data.atk === 1 && data.agi === 1) return true;
-	if (data.id === 7141) return true;   // 官方自己多複製的重複資料
+	if (data.id >= 7100) return true;   // 官方自己多複製的重複資料
     return false;
 }
 
