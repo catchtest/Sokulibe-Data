@@ -290,6 +290,7 @@ kbd + kbd {
 
 .table-fixed-width {
 	width: auto;
+	margin-bottom: 0;
 }
 
 .table-fixed-width > thead > tr > th:not(.expand-th) {

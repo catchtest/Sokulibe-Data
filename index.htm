@@ -56,6 +56,7 @@
                         <div class="well">
                             <div class="well-legend">更新紀錄</div>
                             <ul style="height: 160px; overflow-y: auto;">
+								<li>2017/04/29<br />角色一覽增加Stack、次元之門增加寶箱列表、移除寶箱標籤</li>
 								<li>2017/04/25<br />Stack敘述補完、角色等級跟技能總合力</li>
 								<li>2017/04/24<br />次元之門的獎勵，修改公會徽章一覽</li>
 								<li>2017/04/23<br />增加關卡特性，補完todo資料，優化角色讀取</li>
@@ -1293,7 +1294,6 @@
                             <li role="presentation"><a href="#mission" aria-controls="mission" role="tab" data-toggle="tab">任務</a></li>
                             <li role="presentation"><a href="#exchange" aria-controls="exchange" role="tab" data-toggle="tab">交換所</a></li>
 							<li role="presentation"><a href="#dimReward" aria-controls="dimReward" role="tab" data-toggle="tab">獎勵</a></li>
-							<li role="presentation"><a href="#dimTreasure" aria-controls="dimTreasure" role="tab" data-toggle="tab">寶藏</a></li>
                         </ul>
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="quest">
@@ -1401,6 +1401,22 @@
                                                     <tr>
                                                         <th>有利項目</th>
                                                         <td id="advantage"></td>
+                                                    </tr>
+													<tr>
+                                                        <th>通關寶箱<div>x<span id="clear_treasure_value"></span></div></th>
+                                                        <td id="clear_treasure">
+															<table class="table table-bordered table-fixed-width">
+																<tbody></tbody>
+															</table>
+														</td>
+                                                    </tr>
+													<tr>
+                                                        <th>三冠寶箱<div>x<span id="mission_treasure_value"></span></div></th>
+                                                        <td id="mission_treasure">
+															<table class="table table-bordered table-fixed-width">
+																<tbody></tbody>
+															</table>
+														</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -1745,22 +1761,6 @@
                                         <thead>
                                             <tr>
                                                 <th>點數</th>
-                                                <th>物品</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="dimTreasure">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dimTreasureTable">
-                                        <thead>
-                                            <tr>
-                                                <th>group</th>
-                                                <th>index</th>
-                                                <th>rate</th>
                                                 <th>物品</th>
                                             </tr>
                                         </thead>

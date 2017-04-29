@@ -2468,7 +2468,7 @@ function loadMultiData(id, mrcate) {
     loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickData);
     setTitle(String.Format("MR{0} {1}", baseData.required_lv, baseData.name), '');
     $("#Recom_lv, #first_clear_bonus, #continue_limit, #required_lv, #exp, #crystal, #job_exp, #speedclear").closest("tr").show();
-    $("#raid_point").closest("tr").hide();
+    $("#raid_point, #clear_treasure, #mission_treasure").closest("tr").hide();
     $("#questTab").hide().find("a:first").tab('show');
     $("#questList").hide();
 }
@@ -2511,7 +2511,7 @@ function loadExpZoneData(id) {
 
 function singleQuestField() {
     $("#Recom_lv, #exp, #crystal, #job_exp").closest("tr").show();
-    $("#raid_point, #first_clear_bonus, #multi_exp, #continue_limit, #required_lv").closest("tr").hide();
+    $("#raid_point, #first_clear_bonus, #multi_exp, #continue_limit, #required_lv, #clear_treasure, #mission_treasure").closest("tr").hide();
     $("#questTab").hide().find("a:first").tab('show');
     $("#questList").hide();
 }
@@ -2538,11 +2538,11 @@ function loadQuestData(eventID, questID) {
         default:
             break;
     }
-    $("#Recom_lv, #first_clear_bonus, #multi_exp, #raid_point").closest("tr").hide();
+    $("#Recom_lv, #first_clear_bonus, #multi_exp, #raid_point, #clear_treasure, #mission_treasure").closest("tr").hide();
     $("#continue_limit, #required_lv, #exp, #crystal, #job_exp, #speedclear").closest("tr").show();
     $("#questTab").show();
     $("#questList").show();
-	$("#dimTreasureTable > tbody, #dimRewardTable > tbody").html('');
+	$("#dimRewardTable > tbody").html('');
 }
 
 function loadDimensionQuestData(eventID, questID) {
@@ -2569,22 +2569,33 @@ function loadDimensionQuestData(eventID, questID) {
 	$("#dimRewardTable > tbody").html(html);
 	
 	// 增加寶藏
-	var html = '';
-	for (var group in db.dimension_treasure[eventID]) {
-		for (var index in db.dimension_treasure[eventID][group]) {
-			var data = db.dimension_treasure[eventID][group][index];
-			var asset = getAsset(data.item_type_1, data.item_id_1, data.item_value_1);
-			
-			html += tableRow([group, index, data.rate, asset]);
+	var generateTreasures = function(id, event) {
+		var data_treasure = db.dimension_treasure[baseData.clear_treasure_id][eventID];
+		var rate_sum = 0;
+		// 先進行機率加總
+		for (var index in data_treasure) {
+			rate_sum += data_treasure[index].rate;
 		}
+		var html = '';
+		for (var index in data_treasure) {
+			var data = data_treasure[index];
+			if (data.rate === 0) continue;
+			
+			var asset = getAsset(data.item_type_1, data.item_id_1, data.item_value_1);
+			var rate = String.Format("{0}%", (data.rate * 100 / rate_sum).toFixed(1));
+			
+			html += tableRow([asset, rate]);
+		}
+		return html;
 	}
-	$("#dimTreasureTable > tbody").html(html);
+	$("#clear_treasure > table > tbody").html(generateTreasures(baseData.clear_treasure_id, eventID));
+	$("#mission_treasure > table > tbody").html(generateTreasures(baseData.mission_treasure_id, eventID));
 	
 	$("#Recom_lv").html($("#required_lv").html()).closest("tr").show();
     $("#required_lv").html('').closest("tr").hide();
 	
     $("#first_clear_bonus, #multi_exp, #exp, #crystal, #job_exp, #raid_point, #speedclear").closest("tr").hide();
-    $("#continue_limit").closest("tr").show();
+    $("#continue_limit, #clear_treasure, #mission_treasure").closest("tr").show();
     $("#questTab").show();
     $("#questList").show();
 }
@@ -2618,7 +2629,7 @@ var itemSummary = new ItemSummary();
 function loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickData) {
     current_quest = baseData;
     // 基本資料
-    var attrs = ['exp', 'crystal', 'multi_exp', 'job_exp', 'required_lv', 'raid_point', 'Recom_lv', 'first_clear_bonus', 'battle_bgm_id', 'boss_bgm_id'];
+    var attrs = ['exp', 'crystal', 'multi_exp', 'job_exp', 'required_lv', 'raid_point', 'Recom_lv', 'first_clear_bonus', 'battle_bgm_id', 'boss_bgm_id', 'clear_treasure_value', 'mission_treasure_value'];
     attrs.forEach(function(name) {
         $("#" + name).html(baseData[name]);
     });
