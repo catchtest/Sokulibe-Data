@@ -44,6 +44,7 @@ var path = {
 	"awaken_item": "images/AwakeningItem/ia{0}_tex.png",
 	"buff": "images/Buff/ib{0}_tex.png",
 	"debuff": "images/Debuff/id{0}_tex.png",
+	"job": "images/Job/jo{0}_mini_tex.png",
 	"gimmick": function(id) {
 		// 關卡特性圖片並非跟ID相同，故需做轉換
 		var cate = db.gimmick[id].gimmick_category_id;
@@ -732,7 +733,7 @@ function initUnitList() {
         resistNames.forEach(function(name, index) {
             var value = resist[name + '_resist'];
             if (value > 0) {
-                resistItems.push(debuffHtml(index + 1, value) + ' ' + value);
+                resistItems.push(debuffHtml(index + 1) + ' ' + value);
             }
         });
 		// 抗性
@@ -1507,6 +1508,8 @@ function loadUnitData(id) {
 	html = '';
 	var data_awaken = db.unit_awakening[id];
 	if (data_awaken != null) {
+		var skillShort = ['', 'N0', 'N1', 'N2', 'S0', 'S1', 'S2', 'S3'];
+		
 		for (var time in data_awaken) {
 			var dat = data_awaken[time];
 			var items = [];
@@ -1522,13 +1525,23 @@ function loadUnitData(id) {
 				}
 			}
 			// 被動改變
-			var abilityHtml = '';
+			var changes = [];
 			for (var i = 1; i <= 4; i++) {
 				var aid = dat['ability0' + i];
 				if (aid <= 0) continue;
+				var data_ability = db.ability[aid];
 				
-				abilityHtml += String.Format('<div title="{1}">{0}</div>', db.ability[aid].name, db.ability[aid].comment);
+				changes.push(String.Format('<span class="text-info">[被動{0}]</span> <span title="{2}">{1}</span>', i, data_ability.name, data_ability.comment));
 			}
+			// 主動改變
+			for (var i = 1; i <= 7; i++) {
+				var aid = dat['command0' + i];
+				if (aid <= 0) continue;
+				var data_skill = db.skill_base[aid];
+				
+				changes.push(String.Format('<span class="text-warning">[技能{0}]</span> {1}', skillShort[i], data_skill.name));
+			}
+			
 			// 抗性改變
 			var resists = [];
 			var resistMap = {
@@ -1556,7 +1569,12 @@ function loadUnitData(id) {
 			for (var key in resistMap) {
 				var value = dat[key + '_resist'];
 				if (value <= 0) continue;
-				resists.push(String.Format('{0}耐性 + {1}', resistMap[key], value));
+				changes.push(String.Format('{0}耐性 + {1}', resistMap[key], value));
+			}
+			// 得到衣服
+			if (dat.get_skin_id > 0) {
+				var data_skin = db.skin[dat.get_skin_id];
+				changes.push(String.Format('<span class="text-danger">[衣服]</span> <span title="{1}">{0}</span>', data_skin.skin_name, data_skin.skin_txt));
 			}
 			
 			var list = [
@@ -1570,8 +1588,7 @@ function loadUnitData(id) {
 				dat.knock_back_regist,
 				'<span class="light">' + dat.light_lv + '<span>',
 				stack.join('<br />'),
-				resists.join('<br />'),
-				abilityHtml
+				changes.join('<br />')
 			];
 			html += tableRow(list);
 		}
@@ -3033,8 +3050,8 @@ function displayDebuff(value1, value2) {
     return value;
 }
 
-function debuffHtml(value, title) {
-    return String.Format("<kbd class='debuff-{1}' title='{2}'>{0}</kbd>", enums.debuff[value], value, title || '');
+function debuffHtml(value) {
+    return String.Format("<kbd class='debuff-{1}'>{0}</kbd>", enums.debuff[value], value);
 }
 // 回傳獎勵名稱
 function getAsset(type, id, value) {
