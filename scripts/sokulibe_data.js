@@ -98,7 +98,7 @@ $(function() {
 	var generateImageItem = function(img, name, title, onclick) {
 		title = title || name;
 		var html = String.Format('<a href="#" onclick="{3}"><div class="col-md-2 col-sm-3 col-xs-4 text-center" title="{2}">{0}<br />{1}</div></a>', 
-			img, name, title, onclick || "alert(this.title);");
+			img, name, title, onclick);
 		return html;
 	}
 	
@@ -205,6 +205,42 @@ $(function() {
 		renderImageList("awakenItemTab", html);
 	});
 	
+	$("a[href='#skinListTab']").one("click", function() {
+		// 覺醒道具
+		var html = '';
+		var addValue = function(type, value) {
+			if (type === 0) return value;
+			else if (type === 1) return 'x' + value;
+		}
+
+		for (var id in db.skin) {
+			var data = db.skin[id];
+			var unitId = data.chara_id;
+			
+			var changes = [];
+			for (var i = 1; i <= 7; i++) {
+				if (data['change_fx_flag_com0' + i] > 0) {
+					changes.push(enums.skill_abbr[i] + '改變');
+				}
+			}
+			if (data['change_fx_flag_ougi'] > 0) {
+				changes.push('奧義改變');
+			}
+			
+			var list = [
+				imgHtml(String.Format(path.unit_awaken_mini, padLeft(unitId, 4), padLeft(id, 4))),
+				anchor(getUnitName(db.unit[unitId]), "showUnit(" + unitId + ")"),
+				data.skin_name,
+				data.skin_txt.pre(),
+				addValue(data.hp_type, data.hp),
+				addValue(data.atk_type, data.atk),
+				addValue(data.agi_type, data.agi),
+				changes.join('<br />')
+			];
+			html += tableRow(list);
+		}
+		renderTable("skinListTable", html);
+	});
 	
     $("#monsterSkill > tbody, #skillBase > tbody").on("click", "a", function() {
         $(this).closest("table").find(".active").removeClass("active");
@@ -1517,8 +1553,7 @@ function loadUnitData(id) {
 	html = '';
 	var data_awaken = db.unit_awakening[id];
 	if (data_awaken != null) {
-		var skillShort = ['', 'N0', 'N1', 'N2', 'S0', 'S1', 'S2', 'S3'];
-		
+
 		for (var time in data_awaken) {
 			var dat = data_awaken[time];
 			var items = [];
@@ -1548,7 +1583,7 @@ function loadUnitData(id) {
 				if (aid <= 0) continue;
 				var data_skill = db.skill_base[aid];
 				
-				changes.push(String.Format('<span class="text-warning">[技能{0}]</span> {1}', skillShort[i], data_skill.name));
+				changes.push(String.Format('<span class="text-warning">[技能{0}]</span> {1}', enums.skill_abbr[i], data_skill.name));
 			}
 			
 			// 抗性改變

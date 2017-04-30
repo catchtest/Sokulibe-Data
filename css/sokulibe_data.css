@@ -585,8 +585,9 @@ a > i, button > i {
 
 #unitListTable img,
 #tearsComputeTable img,
-#lotteryHistory img {
-	border-radius: 8px;
+#lotteryHistory img,
+#skinListTable img {
+	border-radius: 16%;
 }
 
 #weaponListTable img,
