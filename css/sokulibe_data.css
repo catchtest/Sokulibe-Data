@@ -474,6 +474,10 @@ a > i, button > i {
 	max-width: 50px;
 }
 
+.table-bordered > tfoot > tr > th {
+	border-top-width: 2px;
+}
+
 .btn-lv {
 	visibility: hidden;
 	display: inline-flex;   /* 防止被斷成兩行 */
@@ -579,7 +583,8 @@ a > i, button > i {
 
 #enchantTable .img-xs,
 #unitAwakeningTable .img-xs,
-#abilityTable .img-xs {
+#abilityTable .img-xs,
+#stackTable .img-xs {
 	margin: 0 5px 1px 0;
 }
 

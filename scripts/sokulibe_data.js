@@ -45,6 +45,7 @@ var path = {
 	"buff": "images/Buff/ib{0}_tex.png",
 	"debuff": "images/Debuff/id{0}_tex.png",
 	"job": "images/Job/jo{0}_mini_tex.png",
+	"key": "images/Item/pg{0}_raid_tex.png",
 	"gimmick": function(id) {
 		// 關卡特性圖片並非跟ID相同，故需做轉換
 		var cate = db.gimmick[id].gimmick_category_id;
@@ -164,16 +165,48 @@ $(function() {
 			var data = db.stack[id];
 			
 			var innerHtml = '';
-			var count = 0;
+			var count = Object.keys(db.stack_ability[id]).length;
+			
+			// 圖示跟名稱
+			var nameBlock = imgHtml(path.stack, id) + '<br />' + data.stack_name;
+			
+			// 列出所有持有該Stack的角色或武器
+			var list = [];
+			for (var wid in db.weapon) {
+				var data_weapon = db.weapon[wid];
+				if (skipDirty && isDirtyWeapon(data_weapon)) continue;
+				if (data_weapon.job == -1) continue; // 不顯示武煉石等無法裝備的武器
+				
+				if (data_weapon.stack_id == id) {
+					list.push(getAsset(12, wid, 1));
+				}
+			}
+			for (var uid in db.unit_awakening) {
+				var data_awaken = db.unit_awakening[uid];
+				var keys = Object.keys(data_awaken);
+				var last = data_awaken[keys[keys.length - 1]];
+				
+				for (var s = 1 ; s <= 2; s++) {
+					var sid = last['stack0' + s + '_id'];
+					if (sid == id) {
+						list.push(imgXs(path.unit_mini, uid) + '<span class="type-awaken"></span>' + anchor(getUnitName(db.unit[uid]), "showUnit(" + uid + ")"));
+					}
+				}
+			}
+			var ownerBlock = list.join('<br />');
+			
 			for (var sid in db.stack_ability[id]) {
 				var data_sa = db.stack_ability[id][sid];
 				var content = data_sa.stack_ability_name + '<div class="text-warning">' + displayStackEffect(data_sa).join('<br />') + '</div>';
+				
 				innerHtml += tableRow([data_sa.stack, content]);
-				count++;
+				if (sid == '5') {
+					// 在<tr>後插入一個包含rowspan的<td>
+					innerHtml = innerHtml.insert(4, String.Format("<td class='text-center' rowspan='{0}'>{1}</td>", count, nameBlock));
+					innerHtml = innerHtml.insert(innerHtml.length - 5, String.Format("<td rowspan='{0}'>{1}</td>", count, ownerBlock));
+				}
 			}
-			var nameBlock = imgHtml(path.stack, id) + '<br />' + data.stack_name;
-			// 在<tr>後插入一個包含rowspan的<td>
-			html += innerHtml.insert(4, String.Format("<td class='text-center' rowspan='{0}'>{1}</td>", count, nameBlock));
+			html += innerHtml;
 		}
 		$("#stackTable > tbody").html(html);
 		//renderTable("stackTable", html);
@@ -978,7 +1011,7 @@ function initAbilityList() {
 					unitAbility[typeId] = [];
 					obj = unitAbility[typeId];
 				}
-				var content = anchor(imgXs(path.unit_mini, id) + '<span class="type-awaken"></span>' + getUnitName(data), "showUnit(" + id + ")");
+				var content = imgXs(path.unit_mini, id) + '<span class="type-awaken"></span>' + anchor(getUnitName(data), "showUnit(" + id + ")");
 				if (obj.indexOf(content) < 0) {   // 不重複放
 					obj.push(content);
 				}
@@ -1271,7 +1304,7 @@ function showEvent(name, id) {
 }
 // 取得對應角
 function getUnitPartner(data, showJob) {
-    var html = '無';
+    var html = '';
     var partnerData = db.unit[db.unit_base[data.base_id].partner_id];
     if (partnerData != null) {
         html = String.Format("<a href='#' onclick='showUnit({0});'>{2}{1}</a>",
@@ -3097,7 +3130,7 @@ function elementHtml(value) {
 }
 
 function displayDebuff(value1, value2) {
-    if (value1 == 0) return '無';
+    if (value1 == 0) return '';
     var value = debuffHtml(value1);
     if (value2 > 0) {
         value += debuffHtml(value2);
@@ -3152,7 +3185,7 @@ function getAsset(type, id, value) {
                 anchor(db.weapon[id].name, "showWeapon(" + id + ")");
             break;
 		case 14:
-			if (id == 1) name = imgXs('images/Item/pg0001_raid_tex.png') + '次元之鍵';
+			name = imgXs(path.key, id) + db.dimension_key[id].name;
 			break;
 		case 15: // 貢獻點
 			if (id == 1) name = imgXs('images/Item/guild_coin.png') + 'ユニオンメダル';
