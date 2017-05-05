@@ -7,8 +7,7 @@ var event_story;
 var skipDirty = true;
 var dirtyPrefix = '× ';
 var disableTranslate = false;
-var disableImage = false;
-var alwaysShowImage = false;
+var showImage = null;
 var defaultDataTablesOption = {
     "autoWidth": false,
     "order": [],
@@ -67,7 +66,7 @@ $(function() {
         }
     });
     var showFavoriteUnit = function() {
-        if (disableImage) return;
+        if (showImage === false) return;
         // 隨機選擇一個角色
         var unitIdList = Object.keys(db.unit);
         var unitId;
@@ -367,11 +366,11 @@ $(function() {
         }
     });
     $("#alwaysShowImage").click(function() {
-        alwaysShowImage = true;
+        showImage = true;
         $(this).closest(".btn-group").hide();
     });
     $("#disableImage").click(function() {
-        disableImage = true;
+        showImage = false;
         $(this).closest(".btn-group").hide();
     });
 
@@ -1321,12 +1320,9 @@ function getUnitPartner(data, showJob) {
 function loadUnitData(id) {
     loadDataEvent(id);
     current_unit = id;
-    // 讀取故事 (現在可能有多個index)
-    var story = '';
-    for (var index in db.unit_story[id]) {
-        story += db.unit_story[id][index].story;
-    }
-    $("#storyBlock").html(story);
+
+	loadUnitStory();
+	
     var data = db.unit[id];
     setTitle(getUnitName(data), getUnitJob(data));
     $("#cv").html(data.cv);
@@ -1688,6 +1684,18 @@ function loadUnitData(id) {
 	}
 	$("#unitSkinTab > .row").html(html);
 	
+}
+
+// 讀取故事 (現在可能有多個index)
+function loadUnitStory(id) {
+	if (db.unit_story == null) return;
+
+    var story = '';
+	id = id || current_unit;
+    for (var index in db.unit_story[id]) {
+        story += db.unit_story[id][index].story;
+    }
+    $("#storyBlock").html(story);
 }
 
 function isOtherElement(list, element, isWeapon) {
@@ -3202,7 +3210,7 @@ function getAsset(type, id, value) {
 }
 
 function imgXs(path, id, title) {
-    if (disableImage) {
+    if (showImage === false) {
         return '';
     }
     if (id != null) {
@@ -3328,9 +3336,15 @@ function renderTable(id, html, dataTablesOption) {
     $table.wrap("<div class='table-responsive'></div>"); // 增加響應div
 }
 
-function showStory(sender) {
-    $(sender).closest("div").hide();
-    $("#storyBlock").show();
+function showUnitStory(sender) {
+    // 讀取Json
+    $.getJSON('data/unit_story.json', function(data) {
+		db.unit_story = data;
+		
+		loadUnitStory();
+		$(sender).closest("div").hide();
+		$("#storyBlock").show();
+    });
 }
 
 function setDirtyClass() {
@@ -3346,9 +3360,9 @@ function imgHtml(path, id, active) {
 	if (id != null) {
 		path = String.Format(path, padLeft(id.toString(), 4));
 	}
-    if (active == true || alwaysShowImage) {
+    if (active == true || showImage === true) {
         var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
-        if (disableImage) {
+        if (showImage === false) {
             return fileId;
         }
         return String.Format('<img src="{0}" alt="{1}" />', path, fileId);
@@ -3366,7 +3380,7 @@ function openImage(sender) {
         var $this = $(this);
         var path = $this.data("src");
         var fileId = path.replace(/^.*[\\\/]/, '').split('_')[0];
-        if (disableImage) {
+        if (showImage === false) {
             $this.after(fileId);
         } else {
             $this.after(String.Format('<img src="{0}" alt="{1}" />', path, fileId));
@@ -3484,10 +3498,10 @@ String.prototype.insert = function (index, string) {
     return string + this;
 };
 Number.prototype.display = function() {
-    return (this.valueOf() > 1 ? ' x' + this.valueOf() : '');
+    return (this.valueOf() > 1 ? ' ×' + this.valueOf() : '');
 };
 Boolean.prototype.display = function() {
-    return this.valueOf() ? 'O' : 'X'
+    return this.valueOf() ? '<i class="glyphicon glyphicon-ok"></i>' : '<i class="glyphicon glyphicon-remove"></i>'
 }
 Array.prototype.add = function(value) {
     if (this.indexOf(value) < 0) this.push(value);
