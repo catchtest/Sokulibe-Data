@@ -7,7 +7,7 @@ var event_story;
 var skipDirty = true;
 var dirtyPrefix = '× ';
 var disableTranslate = false;
-var showImage = null;
+var showImage;
 var defaultDataTablesOption = {
     "autoWidth": false,
     "order": [],
@@ -3036,7 +3036,7 @@ function getMonsterSkillRow(command, skill, atk) {
     var list = [
         anchor((command == null ? '└─ ' : '') + skill.name, "loadMonsterSkillAtk(" + skill.id + ")"),
         dmg,
-        skill.cd,
+        cdFormat(skill.cd),
         skill.min_range + '-' + skill.max_range,
         special.join('<br />')
     ];
