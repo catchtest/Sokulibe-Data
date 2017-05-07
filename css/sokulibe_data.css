@@ -14,6 +14,7 @@ body {
 
 .list-group-item {
 	padding: 5px 10px;
+	min-height: 32px;
 }
 
 .btn {
@@ -96,7 +97,7 @@ pre {
 }
 
 #questList {
-	height: 120px;	
+	height: 125px;	
 }
 
 #dropData table > tbody > tr > th {
