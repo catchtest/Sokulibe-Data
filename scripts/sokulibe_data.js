@@ -7,7 +7,7 @@ var event_story;
 var skipDirty = true;
 var dirtyPrefix = '× ';
 var disableTranslate = false;
-var showImage;
+var showImage = null;
 var defaultDataTablesOption = {
     "autoWidth": false,
     "order": [],
@@ -22,6 +22,9 @@ var defaultDataTablesOption = {
     "columnDefs": [{
         targets: 'no-sort',
         orderable: false
+    }, {
+        targets: 'job',
+        orderDataType: "img-src"
     }]
 };
 var path = {
@@ -395,6 +398,14 @@ $(function() {
             }, 700);
         });
     }
+	
+	$.fn.dataTable.ext.order['img-src'] = function(settings, col) {
+	    return this.api().column(col, {
+	        order: 'index'
+	    }).nodes().map(function(td, i) {
+	        return $('img', td).attr("src");
+	    });
+	}
 });
 
 function displayStackEffect(data) {
@@ -796,34 +807,38 @@ function initUnitList() {
         var unitPower = calculateUnit(data.id, maxLevel);
         // 顯示抵抗異常狀態
         var resist = db.unit_resist[data.id];
-        var resistNames = ['poison', 'paralysis', 'freeze', 'burn', 'feather', 'curse', 'silence', 'darkness', 'death', 'confusion', 'charm'];
-        var resistItems = [];
-        resistNames.forEach(function(name, index) {
-            var value = resist[name + '_resist'];
-            if (value > 0) {
-                resistItems.push(debuffHtml(index + 1) + ' ' + value);
-            }
-        });
-		// 抗性
-        var elemNames = ['slash', 'smash', 'shot', 'sorcery', 'fire', 'water', 'earth', 'light', 'dark'];
-        var strongHtml = '';
-        var weakHtml = '';
-        elemNames.forEach(function(name, index) {
-            var value = resist[name + '_resist'];
-            if (value > 0) {
-                if (index >= 4) {
-                    strongHtml += elementHtml(index - 3, value) + ' ' + value;
-                } else {
-                    strongHtml += enums.atk_type[elemNames];
-                }
-            } else if (value < 0) {
-                if (index >= 4) {
-                    weakHtml += elementHtml(index - 3, value) + ' ' + value;
-                } else {
-                    weakHtml += enums.atk_type[elemNames];
-                }
-            }
-        });
+		var resistItems = [];
+		var strongHtml = '';
+		var weakHtml = '';
+		if (!!resist) {
+			var resistNames = ['poison', 'paralysis', 'freeze', 'burn', 'feather', 'curse', 'silence', 'darkness', 'death', 'confusion', 'charm'];
+			
+			resistNames.forEach(function(name, index) {
+				var value = resist[name + '_resist'];
+				if (value > 0) {
+					resistItems.push(debuffHtml(index + 1) + ' ' + value);
+				}
+			});
+			
+			// 抗性
+			var elemNames = ['slash', 'smash', 'shot', 'sorcery', 'fire', 'water', 'earth', 'light', 'dark'];
+			elemNames.forEach(function(name, index) {
+				var value = resist[name + '_resist'];
+				if (value > 0) {
+					if (index >= 4) {
+						strongHtml += elementHtml(index - 3, value) + ' ' + value;
+					} else {
+						strongHtml += enums.atk_type[elemNames];
+					}
+				} else if (value < 0) {
+					if (index >= 4) {
+						weakHtml += elementHtml(index - 3, value) + ' ' + value;
+					} else {
+						weakHtml += enums.atk_type[elemNames];
+					}
+				}
+			});
+		}
 		// 覺醒次數
 		var data_awaken = db.unit_awakening[data.id];
 		var awakening = 0;
@@ -848,7 +863,7 @@ function initUnitList() {
             anchor(data.cv, "quickSearch('" + data.cv + "')"),
             data.rarity,
             elementHtml(data.use_element),
-            enums.job[data.job_id],
+            imgXs(path.job, data.job_id),
             unitPower.hp,
             unitPower.atk,
             unitPower.agi,
@@ -2365,12 +2380,16 @@ function loadWeaponData(id) {
 	[100, 110, 120, 130, 150].forEach(function(ratio) {
 		powerList.push((weaponMainSkill.dmg * ratio).toFixed(0));
 	});
+	console.log(powerList);
 	
     // 武器副技能
 	$("#weaponAwakenTable > tbody td").remove();
 	for (var i = 0; i < 5; i++) {
-		var data_sub = db.weapon_subskill[data.sub_weapon_skill_id][i + 1];
-		var subskillComment = data_sub.name + '<br />' + data_sub.comment.i18n().pre();
+		var subskillComment = '';
+		if (data.sub_weapon_skill_id > 0) {
+			var data_sub = db.weapon_subskill[data.sub_weapon_skill_id][i + 1];
+			subskillComment = data_sub.name + '<br />' + data_sub.comment.i18n().pre();
+		}
 		var mainSkillPower = powerList[i];
 		
 		var html = String.Format('<td>{0}</td><td>{1}</td>', subskillComment, mainSkillPower);
@@ -3403,6 +3422,7 @@ function randInt(min, max) {
 
 function initStory() {
     // 讀取Json
+	$(".loader").show();
     $.when($.getJSON('data/main_story.json'), $.getJSON('data/event_story.json')).done(function(a1, a2) {
         main_story = a1[0];
         event_story = a2[0];
@@ -3418,6 +3438,7 @@ function initStory() {
             html += listItemHtml(id, event_story[id].title, '', "loadStoryData('" + id + "', 'es');");
         }
 		insertToList("eventStoryTab", html);
+		$(".loader").hide();
     });
 }
 
