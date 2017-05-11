@@ -403,7 +403,9 @@ $(function() {
 	    return this.api().column(col, {
 	        order: 'index'
 	    }).nodes().map(function(td, i) {
-	        return $('img', td).attr("src");
+			var src = $('img', td).attr("src");
+			var value = parseInt(src.match(/\d{4}/g)[0]);
+	        return value;
 	    });
 	}
 });
