@@ -245,7 +245,7 @@ $(function() {
 		var html = '';
 		var addValue = function(type, value) {
 			if (type === 0) return value;
-			else if (type === 1) return 'x' + value;
+			else if (type === 1) return '+' + (value - 100) + '%';
 		}
 
 		for (var id in db.skin) {
