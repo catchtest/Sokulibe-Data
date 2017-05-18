@@ -199,6 +199,12 @@ h3.name {
 	margin-right: 5px;
 }
 
+.type-skin::after {
+	content: '[衣裝]';
+	color: #2cbaa2;
+	margin-right: 5px;
+}
+
 .m-boss::after {
 	content: '[尾王]';
 	color: #ff3333;

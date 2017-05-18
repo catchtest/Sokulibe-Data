@@ -245,7 +245,7 @@ $(function() {
 		var html = '';
 		var addValue = function(type, value) {
 			if (type === 0) return value;
-			else if (type === 1) return '+' + (value - 100) + '%';
+			else if (type === 1) return (value - 100) + '%';
 		}
 
 		for (var id in db.skin) {
@@ -1688,6 +1688,11 @@ function loadUnitData(id) {
 	$("#unitAwakeningTable > tbody").html(html);
 	$("#unitAwakeningTable [title]").tooltip();
 	
+	var addValue = function(type, value) {
+		if (type === 0) return value;
+		else if (type === 1) return (value - 100) + '%';
+	}
+	
 	// 衣服
 	html = '';
 	for (var sid in db.skin) {
@@ -1696,7 +1701,10 @@ function loadUnitData(id) {
 			html += String.Format($("#unitSkinTmpl").html(), 
 				path2(path.unit_awaken_up, id, sid),
 				path2(path.unit_awaken_full, id, sid),
-				data_skin.skin_name, data_skin.skin_txt.pre(), data_skin.hp, data_skin.atk, data_skin.agi);
+				data_skin.skin_name, data_skin.skin_txt.pre(),
+				addValue(data_skin.hp_type, data_skin.hp),
+				addValue(data_skin.atk_type, data_skin.atk),
+				addValue(data_skin.agi_type, data_skin.agi));
 		}
 	}
 	$("#unitSkinTab > .row").html(html);
@@ -3221,6 +3229,10 @@ function getAsset(type, id, value) {
 			break;
 		case 16: // 覺醒材料
 			name = imgXs(path.awaken_item, id) + '<span class="type-awaken"></span>' + db.awakening_item[id].name;
+			break;
+		case 17: // 衣裝
+			var data_skin = db.skin[id];
+			name = imgXs(String.Format(path.unit_awaken_mini, padLeft(data_skin.chara_id, 4), padLeft(id, 4))) + '<span class="type-skin"></span>' + data_skin.skin_name;
 			break;
     }
     if (!name) {
