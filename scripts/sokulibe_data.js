@@ -3252,7 +3252,11 @@ function extendItemName(id) {
         null,
         'コラボ武器確定 武器ガチャチケット'
     ];
-    return names[id - 21] || ('id: ' + id);
+	switch (id) {
+		case 30: return 'トレジャーチケット 1枚';
+		case 37: return '1周年記念SR確定 武器ガチャチケット 1枚';
+		default: return names[id - 21] || ('id: ' + id);
+	}
 }
 var accessoryNames;
 
