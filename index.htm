@@ -2434,6 +2434,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/template7/1.2.3/template7.min.js"></script>
 
     <script type="text/template" id="setCommonLvTmpl">
         <div class="btn-group btn-lv">
@@ -2442,43 +2443,11 @@
         </div>
     </script>
 
-    <script type="text/template" id="setR4LvTmpl">
+    <script type="text/template7" id="setLvTmpl">
         <div class="btn-group btn-lv">
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">100</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">120</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">140</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">160</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">200</button>
-        </div>
-    </script>
-
-    <script type="text/template" id="setR3LvTmpl">
-        <div class="btn-group btn-lv">
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">80</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">100</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">120</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">140</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">160</button>
-        </div>
-    </script>
-
-    <script type="text/template" id="setR2LvTmpl">
-        <div class="btn-group btn-lv">
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">50</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">75</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">80</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">90</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">100</button>
-        </div>
-    </script>
-
-    <script type="text/template" id="setR1LvTmpl">
-        <div class="btn-group btn-lv">
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">30</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">35</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">40</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">50</button>
-            <button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">60</button>
+			{{#each this}}
+			<button type="button" class="btn btn-default btn-xs" onclick="tears.setLv(this);">{{this}}</button>
+			{{/each}}
         </div>
     </script>
 

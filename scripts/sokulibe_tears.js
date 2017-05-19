@@ -9,13 +9,20 @@
 			html2 = '';
 		var commonLvTmpl = $("#setCommonLvTmpl").html();
 
+		var compiledTemplate = Template7.compile($('#setLvTmpl').html());
+		var setLvArray = [
+			compiledTemplate([30, 35, 40, 50, 60]),
+			compiledTemplate([50, 75, 80, 90, 100]),
+			compiledTemplate([80, 100, 120, 140, 160]),
+			compiledTemplate([100, 120, 140, 160, 200])
+		];
+		
 		for (var i = 0, len = itemList.length; i < len; i++) {
 			var data = itemList[i];
 
 			var selectorHtml = String.Format('<input type="number" min="0" max="{0}" step="5" data-rarity="{1}" data-id="{2}" name="unitLv" class="width50" />',
 					enums.max_level[data.rarity], data.rarity, data.id) +
-				commonLvTmpl +
-				$("#setR" + data.rarity + "LvTmpl").html();
+				commonLvTmpl + setLvArray[data.rarity - 1];
 
 			var list = [
 				imgHtml(path.unit_mini, data.id),

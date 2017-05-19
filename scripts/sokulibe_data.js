@@ -654,7 +654,7 @@ function initBattle() {
 		for (var id in db.dimension_category) {
 			var data = db.dimension_category[id];
 			var name = data.name;
-			var subText = '獎勵範圍 ' + data.reward_bar_range;
+			var subText = '';
 			var itemHtml = listItemHtml(id, name, subText, "loadDimensionData(" + id + ");");
 			html += itemHtml;
 		}
