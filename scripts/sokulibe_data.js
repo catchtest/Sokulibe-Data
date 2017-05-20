@@ -813,12 +813,10 @@ function initUnitList() {
 		var strongHtml = '';
 		var weakHtml = '';
 		if (!!resist) {
-			var resistNames = ['poison', 'paralysis', 'freeze', 'burn', 'feather', 'curse', 'silence', 'darkness', 'death', 'confusion', 'charm'];
-			
-			resistNames.forEach(function(name, index) {
+			enums.debuff_param.forEach(function(name, index) {
 				var value = resist[name + '_resist'];
 				if (value > 0) {
-					resistItems.push(debuffHtml(index + 1) + ' ' + value);
+					resistItems.push(debuffKbd(index) + ' ' + value);
 				}
 			});
 			
@@ -3178,6 +3176,11 @@ function displayDebuff(value1, value2) {
 function debuffHtml(value) {
     return String.Format("<kbd class='debuff-{1}'>{0}</kbd>", enums.debuff[value], value);
 }
+
+function debuffKbd(value) {
+	return String.Format("<kbd class='debuff-{1}'>{0}</kbd>", enums.debuff_name[value], value);
+}
+
 // 回傳獎勵名稱
 function getAsset(type, id, value) {
     var name = '';
