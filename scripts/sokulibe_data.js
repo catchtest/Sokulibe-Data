@@ -191,12 +191,10 @@ $(function() {
 					}
 				}
 			}
-			var ownerBlock = list.join('<br />');
-			
 			var item = {
 				stack_name: data.stack_name,
 				stack_icon: imgHtml(path.stack, id),
-				owner: ownerBlock,
+				owner: list,
 				count: Object.keys(db.stack_ability[id]).length,
 				first_stack: {},
 				stacks: []
@@ -207,7 +205,7 @@ $(function() {
 				var data_sa = db.stack_ability[id][sid];
 				var ability = { 
 					stack_ability_name: data_sa.stack_ability_name, 
-					stack_effect: displayStackEffect(data_sa).join('<br />'),
+					stack_effect: displayStackEffect(data_sa),
 					stack_count: sid
 				};
 				

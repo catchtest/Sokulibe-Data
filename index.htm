@@ -2458,18 +2458,17 @@
 			<td>{{stack_count}}</td>
 			<td>
 				{{stack_ability_name}}
-				<div class="text-warning">{{stack_effect}}</div>
-				
+				<div class="text-warning">{{join stack_effect delimiter="<br />"}}</div>
 			</td>
 			{{/with}}
-			<td rowspan='{{count}}'>{{owner}}</td>
+			<td rowspan='{{count}}'>{{join owner delimiter="<br />"}}</td>
 		</tr>
 		{{#each stacks}}
 		<tr>
 			<td>{{stack_count}}</td>
 			<td>
 				{{stack_ability_name}}
-				<div class="text-warning">{{stack_effect}}</div>
+				<div class="text-warning">{{join stack_effect delimiter="<br />"}}</div>
 			</td>
 		</tr>
 		{{/each}}
