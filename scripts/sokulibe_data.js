@@ -162,16 +162,12 @@ $(function() {
 	
 	$("a[href='#stackTab']").one("click", function() {
 		// Stack一覽
+		var tmpl = Template7.compile($('#stackRowTmpl').html());
+		
 		var html = '';
 		for (var id in db.stack) {
 			var data = db.stack[id];
-			
-			var innerHtml = '';
-			var count = Object.keys(db.stack_ability[id]).length;
-			
-			// 圖示跟名稱
-			var nameBlock = imgHtml(path.stack, id) + '<br />' + data.stack_name;
-			
+
 			// 列出所有持有該Stack的角色或武器
 			var list = [];
 			for (var wid in db.weapon) {
@@ -197,18 +193,33 @@ $(function() {
 			}
 			var ownerBlock = list.join('<br />');
 			
+			var item = {
+				stack_name: data.stack_name,
+				stack_icon: imgHtml(path.stack, id),
+				owner: ownerBlock,
+				count: Object.keys(db.stack_ability[id]).length,
+				first_stack: {},
+				stacks: []
+			};
+			
+			var first = true;
 			for (var sid in db.stack_ability[id]) {
 				var data_sa = db.stack_ability[id][sid];
-				var content = data_sa.stack_ability_name + '<div class="text-warning">' + displayStackEffect(data_sa).join('<br />') + '</div>';
+				var ability = { 
+					stack_ability_name: data_sa.stack_ability_name, 
+					stack_effect: displayStackEffect(data_sa).join('<br />'),
+					stack_count: sid
+				};
 				
-				innerHtml += tableRow([data_sa.stack, content]);
-				if (sid == '5') {
-					// 在<tr>後插入一個包含rowspan的<td>
-					innerHtml = innerHtml.insert(4, String.Format("<td class='text-center' rowspan='{0}'>{1}</td>", count, nameBlock));
-					innerHtml = innerHtml.insert(innerHtml.length - 5, String.Format("<td rowspan='{0}'>{1}</td>", count, ownerBlock));
+				if (first) {
+					first = false;
+					item.first_stack = ability;
+				} else {
+					item.stacks.push(ability);
 				}
 			}
-			html += innerHtml;
+		
+			html += tmpl(item);
 		}
 		$("#stackTable > tbody").html(html);
 		//renderTable("stackTable", html);

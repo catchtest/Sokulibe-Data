@@ -2451,6 +2451,31 @@
         </div>
     </script>
 
+    <script type="text/template7" id="stackRowTmpl">
+		<tr>
+			<td class='text-center' rowspan='{{count}}'>{{stack_icon}}<br />{{stack_name}}</td>
+			{{#with first_stack}}
+			<td>{{stack_count}}</td>
+			<td>
+				{{stack_ability_name}}
+				<div class="text-warning">{{stack_effect}}</div>
+				
+			</td>
+			{{/with}}
+			<td rowspan='{{count}}'>{{owner}}</td>
+		</tr>
+		{{#each stacks}}
+		<tr>
+			<td>{{stack_count}}</td>
+			<td>
+				{{stack_ability_name}}
+				<div class="text-warning">{{stack_effect}}</div>
+			</td>
+		</tr>
+		{{/each}}
+    </script>
+
+	
     <script type="text/template" id="itemListTmpl">
         <button type="button" class="btn btn-link btn-xs btn-show-item-summary" onclick="$(this).hide().next().show();"><i class="glyphicon glyphicon-th-list"></i>顯示清單</button>
         <div class="item-summary" style="display: none;">{0}</div>
