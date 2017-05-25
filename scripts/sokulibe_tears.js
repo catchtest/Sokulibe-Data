@@ -7,7 +7,6 @@
 		var itemList = getUnitSortList();
 		var html = '',
 			html2 = '';
-		var commonLvTmpl = $("#setCommonLvTmpl").html();
 
 		var compiledTemplate = Template7.compile($('#setLvTmpl').html());
 		var setLvArray = [
@@ -21,15 +20,14 @@
 			var data = itemList[i];
 
 			var selectorHtml = String.Format('<input type="number" min="0" max="{0}" step="5" data-rarity="{1}" data-id="{2}" name="unitLv" class="width50" />',
-					enums.max_level[data.rarity], data.rarity, data.id) +
-				commonLvTmpl + setLvArray[data.rarity - 1];
+					enums.max_level[data.rarity], data.rarity, data.id) + setLvArray[data.rarity - 1];
 
 			var list = [
 				imgHtml(path.unit_mini, data.id),
 				anchor(getUnitName(data), "showUnit(" + data.id + ")"),
 				data.rarity,
 				elementHtml(data.use_element),
-				enums.job[data.job_id],
+				imgXs(path.job, data.job_id),
 				selectorHtml,
 				String.Format('<input type="text" data-id="{0}" data-rarity="{1}" name="unitTear" class="readonly" readonly />', data.id, data.rarity)
 			];
@@ -114,22 +112,20 @@
 		});
 	}
 	
-	this.setLv = function(sender) {
-		var $sender = $(sender);
-		var $input = $sender.closest('td').find('[name=unitLv]');
-		var value = parseInt($sender.text());
+	this.setLv = function(value, sender) {
+		var $input = $(sender).closest('td').find('[name=unitLv]');
 		$input.val(value).change();
 	}
 
-	this.addLv = function(sender) {
-		var $sender = $(sender);
-		var $input = $sender.closest('td').find('[name=unitLv]');
-		var value = $sender.text();
-		value = parseInt(value.replace('+', ''));
-		value = parseInt($input.val()) + value;
-		if (value > parseInt($input.attr('max'))) value = parseInt($input.attr('max'));
-		if (value < parseInt($input.attr('min'))) value = parseInt($input.attr('min'));
-		$input.val(value).change();
+	this.addLv = function(value, sender) {
+		var $input = $(sender).closest('td').find('[name=unitLv]');
+		var level = parseInt($input.val() || 0) + value;
+		if (level > parseInt($input.attr('max'))) {
+			level = parseInt($input.attr('max'));
+		} else if (level < parseInt($input.attr('min'))) {
+			level = parseInt($input.attr('min'));
+		}
+		$input.val(level).change();
 	}
 	
 	function updatePrev(value) {
