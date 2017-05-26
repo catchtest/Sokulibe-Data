@@ -2,6 +2,7 @@
 	var tearsGlobalData;
 	var previous;
 	var $tearsTable;
+	var awakenTears = [0, 60, 70, 80, 90, 100, 150, 150, 150, 150, 200, 1000];
 	
 	this.initial = function() {
 		var itemList = getUnitSortList();
@@ -21,7 +22,9 @@
 
 			var selectorHtml = String.Format('<input type="number" min="0" max="{0}" step="5" data-rarity="{1}" data-id="{2}" name="unitLv" class="width50" />',
 					enums.max_level[data.rarity], data.rarity, data.id) + setLvArray[data.rarity - 1];
-
+			// 最大覺醒
+			var maxAwaken = Object.keys(db.unit_awakening[data.id] || {}).length;
+			
 			var list = [
 				imgHtml(path.unit_mini, data.id),
 				anchor(getUnitName(data), "showUnit(" + data.id + ")"),
@@ -29,6 +32,7 @@
 				elementHtml(data.use_element),
 				imgXs(path.job, data.job_id),
 				selectorHtml,
+				String.Format('<input type="number" min="0" max="{0}" name="unitAwakenLv" class="width50" />', maxAwaken),
 				String.Format('<input type="text" data-id="{0}" data-rarity="{1}" name="unitTear" class="readonly" readonly />', data.id, data.rarity)
 			];
 
@@ -40,11 +44,14 @@
 		}
 
 		$tearsTable = $("#tearsComputeTable, #tearsComputeTable2");
-		$tearsTable.on("change", "[name='unitLv']", function() {
-			var rarity = $(this).data("rarity");
-			var value = $(this).val();
-			var $total = $(this).closest("tr").find("[name=unitTear]");
-			$total.val(computeUseTears(value, rarity));
+		$tearsTable.on("change", "[name='unitLv'], [name='unitAwakenLv']", function() {
+			var $tr = $(this).closest("tr");
+			var $lv = $tr.find("[name=unitLv]");
+			var lv = $lv.val();
+			var rarity = $lv.data("rarity");
+			var alv = $tr.find("[name=unitAwakenLv]").val();
+			var $total = $tr.find("[name=unitTear]");
+			$total.val(computeUseTears(lv, rarity, alv));
 			updateResultText();
 		});
 
@@ -133,7 +140,7 @@
 		$("#tearsRenameInput").val(previous);
 	}
 	
-	function computeUseTears(lv, rarity) {
+	function computeUseTears(lv, rarity, alv) {
 		if (lv == null) return 0;
 
 		var max_lv = enums.max_level[rarity];
@@ -145,6 +152,10 @@
 			base_lv += 5;
 			use_tears += enums.limitbreak[rarity][i];
 		}
+		for (var i = 1; i <= alv; i++) {
+			use_tears += awakenTears[i];
+		}
+		
 		return use_tears;
 	}
 
@@ -177,9 +188,11 @@
 			if (!$lv.val()) return;
 
 			var $tear = $(this).find("[name=unitTear]");
+			var $alv = $(this).find("[name=unitAwakenLv]");
 			var id = $tear.data("id");
 			saveData[id] = {
 				lv: parseInt($lv.val()),
+				alv: parseInt($alv.val()),
 				tear: parseInt($tear.val())
 			};
 		});
@@ -234,13 +247,16 @@
 		var saveData = tearsGlobalData[account];
 		
 		$tearsTable.find("tbody > tr").each(function() {
-			var $lv = $(this).find("[name=unitLv]");
-			var $tear = $(this).find("[name=unitTear]");
+			var $this = $(this);
+			var $lv = $this.find("[name=unitLv]");
+			var $alv = $this.find("[name=unitAwakenLv]");
+			var $tear = $this.find("[name=unitTear]");
 			var id = $tear.data("id");
 
 			var data = saveData[id];
 			if (data != null) {
 				$lv.val(data.lv);
+				$alv.val(data.alv);
 				$tear.val(data.tear);
 
 			} else {
@@ -289,7 +305,7 @@
 	}
 
 	this.clearAllTears = function() {
-		$tearsTable.find("[name=unitLv], [name=unitTear]").val('');
+		$tearsTable.find("[name=unitLv], [name=unitAwakenLv], [name=unitTear]").val('');
 		updateResultText();
 	}
 }
