@@ -187,7 +187,7 @@ $(function() {
 				for (var s = 1 ; s <= 2; s++) {
 					var sid = last['stack0' + s + '_id'];
 					if (sid == id) {
-						list.push(imgXs(path.unit_mini, uid) + '<span class="type-awaken"></span>' + anchor(getUnitName(db.unit[uid]), "showUnit(" + uid + ")"));
+						list.push(displayUnit(uid, true, 2));
 					}
 				}
 			}
@@ -273,7 +273,7 @@ $(function() {
 			
 			var list = [
 				imgHtml(String.Format(path.unit_awaken_mini, padLeft(unitId, 4), padLeft(id, 4))),
-				anchor(getUnitName(db.unit[unitId]), "showUnit(" + unitId + ")"),
+				displayUnit(unitId),
 				data.skin_name,
 				data.skin_txt.pre(),
 				addValue(data.hp_type, data.hp),
@@ -867,7 +867,7 @@ function initUnitList() {
 		
         var list = [
             imgHtml(path.unit_mini, data.id),
-            anchor(getUnitName(data), "showUnit(" + data.id + ")"),
+            displayUnit(data.id),
             getUnitPartner(data, false),
             anchor(data.cv, "quickSearch('" + data.cv + "')"),
             data.rarity,
@@ -1018,7 +1018,7 @@ function initAbilityList() {
                 obj = unitAbility[typeId];
             }
 			
-            obj.push(anchor(imgXs(path.unit_mini, id) + getUnitName(data), "showUnit(" + id + ")"));
+            obj.push(displayUnit(id, true));
         }
     }
 	
@@ -1034,7 +1034,7 @@ function initAbilityList() {
 					unitAbility[typeId] = [];
 					obj = unitAbility[typeId];
 				}
-				var content = imgXs(path.unit_mini, id) + '<span class="type-awaken"></span>' + anchor(getUnitName(data), "showUnit(" + id + ")");
+				var content = displayUnit(id, true, 2);
 				if (obj.indexOf(content) < 0) {   // 不重複放
 					obj.push(content);
 				}
@@ -1269,6 +1269,15 @@ function getUnitJobComment(data) {
     return String.Format("<span class='comment'>（{0}）</span>", getUnitJob(data))
 }
 
+function displayUnit(id, icon, type, job) {
+	var data = db.unit[id];
+	var prefix = type === 1 ? '<span class="type-unit"></span>'
+	           : type === 2 ? '<span class="type-awaken"></span>' : '';
+	var postfix = job === true ? getUnitJobComment(data) : '';
+	var iconHtml = icon === true ? imgXs(path.unit_mini, id) : '';
+	return iconHtml + prefix + anchor(getUnitName(data), "showUnit(" + id + ")") + postfix;
+}
+
 function getSkill(id, star) {
     for (var prop in db.skill) {
         if (db.skill[prop].base_id == id) {
@@ -1327,18 +1336,14 @@ function showEvent(name, id) {
 }
 // 取得對應角
 function getUnitPartner(data, showJob) {
-    var html = '';
-    var partnerData = db.unit[db.unit_base[data.base_id].partner_id];
-    if (partnerData != null) {
-        html = String.Format("<a href='#' onclick='showUnit({0});'>{2}{1}</a>",
-            partnerData.id,
-            getUnitName(partnerData),
-			imgXs(path.unit_mini, partnerData.id));
-        if (showJob) {
-            html += getUnitJobComment(partnerData);
-        }
-    }
-    return html;
+	var id = db.unit_base[data.base_id].partner_id;
+	if (id === 0) {
+		return '';
+	} else if (db.unit[id] != null) {
+		return displayUnit(id, true, null, showJob);
+	} else {
+		return 'id: ' + id;
+	}
 }
 // 讀取角色資料
 function loadUnitData(id) {
@@ -3219,9 +3224,7 @@ function getAsset(type, id, value) {
             if (id == 1) name = imgXs('images/Item/tear.png') + '妖精之淚'
             break;
         case 7: // 角色
-            name = imgXs(path.unit_mini, id) + '<span class="type-unit"></span>' +
-                anchor(db.unit[id].name, "showUnit(" + id + ")") +
-                getUnitJobComment(db.unit[id]);
+            name = displayUnit(id, true, 1, true);
             break;
         case 9: // 活動點數
             name = imgXs(path.event_item, id) + db.event_item[id].name;
