@@ -70,6 +70,10 @@ pre {
 }
 
 .comment {
+	color: #8E8E8E;
+}
+
+#unitBaseTab .comment {
 	white-space: pre-wrap;
 	/* Since CSS 2.1 */
 	white-space: -moz-pre-wrap;
@@ -78,7 +82,6 @@ pre {
 	/* Opera 4-6 */
 	white-space: -o-pre-wrap;
 	/* Opera 7 */
-	color: #8E8E8E;
 }
 
 .tab-pane {
