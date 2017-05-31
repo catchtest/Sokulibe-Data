@@ -2486,10 +2486,11 @@
     </script>
 
     <script type="text/template7" id="unitSkinTmpl">
+		{{#each this}}
         <div class="col-sm-6">
 			<div class="thumbnail">
 			  {{#if showImage}}
-			  <a href="{unit_full}" target="_blank"><img src="{{unit_up}}" /></a>
+			  <a href="{{unit_full}}" target="_blank"><img src="{{unit_up}}" /></a>
 			  {{/if}}
 			  <div class="caption">
 				<h3 class="name">{{skin_name}}</h3>
@@ -2510,6 +2511,7 @@
 			  </div>
 			</div>
 		</div>
+		{{/each}}
     </script>
 
 	

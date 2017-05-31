@@ -255,8 +255,10 @@ $(function() {
 		var html = '';
 		var addValue = function(type, value) {
 			if (value === 0) return '';
-			if (type === 0) return value;
-			else if (type === 1) return (value - 100) + '%';
+			switch (type) {
+				case 0: return value;
+				case 1: return (value - 100) + '%';
+			}
 		}
 
 		for (var id in db.skin) {
@@ -1708,30 +1710,29 @@ function loadUnitData(id) {
 	
 	var addValue = function(type, value) {
 		if (value === 0) return '';
-		if (type === 0) return value;
-		else if (type === 1) return (value - 100) + '%';
+		switch (type) {
+			case 0: return value;
+			case 1: return (value - 100) + '%';
+		}
 	}
 	
 	// 衣服
 	unitSkinTmpl = unitSkinTmpl || Template7.compile($('#unitSkinTmpl').html());
 	
-	html = '';
-	for (var sid in db.skin) {
-		var data_skin = db.skin[sid];
-		if (data_skin.chara_id === id) {
-			html += unitSkinTmpl({
-				showImage: showImage == null ? true : showImage,
-				unit_full: path2(path.unit_awaken_full, id, sid),
-				unit_up: path2(path.unit_awaken_up, id, sid),
-				skin_name: data_skin.skin_name,
-				skin_txt: data_skin.skin_txt.pre(),
-				hp: addValue(data_skin.hp_type, data_skin.hp),
-				atk: addValue(data_skin.atk_type, data_skin.atk),
-				agi: addValue(data_skin.agi_type, data_skin.agi)
-			});
-		}
-	}
-	$("#unitSkinTab > .row").html(html);
+	var skins = $.map(db.skin, function(data) {
+		if (data.chara_id !== id) return null;
+		return {
+			showImage: showImage == null ? true : showImage,
+			unit_full: path2(path.unit_awaken_full, id, data.id),
+			unit_up: path2(path.unit_awaken_up, id, data.id),
+			skin_name: data.skin_name,
+			skin_txt: data.skin_txt.pre(),
+			hp: addValue(data.hp_type, data.hp),
+			atk: addValue(data.atk_type, data.atk),
+			agi: addValue(data.agi_type, data.agi)
+		};
+	});
+	$("#unitSkinTab > .row").html(unitSkinTmpl(skins));
 	
 }
 
