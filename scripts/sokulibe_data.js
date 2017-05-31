@@ -56,6 +56,7 @@ var path = {
 		return myPath;
 	}
 };
+var unitSkinTmpl;
 
 $(function() {
     // 顯示讀取資料錯誤訊息
@@ -250,9 +251,10 @@ $(function() {
 	});
 	
 	$("a[href='#skinListTab']").one("click", function() {
-		// 覺醒道具
+		// 衣裝一覽
 		var html = '';
 		var addValue = function(type, value) {
+			if (value === 0) return '';
 			if (type === 0) return value;
 			else if (type === 1) return (value - 100) + '%';
 		}
@@ -276,9 +278,9 @@ $(function() {
 				displayUnit(unitId),
 				data.skin_name,
 				data.skin_txt.pre(),
-				addValue(data.hp_type, data.hp),
-				addValue(data.atk_type, data.atk),
-				addValue(data.agi_type, data.agi),
+				'<div class="text-success">' + addValue(data.hp_type, data.hp) + '</div>',
+				'<div class="text-danger">' + addValue(data.atk_type, data.atk) + '</div>',
+				'<div class="text-info">' + addValue(data.agi_type, data.agi) + '</div>',
 				changes.join('<br />')
 			];
 			html += tableRow(list);
@@ -1445,6 +1447,7 @@ function loadUnitData(id) {
         $skillDesc.children("tr").eq(i).children("td").eq(1).html(getSkillDesc(skillData));
     }
     // 每次切換時清除項目
+	$("#new_S2").hide();
     $("#skillAtk").hide();
     $("#skillAtkExt").hide();
     // 職業特殊技
@@ -1532,6 +1535,7 @@ function loadUnitData(id) {
         }
     }
     $("#skillTotalRune").html(displayTotalRune(skillTotalRune));
+	
     // 抗性
     var data_resist = db.unit_resist[id];
     var $resistTable = $("#unitResist");
@@ -1642,6 +1646,8 @@ function loadUnitData(id) {
 				var data_skill = db.skill_base[aid];
 				
 				changes.push(String.Format('<span class="text-warning">[技能{0}]</span> {1}', enums.skill_abbr[i], data_skill.name));
+				
+				$("#new_" + enums.skill_abbr[i]).find("td").remove().end().append(getSkillTd(aid)).show();
 			}
 			
 			// 抗性改變
@@ -1701,22 +1707,28 @@ function loadUnitData(id) {
 	$("#unitAwakeningTable [title]").tooltip();
 	
 	var addValue = function(type, value) {
+		if (value === 0) return '';
 		if (type === 0) return value;
 		else if (type === 1) return (value - 100) + '%';
 	}
 	
 	// 衣服
+	unitSkinTmpl = unitSkinTmpl || Template7.compile($('#unitSkinTmpl').html());
+	
 	html = '';
 	for (var sid in db.skin) {
 		var data_skin = db.skin[sid];
 		if (data_skin.chara_id === id) {
-			html += String.Format($("#unitSkinTmpl").html(), 
-				path2(path.unit_awaken_up, id, sid),
-				path2(path.unit_awaken_full, id, sid),
-				data_skin.skin_name, data_skin.skin_txt.pre(),
-				addValue(data_skin.hp_type, data_skin.hp),
-				addValue(data_skin.atk_type, data_skin.atk),
-				addValue(data_skin.agi_type, data_skin.agi));
+			html += unitSkinTmpl({
+				showImage: showImage == null ? true : showImage,
+				unit_full: path2(path.unit_awaken_full, id, sid),
+				unit_up: path2(path.unit_awaken_up, id, sid),
+				skin_name: data_skin.skin_name,
+				skin_txt: data_skin.skin_txt.pre(),
+				hp: addValue(data_skin.hp_type, data_skin.hp),
+				atk: addValue(data_skin.atk_type, data_skin.atk),
+				agi: addValue(data_skin.agi_type, data_skin.agi)
+			});
 		}
 	}
 	$("#unitSkinTab > .row").html(html);
