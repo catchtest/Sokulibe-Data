@@ -56,7 +56,7 @@ var path = {
 		return myPath;
 	}
 };
-var unitSkinTmpl;
+var unitSkinTmpl, dimTreasureTmpl;
 
 $(function() {
     // 顯示讀取資料錯誤訊息
@@ -2699,27 +2699,28 @@ function loadDimensionQuestData(eventID, questID) {
 	$("#dimRewardTable > tbody").html(html);
 	
 	// 增加寶藏
-	var generateTreasures = function(id, event) {
-		var data_treasure = db.dimension_treasure[baseData.clear_treasure_id][eventID];
+	dimTreasureTmpl = dimTreasureTmpl || Template7.compile($("#dimTreasureTmpl").html());
+	
+	var generateTreasures = function(id, group) {
+		var data_treasure = db.dimension_treasure[baseData.clear_treasure_id][group];
 		var rate_sum = 0;
-		// 先進行機率加總
+		// 先進行機率加總 (因可能不為整數)
 		for (var index in data_treasure) {
 			rate_sum += data_treasure[index].rate;
 		}
-		var html = '';
-		for (var index in data_treasure) {
-			var data = data_treasure[index];
-			if (data.rate === 0) continue;
-			
-			var asset = getAsset(data.item_type_1, data.item_id_1, data.item_value_1);
-			var rate = String.Format("{0}%", (data.rate * 100 / rate_sum).toFixed(1));
-			
-			html += tableRow([asset, rate]);
-		}
-		return html;
+		return dimTreasureTmpl($.map(data_treasure, function(data) {
+			if (data.rate === 0) return null;
+			return {
+				asset: getAsset(data.item_type_1, data.item_id_1, data.item_value_1),
+				rate: String.Format("{0}%", (data.rate * 100 / rate_sum).toFixed(1))
+			}
+		}));
 	}
-	$("#clear_treasure > table > tbody").html(generateTreasures(baseData.clear_treasure_id, eventID));
-	$("#mission_treasure > table > tbody").html(generateTreasures(baseData.mission_treasure_id, eventID));
+	$("#clear_treasure, #mission_treasure").empty();
+	for (var g = 1; g <= 3; g++) {
+		$("#clear_treasure").append(generateTreasures(baseData.clear_treasure_id, g));
+		$("#mission_treasure").append(generateTreasures(baseData.mission_treasure_id, g));
+	}
 	
 	$("#Recom_lv").html($("#required_lv").html()).closest("tr").show();
     $("#required_lv").html('').closest("tr").hide();
@@ -3403,12 +3404,14 @@ function renderTable(id, html, dataTablesOption) {
 
 function showUnitStory(sender) {
     // 讀取Json
+	$(".loader").show();
     $.getJSON('data/unit_story.json', function(data) {
 		db.unit_story = data;
 		
 		loadUnitStory();
 		$(sender).closest("div").hide();
 		$("#storyBlock").show();
+		$(".loader").hide();
     });
 }
 

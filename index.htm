@@ -56,7 +56,7 @@
                         <div class="well">
                             <div class="well-legend">更新紀錄</div>
                             <ul style="height: 160px; overflow-y: auto;">
-								<li>2017/05/31<br />增加覺醒後S2資料</li>
+								<li>2017/05/31<br />增加覺醒後S2資料、補完次元可選獎勵</li>
 								<li>2017/05/26<br />眼淚計算增加覺醒</li>
 								<li>2017/05/01<br />Stack持有者列表</li>
 								<li>2017/04/30<br />衣服一覽</li>
@@ -1411,19 +1411,11 @@
                                                     </tr>
 													<tr>
                                                         <th>通關寶箱<div>x<span id="clear_treasure_value"></span></div></th>
-                                                        <td id="clear_treasure">
-															<table class="table table-bordered table-fixed-width">
-																<tbody></tbody>
-															</table>
-														</td>
+                                                        <td id="clear_treasure"></td>
                                                     </tr>
 													<tr>
                                                         <th>三冠寶箱<div>x<span id="mission_treasure_value"></span></div></th>
-                                                        <td id="mission_treasure">
-															<table class="table table-bordered table-fixed-width">
-																<tbody></tbody>
-															</table>
-														</td>
+                                                        <td id="mission_treasure"></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -2514,6 +2506,18 @@
 		{{/each}}
     </script>
 
+	<script type="text/template7" id="dimTreasureTmpl">
+		<table class="table table-bordered table-fixed-width" style="display: inline-block;">
+			<tbody>
+				{{#each this}}
+				<tr>
+					<td>{{asset}}</td>
+					<td>{{rate}}</td>
+				</tr>
+				{{/each}}
+			</tbody>
+		</table>
+    </script>
 	
     <script>
         (function(i, s, o, g, r, a, m) {
