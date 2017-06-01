@@ -2540,8 +2540,8 @@ function loadEventData(id) {
         for (var pid in data_points) {
             var data_point = data_points[pid];
             var asset = getAsset(data_point.item_type, data_point.item_id, data_point.item_value);
-            var exchange_limit = raid_id > 0 ? 1 : data_point.exchange_limit
-            var data_point_sum = data_point.points * exchange_limit;
+            var exchange_limit = raid_id > 0 ? 1 : data_point.exchange_limit === 0 ? '無限' : data_point.exchange_limit;
+            var data_point_sum = data_point.exchange_limit === 0 ? '無限' : data_point.points * exchange_limit;
             html += tableRow([asset, data_point.points, exchange_limit, data_point_sum]);
             // 判斷是點數交換還是到達即可領取
             // 如果是到達即可領取那可換次數都是1
@@ -2557,7 +2557,7 @@ function loadEventData(id) {
     $("#exchangeTable > tbody").html(html);
     // 顯示可換物品總和
     var itemHtml = !point_exchange_mode ? itemSummary.display() : '';
-    var total_point = point_exchange_mode ? point_summary : point_last;
+    var total_point = point_exchange_mode ? (point_summary === 0 ? '無限' : point_summary) : point_last;
     var footerHtml = total_point == 0 ? '' : tableRow([itemHtml, '', '', total_point]);
     $("#exchangeTable > tfoot").html(footerHtml);
 }
