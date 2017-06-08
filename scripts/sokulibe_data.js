@@ -1618,7 +1618,10 @@ function loadUnitData(id) {
 	var data_awaken = db.unit_awakening[id];
 	if (data_awaken != null) {
 
+		var arrayKeys = Object.keys(data_awaken);
 		for (var time in data_awaken) {
+			var last = time === arrayKeys[arrayKeys.length - 1];   // 判斷是否是最後一筆資料
+			
 			var dat = data_awaken[time];
 			var items = [];
 			for (var i = 1; i <= 4; i++) {
@@ -1640,6 +1643,11 @@ function loadUnitData(id) {
 				var data_ability = db.ability[aid];
 				
 				changes.push(String.Format('<span class="text-info">[被動{0}]</span> <span title="{2}">{1}</span>', i, data_ability.name, data_ability.comment));
+				
+				// 一同顯示在角色頁
+				if (last) {
+					$("#ability0" + i).append('<hr /><span class="text-info">[覺醒]</span> ' + getAbilityDesc(aid));
+				}
 			}
 			// 主動改變
 			for (var i = 1; i <= 7; i++) {

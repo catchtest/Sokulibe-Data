@@ -758,3 +758,7 @@ a > i, button > i {
     max-width: none;
 	text-align: left;
 }
+
+#unitBaseTab hr {
+	margin: 10px 0;
+}
