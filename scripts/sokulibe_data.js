@@ -56,7 +56,7 @@ var path = {
 		return myPath;
 	}
 };
-var unitSkinTmpl, dimTreasureTmpl;
+var unitSkinTmpl, dimTreasureTmpl, itemSummary;
 
 $(function() {
     // 顯示讀取資料錯誤訊息
@@ -420,7 +420,9 @@ $(function() {
 			var value = parseInt(src.match(/\d{4}/g)[0]);
 	        return value;
 	    });
-	}
+	};
+	
+	itemSummary = new ItemSummary();
 });
 
 function displayStackEffect(data) {
@@ -2442,21 +2444,21 @@ function loadWeaponData(id) {
 	// 計算武器總合力
 	if ($("#weaponLightTmpl").length) {
 		// 先產生相關表格
-		var tmpl = $("#weaponLightTmpl").html();
+		var tmpl = Template7.compile($("#weaponLightTmpl").html());
 		var html = '';
 
 		for (var r = 2; r <= 5; r++) {
 			for (var e = 0; e <= 1; e++) {
-				var content = '';
+				var trs = [];
 				for (var lv = 1; lv <= 10; lv++) {
 					var tds = [];
 					for (var a = 0; a <= 4; a++) {
 						var light = db.weapn_light_lv[r][a][lv][e].light_lv;
 						tds.push(displayLight(light, true));
 					}
-					content += String.Format('<tr><th>Lv{0}</th><td>{1}</td></tr>', lv, tds.join('</td><td>'));
+					trs.push({ lv: lv, tds: tds });
 				}
-				html += String.Format(tmpl, r, e, content);
+				html += tmpl({ rarity: r, event: e, trs: trs });
 			}
 		}
 		$("#weaponLightTab").html(html);
@@ -2741,6 +2743,7 @@ function loadDimensionQuestData(eventID, questID) {
 
 function ItemSummary() {
 	var data = {};
+	var tmpl = Template7.compile($("#itemSummaryTmpl").html());
 	
 	this.reset = function() {
 		data = {};
@@ -2759,10 +2762,9 @@ function ItemSummary() {
 				list.push(getAsset(parseInt(item_type), parseInt(item_id), parseInt(data[item_type][item_id])));
 			}
 		}
-		return String.Format($("#itemListTmpl").html(), list.join('<br />'));
+		return tmpl(list);
 	}
 }
-var itemSummary = new ItemSummary();
 
 // 共通關卡資料讀取
 function loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickData) {

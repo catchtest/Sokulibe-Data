@@ -1241,9 +1241,9 @@
                                 </div>
                             </div>
                             <div role="tabpanel" class="tab-pane" id="weaponLightTab">
-								<script type="text/template" id="weaponLightTmpl">
+								<script type="text/template7" id="weaponLightTmpl">
 									<div class="table-responsive">
-										<table id="weaponLightR{0}E{1}" class="table table-bordered">
+										<table id="weaponLightR{{rarity}}E{{event}}" class="table table-bordered">
 											<thead>
 												<tr>
 													<th>等級</th>
@@ -1254,7 +1254,16 @@
 													<th>覺醒4</th>												
 												</tr>
 											</thead>
-											<tbody>{2}</tbody>
+											<tbody>
+												{{#each trs}}
+												<tr>
+													<th>Lv{{lv}}</th>
+													{{#each tds}}
+													<td>{{this}}</td>
+													{{/each}}
+												</tr>
+												{{/each}}
+											</tbody>
 										</table>
 									</div>
 								</script>
@@ -2473,9 +2482,9 @@
     </script>
 
 	
-    <script type="text/template" id="itemListTmpl">
+    <script type="text/template7" id="itemSummaryTmpl">
         <button type="button" class="btn btn-link btn-xs btn-show-item-summary" onclick="$(this).hide().next().show();"><i class="glyphicon glyphicon-th-list"></i>顯示清單</button>
-        <div class="item-summary" style="display: none;">{0}</div>
+        <div class="item-summary" style="display: none;">{{join this delimiter="<br />"}}</div>
     </script>
 
     <script type="text/template7" id="unitSkinTmpl">
