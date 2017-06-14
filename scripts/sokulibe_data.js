@@ -1903,6 +1903,7 @@ function getSkillAtkItemList(data, ext) {
         if (hit.daisharin > 0) effects.push("大車輪");
         if (hit.haritsuke > 0) effects.push("定身");
         if (hit.huge_knockback > 0) effects.push("擊退");
+		if (hit.ice > 0) effects.push("冰凍");
         var atkType = enums.atk_type[hit.atk_type];
         var elementType = elementHtml(hit.element);
         var hitType = hit.hit_type;
