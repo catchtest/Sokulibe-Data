@@ -2224,13 +2224,13 @@ function displaySkillBuff(buff, value, time) {
             text = "魅惑無效";
             break;
         case 42:
-            text = atkUp("暴擊率", value);
+            text = defUp("暴擊率", value);
             break;
         case 43:
-            text = atkUp("暴擊傷害", value);
+            text = defUp("暴擊傷害", value);
             break;
         case 44:
-            text = atkUp("暴擊破盾", value);
+            text = defUp("暴擊破盾", value);
             break;
         default:
             return String.Format("{0} {1} {2}", buff, value, time);
