@@ -2205,12 +2205,33 @@ function displaySkillBuff(buff, value, time) {
         case 35:
             text = "技能無詠唱";
             break;
-        case 37:
-            text = "狂戰";
-            break;
         case 36: // モーションが早くなる強化効果を付与
 			text = "加速";
 			break;
+        case 37:
+            text = "狂戰";
+            break;
+        case 38:
+            text = "暗闇無效";
+            break;
+        case 39:
+            text = "即死無效";
+            break;
+        case 40:
+            text = "混亂無效";
+            break;
+        case 41:
+            text = "魅惑無效";
+            break;
+        case 42:
+            text = atkUp("暴擊率", value);
+            break;
+        case 43:
+            text = atkUp("暴擊傷害", value);
+            break;
+        case 44:
+            text = atkUp("暴擊破盾", value);
+            break;
         default:
             return String.Format("{0} {1} {2}", buff, value, time);
     }
