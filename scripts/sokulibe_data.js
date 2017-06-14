@@ -2485,8 +2485,8 @@ function loadWeaponData(id) {
 		$("#weaponLightTab").html(html);
 	}
 	// 只顯示符合武器能力的總合力表格
-	$("#weaponLightTab table").hide();
-	$(String.Format("#weaponLightR{0}E{1}", data.rarity, data.event_)).show();
+	$("#weaponLightTab .table-responsive").hide();
+	$(String.Format("#weaponLightR{0}E{1}", data.rarity, data.event_)).closest(".table-responsive").show();
 
 	$("#weapon").find("[title]").tooltip();
 }
