@@ -1451,7 +1451,7 @@ function loadUnitData(id) {
         $skillDesc.children("tr").eq(i).children("td").eq(1).html(getSkillDesc(skillData));
     }
     // 每次切換時清除項目
-	$("#new_S2").hide();
+	$("#new_S2, #new_S2_desc").hide();
     $("#skillAtk").hide();
     $("#skillAtkExt").hide();
     // 職業特殊技
@@ -1660,6 +1660,11 @@ function loadUnitData(id) {
 				changes.push(String.Format('<span class="text-warning">[技能{0}]</span> {1}', enums.skill_abbr[i], data_skill.name));
 				
 				$("#new_" + enums.skill_abbr[i]).find("td").remove().end().append(getSkillTd(aid)).show();
+				
+				var skillData = getSkill(aid, false);
+				$("#new_" + enums.skill_abbr[i] + "_desc").show().children("td").eq(0).html(getSkillDesc(skillData));
+				skillData = getSkill(aid, true);
+				$("#new_" + enums.skill_abbr[i] + "_desc").children("td").eq(1).html(getSkillDesc(skillData));
 			}
 			
 			// 抗性改變
