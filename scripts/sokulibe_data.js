@@ -2754,7 +2754,7 @@ function loadDimensionQuestData(eventID, questID) {
 		}));
 	}
 	$("#clear_treasure, #mission_treasure").empty();
-	for (var g = 1; g <= 3; g++) {
+	for (var g = 1; g <= 4; g++) {
 		$("#clear_treasure").append(generateTreasures(baseData.clear_treasure_id, g));
 		$("#mission_treasure").append(generateTreasures(baseData.mission_treasure_id, g));
 	}
