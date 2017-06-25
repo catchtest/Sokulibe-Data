@@ -1950,7 +1950,7 @@ function getSkillAtkItemList(data, ext) {
 			effect.push('回復 ' + debuffHtml(hit.recovery_debuff_id));
 		}
 		if (hit.buff > 0) {
-			effect.push('附加 ' + displaySkillBuff(hit.buff, hit.buff_value, hit.buff_time));
+			effect.push('附加 ' + displayBuff(hit.buff, hit.buff_value, hit.buff_time));
 		}
 		
         for (var i = 1; i <= 3; i++) {
@@ -2107,7 +2107,7 @@ function getSkillAtkItemList(data, ext) {
     };
 }
 
-function displaySkillBuff(buff, value, time) {
+function displayBuff(buff, value, time) {
     var text;
     switch (buff) {
         case 0:
@@ -2634,8 +2634,8 @@ function loadMultiData(id, mrcate) {
 	var gimmickData = db.multi_quest_gimmick[id];
     loadCommonQuestData(baseData, missionData, dropData, waveData, gimmickData);
     setTitle(String.Format("MR{0} {1}", baseData.required_lv, baseData.name), '');
-    $("#Recom_lv, #first_clear_bonus, #continue_limit, #required_lv, #exp, #crystal, #job_exp, #speedclear").closest("tr").show();
-    $("#raid_point, #clear_treasure, #mission_treasure").closest("tr").hide();
+    $("#Recom_lv, #first_clear_bonus, #continue_limit, #required_lv, #exp, #crystal, #job_exp, #speedclear, #rareenemy_id").closest("tr").show();
+    $("#raid_point, #clear_treasure, #mission_treasure, #burst").closest("tr").hide();
     $("#questTab").hide().find("a:first").tab('show');
     $("#questList").hide();
 }
@@ -2677,8 +2677,8 @@ function loadExpZoneData(id) {
 }
 
 function singleQuestField() {
-    $("#Recom_lv, #exp, #crystal, #job_exp").closest("tr").show();
-    $("#raid_point, #first_clear_bonus, #multi_exp, #continue_limit, #required_lv, #clear_treasure, #mission_treasure").closest("tr").hide();
+    $("#Recom_lv, #exp, #crystal, #job_exp, #rareenemy_id").closest("tr").show();
+    $("#raid_point, #first_clear_bonus, #multi_exp, #continue_limit, #required_lv, #clear_treasure, #mission_treasure, #burst").closest("tr").hide();
     $("#questTab").hide().find("a:first").tab('show');
     $("#questList").hide();
 }
@@ -2705,8 +2705,8 @@ function loadQuestData(eventID, questID) {
         default:
             break;
     }
-    $("#Recom_lv, #first_clear_bonus, #multi_exp, #raid_point, #clear_treasure, #mission_treasure").closest("tr").hide();
-    $("#continue_limit, #required_lv, #exp, #crystal, #job_exp, #speedclear").closest("tr").show();
+    $("#Recom_lv, #first_clear_bonus, #multi_exp, #raid_point, #clear_treasure, #mission_treasure, #burst").closest("tr").hide();
+    $("#continue_limit, #required_lv, #exp, #crystal, #job_exp, #speedclear, #rareenemy_id").closest("tr").show();
     $("#questTab").show();
     $("#questList").show();
 	$("#dimRewardTable > tbody").html('');
@@ -2753,6 +2753,25 @@ function loadDimensionQuestData(eventID, questID) {
 			}
 		}));
 	}
+	// 強制回盾資料
+	var burstData = db.dimension_burst[questID];
+	if (!!burstData) {
+		var bursts = [];
+		for (var b in burstData) {
+			var burstInfo = burstData[b];
+			bursts.push(String.Format('BOSS {0}% HP', burstInfo['burst_health']));
+			for (var bb = 1; bb <= 3; bb++) {
+				if (burstInfo['burst_buff' + bb +'_id'] === 0) {
+					continue;
+				}
+				bursts.push('附加' + displayBuff(burstInfo['burst_buff' + bb +'_id'], burstInfo['burst_buff' + bb +'_value'], burstInfo['burst_buff' + bb +'_time']));
+			}
+		}
+		$("#burst").html(bursts.join('<br />'));
+	} else {
+		$("#burst").html('---');
+	}
+	
 	$("#clear_treasure, #mission_treasure").empty();
 	for (var g = 1; g <= 4; g++) {
 		$("#clear_treasure").append(generateTreasures(baseData.clear_treasure_id, g));
@@ -2762,8 +2781,8 @@ function loadDimensionQuestData(eventID, questID) {
 	$("#Recom_lv").html($("#required_lv").html()).closest("tr").show();
     $("#required_lv").html('').closest("tr").hide();
 	
-    $("#first_clear_bonus, #multi_exp, #exp, #crystal, #job_exp, #raid_point, #speedclear").closest("tr").hide();
-    $("#continue_limit, #clear_treasure, #mission_treasure").closest("tr").show();
+    $("#first_clear_bonus, #multi_exp, #exp, #crystal, #job_exp, #raid_point, #speedclear, #rareenemy_id").closest("tr").hide();
+    $("#continue_limit, #clear_treasure, #mission_treasure, #burst").closest("tr").show();
     $("#questTab").show();
     $("#questList").show();
 }
