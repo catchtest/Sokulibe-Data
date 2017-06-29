@@ -2773,7 +2773,7 @@ function loadDimensionQuestData(eventID, questID) {
 	}
 	
 	$("#clear_treasure, #mission_treasure").empty();
-	for (var g = 1; g <= 4; g++) {
+	for (var g = 1; g <= 5; g++) {
 		$("#clear_treasure").append(generateTreasures(baseData.clear_treasure_id, g));
 		$("#mission_treasure").append(generateTreasures(baseData.mission_treasure_id, g));
 	}
@@ -3352,6 +3352,7 @@ function extendItemName(id) {
 	switch (id) {
 		case 30: return 'トレジャーチケット 1枚';
 		case 37: return '1周年記念SR確定 武器ガチャチケット 1枚';
+		case 40: return '☆4ユニット20%スカウトチケット';
 		default: return names[id - 21] || ('id: ' + id);
 	}
 }
