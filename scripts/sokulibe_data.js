@@ -2773,7 +2773,7 @@ function loadDimensionQuestData(eventID, questID) {
 	}
 	
 	$("#clear_treasure, #mission_treasure").empty();
-	for (var g = 1; g <= 5; g++) {
+	for (var g = 1; g <= 6; g++) {
 		$("#clear_treasure").append(generateTreasures(baseData.clear_treasure_id, g));
 		$("#mission_treasure").append(generateTreasures(baseData.mission_treasure_id, g));
 	}
@@ -3338,22 +3338,18 @@ function imgXs(path, id, title) {
 }
 
 function extendItemName(id) {
-    var names = [
-        'スマイルポイント',
-        'HR確定 武器ガチャチケット',
-        'HR以上確定 武器ガチャチケット',
-        'SR確定 武器ガチャチケット',
-        null,
-        null,
-        '武器ガチャチケット',
-        null,
-        'コラボ武器確定 武器ガチャチケット'
-    ];
 	switch (id) {
+		case 21: return 'スマイルポイント';
+		case 22: return 'HR確定 武器ガチャチケット';
+		case 23: return 'HR以上確定 武器ガチャチケット';
+		case 24: return 'SR確定 武器ガチャチケット';
+		case 27: return '武器ガチャチケット';
+		case 29: return 'コラボ武器確定 武器ガチャチケット';
 		case 30: return 'トレジャーチケット 1枚';
 		case 37: return '1周年記念SR確定 武器ガチャチケット 1枚';
 		case 40: return '☆4ユニット20%スカウトチケット';
-		default: return names[id - 21] || ('id: ' + id);
+		case 42: return '水着衣装交換チケット';
+		default: return 'id: ' + id;
 	}
 }
 var accessoryNames;
