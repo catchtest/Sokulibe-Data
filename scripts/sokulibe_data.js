@@ -1904,11 +1904,12 @@ function getSkillAtkItemList(data, ext) {
         if (hit.air > 0) effects.push("擊飛");
         if (hit.down_atk > 0) effects.push("挖地");
         if (hit.g_bound > 0) effects.push("扣殺");
-        if (hit.kirimomi > 0) effects.push("大車輪２"); // 大車輪斜飛，像暗重S3最後一下
+        if (hit.kirimomi > 0) effects.push("大車輪斜"); // 大車輪斜飛，像暗重S3最後一下
         if (hit.daisharin > 0) effects.push("大車輪");
         if (hit.haritsuke > 0) effects.push("定身");
         if (hit.huge_knockback > 0) effects.push("擊退");
-		if (hit.ice > 0) effects.push("冰凍");
+		if (hit.ice > 0) effects.push("冰晶化");
+		if (hit.rock > 0) effects.push("岩石化");
         var atkType = enums.atk_type[hit.atk_type];
         var elementType = elementHtml(hit.element);
         var hitType = hit.hit_type;
