@@ -2411,6 +2411,7 @@ function loadWeaponData(id) {
     var data = db.weapon[id];
     setTitle(data.name, enums.rarity[data.rarity]);
     $("#weaponImgBlock").html(imgHtml(path.weapon, data.id, true));
+	$("#weaponFullTab").html(imgHtml(path.weapon_full, data.id, true));
     ['HP', 'ATK', 'AGI'].forEach(function(e) {
         var e1 = e.toLowerCase();
         var base = data[e1];

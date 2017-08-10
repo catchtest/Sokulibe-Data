@@ -640,7 +640,8 @@ a > i, button > i {
 	white-space : nowrap;
 }
 
-.img-list img {
+.img-list img,
+#weaponFullTab > img {
 	max-width: 100%;
 }
 
