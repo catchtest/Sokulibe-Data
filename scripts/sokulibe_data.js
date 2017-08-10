@@ -39,6 +39,7 @@ var path = {
 	"unit_awaken_full": "images/Full/un{0}_s{1}_full.png",
     "accessory": "images/Accessory/eq{0}_tex.png",
     "weapon": "images/Weapon/wi{0}_tex.png",
+	"weapon_full": "images/WeaponFull/wt{0}.png",
     "event_item": "images/EventItem/ei{0}_tex.png",
     "monster": "images/Monster/mm{0}_tex.png",
 	"guild_icon": "images/GuildIcon/ig{0}_tex.png",
