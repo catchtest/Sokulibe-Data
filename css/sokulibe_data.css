@@ -54,6 +54,11 @@
 	display: none;
 }
 
+#storyBlock2 hr {
+	border-top: 1px dashed gray;
+	margin-bottom: 0;
+}
+
 .jumbotron {
 	padding-top: 20px;
 	padding-bottom: 20px;
