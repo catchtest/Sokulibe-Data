@@ -2,6 +2,17 @@
 	font-size: 13px;
 }
 
+#favoriteDiv > img {
+	display: block;
+	max-width: 100%;
+	/* Reserve the 30px navigation offset and 10px tab padding. */
+	max-height: calc(100vh - 40px);
+	width: auto;
+	height: auto;
+	margin: 0 auto;
+	cursor: pointer;
+}
+
 .list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover, .table tr.active td, .table tr.active th {
 	text-shadow: 0 -1px 0 #286090;
 	background-image: -webkit-linear-gradient(top,#337ab7 0,#2b669a 100%);

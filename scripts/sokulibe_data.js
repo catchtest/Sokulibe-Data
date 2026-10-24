@@ -80,8 +80,7 @@ $(function() {
             unitId = unitIdList[randIndex];
         } while (isDirtyUnit(db.unit[unitId]));
         var $img = $("<img></img>", {
-            src: String.Format(path.unit_up, padLeft(unitId.toString(), 4)),
-            style: "width: 100%; cursor: pointer;"
+            src: String.Format(path.unit_up, padLeft(unitId.toString(), 4))
         });
         $img.click(function() {
             alert(db.unit_comment[unitId]['comment' + randInt(5, 7)]);
